@@ -15,7 +15,11 @@ yarn run dev
 yarn run build
 
 # build for production and view the bundle analyzer report
-npm run build --report
+npm_config_report=true yarn build
+### Windows `cmd`
+set npm_config_report=true
+yarn build
+set npm_config_report=false
 
 # run unit tests
 yarn run unit
