@@ -15,7 +15,7 @@ yarn run dev
 yarn run build
 
 # build for production and view the bundle analyzer report
-yarn run build --report
+npm run build --report
 
 # run unit tests
 yarn run unit
