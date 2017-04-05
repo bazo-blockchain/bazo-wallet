@@ -1,6 +1,14 @@
 <template>
 <div class="login">
-	text {{ test123 }}
+	<h1>Login</h1>
+	<label>
+		<span>Username</span>
+		<input v-model="username" type="text" placeholder="Username">
+	</label>
+	<label>
+		<span>Password</span>
+		<input v-model="password" type="password" placeholder="Password">
+	</label>
 	<button @click="authenticate">Login</button>
 </div>
 </template>
@@ -12,17 +20,26 @@ export default {
 	name: 'test',
 	data: function () {
 		return {
-			test123: 'test321'
+			username: '',
+			password: ''
 		}
 	},
 	methods: {
 		authenticate: function () {
 			const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
-			Auth.authenticate(this, { username: 'contact@schrepfer.io', password: 'test123' }, redirect);
+			const credentials = { username: this.username, password: this.password };
+			Auth.authenticate(this, credentials, redirect);
 		}
 	}
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+label {
+	display: block;
+	> span {
+		display: inline-block;
+		width: 100px;
+	}
+}
 </style>

@@ -14,6 +14,9 @@ const setTokenToStorage = (token) => {
 const hasTokenInStorage = () => {
 	return !!getTokenFromStorage();
 }
+const removeTokenFromStorage = () => {
+	window.localStorage.removeItem(KEY_TOKEN);
+}
 const getPayloadFromTokenInStorage = () => {
 	if (!hasTokenInStorage()) {
 		return null;
@@ -50,6 +53,12 @@ export default {
 			}, response => {
 				context.error = response;
 			});
+	},
+
+	repudiate: function () {
+		removeTokenFromStorage();
+		update(this);
+		router.push({ path: '/' });
 	}
 
 };

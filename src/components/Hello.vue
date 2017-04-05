@@ -1,6 +1,7 @@
 <template>
 <div class="hello">
 	<router-link :to="{ name: 'login' }">Go To Login</router-link>
+	<a href @click="logout">Logout</a>
 	<img src="../assets/logo.png">
 	<h1>{{ msg }}</h1>
 	<h2>Essential Links</h2>
@@ -23,11 +24,18 @@
 </template>
 
 <script>
+import Auth from '../services/Auth';
+
 export default {
 	name: 'hello',
 	data () {
 		return {
 			msg: 'Welcome to Your Vue.js App'
+		}
+	},
+	methods: {
+		logout: function () {
+			Auth.repudiate();
 		}
 	}
 };
