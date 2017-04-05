@@ -59,6 +59,13 @@ export default {
 		removeTokenFromStorage();
 		update(this);
 		router.push({ path: '/' });
+	},
+
+	getAuthHeader: function () {
+		if (!hasTokenInStorage()) {
+			return null;
+		}
+		return 'Bearer ' + getTokenFromStorage();
 	}
 
 };

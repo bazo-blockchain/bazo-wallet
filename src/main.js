@@ -3,10 +3,12 @@
 import Vue from 'vue';
 import App from './App';
 import router from './router';
+import Interceptor from './config/Interceptor';
 import VueResource from 'vue-resource';
 
 Vue.use(VueResource);
 Vue.config.productionTip = false;
+Interceptor.intercept(Vue);
 
 /* eslint-disable no-new */
 new Vue({

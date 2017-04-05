@@ -2,7 +2,8 @@
 <div class="hello">
 	<router-link :to="{ name: 'login' }">Go To Login</router-link> |
 	<router-link :to="{ name: 'secure'}">Go To Secure Page</router-link> |
-	<a href @click="logout">Logout</a>
+	<a @click="logout">Logout</a> |
+	<a @click="admin">Call Secure Admin function</a>
 	
 	<div class="previous-stuff">
 		<img src="../assets/logo.png">
@@ -40,6 +41,13 @@ export default {
 	methods: {
 		logout: function () {
 			Auth.repudiate();
+		},
+		admin: function () {
+			this.$http.get('http://localhost:8080/admin/accounts').then(function (response) {
+				console.log('success', response);
+			}, function (response) {
+				console.log('error', response);
+			});
 		}
 	}
 };
