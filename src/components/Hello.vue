@@ -1,6 +1,7 @@
 <template>
 <div class="hello">
 	<router-link :to="{name: 'Test'}">Go To Test</router-link>
+	<img src="../assets/logo.png">
 	<h1>{{ msg }}</h1>
 	<h2>Essential Links</h2>
 	<ul>
