@@ -1,7 +1,7 @@
 <template>
-<div class="test">
+<div class="login">
 	text {{ test123 }}
-	<button @click="authenticate">Authenticate</button>
+	<button @click="authenticate">Login</button>
 </div>
 </template>
 
@@ -17,7 +17,8 @@ export default {
 	},
 	methods: {
 		authenticate: function () {
-			Auth.login(this, { username: 'contact@schrepfer.io', password: 'test123' }, false);
+			const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
+			Auth.authenticate(this, { username: 'contact@schrepfer.io', password: 'test123' }, redirect);
 		}
 	}
 };

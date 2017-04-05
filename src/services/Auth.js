@@ -3,20 +3,44 @@ import router from '../router';
 const SCHEME = 'http://';
 const HOSTNAME = 'localhost:8080';
 const API_URL = SCHEME + HOSTNAME;
+const KEY_TOKEN = 'coinblesk_token';
+
+const getTokenFromStorage = () => {
+	return window.localStorage.getItem(KEY_TOKEN);
+}
+const setTokenToStorage = (token) => {
+	window.localStorage.setItem(KEY_TOKEN, token);
+}
+const hasTokenInStorage = () => {
+	return !!getTokenFromStorage();
+}
+const getPayloadFromTokenInStorage = () => {
+	if (!hasTokenInStorage()) {
+		return null;
+	}
+	const base64Payload = getTokenFromStorage().split('.')[1];
+	return JSON.parse(window.atob(base64Payload));
+}
+const update = (Auth) => {
+	Auth.user.authenticated = hasTokenInStorage();
+	Auth.user.payload = getPayloadFromTokenInStorage();
+	Auth.user.token = getTokenFromStorage();
+}
 
 export default {
 
 	user: {
-		authenticated: hasTokenInStorage()
+		authenticated: hasTokenInStorage(),
+		payload: getPayloadFromTokenInStorage(),
+		token: getTokenFromStorage()
 	},
 
-	login: function (context, credentials, redirect) {
+	authenticate: function (context, credentials, redirect) {
 		context.$http.post(API_URL + '/user/login', credentials)
 			.then(response => {
 				const token = response.body.token;
-
 				setTokenToStorage(token);
-				this.user.authenticated = true;
+				update(this);
 
 				if (redirect) {
 					router.push({
@@ -26,22 +50,7 @@ export default {
 			}, response => {
 				context.error = response;
 			});
-	},
-
-	check: function (context) {
-		this.user.authenticated = hasTokenInStorage();
-		return this.user.authenticated;
 	}
 
 };
 
-const KEY_TOKEN = 'coinblesk_token';
-function getTokenFromStorage () {
-	return window.localStorage.getItem(KEY_TOKEN);
-}
-function setTokenToStorage (token) {
-	window.localStorage.setItem(KEY_TOKEN, token);
-}
-function hasTokenInStorage () {
-	return !!getTokenFromStorage();
-}

@@ -1,5 +1,6 @@
 <template>
 <div class="footer">
+	<hr>
 	{{ test }}
 </div>
 </template>
@@ -9,7 +10,7 @@ export default {
 	name: 'main-footer',
 	data: function () {
 		return {
-			test: 'blubb'
+			test: 'footer'
 		}
 	}
 };
