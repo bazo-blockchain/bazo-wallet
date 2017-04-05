@@ -13,21 +13,6 @@ import MainFooter from '@/components/MainFooter';
 
 export default {
 	name: 'app',
-	data: function () {
-		return {
-			test: 'blubb'
-		}
-	},
-	computed: {
-		reverseTest: function () {
-			return this.test.split('').reverse().join('');
-		}
-	},
-	methods: {
-		blubb: function (test) {
-			console.log(test);
-		}
-	},
 	components: {
 		MainHeader,
 		MainFooter
