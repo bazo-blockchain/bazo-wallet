@@ -8,8 +8,8 @@
 
 <script>
 import './global.scss';
-import MainHeader from '@/components/MainHeader.vue';
-import MainFooter from '@/components/MainFooter.vue';
+import MainHeader from '@/components/MainHeader';
+import MainFooter from '@/components/MainFooter';
 
 export default {
 	name: 'app',
