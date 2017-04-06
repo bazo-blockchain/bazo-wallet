@@ -6,6 +6,7 @@ import App from './App';
 import router from './router';
 import Toaster from './config/Toaster';
 import Interceptor from './config/Interceptor';
+import 'font-awesome/scss/font-awesome.scss';
 
 Vue.use(VueResource);
 Vue.config.productionTip = false;

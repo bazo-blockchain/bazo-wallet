@@ -3,7 +3,7 @@ import Auth from '../services/Auth';
 import router from '../router';
 
 const internalError = () => {
-	Vue.toasted.error('An internal error occured. The page will be reloaded.');
+	Vue.toasted.global.error('An internal error occured. The page will be reloaded.');
 	setTimeout(() => {
 		window.location.reload();
 	}, 3000);
@@ -22,19 +22,19 @@ export default {
 
 				if (isLoginRequest) {
 					if (/^2/.test(status)) {
-						Vue.toasted.success('You have successfully been authenticated.')
+						Vue.toasted.global.success('You have successfully been authenticated.')
 					} else if (/^4/.test(status)) {
-						Vue.toasted.error('The combination of your username/password is incorrect.');
+						Vue.toasted.global.warn('The combination of your username/password is incorrect.');
 					} else if (/^5/.test(status)) {
 						internalError();
 					}
 				} else {
 					if (response.status === 401) {
 						Auth.repudiate();
-						Vue.toasted.info('You are trying to access a protected resource. Please authenticate yourself first.', {duration: 6000});
+						Vue.toasted.global.warn('You are trying to access a protected resource. Please authenticate yourself first.', { duration: 6000 });
 						router.push({ path: '/login' });
 					} else if (response.status === 403) {
-						Vue.toasted.error('You do not have the rights to access this site.');
+						Vue.toasted.global.error('You do not have the rights to access this site.');
 					} else if (/^(4|5)/.test(status)) {
 						internalError(Vue);
 					}
