@@ -10,6 +10,7 @@ Vue.use(Router);
 
 const requireAuth = (to, _from, next) => {
 	if (!Auth.user.authenticated) {
+		Vue.toasted.info('You are trying to access a protected resource. Please authenticate yourself first.', {duration: 6000});
 		next({
 			path: '/login',
 			query: { redirect: to.fullPath }

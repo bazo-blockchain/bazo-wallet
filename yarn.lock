@@ -5562,6 +5562,10 @@ vue-template-es2015-compiler@^1.2.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.5.1.tgz#0c36cc57aa3a9ec13e846342cb14a72fcac8bd93"
 
+vue-toasted@^1.0.27:
+  version "1.0.27"
+  resolved "https://registry.yarnpkg.com/vue-toasted/-/vue-toasted-1.0.27.tgz#84bd2068bfd565081cf27ba8f7fe084bf9ab1fc3"
+
 vue@^2.2.2:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.2.6.tgz#451714b394dd6d4eae7b773c40c2034a59621aed"
