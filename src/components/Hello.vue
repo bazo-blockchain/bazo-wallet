@@ -44,9 +44,7 @@ export default {
 		},
 		admin: function () {
 			this.$http.get('http://localhost:8080/admin/accounts').then(function (response) {
-				console.log('success', response);
-			}, function (response) {
-				console.log('error', response);
+				console.log(response);
 			});
 		}
 	}
