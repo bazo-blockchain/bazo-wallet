@@ -3,7 +3,7 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
 import App from './App';
-import router from './router';
+import router from './config/router';
 import Toaster from './config/Toaster';
 import Interceptor from './config/Interceptor';
 import 'font-awesome/scss/font-awesome.scss';

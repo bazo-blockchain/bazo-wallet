@@ -1,4 +1,4 @@
-import router from '../router';
+import router from '../config/router';
 
 const SCHEME = 'http://';
 const HOSTNAME = 'localhost:8080';

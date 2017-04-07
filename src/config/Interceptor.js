@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Auth from '../services/Auth';
-import router from '../router';
+import router from '../config/router';
 
 const internalError = () => {
 	Vue.toasted.global.error('An internal error occured. The page will be reloaded.');
