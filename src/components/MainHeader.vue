@@ -1,8 +1,49 @@
 <template>
-<div class="header">
-	{{ test }}
+<header>
+	<b-navbar toggleable type="inverse" variant="inverse">
+		<div class="container">
+
+			<b-nav-toggle target="nav_collapse"></b-nav-toggle>
+
+			<b-link class="navbar-brand" :to="{ name: 'home' }">
+				<span>Coinblesk</span>
+			</b-link>
+
+			<b-collapse is-nav id="nav_collapse">
+
+				<b-nav is-nav-bar>
+					<b-nav-item :to="{ name: 'login' }">Login</b-nav-item>
+					<b-nav-item :to="{ name: 'secure' }">Secure website</b-nav-item>
+				</b-nav>
+
+				<b-nav is-nav-bar class="ml-auto">
+
+					<!-- Navbar dropdowns -->
+					<b-nav-item-dropdown text="Lang" right-alignment>
+						<b-dropdown-item to="#">EN</b-dropdown-item>
+						<b-dropdown-item to="#">ES</b-dropdown-item>
+						<b-dropdown-item to="#">RU</b-dropdown-item>
+						<b-dropdown-item to="#">FA</b-dropdown-item>
+					</b-nav-item-dropdown>
+
+					<b-nav-item-dropdown right-alignment>
+
+						<!-- Using text slot -->
+						<template slot="text">
+							<span style="font-weight: bold;">User</span>
+						</template>
+
+						<b-dropdown-item to="#">Profile</b-dropdown-item>
+						<b-dropdown-item to="#">Signout</b-dropdown-item>
+					</b-nav-item-dropdown>
+				 
+				</b-nav>
+			</b-collapse>
+		</div>
+	</b-navbar>
+
 	<pre>{{ user }}</pre>
-</div>
+</header>
 </template>
 
 <script>
@@ -12,7 +53,6 @@ export default {
 	name: 'main-header',
 	data: function () {
 		return {
-			test: 'header',
 			user: Auth.user
 		}
 	}

@@ -1,6 +1,9 @@
 <template>
 <div class="footer">
-	{{ test }}
+	<div class="container">
+		<hr>
+		&copy; Coinblesk 2017
+	</div>
 </div>
 </template>
 
@@ -14,14 +17,3 @@ export default {
 	}
 };
 </script>
-
-<style lang="scss" scoped>
-.footer {
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	background: #333;
-	color: white;
-}
-</style>
