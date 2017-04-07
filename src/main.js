@@ -9,6 +9,7 @@ import Toaster from './config/Toaster';
 import Interceptor from './config/Interceptor';
 import Bootstrap from './config/Bootstrap';
 import 'font-awesome/scss/font-awesome.scss';
+import 'flag-icon-css/css/flag-icon.css';
 import './global.scss';
 
 Vue.use(VueResource);

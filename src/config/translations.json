@@ -2,11 +2,19 @@
 	"en": {
 		"message": {
 			"hello": "hello world"
+		},
+		"language": {
+			"en": "English",
+			"de": "German"
 		}
 	},
 	"de": {
 		"message": {
 			"hello": "Hallo Welt"
+		},
+		"language": {
+			"en": "Englisch",
+			"de": "Deutsch"
 		}
 	}
 }

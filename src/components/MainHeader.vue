@@ -19,14 +19,20 @@
 				<b-nav is-nav-bar class="ml-auto">
 
 					<!-- Navbar dropdowns -->
-					<b-nav-item-dropdown text="Lang" right-alignment>
-						<b-dropdown-item @click="switchLanguage('en')">EN</b-dropdown-item>
-						<b-dropdown-item @click="switchLanguage('de')">DE</b-dropdown-item>
+					<b-nav-item-dropdown right-alignment>
+						<template slot="text">
+							<span>{{ $t('navbar.language') }}</span>
+						</template>
+
+						<b-dropdown-item @click="switchLanguage('en')" :class="{ 'active' : currentLanguage === 'en' }">
+							<i class="flag-icon flag-icon-gb"></i> {{ $t('language.en') }}
+						</b-dropdown-item>
+						<b-dropdown-item @click="switchLanguage('de')" :class="{ 'active' : currentLanguage === 'de' }">
+							<i class="flag-icon flag-icon-de"></i> {{ $t('language.de') }}
+						</b-dropdown-item>
 					</b-nav-item-dropdown>
 
 					<b-nav-item-dropdown right-alignment>
-
-						<!-- Using text slot -->
 						<template slot="text">
 							<span style="font-weight: bold;">User</span>
 						</template>
@@ -39,6 +45,7 @@
 			</b-collapse>
 		</div>
 	</b-navbar>
+	<span>{{currentLanguage}}</span>
 	<p>{{ $t("message.hello") }}</p>
 	<pre>{{ user }}</pre>
 </header>
@@ -59,16 +66,27 @@ export default {
 			this.$locale.change(newLanguage);
 		}
 	},
+	computed: {
+		currentLanguage: function () {
+			return this.$locale.current();
+		}
+	},
 	i18n: {
 		messages: {
-			de: {
-				message: {
-					hello: 'hallöööchen'
-				}
-			},
 			en: {
 				message: {
 					hello: 'hii!!! :)'
+				},
+				navbar: {
+					language: 'Language'
+				}
+			},
+			de: {
+				message: {
+					hello: 'hallöööchen'
+				},
+				navbar: {
+					language: 'Sprache'
 				}
 			}
 		}
