@@ -56,9 +56,7 @@ export default {
 	},
 	methods: {
 		switchLanguage: function (newLanguage) {
-			console.log(this.$locale.current());
 			this.$locale.change(newLanguage);
-			console.log(this.$locale.current());
 		}
 	},
 	i18n: {
