@@ -25,7 +25,7 @@ export default {
 						Vue.toasted.global.success('You have successfully been authenticated.')
 					} else if (/^4/.test(status)) {
 						Vue.toasted.global.warn('The combination of your username/password is incorrect.');
-					} else if (/^5/.test(status)) {
+					} else {
 						internalError();
 					}
 				} else {
@@ -35,7 +35,7 @@ export default {
 						router.push({ path: '/login' });
 					} else if (response.status === 403) {
 						Vue.toasted.global.error('You do not have the rights to access this site.');
-					} else if (/^(4|5)/.test(status)) {
+					} else if (/^[^2]/.test(status)) {
 						internalError(Vue);
 					}
 				}

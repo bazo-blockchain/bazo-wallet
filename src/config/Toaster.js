@@ -24,7 +24,7 @@ export default {
 					});
 				},
 				error: function (payload, initiate) {
-					return initiate(fontAwesomeIcon('ban') + encapsulate(payload), 'info');
+					return initiate(fontAwesomeIcon('ban') + encapsulate(payload), 'error');
 				},
 				success: function (payload, initiate) {
 					return initiate(fontAwesomeIcon('check') + encapsulate(payload), 'success');
