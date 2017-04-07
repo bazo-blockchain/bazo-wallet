@@ -1,15 +1,15 @@
 <template>
 <div class="login">
-	<h1>Login</h1>
+	<h1>{{ $t('login.title') }}</h1>
 	<label>
-		<span>Username</span>
-		<input v-model="username" type="text" placeholder="Username">
+		<span>{{ $t('login.username') }}</span>
+		<input v-model="username" type="text" :placeholder="$t('login.username')">
 	</label>
 	<label>
-		<span>Password</span>
-		<input v-model="password" type="password" placeholder="Password">
+		<span>{{ $t('login.password') }}</span>
+		<input v-model="password" type="password" :placeholder="$t('login.password')">
 	</label>
-	<button @click="authenticate">Login</button>
+	<button @click="authenticate">{{ $t('login.submit') }}</button>
 </div>
 </template>
 
@@ -30,6 +30,26 @@ export default {
 			const credentials = { username: this.username, password: this.password };
 			Auth.authenticate(this, credentials, redirect);
 		}
+	},
+	i18n: {
+		messages: {
+			en: {
+				login: {
+					title: 'Sign In',
+					username: 'User Name',
+					password: 'Password',
+					submit: 'Sign in'
+				}
+			},
+			de: {
+				login: {
+					title: 'Anmelden',
+					username: 'Benutzername',
+					password: 'Passwort',
+					submit: 'Anmelden'
+				}
+			}
+		}
 	}
 };
 </script>
@@ -39,7 +59,7 @@ label {
 	display: block;
 	> span {
 		display: inline-block;
-		width: 100px;
+		width: 110px;
 	}
 }
 </style>

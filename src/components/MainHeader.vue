@@ -21,7 +21,7 @@
 					<!-- Navbar dropdowns -->
 					<b-nav-item-dropdown right-alignment>
 						<template slot="text">
-							<span><i class="fa fa-flag-checkered"></i> {{ $t('language.' + currentLanguage) }}</span>
+							<span>{{ $t('language.' + currentLanguage) }}</span>
 						</template>
 
 						<b-dropdown-item @click="switchLanguage('en')" :class="{ 'active' : currentLanguage === 'en' }">
@@ -58,10 +58,8 @@
 			</b-collapse>
 		</div>
 	</b-navbar>
-	<span>{{currentLanguage}}</span>
 	<p>{{ $t("message.hello") }}</p>
-	<pre>{{ user }}</pre>
-</header>
+	</header>
 </template>
 
 <script>
