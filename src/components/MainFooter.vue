@@ -2,7 +2,7 @@
 <div class="footer">
 	<div class="container">
 		<hr>
-		&copy; Coinblesk 2017
+		<i class="fa fa-btc"></i> Coinblesk 2017
 	</div>
 </div>
 </template>

@@ -4,6 +4,7 @@
 	<router-link :to="{ name: 'secure'}">Go To Secure Page</router-link> |
 	<a @click="logout">Logout</a> |
 	<a @click="admin">Call Secure Admin function</a>
+	<p>{{ $t("message.hello") }}</p>
 	
 	<div class="previous-stuff">
 		<img src="../assets/logo.png">

@@ -3,6 +3,7 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
 import App from './App';
+import Translation from './config/Translation';
 import router from './config/router';
 import Toaster from './config/Toaster';
 import Interceptor from './config/Interceptor';
@@ -20,6 +21,7 @@ Bootstrap.bootstrap();
 new Vue({
 	el: '#app',
 	router,
+	i18n: Translation,
 	template: '<App/>',
 	components: { App }
 });

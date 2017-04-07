@@ -20,10 +20,8 @@
 
 					<!-- Navbar dropdowns -->
 					<b-nav-item-dropdown text="Lang" right-alignment>
-						<b-dropdown-item to="#">EN</b-dropdown-item>
-						<b-dropdown-item to="#">ES</b-dropdown-item>
-						<b-dropdown-item to="#">RU</b-dropdown-item>
-						<b-dropdown-item to="#">FA</b-dropdown-item>
+						<b-dropdown-item @click="switchLanguage('en')">EN</b-dropdown-item>
+						<b-dropdown-item @click="switchLanguage('de')">DE</b-dropdown-item>
 					</b-nav-item-dropdown>
 
 					<b-nav-item-dropdown right-alignment>
@@ -41,7 +39,7 @@
 			</b-collapse>
 		</div>
 	</b-navbar>
-
+	<p>{{ $t("message.hello") }}</p>
 	<pre>{{ user }}</pre>
 </header>
 </template>
@@ -54,6 +52,27 @@ export default {
 	data: function () {
 		return {
 			user: Auth.user
+		}
+	},
+	methods: {
+		switchLanguage: function (newLanguage) {
+			console.log(this.$locale.current());
+			this.$locale.change(newLanguage);
+			console.log(this.$locale.current());
+		}
+	},
+	i18n: {
+		messages: {
+			de: {
+				message: {
+					hello: 'hallöööchen'
+				}
+			},
+			en: {
+				message: {
+					hello: 'hii!!! :)'
+				}
+			}
 		}
 	}
 };
