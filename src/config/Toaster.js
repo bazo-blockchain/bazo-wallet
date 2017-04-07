@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import Toasted from 'vue-toasted';
 
 const fontAwesomeIcon = (iconName) => {
@@ -10,7 +11,7 @@ const encapsulate = (payload) => {
 export default {
 	name: 'Toaster',
 
-	toast: function (Vue) {
+	toast: function () {
 		Vue.use(Toasted, {
 			duration: 4000,
 			className: 'coinblesk-toast',
