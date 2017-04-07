@@ -27,3 +27,6 @@ body {
 .dropdown-menu .dropdown-item {
 	cursor: pointer;
 }
+.navbar + * {
+	margin-top: 60px;
+}

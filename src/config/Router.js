@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import Home from '@/components/Home';
 import Hello from '@/components/Hello';
 import Login from '@/components/Login';
 import Secure from '@/components/auth/Secure';
@@ -30,7 +31,8 @@ const afterAuth = (_to, from, next) => {
 
 export default new Router({
 	routes: [
-		{ path: '/', name: 'home', component: Hello },
+		{ path: '/', name: 'home', component: Home },
+		{ path: '/hello', name: 'hello', component: Hello },
 		{ path: '/auth/secure', name: 'secure', component: Secure, beforeEnter: requireAuth },
 		{ path: '/login', name: 'login', component: Login, beforeEnter: afterAuth },
 		{ path: '*', redirect: '/' }

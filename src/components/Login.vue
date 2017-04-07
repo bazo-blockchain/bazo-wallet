@@ -1,5 +1,5 @@
 <template>
-<div class="login">
+<div class="login container">
 	<h1>{{ $t('login.title') }}</h1>
 	<label>
 		<span>{{ $t('login.username') }}</span>
