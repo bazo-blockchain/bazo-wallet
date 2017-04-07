@@ -1,5 +1,4 @@
 <template>
-<header>
 	<b-navbar toggleable type="inverse" variant="inverse">
 		<div class="container">
 
@@ -58,8 +57,6 @@
 			</b-collapse>
 		</div>
 	</b-navbar>
-	<p>{{ $t("message.hello") }}</p>
-	</header>
 </template>
 
 <script>
@@ -86,9 +83,6 @@ export default {
 	i18n: {
 		messages: {
 			en: {
-				message: {
-					hello: 'hii!!! :)'
-				},
 				header: {
 					signIn: 'Sign In',
 					signOut: 'Sign Out',
@@ -96,9 +90,6 @@ export default {
 				}
 			},
 			de: {
-				message: {
-					hello: 'hallöööchen'
-				},
 				header: {
 					signIn: 'Anmelden',
 					signOut: 'Abmelden',
