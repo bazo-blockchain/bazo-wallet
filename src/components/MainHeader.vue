@@ -21,7 +21,7 @@
 					<!-- Navbar dropdowns -->
 					<b-nav-item-dropdown right-alignment>
 						<template slot="text">
-							<span>{{ $t('navbar.language') }}</span>
+							<span><i class="fa fa-flag-checkered"></i> {{ $t('language.' + currentLanguage) }}</span>
 						</template>
 
 						<b-dropdown-item @click="switchLanguage('en')" :class="{ 'active' : currentLanguage === 'en' }">
@@ -32,14 +32,27 @@
 						</b-dropdown-item>
 					</b-nav-item-dropdown>
 
-					<b-nav-item-dropdown right-alignment>
+					<b-nav-item-dropdown v-if="user.authenticated" right-alignment>
 						<template slot="text">
-							<span style="font-weight: bold;">User</span>
+							<span>
+								<i class="fa fa-user-circle-o"></i>
+								{{ user.token.substr(0,10) + '...' }}
+							</span>
 						</template>
 
-						<b-dropdown-item to="#">Profile</b-dropdown-item>
-						<b-dropdown-item to="#">Signout</b-dropdown-item>
+						<b-dropdown-item to="#">
+							<i class="fa fa-user-circle"></i>
+							{{ $t('header.profile') }}
+						</b-dropdown-item>
+						<b-dropdown-item @click="signout">
+							<i class="fa fa-sign-out"></i>
+							{{ $t('header.signOut') }}
+						</b-dropdown-item>
 					</b-nav-item-dropdown>
+					
+					<b-nav-item v-else :to="{ name: 'login' }">
+						<i class="fa fa-sign-in"></i> {{ $t('header.signIn') }}
+					</b-nav-item>
 				 
 				</b-nav>
 			</b-collapse>
@@ -64,7 +77,8 @@ export default {
 	methods: {
 		switchLanguage: function (newLanguage) {
 			this.$locale.change(newLanguage);
-		}
+		},
+		signout: Auth.repudiate
 	},
 	computed: {
 		currentLanguage: function () {
@@ -77,16 +91,20 @@ export default {
 				message: {
 					hello: 'hii!!! :)'
 				},
-				navbar: {
-					language: 'Language'
+				header: {
+					signIn: 'Sign In',
+					signOut: 'Sign Out',
+					profile: 'Profile'
 				}
 			},
 			de: {
 				message: {
 					hello: 'hallöööchen'
 				},
-				navbar: {
-					language: 'Sprache'
+				header: {
+					signIn: 'Anmelden',
+					signOut: 'Abmelden',
+					profile: 'Profil'
 				}
 			}
 		}
