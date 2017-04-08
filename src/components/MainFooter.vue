@@ -2,7 +2,7 @@
 <div class="footer">
 	<div class="container">
 		<hr>
-		<span class="message">Coin<i class="fa fa-bitcoin"></i>lesk 2017</span>
+		<span class="message">Coin<i class="fa fa-bitcoin"><span>B</span></i>lesk 2017</span>
 	</div>
 </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
 <div class="home">
 	<div class="main-photo text-center">
-		<h1 class="display-1">Coin<i class="fa fa-bitcoin"></i>lesk</h1>
+		<h1 class="display-1">Coin<i class="fa fa-bitcoin"><span>B</span></i>lesk</h1>
 		<div class="buttons" v-if="!user.authenticated">
 			<b-button :variant="'secondary'" :to="{ name: 'login' }">
 				<i class="fa fa-sign-in"></i> {{ $t('home.login') }}

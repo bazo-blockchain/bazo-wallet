@@ -32,3 +32,12 @@ body {
 .navbar + * {
 	margin-top: 60px;
 }
+.fa.fa-bitcoin {
+	position: relative;
+	span {
+		position: absolute;
+		top: -1000px;
+		color: rgba(0,0,0,0);
+		text-shadow: none;
+	}
+}

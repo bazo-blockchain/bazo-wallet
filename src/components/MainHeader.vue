@@ -5,7 +5,7 @@
 			<b-nav-toggle target="nav_collapse"></b-nav-toggle>
 
 			<b-link class="navbar-brand" :to="{ name: 'home' }">
-				<span>Coin<i class="fa fa-bitcoin"></i>lesk</span>
+				<span>Coin<i class="fa fa-bitcoin"><span>B</span></i>lesk</span>
 			</b-link>
 
 			<b-collapse is-nav id="nav_collapse">
