@@ -17,7 +17,6 @@ export default {
 
 		Vue.http.interceptors.push(function (request, next) {
 			numberOfActiveHttpCalls++;
-			console.log(numberOfActiveHttpCalls);
 			EventBus.$emit('globalProgressBar', 'start');
 
 			next(function (response) {

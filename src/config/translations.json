@@ -6,6 +6,14 @@
 		"language": {
 			"en": "English",
 			"de": "German"
+		},
+		"toasts": {
+			"signedIn": "You have successfully been signed in.",
+			"signedOff": "You have successfully been signed off.",
+			"wrongPassword": "The combination of your username/password is incorrect.",
+			"unauthorized": "You are trying to access a protected resource. Please authenticate yourself first.",
+			"forbidden": "You do not have the permission to access this site.",
+			"internalError": "An internal error occured. The page will be reloaded."
 		}
 	},
 	"de": {
@@ -15,6 +23,14 @@
 		"language": {
 			"en": "Englisch",
 			"de": "Deutsch"
+		},
+		"toasts": {
+			"signedIn": "Sie haben sich erfolgreich eingeloggt.",
+			"signedOff": "Sie wurden erfolgreich ausgeloggt.",
+			"wrongPassword": "Die Kombination aus Ihrem Benutzernamen und Ihrem Passwort ist inkorrekt.",
+			"unauthorized": "Sie versuchen eine geschützte Seite aufzurufen, bitte loggen Sie sich zunächst ein.",
+			"forbidden": "Sie verfügen nicht über genügend Berechtigung, diese Seite anzuzeigen.",
+			"internalError": "Ein interner Fehler ist aufgetreten. Die Seite wird automatisch neu geladen."
 		}
 	}
 }

@@ -4,6 +4,7 @@ import Home from '@/components/Home';
 import Hello from '@/components/Hello';
 import Login from '@/components/Login';
 import Secure from '@/components/auth/Secure';
+import Translation from '@/config/Translation';
 
 import Auth from '@/services/Auth';
 
@@ -11,7 +12,7 @@ Vue.use(Router);
 
 const requireAuth = (to, _from, next) => {
 	if (!Auth.user.authenticated) {
-		Vue.toasted.global.warn('You are trying to access a protected resource. Please authenticate yourself first.', { duration: 6000 });
+		Vue.toasted.global.warn(Translation.t('toasts.unauthorized'), { duration: 6000 });
 		next({
 			path: '/login',
 			query: { redirect: to.fullPath }

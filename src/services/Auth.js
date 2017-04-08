@@ -1,3 +1,5 @@
+import Vue from 'vue';
+import Translation from '../config/Translation';
 import router from '../config/router';
 
 const SCHEME = 'http://';
@@ -58,6 +60,7 @@ export default {
 	repudiate: function () {
 		removeTokenFromStorage();
 		update(this);
+		Vue.toasted.global.success(Translation.t('toasts.signedOff'));
 		router.push({ path: '/' });
 	},
 
