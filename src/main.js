@@ -7,6 +7,7 @@ import Translation from './config/Translation';
 import router from './config/router';
 import Toaster from './config/Toaster';
 import Interceptor from './config/Interceptor';
+import ProgressBarInterceptor from './config/ProgressBarInterceptor';
 import Bootstrap from './config/Bootstrap';
 import 'font-awesome/scss/font-awesome.scss';
 import 'flag-icon-css/css/flag-icon.css';
@@ -16,6 +17,7 @@ Vue.use(VueResource);
 Vue.config.productionTip = false;
 Toaster.toast();
 Interceptor.intercept();
+ProgressBarInterceptor.enable();
 Bootstrap.bootstrap();
 
 /* eslint-disable no-new */
