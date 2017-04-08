@@ -41,7 +41,7 @@ export default {
 	},
 
 	authenticate: function (context, credentials, redirect) {
-		context.$http.post(API_URL + '/user/login', credentials)
+		return context.$http.post(API_URL + '/user/login', credentials)
 			.then(response => {
 				const token = response.body.token;
 				setTokenToStorage(token);

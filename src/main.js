@@ -11,7 +11,7 @@ import ProgressBarInterceptor from './config/ProgressBarInterceptor';
 import Bootstrap from './config/Bootstrap';
 import 'font-awesome/scss/font-awesome.scss';
 import 'flag-icon-css/css/flag-icon.css';
-import './global.scss';
+import './styles/global.scss';
 
 Vue.use(VueResource);
 Vue.config.productionTip = false;
