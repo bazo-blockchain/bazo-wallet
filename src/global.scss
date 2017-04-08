@@ -13,12 +13,10 @@ body {
 	.coinblesk-toast {
 		cursor: default;
 		cursor: help;
+		text-shadow: 1px 1px rgba(0,0,0,0.1);
 
 		.fa {
 			margin-right: 10px;
-		}
-		.payload {
-			text-shadow: 1px 1px rgba(0,0,0,0.1);
 		}
 
 		&.warning.toasted.primary {

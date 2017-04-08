@@ -4,9 +4,6 @@ import Toasted from 'vue-toasted';
 const fontAwesomeIcon = (iconName) => {
 	return '<i class="fa fa-' + iconName + '"></i>';
 };
-const encapsulate = (payload) => {
-	return '<span class="payload">' + payload + '</span>';
-}
 
 export default {
 	name: 'Toaster',
@@ -17,18 +14,32 @@ export default {
 			className: 'coinblesk-toast',
 			globalToasts: {
 				info: function (payload, initiate) {
-					return initiate(fontAwesomeIcon('info-circle-o') + encapsulate(payload), 'show');
+					return initiate(fontAwesomeIcon('info-circle-o') + payload, 'show');
+				},
+				infoNoIcon: function (payload, initiate) {
+					return initiate(payload, 'show');
 				},
 				warn: function (payload, initiate) {
-					return initiate(fontAwesomeIcon('warning') + encapsulate(payload), {
+					return initiate(fontAwesomeIcon('warning') + payload, {
+						className: 'coinblesk-toast warning'
+					});
+				},
+				warnNoIcon: function (payload, initiate) {
+					return initiate(payload, {
 						className: 'coinblesk-toast warning'
 					});
 				},
 				error: function (payload, initiate) {
-					return initiate(fontAwesomeIcon('ban') + encapsulate(payload), 'error');
+					return initiate(fontAwesomeIcon('ban') + payload, 'error');
+				},
+				errorNoIcon: function (payload, initiate) {
+					return initiate(payload, 'error');
 				},
 				success: function (payload, initiate) {
-					return initiate(fontAwesomeIcon('check') + encapsulate(payload), 'success');
+					return initiate(fontAwesomeIcon('check') + payload, 'success');
+				},
+				successNoIcon: function (payload, initiate) {
+					return initiate(payload, 'success');
 				}
 			}
 		});

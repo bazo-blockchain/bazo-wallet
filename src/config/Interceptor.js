@@ -4,7 +4,7 @@ import router from '../config/router';
 import Translation from '../config/Translation';
 
 const internalError = () => {
-	Vue.toasted.global.error(Translation.t('toasts.internalError'));
+	Vue.toasted.global.errorNoIcon('<i class="fa fa-times"></i>' + Translation.t('toasts.internalError'));
 	setTimeout(() => {
 		window.location.reload();
 	}, 3000);
@@ -23,7 +23,7 @@ export default {
 
 				if (isLoginRequest) {
 					if (/^2/.test(status)) {
-						Vue.toasted.global.success(Translation.t('toasts.signedIn'));
+						Vue.toasted.global.successNoIcon('<i class="fa fa-sign-in"></i>' + Translation.t('toasts.signedIn'));
 					} else if (/^4/.test(status)) {
 						Vue.toasted.global.warn(Translation.t('toasts.wrongPassword'));
 					} else {

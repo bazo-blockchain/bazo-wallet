@@ -60,7 +60,7 @@ export default {
 	repudiate: function () {
 		removeTokenFromStorage();
 		update(this);
-		Vue.toasted.global.success(Translation.t('toasts.signedOff'));
+		Vue.toasted.global.successNoIcon('<i class="fa fa-sign-out"></i>' + Translation.t('toasts.signedOff'));
 		router.push({ path: '/' });
 	},
 
