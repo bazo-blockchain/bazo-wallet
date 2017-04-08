@@ -3,6 +3,7 @@ import VueProgressBar from 'vue-top-progress';
 import EventBus from '../services/EventBus';
 
 let numberOfActiveHttpCalls = 0;
+let oneCallFailed = false;
 
 export default {
 	name: 'ProgressBarInterceptor',
@@ -22,12 +23,16 @@ export default {
 			next(function (response) {
 				numberOfActiveHttpCalls--;
 
-				if (/^2/.test(response.status + '')) {
-					if (numberOfActiveHttpCalls === 0) {
+				if (/^[^2]/.test(response.status + '')) {
+					oneCallFailed = true;
+				}
+				if (numberOfActiveHttpCalls === 0) {
+					if (oneCallFailed) {
+						EventBus.$emit('globalProgressBar', 'fail');
+						oneCallFailed = false;
+					} else {
 						EventBus.$emit('globalProgressBar', 'done');
 					}
-				} else {
-					EventBus.$emit('globalProgressBar', 'fail');
 				}
 			});
 		});
