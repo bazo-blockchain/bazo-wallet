@@ -1,6 +1,8 @@
 <template>
 <div class="secure">
-	{{ message }}
+	<div class="container">
+		{{ message }}
+	</div>
 </div>
 </template>
 
@@ -14,6 +16,3 @@ export default {
 	}
 };
 </script>
-
-<style>
-</style>

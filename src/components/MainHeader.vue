@@ -11,7 +11,7 @@
 			<b-collapse is-nav id="nav_collapse">
 
 				<b-nav is-nav-bar v-if="user.authenticated">
-					<b-nav-item :to="{ name: 'secure' }">Secure website</b-nav-item>
+					<b-nav-item :to="{ name: 'secure' }">{{ $t('header.secure') }}</b-nav-item>
 				</b-nav>
 
 				<b-nav is-nav-bar class="ml-auto">
@@ -85,14 +85,16 @@ export default {
 				header: {
 					signIn: 'Sign In',
 					signOut: 'Sign Out',
-					profile: 'Profile'
+					profile: 'Profile',
+					secure: 'Secure Website'
 				}
 			},
 			de: {
 				header: {
 					signIn: 'Anmelden',
 					signOut: 'Abmelden',
-					profile: 'Profil'
+					profile: 'Profil',
+					secure: 'Sichere Webseite'
 				}
 			}
 		}
