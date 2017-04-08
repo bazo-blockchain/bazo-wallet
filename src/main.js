@@ -6,7 +6,7 @@ import App from './App';
 import Translation from './config/Translation';
 import router from './config/router';
 import Toaster from './config/Toaster';
-import Interceptor from './config/Interceptor';
+import HttpInterceptor from './config/HttpInterceptor';
 import ProgressBarInterceptor from './config/ProgressBarInterceptor';
 import Bootstrap from './config/Bootstrap';
 import 'font-awesome/scss/font-awesome.scss';
@@ -16,7 +16,7 @@ import './styles/global.scss';
 Vue.use(VueResource);
 Vue.config.productionTip = false;
 Toaster.toast();
-Interceptor.intercept();
+HttpInterceptor.intercept();
 ProgressBarInterceptor.enable();
 Bootstrap.bootstrap();
 

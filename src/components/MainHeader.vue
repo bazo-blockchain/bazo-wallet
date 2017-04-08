@@ -34,7 +34,7 @@
 						<template slot="text">
 							<span>
 								<i class="fa fa-user-circle-o"></i>
-								{{ user.token.substr(0,10) + '...' }}
+								{{ user.data.email.substr(0,10) + '...' }}
 							</span>
 						</template>
 
@@ -72,7 +72,7 @@ export default {
 		switchLanguage: function (newLanguage) {
 			this.$locale.change(newLanguage);
 		},
-		signout: Auth.repudiate
+		signout: Auth.logout
 	},
 	computed: {
 		currentLanguage: function () {

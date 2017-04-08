@@ -38,7 +38,7 @@ export default {
 	},
 	methods: {
 		logout: function () {
-			Auth.repudiate();
+			Auth.logout();
 		},
 		admin: function () {
 			this.$http.get('http://localhost:8080/admin/accounts').then(function (response) {

@@ -13,7 +13,8 @@
 			"wrongPassword": "The combination of your username/password is incorrect.",
 			"unauthorized": "You are trying to access a protected resource. Please authenticate yourself first.",
 			"forbidden": "You do not have the permission to access this site.",
-			"internalError": "An internal error occured. The page will be reloaded."
+			"internalError": "An internal error occured. The page will be reloaded.",
+			"sessionExpired": "Your session has expired. Please sign in again."
 		}
 	},
 	"de": {
@@ -30,7 +31,8 @@
 			"wrongPassword": "Die Kombination aus Ihrem Benutzernamen und Ihrem Passwort ist inkorrekt.",
 			"unauthorized": "Sie versuchen eine geschützte Seite aufzurufen, bitte loggen Sie sich zunächst ein.",
 			"forbidden": "Sie verfügen nicht über genügend Berechtigung, diese Seite anzuzeigen.",
-			"internalError": "Ein interner Fehler ist aufgetreten. Die Seite wird automatisch neu geladen."
+			"internalError": "Ein interner Fehler ist aufgetreten. Die Seite wird automatisch neu geladen.",
+			"sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
 		}
 	}
 }

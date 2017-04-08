@@ -10,7 +10,7 @@
 				<b-form-fieldset :label="$t('login.password')">
 					<b-form-input v-model="password" type="password"></b-form-input>
 				</b-form-fieldset>
-				<b-button @click.prevent="authenticate" :block="true" variant="primary" :disabled="isLoading">{{ $t('login.submit') }}</b-button>
+				<b-button @click.prevent="login" :block="true" variant="primary" :disabled="isLoading">{{ $t('login.submit') }}</b-button>
 			</form>
 			<div class="forgot-password-sign-up">
 				<a class="forgot-password" href @click.prevent="forgotPassword">{{ $t('login.forgotPassword') }}</a>
@@ -42,12 +42,12 @@ export default {
 		this.$emit('toggle-footer', true);
 	},
 	methods: {
-		authenticate: function () {
+		login: function () {
 			if (!this.isLoading) {
 				this.isLoading = true;
 				const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
 				const credentials = { username: this.username, password: this.password };
-				Auth.authenticate(this, credentials, redirect).then(function () {
+				Auth.login(this, credentials, redirect).then(function () {
 					this.isLoading = false;
 				});
 			}
