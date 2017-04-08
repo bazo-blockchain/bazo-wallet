@@ -10,8 +10,7 @@
 
 			<b-collapse is-nav id="nav_collapse">
 
-				<b-nav is-nav-bar>
-					<b-nav-item :to="{ name: 'login' }">Login</b-nav-item>
+				<b-nav is-nav-bar v-if="user.authenticated">
 					<b-nav-item :to="{ name: 'secure' }">Secure website</b-nav-item>
 				</b-nav>
 
