@@ -1,5 +1,5 @@
 <template>
-<div class="footer">
+<div class="footer" v-if="shown">
 	<div class="container">
 		<hr>
 		<span class="message">Coin<i class="fa fa-bitcoin"><span>&#3647;</span></i>lesk 2017</span>
@@ -14,6 +14,9 @@ export default {
 		return {
 			test: 'footer'
 		}
+	},
+	props: {
+		shown: Boolean
 	}
 };
 </script>

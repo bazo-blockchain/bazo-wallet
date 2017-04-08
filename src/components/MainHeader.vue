@@ -1,5 +1,5 @@
 <template>
-	<b-navbar toggleable type="inverse" variant="inverse">
+	<b-navbar toggleable type="inverse" variant="inverse" v-if="shown">
 		<div class="container">
 
 			<b-nav-toggle target="nav_collapse"></b-nav-toggle>
@@ -78,6 +78,9 @@ export default {
 		currentLanguage: function () {
 			return this.$locale.current();
 		}
+	},
+	props: {
+		shown: Boolean
 	},
 	i18n: {
 		messages: {

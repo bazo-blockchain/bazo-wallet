@@ -33,6 +33,14 @@ export default {
 			isLoading: false
 		}
 	},
+	mounted: function () {
+		this.$emit('toggle-header', false);
+		this.$emit('toggle-footer', false);
+	},
+	beforeDestroy: function () {
+		this.$emit('toggle-header', true);
+		this.$emit('toggle-footer', true);
+	},
 	methods: {
 		authenticate: function () {
 			if (!this.isLoading) {
@@ -91,8 +99,10 @@ export default {
 	margin: 0;
 	width: 100%;
 	background: #4e4e4e;
-	padding-top: 15vh;
-	height: calc(100vh - #{$navbarHeight});
+	padding-top: 20vh;
+	height: 100vh;
+	/* height with navbar: 
+	height: calc(100vh - #{$navbarHeight}); */
 }
 .login-box {
 	padding: 20px;
