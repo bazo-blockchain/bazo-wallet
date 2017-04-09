@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Router from 'vue-router';
+import VueRouter from 'vue-router';
 import Home from '../components/Home';
 import Hello from '../components/Hello';
 import Login from '../components/Login';
@@ -8,7 +8,7 @@ import Translation from '../config/Translation';
 
 import Auth from '../services/Auth';
 
-Vue.use(Router);
+Vue.use(VueRouter);
 
 const requireAuth = (to, _from, next) => {
 	if (!Auth.user.authenticated) {
@@ -30,7 +30,7 @@ const afterAuth = (_to, from, next) => {
 	}
 }
 
-export default new Router({
+export default new VueRouter({
 	routes: [
 		{ path: '/', name: 'home', component: Home },
 		{ path: '/hello', name: 'hello', component: Hello },

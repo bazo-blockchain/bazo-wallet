@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Translation from '../config/Translation';
-import router from '../config/router';
+import Router from '../config/Router';
 
 const SCHEME = 'http://';
 const HOSTNAME = 'localhost:8080';
@@ -54,7 +54,7 @@ const Auth = {
 					Auth.user.data = null;
 
 					Vue.toasted.global.warn(Translation.t('toasts.sessionExpired'));
-					router.push({ path: '/login' });
+					Router.push({ path: '/login' });
 				});
 		} else {
 			Auth.user.data = null;
@@ -72,7 +72,7 @@ const Auth = {
 
 				return Auth.refreshUserData(context).then(function () {
 					if (redirect) {
-						router.push({
+						Router.push({
 							path: redirect
 						});
 					}
@@ -88,7 +88,7 @@ const Auth = {
 		Auth.refreshUserData();
 
 		Vue.toasted.global.successNoIcon('<i class="fa fa-sign-out"></i>' + Translation.t('toasts.signedOff'));
-		router.push({ path: '/' });
+		Router.push({ path: '/' });
 	},
 
 	getAuthHeader: function () {

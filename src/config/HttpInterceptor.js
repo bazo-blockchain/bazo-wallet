@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Auth from '../services/Auth';
-import router from '../config/router';
+import Router from '../config/Router';
 import Translation from '../config/Translation';
 
 const internalError = () => {
@@ -34,7 +34,7 @@ export default {
 						if (response.status === 401) {
 							Auth.logout();
 							Vue.toasted.global.warn(Translation.t('toasts.unauthorized'), { duration: 6000 });
-							router.push({ path: '/login' });
+							Router.push({ path: '/login' });
 						} else if (response.status === 403) {
 							Vue.toasted.global.error(Translation.t('toasts.forbidden'));
 						} else if (/^[^2]/.test(status)) {

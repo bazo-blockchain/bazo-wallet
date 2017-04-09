@@ -1,20 +1,14 @@
 <template>
-	<top-progress ref="topProgress" color="rgb(34, 221, 131)"></top-progress>
+	<nprogress-container></nprogress-container>
 </template>
 
 <script>
-import topProgress from 'vue-top-progress';
-import EventBus from '../services/EventBus';
+import NprogressContainer from 'vue-nprogress/src/NprogressContainer';
 
 export default {
 	name: 'progress-bar',
-	mounted () {
-		EventBus.$on('globalProgressBar', (parameter) => {
-			this.$refs.topProgress[parameter]();
-		});
-	},
 	components: {
-		topProgress
+		NprogressContainer
 	}
 }
 </script>

@@ -3884,6 +3884,10 @@ normalize-url@^1.4.0:
     gauge "~2.7.1"
     set-blocking "~2.0.0"
 
+nprogress@0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/nprogress/-/nprogress-0.2.0.tgz#cb8f34c53213d895723fcbab907e9422adbcafb1"
+
 nth-check@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/nth-check/-/nth-check-1.0.1.tgz#9929acdf628fc2c41098deab82ac580cf149aae4"
@@ -5569,6 +5573,12 @@ vue-loader@^11.1.4:
     vue-style-loader "^2.0.0"
     vue-template-es2015-compiler "^1.2.2"
 
+vue-nprogress@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/vue-nprogress/-/vue-nprogress-0.1.5.tgz#574b412f1034012daaf46299d5505d5812f406e6"
+  dependencies:
+    nprogress "0.2.0"
+
 vue-resource@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/vue-resource/-/vue-resource-1.2.1.tgz#b3f21dd0e1e491adf8a5be1fe48e586cefeaa8d5"
@@ -5600,10 +5610,6 @@ vue-template-es2015-compiler@^1.2.2:
 vue-toasted@^1.0.27:
   version "1.0.27"
   resolved "https://registry.yarnpkg.com/vue-toasted/-/vue-toasted-1.0.27.tgz#84bd2068bfd565081cf27ba8f7fe084bf9ab1fc3"
-
-vue-top-progress@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/vue-top-progress/-/vue-top-progress-0.4.0.tgz#966ccf0aa96ac68ddfab64b3774c1b4c6060c33c"
 
 vue@^2.2.2, vue@^2.2.6:
   version "2.2.6"

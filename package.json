@@ -18,10 +18,10 @@
     "font-awesome": "^4.7.0",
     "vue": "^2.2.2",
     "vue-i18n": "^6.0.0",
+    "vue-nprogress": "^0.1.5",
     "vue-resource": "^1.2.1",
     "vue-router": "^2.2.0",
-    "vue-toasted": "^1.0.27",
-    "vue-top-progress": "^0.4.0"
+    "vue-toasted": "^1.0.27"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
