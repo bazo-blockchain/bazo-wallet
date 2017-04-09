@@ -38,7 +38,7 @@
 							</span>
 						</template>
 
-						<b-dropdown-item to="#">
+						<b-dropdown-item :to="{ name: 'profile' }">
 							<i class="fa fa-user-circle"></i>
 							{{ $t('header.profile') }}
 						</b-dropdown-item>

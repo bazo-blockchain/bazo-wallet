@@ -4,6 +4,7 @@ import Home from '../components/Home';
 import Hello from '../components/Hello';
 import Login from '../components/Login';
 import Secure from '../components/auth/Secure';
+import Profile from '../components/auth/Profile';
 import Translation from '../config/Translation';
 
 import Auth from '../services/Auth';
@@ -39,8 +40,9 @@ export default new VueRouter({
 	routes: [
 		{ path: '/', name: 'home', component: Home },
 		{ path: '/hello', name: 'hello', component: Hello },
-		{ path: '/auth/secure', name: 'secure', component: Secure, beforeEnter: requireAuth },
 		{ path: '/login', name: 'login', component: Login, beforeEnter: afterAuth },
+		{ path: '/auth/secure', name: 'secure', component: Secure, beforeEnter: requireAuth },
+		{ path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: requireAuth },
 		{ path: '*', name: 'everyOtherPage', component: Home, beforeEnter: error404 }
 	]
 });
