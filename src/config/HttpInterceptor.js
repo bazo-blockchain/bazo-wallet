@@ -21,7 +21,7 @@ export default {
 			next(function (response) {
 				if (/^(?!2|400$|401$|403$)/.test(response.status.toString())) {
 					internalError();
-				} else if (doNotIntercept) {
+				} else if (!doNotIntercept) {
 					if (response.status === 401) {
 						Auth.logout();
 						Vue.toasted.global.warn(Translation.t('toasts.unauthorized'), { duration: 6000 });

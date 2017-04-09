@@ -30,7 +30,7 @@
 			"signedOff": "Sie wurden erfolgreich ausgeloggt.",
 			"wrongPassword": "Die Kombination aus Ihrem Benutzernamen und Ihrem Passwort ist inkorrekt.",
 			"unauthorized": "Sie versuchen eine geschützte Seite aufzurufen, bitte loggen Sie sich zunächst ein.",
-			"forbidden": "Sie verfügen nicht über genügend Berechtigung, diese Seite anzuzeigen.",
+			"forbidden": "Sie verfügen nicht über die Berechtigung, diese Seite anzuzeigen.",
 			"internalError": "Ein interner Fehler ist aufgetreten. Die Seite wird automatisch neu geladen.",
 			"sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
 		}
