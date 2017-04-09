@@ -30,12 +30,17 @@ const afterAuth = (_to, from, next) => {
 	}
 }
 
+const error404 = (_to, from, next) => {
+	Vue.toasted.global.error(Translation.t('toasts.pageNotFound'), { duration: 8000 });
+	next();
+}
+
 export default new VueRouter({
 	routes: [
 		{ path: '/', name: 'home', component: Home },
 		{ path: '/hello', name: 'hello', component: Hello },
 		{ path: '/auth/secure', name: 'secure', component: Secure, beforeEnter: requireAuth },
 		{ path: '/login', name: 'login', component: Login, beforeEnter: afterAuth },
-		{ path: '*', redirect: '/' }
+		{ path: '*', name: 'everyOtherPage', component: Home, beforeEnter: error404 }
 	]
 });
