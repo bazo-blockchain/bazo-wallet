@@ -7,70 +7,41 @@ const HOSTNAME = 'localhost:8080';
 const API_URL = SCHEME + HOSTNAME;
 const KEY_TOKEN = 'coinblesk_token';
 
-const getTokenFromStorage = () => {
-	return window.localStorage.getItem(KEY_TOKEN);
-}
-const setTokenToStorage = (token) => {
-	window.localStorage.setItem(KEY_TOKEN, token);
-}
-const hasTokenInStorage = () => {
-	return !!getTokenFromStorage();
-}
-const removeTokenFromStorage = () => {
-	window.localStorage.removeItem(KEY_TOKEN);
-}
-const getPayloadFromTokenInStorage = () => {
-	if (!hasTokenInStorage()) {
-		return null;
-	}
-	const base64Payload = getTokenFromStorage().split('.')[1];
-	return JSON.parse(window.atob(base64Payload));
-}
-
-const update = (Auth) => {
-	Auth.user.authenticated = hasTokenInStorage();
-	Auth.user.payload = getPayloadFromTokenInStorage();
-	Auth.user.token = getTokenFromStorage();
-	Auth.user.data = null;
-}
-
 const Auth = {
 
 	user: {
-		authenticated: hasTokenInStorage(),
-		payload: getPayloadFromTokenInStorage(),
-		token: getTokenFromStorage(),
+		authenticated: null,
 		data: null
 	},
 
-	refreshUserData: function (context) {
+	refreshUser: function (context) {
+		// initial authentication check (page load)
+		Auth.user.authenticated = hasTokenInStorage();
+
 		if (hasTokenInStorage()) {
-			return context.$http.get(API_URL + '/v1/user/auth/get', { params: { 'DO_NOT_INTERCEPT': 1 } })
+			return context.$http.get(API_URL + '/v1/user/auth/get', { headers: { 'DO_NOT_INTERCEPT': 'enabled' } })
 				.then(response => {
-					Auth.user.data = response.body;
+					setUserData(response.body);
 				}, response => {
 					removeTokenFromStorage();
-					update(Auth);
-					Auth.user.data = null;
+					removeUserData();
 
 					Vue.toasted.global.warn(Translation.t('toasts.sessionExpired'));
 					Router.push({ path: '/login' });
 				});
 		} else {
-			Auth.user.data = null;
+			removeUserData();
 			return Promise.resolve();
 		}
 	},
 
 	login: function (context, credentials, redirect) {
-		return context.$http.post(API_URL + '/user/login', credentials)
+		return context.$http.post(API_URL + '/user/login', credentials, { headers: { 'DO_NOT_INTERCEPT': 'enabled' } })
 			.then(response => {
-				const token = response.body.token;
+				setTokenToStorage(response.body.token);
 
-				setTokenToStorage(token);
-				update(Auth);
-
-				return Auth.refreshUserData(context).then(function () {
+				return Auth.refreshUser(context).then(function () {
+					Vue.toasted.global.successNoIcon('<i class="fa fa-sign-in"></i>' + Translation.t('toasts.signedIn'));
 					if (redirect) {
 						Router.push({
 							path: redirect
@@ -78,14 +49,15 @@ const Auth = {
 					}
 				});
 			}, response => {
-				context.error = response;
+				if (/^4/.test(response.status.toString())) {
+					Vue.toasted.global.warn(Translation.t('toasts.wrongPassword'));
+				}
 			});
 	},
 
 	logout: function () {
 		removeTokenFromStorage();
-		update(Auth);
-		Auth.refreshUserData();
+		removeUserData();
 
 		Vue.toasted.global.successNoIcon('<i class="fa fa-sign-out"></i>' + Translation.t('toasts.signedOff'));
 		Router.push({ path: '/' });
@@ -98,6 +70,27 @@ const Auth = {
 		return 'Bearer ' + getTokenFromStorage();
 	}
 
+};
+
+const getTokenFromStorage = () => {
+	return window.localStorage.getItem(KEY_TOKEN);
+};
+const setTokenToStorage = (token) => {
+	Auth.user.authenticated = true;
+	window.localStorage.setItem(KEY_TOKEN, token);
+};
+const setUserData = (data) => {
+	Auth.user.data = data;
+};
+const hasTokenInStorage = () => {
+	return !!getTokenFromStorage();
+};
+const removeTokenFromStorage = () => {
+	Auth.user.authenticated = false;
+	window.localStorage.removeItem(KEY_TOKEN);
+};
+const removeUserData = () => {
+	Auth.user.data = null;
 };
 
 export default Auth;
