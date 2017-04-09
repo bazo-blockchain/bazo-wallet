@@ -5,6 +5,7 @@ import Hello from '../components/Hello';
 import Login from '../components/Login';
 import Secure from '../components/auth/Secure';
 import Profile from '../components/auth/Profile';
+import AdminAccounts from '../components/auth/admin/Accounts';
 import Translation from '../config/Translation';
 
 import Auth from '../services/Auth';
@@ -23,6 +24,19 @@ const requireAuth = (to, _from, next) => {
 	}
 };
 
+const requireAuthAndAdmin = (to, _from, next) => {
+	if (!Auth.user.authenticated) {
+		requireAuth(to, _from, next);
+	} else if (Auth.user.data.role !== 'ADMIN') {
+		Vue.toasted.global.warn(Translation.t('toasts.forbidden'), { duration: 6000 });
+		next({
+			path: '/'
+		})
+	} else {
+		next();
+	}
+}
+
 const afterAuth = (_to, from, next) => {
 	if (Auth.user.authenticated) {
 		next(from.path);
@@ -31,7 +45,7 @@ const afterAuth = (_to, from, next) => {
 	}
 }
 
-const error404 = (_to, from, next) => {
+const error404 = (to, _from, next) => {
 	Vue.toasted.global.error(Translation.t('toasts.pageNotFound'), { duration: 8000 });
 	next();
 }
@@ -43,6 +57,7 @@ export default new VueRouter({
 		{ path: '/login', name: 'login', component: Login, beforeEnter: afterAuth },
 		{ path: '/auth/secure', name: 'secure', component: Secure, beforeEnter: requireAuth },
 		{ path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: requireAuth },
+		{ path: '/auth/admin/accounts', name: 'admin-accounts', component: AdminAccounts, beforeEnter: requireAuthAndAdmin },
 		{ path: '*', name: 'everyOtherPage', component: Home, beforeEnter: error404 }
 	]
 });

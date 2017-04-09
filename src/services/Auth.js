@@ -10,14 +10,11 @@ const KEY_TOKEN = 'coinblesk_token';
 const Auth = {
 
 	user: {
-		authenticated: null,
+		authenticated: hasTokenInStorage(),
 		data: null
 	},
 
 	refreshUser: function (context) {
-		// initial authentication check (page load)
-		Auth.user.authenticated = hasTokenInStorage();
-
 		if (hasTokenInStorage()) {
 			return context.$http.get(API_URL + '/v1/user/auth/get', { headers: { 'DO_NOT_INTERCEPT': 'enabled' } })
 				.then(response => {
@@ -72,25 +69,36 @@ const Auth = {
 
 };
 
-const getTokenFromStorage = () => {
+function getTokenFromStorage () {
 	return window.localStorage.getItem(KEY_TOKEN);
-};
-const setTokenToStorage = (token) => {
+}
+function setTokenToStorage (token) {
 	Auth.user.authenticated = true;
 	window.localStorage.setItem(KEY_TOKEN, token);
-};
-const setUserData = (data) => {
+}
+function setUserData (data) {
 	Auth.user.data = data;
-};
-const hasTokenInStorage = () => {
+
+	// TODO this is temporary, role should be included in user object from server
+	Auth.user.data.role = (function extractRoleFromTokenPayload () {
+		if (!hasTokenInStorage()) {
+			return null;
+		} else {
+			const base64Payload = getTokenFromStorage().split('.')[1];
+			const payload = JSON.parse(window.atob(base64Payload));
+			return payload.auth;
+		}
+	})();
+}
+function hasTokenInStorage () {
 	return !!getTokenFromStorage();
-};
-const removeTokenFromStorage = () => {
+}
+function removeTokenFromStorage () {
 	Auth.user.authenticated = false;
 	window.localStorage.removeItem(KEY_TOKEN);
-};
-const removeUserData = () => {
+}
+function removeUserData () {
 	Auth.user.data = null;
-};
+}
 
 export default Auth;
