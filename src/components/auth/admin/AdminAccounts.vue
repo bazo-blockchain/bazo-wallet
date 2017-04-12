@@ -105,7 +105,7 @@ export default {
 			alert(JSON.stringify(item));
 		},
 		updateData: function () {
-			Http.adminGetAccounts(this)
+			Http.adminGetAccounts()
 				.then((response) => {
 					this.items = response.body;
 				});

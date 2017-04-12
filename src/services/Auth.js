@@ -13,9 +13,9 @@ const Auth = {
 		data: null
 	},
 
-	refreshUser: function (context) {
+	refreshUser: function () {
 		if (hasTokenInStorage()) {
-			return Http.getUser(context, true)
+			return Http.getUser(true)
 				.then(response => {
 					setUserData(response.body);
 				}, response => {
@@ -31,12 +31,12 @@ const Auth = {
 		}
 	},
 
-	login: function (context, credentials, redirect) {
-		return Http.login(context, credentials, true)
+	login: function (credentials, redirect) {
+		return Http.login(credentials, true)
 			.then(response => {
 				setTokenToStorage(response.body.token);
 
-				return Auth.refreshUser(context).then(function () {
+				return Auth.refreshUser().then(function () {
 					Vue.toasted.global.successNoIcon('<i class="fa fa-sign-in"></i>' + Translation.t('toasts.signedIn'));
 					if (redirect) {
 						Router.push({

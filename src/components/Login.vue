@@ -47,7 +47,7 @@ export default {
 				this.isLoading = true;
 				const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
 				const credentials = { username: this.username, password: this.password };
-				Auth.login(this, credentials, redirect).then(function () {
+				Auth.login(credentials, redirect).then(() => {
 					this.isLoading = false;
 				});
 			}

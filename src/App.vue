@@ -41,7 +41,7 @@ export default {
 		}
 	},
 	mounted: function () {
-		Auth.refreshUser(this).then(() => {
+		Auth.refreshUser().then(() => {
 			this.initialLoadingComplete = true;
 		});
 	}
