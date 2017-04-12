@@ -3,6 +3,8 @@ import Translation from '../config/Translation';
 import Router from '../config/Router';
 import Http from '../services/Http';
 
+const KEY_TOKEN = 'coinblesk_token';
+
 const Auth = {
 
 	user: {
@@ -65,8 +67,6 @@ const Auth = {
 	}
 
 };
-
-const KEY_TOKEN = 'coinblesk_token';
 
 function getTokenFromStorage () {
 	return window.localStorage.getItem(KEY_TOKEN);
