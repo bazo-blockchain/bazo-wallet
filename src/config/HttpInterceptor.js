@@ -23,9 +23,12 @@ export default {
 					internalError();
 				} else if (!doNotIntercept) {
 					if (response.status === 401) {
-						Auth.logout();
-						Vue.toasted.global.warn(Translation.t('toasts.unauthorized'), { duration: 6000 });
-						Router.push({ path: '/login' });
+						if (Auth.auth.authenticated) {
+							Auth.sessionExpired();
+						} else {
+							Vue.toasted.global.warn(Translation.t('toasts.unauthorized'), { duration: 6000 });
+							Router.push({ path: '/login' });
+						}
 					}
 					if (response.status === 403) {
 						Vue.toasted.global.error(Translation.t('toasts.forbidden'));

@@ -13,30 +13,12 @@ const Auth = {
 		role: getRoleFromStorage()
 	},
 
-	refreshUser: function () {
-		if (hasTokenInStorage()) {
-			return Http.getUser(true)
-				.then(response => {
-					Store.commit('updateUser', response.body);
-				}, response => {
-					removeTokenFromStorage();
-					Store.commit('updateUser', null);
-
-					Vue.toasted.global.warn(Translation.t('toasts.sessionExpired'));
-					Router.push({ path: '/login' });
-				});
-		} else {
-			Store.commit('updateUser', null);
-			return Promise.resolve();
-		}
-	},
-
 	login: function (credentials, redirect) {
 		return Http.login(credentials, true)
 			.then(response => {
 				setTokenToStorage(response.body.token);
 
-				return Auth.refreshUser().then(function () {
+				return Store.dispatch('updateUser').then(function () {
 					Vue.toasted.global.successNoIcon('<i class="fa fa-sign-in"></i>' + Translation.t('toasts.signedIn'));
 					if (redirect) {
 						Router.push({
@@ -53,10 +35,18 @@ const Auth = {
 
 	logout: function () {
 		removeTokenFromStorage();
-		Store.commit('updateUser', null);
+		Store.commit('clearUser');
 
 		Vue.toasted.global.successNoIcon('<i class="fa fa-sign-out"></i>' + Translation.t('toasts.signedOff'));
 		Router.push({ path: '/' });
+	},
+
+	sessionExpired: function () {
+		removeTokenFromStorage();
+		Store.commit('clearUser');
+
+		Vue.toasted.global.warnNoIcon('<i class="fa fa-sign-out"></i>' + Translation.t('toasts.sessionExpired'));
+		Router.push({ path: '/login' });
 	},
 
 	getAuthHeader: function () {
@@ -68,6 +58,9 @@ const Auth = {
 
 };
 
+export default Auth;
+
+/* helper methods */
 function getTokenFromStorage () {
 	return window.localStorage.getItem(KEY_TOKEN);
 }
@@ -96,5 +89,3 @@ function getRoleFromStorage () {
 
 	return role;
 }
-
-export default Auth;

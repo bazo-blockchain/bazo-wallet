@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Auth from '../services/Auth';
+import Http from '../services/Http';
 
 Vue.use(Vuex);
 
@@ -11,6 +12,9 @@ const store = new Vuex.Store({
 	mutations: {
 		updateUser: function (state, user) {
 			state.user = user;
+		},
+		clearUser: function (state) {
+			state.user = null;
 		}
 	},
 	actions: {
@@ -18,7 +22,17 @@ const store = new Vuex.Store({
 			return context.dispatch('updateUser');
 		},
 		updateUser: function (context) {
-			return Auth.refreshUser();
+			if (Auth.auth.authenticated) {
+				return Http.getUser(true)
+					.then(response => {
+						context.commit('updateUser', response.body);
+					}, response => {
+						Auth.sessionExpired();
+					});
+			} else {
+				context.commit('updateUser', null);
+				return Promise.resolve();
+			}
 		}
 	}
 });
