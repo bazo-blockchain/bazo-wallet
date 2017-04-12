@@ -11,9 +11,10 @@
 			<b-collapse is-nav id="nav_collapse">
 
 				<b-nav is-nav-bar v-if="user.authenticated">
-					<b-nav-item :to="{ name: 'authenticated' }">{{ $t('header.authenticated') }}</b-nav-item>
-					<b-nav-item :to="{ name: 'user-authenticated' }">{{ $t('header.userAuthenticated') }}</b-nav-item>
-					<b-nav-item :to="{ name: 'admin-authenticated' }">{{ $t('header.adminAuthenticated') }}</b-nav-item>
+					<b-nav-item :to="{ name: 'authenticated' }"><small>{{ $t('header.authenticated') }}</small></b-nav-item>
+					<b-nav-item :to="{ name: 'user-authenticated' }"><small>{{ $t('header.userAuthenticated') }}</small></b-nav-item>
+					<b-nav-item :to="{ name: 'admin-authenticated' }"><small>{{ $t('header.adminAuthenticated') }}</small></b-nav-item>
+					<b-nav-item :to="{ name: 'admin-accounts' }">{{ $t('header.adminAccounts') }}</b-nav-item>
 				</b-nav>
 
 				<b-nav is-nav-bar class="ml-auto">
@@ -100,7 +101,8 @@ export default {
 					profile: 'Profile',
 					authenticated: 'Auth Page',
 					userAuthenticated: 'User Auth Page',
-					adminAuthenticated: 'Admin Auth Page'
+					adminAuthenticated: 'Admin Auth Page',
+					adminAccounts: 'Admin Accounts'
 				}
 			},
 			de: {
@@ -110,7 +112,8 @@ export default {
 					profile: 'Profil',
 					authenticated: 'Auth Seite',
 					userAuthenticated: 'User-Auth Seite',
-					adminAuthenticated: 'Admin-Auth Seite'
+					adminAuthenticated: 'Admin-Auth Seite',
+					adminAccounts: 'Admin Konten'
 				}
 			}
 		}

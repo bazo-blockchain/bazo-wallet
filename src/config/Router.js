@@ -7,7 +7,7 @@ import Authenticated from '../components/auth/Authenticated';
 import UserAuthenticated from '../components/auth/user/UserAuthenticated';
 import AdminAuthenticated from '../components/auth/admin/AdminAuthenticated';
 import Profile from '../components/auth/Profile';
-import AdminAccounts from '../components/auth/admin/Accounts';
+import AdminAccounts from '../components/auth/admin/AdminAccounts';
 import Translation from '../config/Translation';
 import ProgressBar from '../config/ProgressBar.js';
 
