@@ -16,7 +16,6 @@
 import MainHeader from './components/MainHeader';
 import MainFooter from './components/MainFooter';
 import ProgressBar from './components/ProgressBar';
-import Auth from './services/Auth';
 
 export default {
 	name: 'app',
@@ -41,7 +40,7 @@ export default {
 		}
 	},
 	mounted: function () {
-		Auth.refreshUser().then(() => {
+		this.$store.dispatch('initialize').then(() => {
 			this.initialLoadingComplete = true;
 		});
 	}

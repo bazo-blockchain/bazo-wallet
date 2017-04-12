@@ -2,7 +2,7 @@
 <div class="home">
 	<div class="main-photo text-center">
 		<h1 class="display-1">Coin<i class="fa fa-bitcoin"><span>&#3647;</span></i>lesk</h1>
-		<div class="buttons" v-if="!user.authenticated">
+		<div class="buttons" v-if="!auth.authenticated">
 			<b-button :variant="'secondary'" :to="{ name: 'login' }">
 				<i class="fa fa-sign-in"></i> {{ $t('home.login') }}
 			</b-button>
@@ -24,7 +24,7 @@ export default {
 
 	data: function () {
 		return {
-			user: Auth.user
+			auth: Auth.auth
 		}
 	},
 	i18n: {

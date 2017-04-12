@@ -16,7 +16,7 @@ import Auth from '../services/Auth';
 Vue.use(VueRouter);
 
 const requireAuth = (to, _from, next) => {
-	if (!Auth.user.authenticated) {
+	if (!Auth.auth.authenticated) {
 		Vue.toasted.global.warn(Translation.t('toasts.unauthorized'), { duration: 6000 });
 		next({
 			path: '/login',
@@ -28,9 +28,9 @@ const requireAuth = (to, _from, next) => {
 };
 
 const requireAuthAndRole = (role, to, _from, next) => {
-	if (!Auth.user.authenticated) {
+	if (!Auth.auth.authenticated) {
 		requireAuth(to, _from, next);
-	} else if (Auth.user.role !== role) {
+	} else if (Auth.auth.role !== role) {
 		Vue.toasted.global.warn(Translation.t('toasts.forbidden'), { duration: 6000 });
 		next({
 			path: '/'
@@ -48,7 +48,7 @@ const requireAuthAndUser = (to, _from, next) => {
 };
 
 const afterAuth = (_to, from, next) => {
-	if (Auth.user.authenticated) {
+	if (Auth.auth.authenticated) {
 		next(from.path);
 		hideProgressBar();
 	} else {

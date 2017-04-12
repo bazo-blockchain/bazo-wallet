@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Http from '../services/Http';
+import Auth from '../services/Auth';
 
 Vue.use(Vuex);
 
@@ -9,20 +9,16 @@ const store = new Vuex.Store({
 		user: null
 	},
 	mutations: {
-		updateUser: function (state, payload) {
-			state.user = payload;
+		updateUser: function (state, user) {
+			state.user = user;
 		}
 	},
 	actions: {
-		updateUser: function (context) {
-			Http.getUser().then(response => {
-				context.commit('updateUser', response.body);
-			});
+		initialize: function (context) {
+			return context.dispatch('updateUser');
 		},
-		updateUserNoIntercept: function (context) {
-			Http.getUser(true).then(response => {
-				context.commit('updateUser', response.body);
-			});
+		updateUser: function (context) {
+			return Auth.refreshUser();
 		}
 	}
 });

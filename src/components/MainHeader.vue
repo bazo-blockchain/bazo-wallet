@@ -10,7 +10,7 @@
 
 			<b-collapse is-nav id="nav_collapse">
 
-				<b-nav is-nav-bar v-if="user.authenticated">
+				<b-nav is-nav-bar v-if="auth.authenticated">
 					<b-nav-item :to="{ name: 'authenticated' }"><small>{{ $t('header.authenticated') }}</small></b-nav-item>
 					<b-nav-item :to="{ name: 'user-authenticated' }"><small>{{ $t('header.userAuthenticated') }}</small></b-nav-item>
 					<b-nav-item :to="{ name: 'admin-authenticated' }"><small>{{ $t('header.adminAuthenticated') }}</small></b-nav-item>
@@ -33,7 +33,7 @@
 						</b-dropdown-item>
 					</b-nav-item-dropdown>
 
-					<b-nav-item-dropdown v-if="user.authenticated" right-alignment>
+					<b-nav-item-dropdown v-if="auth.authenticated" right-alignment>
 						<template slot="text">
 							<span>
 								<i class="fa fa-user-circle-o"></i>
@@ -68,8 +68,8 @@ export default {
 	name: 'main-header',
 	data: function () {
 		return {
-			user: Auth.user
-		}
+			auth: Auth.auth
+		};
 	},
 	methods: {
 		switchLanguage: function (newLanguage) {
@@ -82,11 +82,14 @@ export default {
 			return this.$locale.current();
 		},
 		shortEmail: function () {
-			if (this.user.data.email) {
-				return this.user.data.email.substr(0, 10) + '...';
+			if (this.user.email) {
+				return this.user.email.substr(0, 10) + '...';
 			} else {
 				return null;
 			}
+		},
+		user: function () {
+			return this.$store.state.user;
 		}
 	},
 	props: {

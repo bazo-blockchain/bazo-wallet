@@ -2,31 +2,31 @@ import Vue from 'vue';
 import Translation from '../config/Translation';
 import Router from '../config/Router';
 import Http from '../services/Http';
+import Store from '../config/Store';
 
 const KEY_TOKEN = 'coinblesk_token';
 
 const Auth = {
 
-	user: {
+	auth: {
 		authenticated: hasTokenInStorage(),
-		role: getRoleFromStorage(),
-		data: null
+		role: getRoleFromStorage()
 	},
 
 	refreshUser: function () {
 		if (hasTokenInStorage()) {
 			return Http.getUser(true)
 				.then(response => {
-					setUserData(response.body);
+					Store.commit('updateUser', response.body);
 				}, response => {
 					removeTokenFromStorage();
-					removeUserData();
+					Store.commit('updateUser', null);
 
 					Vue.toasted.global.warn(Translation.t('toasts.sessionExpired'));
 					Router.push({ path: '/login' });
 				});
 		} else {
-			removeUserData();
+			Store.commit('updateUser', null);
 			return Promise.resolve();
 		}
 	},
@@ -53,7 +53,7 @@ const Auth = {
 
 	logout: function () {
 		removeTokenFromStorage();
-		removeUserData();
+		Store.commit('updateUser', null);
 
 		Vue.toasted.global.successNoIcon('<i class="fa fa-sign-out"></i>' + Translation.t('toasts.signedOff'));
 		Router.push({ path: '/' });
@@ -73,21 +73,15 @@ function getTokenFromStorage () {
 }
 function setTokenToStorage (token) {
 	window.localStorage.setItem(KEY_TOKEN, token);
-	Auth.user.authenticated = true;
-	Auth.user.role = getRoleFromStorage();
-}
-function setUserData (data) {
-	Auth.user.data = data;
+	Auth.auth.authenticated = true;
+	Auth.auth.role = getRoleFromStorage();
 }
 function hasTokenInStorage () {
 	return !!getTokenFromStorage();
 }
 function removeTokenFromStorage () {
-	Auth.user.authenticated = false;
+	Auth.auth.authenticated = false;
 	window.localStorage.removeItem(KEY_TOKEN);
-}
-function removeUserData () {
-	Auth.user.data = null;
 }
 function getRoleFromStorage () {
 	const role = (function extractRoleFromTokenPayload () {

@@ -1,8 +1,9 @@
 <template>
 	<div class="profile">
 		<div class="container">
-			<h1>{{ $t('profile.title', { user: user.data.email }) }}</h1>
+			<h1>{{ $t('profile.title', { user: user.email }) }}</h1>
 			<pre>{{ user }}</pre>
+			<pre>{{ auth }}</pre>
 		</div>
 	</div>
 </template>
@@ -14,7 +15,12 @@ export default {
 	name: 'profile',
 	data: () => {
 		return {
-			user: Auth.user
+			auth: Auth.auth
+		};
+	},
+	computed: {
+		user: function () {
+			return this.$store.state.user;
 		}
 	},
 	i18n: {
