@@ -39,103 +39,102 @@ export default {
 	data: () => {
 		return {
 			items: [{
-			isActive: true,
-			age: 40,
-			name: {
-				first: 'Dickerson',
-				last: 'Macdonald'
-			}
+				isActive: true,
+				age: 40,
+				name: {
+					first: 'Dickerson',
+					last: 'Macdonald'
+				}
 
-		}, {
-			isActive: false,
-			age: 21,
-			name: {
-				first: 'Larsen',
-				last: 'Shaw'
-			}
+			}, {
+				isActive: false,
+				age: 21,
+				name: {
+					first: 'Larsen',
+					last: 'Shaw'
+				}
 
-		}, {
-			isActive: false,
-			age: 9,
-			state: 'success',
-			name: {
-				first: 'Mitzi',
-				last: 'Navarro'
-			}
+			}, {
+				isActive: false,
+				age: 9,
+				state: 'success',
+				name: {
+					first: 'Mitzi',
+					last: 'Navarro'
+				}
 
-		}, {
-			isActive: false,
-			age: 89,
-			name: {
-				first: 'Geneva',
-				last: 'Wilson'
-			}
+			}, {
+				isActive: false,
+				age: 89,
+				name: {
+					first: 'Geneva',
+					last: 'Wilson'
+				}
 
-		}, {
-			isActive: true,
-			age: 38,
-			name: {
-				first: 'Jami',
-				last: 'Carney'
-			}
+			}, {
+				isActive: true,
+				age: 38,
+				name: {
+					first: 'Jami',
+					last: 'Carney'
+				}
 
-		}, {
-			isActive: false,
-			age: 27,
-			name: {
-				first: 'Essie',
-				last: 'Dunlap'
-			}
+			}, {
+				isActive: false,
+				age: 27,
+				name: {
+					first: 'Essie',
+					last: 'Dunlap'
+				}
 
-		}, {
-			isActive: true,
-			age: 40,
-			name: {
-				first: 'Dickerson',
-				last: 'Macdonald'
-			}
+			}, {
+				isActive: true,
+				age: 40,
+				name: {
+					first: 'Dickerson',
+					last: 'Macdonald'
+				}
 
-		}, {
-			isActive: false,
-			age: 21,
-			name: {
-				first: 'Larsen',
-				last: 'Shaw'
-			}
+			}, {
+				isActive: false,
+				age: 21,
+				name: {
+					first: 'Larsen',
+					last: 'Shaw'
+				}
 
-		}, {
-			isActive: false,
-			age: 26,
-			name: {
-				first: 'Mitzi',
-				last: 'Navarro'
-			}
+			}, {
+				isActive: false,
+				age: 26,
+				name: {
+					first: 'Mitzi',
+					last: 'Navarro'
+				}
 
-		}, {
-			isActive: false,
-			age: 22,
-			name: {
-				first: 'Geneva',
-				last: 'Wilson'
-			}
+			}, {
+				isActive: false,
+				age: 22,
+				name: {
+					first: 'Geneva',
+					last: 'Wilson'
+				}
 
-		}, {
-			isActive: true,
-			age: 38,
-			name: {
-				first: 'Jami',
-				last: 'Carney'
-			}
+			}, {
+				isActive: true,
+				age: 38,
+				name: {
+					first: 'Jami',
+					last: 'Carney'
+				}
 
-		}, {
-			isActive: false,
-			age: 27,
-			name: {
-				first: 'Essie',
-				last: 'Dunlap'
-			}
-
-		}],
+			}, {
+				isActive: false,
+				age: 27,
+				name: {
+					first: 'Essie',
+					last: 'Dunlap'
+				}
+			}],
 			fields: {
 				name: {
 					label: 'Person Full Name',
