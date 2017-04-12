@@ -6,6 +6,7 @@ import VueMoment from 'vue-moment';
 import App from './App';
 import Translation from './config/Translation';
 import Router from './config/Router';
+import Store from './config/Store';
 import Toaster from './config/Toaster';
 import HttpInterceptor from './config/HttpInterceptor';
 import ProgressBar from './config/ProgressBar';
@@ -24,6 +25,7 @@ Bootstrap.bootstrap();
 /* eslint-disable no-new */
 new Vue({
 	el: '#app',
+	store: Store,
 	router: Router,
 	i18n: Translation,
 	nprogress: ProgressBar,
