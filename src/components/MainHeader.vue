@@ -34,7 +34,7 @@
 						<template slot="text">
 							<span>
 								<i class="fa fa-user-circle-o"></i>
-								{{ user.data.email.substr(0,10) + '...' }}
+								{{ shortEmail }}
 							</span>
 						</template>
 
@@ -77,6 +77,13 @@ export default {
 	computed: {
 		currentLanguage: function () {
 			return this.$locale.current();
+		},
+		shortEmail: function () {
+			if (this.user.email) {
+				return this.user.data.email.substr(0, 10) + '...';
+			} else {
+				return null;
+			}
 		}
 	},
 	props: {
