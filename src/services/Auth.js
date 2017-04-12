@@ -7,6 +7,7 @@ const Auth = {
 
 	user: {
 		authenticated: hasTokenInStorage(),
+		role: getRoleFromStorage(),
 		data: null
 	},
 
@@ -71,22 +72,12 @@ function getTokenFromStorage () {
 	return window.localStorage.getItem(KEY_TOKEN);
 }
 function setTokenToStorage (token) {
-	Auth.user.authenticated = true;
 	window.localStorage.setItem(KEY_TOKEN, token);
+	Auth.user.authenticated = true;
+	Auth.user.role = getRoleFromStorage();
 }
 function setUserData (data) {
 	Auth.user.data = data;
-
-	// TODO this is temporary, role should be included in user object from server
-	Auth.user.data.role = (function extractRoleFromTokenPayload () {
-		if (!hasTokenInStorage()) {
-			return null;
-		} else {
-			const base64Payload = getTokenFromStorage().split('.')[1];
-			const payload = JSON.parse(window.atob(base64Payload));
-			return payload.auth;
-		}
-	})();
 }
 function hasTokenInStorage () {
 	return !!getTokenFromStorage();
@@ -97,6 +88,19 @@ function removeTokenFromStorage () {
 }
 function removeUserData () {
 	Auth.user.data = null;
+}
+function getRoleFromStorage () {
+	const role = (function extractRoleFromTokenPayload () {
+		if (!hasTokenInStorage()) {
+			return null;
+		} else {
+			const base64Payload = getTokenFromStorage().split('.')[1];
+			const payload = JSON.parse(window.atob(base64Payload));
+			return payload.auth;
+		}
+	})();
+
+	return role;
 }
 
 export default Auth;

@@ -28,7 +28,7 @@ const requireAuth = (to, _from, next) => {
 const requireAuthAndAdmin = (to, _from, next) => {
 	if (!Auth.user.authenticated) {
 		requireAuth(to, _from, next);
-	} else if (Auth.user.data.role !== 'ADMIN') {
+	} else if (Auth.user.role !== 'ROLE_ADMIN') {
 		Vue.toasted.global.warn(Translation.t('toasts.forbidden'), { duration: 6000 });
 		next({
 			path: '/'
