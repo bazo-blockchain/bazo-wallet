@@ -11,7 +11,9 @@
 			<b-collapse is-nav id="nav_collapse">
 
 				<b-nav is-nav-bar v-if="user.authenticated">
-					<b-nav-item :to="{ name: 'secure' }">{{ $t('header.secure') }}</b-nav-item>
+					<b-nav-item :to="{ name: 'authenticated' }">{{ $t('header.authenticated') }}</b-nav-item>
+					<b-nav-item :to="{ name: 'user-authenticated' }">{{ $t('header.userAuthenticated') }}</b-nav-item>
+					<b-nav-item :to="{ name: 'admin-authenticated' }">{{ $t('header.adminAuthenticated') }}</b-nav-item>
 				</b-nav>
 
 				<b-nav is-nav-bar class="ml-auto">
@@ -96,7 +98,9 @@ export default {
 					signIn: 'Sign In',
 					signOut: 'Sign Out',
 					profile: 'Profile',
-					secure: 'Secure Website'
+					authenticated: 'Auth Page',
+					userAuthenticated: 'User Auth Page',
+					adminAuthenticated: 'Admin Auth Page'
 				}
 			},
 			de: {
@@ -104,7 +108,9 @@ export default {
 					signIn: 'Anmelden',
 					signOut: 'Abmelden',
 					profile: 'Profil',
-					secure: 'Sichere Webseite'
+					authenticated: 'Auth Seite',
+					userAuthenticated: 'User-Auth Seite',
+					adminAuthenticated: 'Admin-Auth Seite'
 				}
 			}
 		}

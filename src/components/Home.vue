@@ -8,8 +8,8 @@
 			</b-button>
 		</div>
 		<div class="buttons" v-else>
-			<b-button :variant="'secondary'" :to="{ name: 'secure' }">
-				<i class="fa fa-lock"></i> {{ $t('home.securePage') }}
+			<b-button :variant="'secondary'" :to="{ name: 'authenticated' }">
+				<i class="fa fa-lock"></i> {{ $t('home.authenticatedPage') }}
 			</b-button>
 		</div>
 	</div>
@@ -32,13 +32,13 @@ export default {
 			en: {
 				home: {
 					login: 'Sign In',
-					securePage: 'Secure Page'
+					authenticatedPage: 'Auth Page'
 				}
 			},
 			de: {
 				home: {
 					login: 'Anmelden',
-					securePage: 'Sichere Seite'
+					authenticatedPage: 'Auth Seite'
 				}
 			}
 		}

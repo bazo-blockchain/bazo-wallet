@@ -3,7 +3,9 @@ import VueRouter from 'vue-router';
 import Home from '../components/Home';
 import Hello from '../components/Hello';
 import Login from '../components/Login';
-import Secure from '../components/auth/Secure';
+import Authenticated from '../components/auth/Authenticated';
+import UserAuthenticated from '../components/auth/user/UserAuthenticated';
+import AdminAuthenticated from '../components/auth/admin/AdminAuthenticated';
 import Profile from '../components/auth/Profile';
 import AdminAccounts from '../components/auth/admin/Accounts';
 import Translation from '../config/Translation';
@@ -25,10 +27,10 @@ const requireAuth = (to, _from, next) => {
 	}
 };
 
-const requireAuthAndAdmin = (to, _from, next) => {
+const requireAuthAndRole = (role, to, _from, next) => {
 	if (!Auth.user.authenticated) {
 		requireAuth(to, _from, next);
-	} else if (Auth.user.role !== 'ROLE_ADMIN') {
+	} else if (Auth.user.role !== role) {
 		Vue.toasted.global.warn(Translation.t('toasts.forbidden'), { duration: 6000 });
 		next({
 			path: '/'
@@ -37,7 +39,13 @@ const requireAuthAndAdmin = (to, _from, next) => {
 	} else {
 		next();
 	}
-}
+};
+const requireAuthAndAdmin = (to, _from, next) => {
+	return requireAuthAndRole('ROLE_ADMIN', to, _from, next);
+};
+const requireAuthAndUser = (to, _from, next) => {
+	return requireAuthAndRole('ROLE_USER', to, _from, next);
+};
 
 const afterAuth = (_to, from, next) => {
 	if (Auth.user.authenticated) {
@@ -46,7 +54,7 @@ const afterAuth = (_to, from, next) => {
 	} else {
 		next();
 	}
-}
+};
 
 const error404 = (to, _from, next) => {
 	Vue.toasted.global.error(Translation.t('toasts.pageNotFound'), { duration: 8000 });
@@ -54,7 +62,7 @@ const error404 = (to, _from, next) => {
 		path: '/'
 	});
 	hideProgressBar();
-}
+};
 
 const hideProgressBar = () => {
 	// the progress bar does not hide automatically, if the route remains the same
@@ -70,8 +78,10 @@ export default new VueRouter({
 		{ path: '/', name: 'home', component: Home },
 		{ path: '/hello', name: 'hello', component: Hello },
 		{ path: '/login', name: 'login', component: Login, beforeEnter: afterAuth },
-		{ path: '/auth/secure', name: 'secure', component: Secure, beforeEnter: requireAuth },
 		{ path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: requireAuth },
+		{ path: '/auth/user/authenticated', name: 'user-authenticated', component: UserAuthenticated, beforeEnter: requireAuthAndUser },
+		{ path: '/auth/authenticated', name: 'authenticated', component: Authenticated, beforeEnter: requireAuth },
+		{ path: '/auth/admin/authenticated', name: 'admin-authenticated', component: AdminAuthenticated, beforeEnter: requireAuth },
 		{ path: '/auth/admin/accounts', name: 'admin-accounts', component: AdminAccounts, beforeEnter: requireAuthAndAdmin },
 		{ path: '*', name: 'everyOtherPage', component: Home, beforeEnter: error404 }
 	]

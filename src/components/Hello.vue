@@ -1,6 +1,6 @@
 <template>
 <div class="hello">
-	<router-link :to="{ name: 'secure'}">Go To Secure Page</router-link> |
+	<router-link :to="{ name: 'authenticated'}">Go To Secure Page</router-link> |
 	<a @click="admin">Call Secure Admin function</a>
 	
 	<div class="previous-stuff">
