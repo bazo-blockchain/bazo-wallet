@@ -28,6 +28,7 @@
 
 <script>
 import Auth from '../services/Auth';
+import Http from '../services/Http';
 
 export default {
 	name: 'hello',
@@ -41,7 +42,7 @@ export default {
 			Auth.logout();
 		},
 		admin: function () {
-			this.$http.get('http://localhost:8080/admin/accounts').then(function (response) {
+			Http.adminGetAccounts(this).then(function (response) {
 				console.log(response);
 			});
 		}

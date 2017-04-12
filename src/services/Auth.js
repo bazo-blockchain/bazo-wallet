@@ -1,11 +1,7 @@
 import Vue from 'vue';
 import Translation from '../config/Translation';
 import Router from '../config/Router';
-
-const SCHEME = 'http://';
-const HOSTNAME = 'localhost:8080';
-const API_URL = SCHEME + HOSTNAME;
-const KEY_TOKEN = 'coinblesk_token';
+import Http from '../services/Http';
 
 const Auth = {
 
@@ -16,7 +12,7 @@ const Auth = {
 
 	refreshUser: function (context) {
 		if (hasTokenInStorage()) {
-			return context.$http.get(API_URL + '/v1/user/auth/get', { headers: { 'DO_NOT_INTERCEPT': 'enabled' } })
+			return Http.getUser(context, true)
 				.then(response => {
 					setUserData(response.body);
 				}, response => {
@@ -33,7 +29,7 @@ const Auth = {
 	},
 
 	login: function (context, credentials, redirect) {
-		return context.$http.post(API_URL + '/user/login', credentials, { headers: { 'DO_NOT_INTERCEPT': 'enabled' } })
+		return Http.login(context, credentials, true)
 			.then(response => {
 				setTokenToStorage(response.body.token);
 
@@ -68,6 +64,8 @@ const Auth = {
 	}
 
 };
+
+const KEY_TOKEN = 'coinblesk_token';
 
 function getTokenFromStorage () {
 	return window.localStorage.getItem(KEY_TOKEN);

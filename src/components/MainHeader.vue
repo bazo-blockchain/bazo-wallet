@@ -79,7 +79,7 @@ export default {
 			return this.$locale.current();
 		},
 		shortEmail: function () {
-			if (this.user.email) {
+			if (this.user.data.email) {
 				return this.user.data.email.substr(0, 10) + '...';
 			} else {
 				return null;
