@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import VueResource from 'vue-resource';
+import VueMoment from 'vue-moment';
 import App from './App';
 import Translation from './config/Translation';
 import Router from './config/Router';
@@ -14,6 +15,7 @@ import 'flag-icon-css/css/flag-icon.css';
 import './styles/global.scss';
 
 Vue.use(VueResource);
+Vue.use(VueMoment);
 Vue.config.productionTip = false;
 Toaster.toast();
 HttpInterceptor.intercept();
