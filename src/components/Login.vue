@@ -14,7 +14,7 @@
 			</form>
 			<div class="forgot-password-sign-up">
 				<a class="forgot-password" href @click.prevent="forgotPassword">{{ $t('login.forgotPassword') }}</a>
-				<a class="sign-up" href @click.prevent="signUp">{{ $t('login.signUp') }}</a>
+				<router-link :to="{ name: 'registration' }" class="sign-up">{{ $t('login.signUp') }}</router-link>
 			</div>
 		</div>
 	</div>
@@ -35,11 +35,9 @@ export default {
 	},
 	mounted: function () {
 		this.$emit('toggle-header', false);
-		this.$emit('toggle-footer', false);
 	},
 	beforeDestroy: function () {
 		this.$emit('toggle-header', true);
-		this.$emit('toggle-footer', true);
 	},
 	methods: {
 		login: function () {
@@ -51,9 +49,6 @@ export default {
 					this.isLoading = false;
 				});
 			}
-		},
-		signUp: function () {
-			console.log('sign up');
 		},
 		forgotPassword: function () {
 			console.log('forgot password');
