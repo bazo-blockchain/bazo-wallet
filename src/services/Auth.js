@@ -74,6 +74,7 @@ function hasTokenInStorage () {
 }
 function removeTokenFromStorage () {
 	Auth.auth.authenticated = false;
+	Auth.auth.role = null;
 	window.localStorage.removeItem(KEY_TOKEN);
 }
 function getRoleFromStorage () {
