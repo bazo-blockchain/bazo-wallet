@@ -18,7 +18,8 @@ const setLanguageToStorage = (language) => {
 const i18n = new VueI18n({
 	locale: hasLanguageInStorage() ? getLanguageFromStorage() : 'en',
 	fallbackLocale: 'en',
-	messages: globalTranslations
+	messages: globalTranslations,
+	silentTranslationWarn: true
 });
 
 Vue.prototype.$locale = {
