@@ -10,7 +10,7 @@
 		"toasts": {
 			"signedIn": "You have successfully been signed in.",
 			"signedOff": "You have successfully been signed off.",
-			"wrongPassword": "The combination of your username/password is incorrect.",
+			"wrongPassword": "The combination of your e-mail/password is incorrect.",
 			"unauthorized": "You are trying to access a protected resource. Please authenticate yourself first.",
 			"forbidden": "You do not have the permission to access this site.",
 			"internalError": "An internal error occured. The page will be reloaded.",
@@ -29,7 +29,7 @@
 		"toasts": {
 			"signedIn": "Sie haben sich erfolgreich eingeloggt.",
 			"signedOff": "Sie wurden erfolgreich ausgeloggt.",
-			"wrongPassword": "Die Kombination aus Ihrem Benutzernamen und Ihrem Passwort ist inkorrekt.",
+			"wrongPassword": "Die Kombination aus Ihrer E-Mail Adresse und Ihrem Passwort ist inkorrekt.",
 			"unauthorized": "Sie versuchen eine geschützte Seite aufzurufen, bitte loggen Sie sich zunächst ein.",
 			"forbidden": "Sie verfügen nicht über die Berechtigung, diese Seite anzuzeigen.",
 			"internalError": "Ein interner Fehler ist aufgetreten. Die Seite wird automatisch neu geladen.",

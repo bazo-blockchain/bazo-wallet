@@ -4,8 +4,8 @@
 		<div class="main-title">Coin<i class="fa fa-bitcoin"><span>&#3647;</span></i>lesk</div>
 		<div class="login-box bordered-box col-md-4">
 			<form>
-				<b-form-fieldset :label="$t('login.username')">
-					<b-form-input v-model="username" type="text"></b-form-input>
+				<b-form-fieldset :label="$t('login.email')">
+					<b-form-input v-model="email" type="text"></b-form-input>
 				</b-form-fieldset>
 				<b-form-fieldset :label="$t('login.password')">
 					<b-form-input v-model="password" type="password"></b-form-input>
@@ -28,7 +28,7 @@ export default {
 	name: 'test',
 	data: function () {
 		return {
-			username: '',
+			email: '',
 			password: '',
 			isLoading: false
 		}
@@ -44,7 +44,7 @@ export default {
 			if (!this.isLoading) {
 				this.isLoading = true;
 				const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
-				const credentials = { username: this.username, password: this.password };
+				const credentials = { email: this.email, password: this.password };
 				Auth.login(credentials, redirect).then(() => {
 					this.isLoading = false;
 				});
@@ -59,7 +59,7 @@ export default {
 			en: {
 				login: {
 					title: 'Sign In',
-					username: 'User Name',
+					email: 'E-Mail',
 					password: 'Password',
 					submit: 'Sign in',
 					signUp: 'Sign up now!',
@@ -69,7 +69,7 @@ export default {
 			de: {
 				login: {
 					title: 'Anmelden',
-					username: 'Benutzername',
+					email: 'E-Mail',
 					password: 'Passwort',
 					submit: 'Anmelden',
 					signUp: 'Jetzt registrieren!',
