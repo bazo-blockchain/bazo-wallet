@@ -11,7 +11,7 @@ const Http = {
 	},
 
 	login: function (credentials, doNotIntercept) {
-		return Vue.http.post(HOST + '/user-account/login', credentials,
+		return Vue.http.put(HOST + '/user-account/login', credentials,
 			doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 	},
 
