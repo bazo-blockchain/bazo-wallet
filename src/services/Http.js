@@ -17,6 +17,10 @@ const Http = {
 
 	adminGetAccounts: function () {
 		return Vue.http.get(HOST + '/auth/admin/accounts');
+	},
+
+	adminGetEvents: function (urgence) {
+		return Vue.http.get(HOST + '/auth/admin/events', { params: { urgence } });
 	}
 
 };
