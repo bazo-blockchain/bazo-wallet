@@ -12,16 +12,11 @@
 				<span class="badge badge-info" @click="changeUrgence('DEBUG')" :class="{ 'translucent': !badges.DEBUG }">DEBUG</span>
 			</div>
 			<div v-if="items.length > 0">
-				<div class="justify-content-centermy-1 row">
-					<b-form-fieldset horizontal label="Rows per page" class="col-6" :label-size="6">
-						<b-form-select :options="[{text:50,value:50},{text:100,value:100},{text:200,value:200}]" v-model="perPage">
-						</b-form-select>
-					</b-form-fieldset>
-					<b-form-fieldset horizontal label="Search" class="col-6" :label-size="2">
-						<b-form-input v-model="filter" placeholder="Type to Search"></b-form-input>
-					</b-form-fieldset>
-				</div>
-				<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter">
+				<label class="rows-per-page">
+					Rows per Page
+					<b-form-select :options="[{text:50,value:50},{text:100,value:100},{text:200,value:200}]" v-model="perPage"></b-form-select>
+				</label>
+				<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage">
 					<template slot="id" scope="item">
 						{{ item.value }}
 					</template>
@@ -47,6 +42,10 @@
 						</div>
 					</template>
 				</b-table>
+				
+				<div class="justify-content-center row my-1 pagination-bar">
+					<b-pagination size="md" :total-rows="this.items.length" :per-page="perPage" v-model="currentPage"></b-pagination>
+				</div>
 			</div>
 			<div v-else>
 				<div class="alert alert-warning">
@@ -78,7 +77,6 @@ export default {
 			items: [],
 			currentPage: 1,
 			perPage: 50,
-			filter: null,
 			fields: {
 				id: {
 					label: 'ID',
@@ -163,7 +161,7 @@ export default {
 <style lang="scss" scoped>
 .event-urgence-selector {
 	font-size: 20px;
-	margin-bottom: 15px;
+	margin-bottom: 20px;
 	text-align: right;
 	.badge {
 		cursor: pointer;
@@ -176,5 +174,13 @@ export default {
 }
 .description-column {
 	font-size: 85%;
+}
+.rows-per-page {
+	transform: translateY(-100%);
+	position: absolute;
+	margin-top: -15px;
+	select {
+		margin-left: 10px;
+	}
 }
 </style>
