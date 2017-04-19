@@ -5,16 +5,44 @@
 		<hr>
 		<div v-if="!isLoading">
 			<div class="event-urgence-selector">
-				<span class="badge badge-danger" @click="changeUrgence('FATAL')" :class="{ 'translucent': !badges.FATAL }">FATAL</span>
-				<span class="badge badge-warning" @click="changeUrgence('ERROR')" :class="{ 'translucent': !badges.ERROR }">ERROR</span>
-				<span class="badge badge-info" @click="changeUrgence('WARN')" :class="{ 'translucent': !badges.WARN }">WARN</span>
+				<span class="badge badge-very-danger" @click="changeUrgence('FATAL')" :class="{ 'translucent': !badges.FATAL }"><i class="fa fa-exclamation"></i> FATAL</span>
+				<span class="badge badge-danger" @click="changeUrgence('ERROR')" :class="{ 'translucent': !badges.ERROR }">ERROR</span>
+				<span class="badge badge-warning" @click="changeUrgence('WARN')" :class="{ 'translucent': !badges.WARN }">WARN</span>
 				<span class="badge badge-primary" @click="changeUrgence('INFO')" :class="{ 'translucent': !badges.INFO }">INFO</span>
-				<span class="badge badge-default" @click="changeUrgence('DEBUG')" :class="{ 'translucent': !badges.DEBUG }">DEBUG</span>
+				<span class="badge badge-info" @click="changeUrgence('DEBUG')" :class="{ 'translucent': !badges.DEBUG }">DEBUG</span>
 			</div>
 			<div v-if="items.length > 0">
-				<div v-for="item in items">
-					{{item}}
+				<div class="justify-content-centermy-1 row">
+					<b-form-fieldset horizontal label="Rows per page" class="col-6" :label-size="6">
+						<b-form-select :options="[{text:50,value:50},{text:100,value:100},{text:200,value:200}]" v-model="perPage">
+						</b-form-select>
+					</b-form-fieldset>
+					<b-form-fieldset horizontal label="Search" class="col-6" :label-size="2">
+						<b-form-input v-model="filter" placeholder="Type to Search"></b-form-input>
+					</b-form-fieldset>
 				</div>
+				<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter">
+					<template slot="id" scope="item">
+						{{ item.value }}
+					</template>
+					<template slot="urgence" scope="item">
+						<span class="badge" :class="{'badge-very-danger': item.value === 'FATAL',
+							'badge-danger': item.value === 'ERROR', 'badge-warning': item.value === 'WARN',
+							'badge-primary': item.value === 'INFO', 'badge-info': item.value === 'DEBUG', }">
+							<i v-if="item.value === 'FATAL'" class="fa fa-exclamation"></i>
+							{{ item.value }}
+						</span>
+					</template>
+					<template slot="date" scope="item">
+						{{ item.value | moment("YYYY-MM-DD, HH:mm:ss") }}
+					</template>
+					<template slot="type" scope="item">
+						{{ item.value }}
+					</template>
+					<template slot="description" scope="item">
+						{{ item.value }}
+					</template>
+				</b-table>
 			</div>
 			<div v-else>
 				<div class="alert alert-warning">
@@ -35,14 +63,39 @@ export default {
 	data: function () {
 		return {
 			isLoading: false,
-			items: [],
-			urgence: 'FATAL',
+			urgence: 'ERROR',
 			badges: {
 				FATAL: true,
-				ERROR: false,
+				ERROR: true,
 				WARN: false,
 				INFO: false,
 				DEBUG: false
+			},
+			items: [],
+			currentPage: 1,
+			perPage: 50,
+			filter: null,
+			fields: {
+				id: {
+					label: 'ID',
+					sortable: false
+				},
+				urgence: {
+					label: 'Urgence',
+					sortable: true
+				},
+				date: {
+					label: 'Date',
+					sortable: true
+				},
+				type: {
+					label: 'Type',
+					sortable: true
+				},
+				description: {
+					label: 'Description',
+					sortable: false
+				}
 			}
 		}
 	},
@@ -112,7 +165,8 @@ export default {
 		cursor: pointer;
 		padding: 0.4em 0.6em;
 		&.translucent {
-			opacity: 0.2;
+			opacity: 0.3;
+			filter: grayscale(80%);
 		}
 	}
 }

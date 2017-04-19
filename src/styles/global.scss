@@ -50,5 +50,23 @@ body {
 	}
 }
 .badge, .badge-pill {
+	&.badge-very-danger {
+		background-color: #a22e2a;
+		animation: badge-background infinite ease-in-out 3s;
+	}
 	font-weight: 300;
+}
+
+@keyframes badge-background {
+	0%,
+	40%,
+	60% {
+		transform: rotate(0deg);
+	}
+	50% {
+		transform: rotate(5deg);
+	}
+	55% {
+		transform: rotate(-5deg);
+	}
 }

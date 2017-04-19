@@ -69,6 +69,9 @@ export default {
 		return {
 			isLoading: false,
 			items: [],
+			currentPage: 1,
+			perPage: 10,
+			filter: null,
 			fields: {
 				timeCreated: {
 					label: 'Created',
@@ -100,10 +103,7 @@ export default {
 				actions: {
 					label: 'Actions'
 				}
-			},
-			currentPage: 1,
-			perPage: 10,
-			filter: null
+			}
 		};
 	},
 	mounted: function () {
