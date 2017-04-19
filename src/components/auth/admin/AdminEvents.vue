@@ -34,13 +34,17 @@
 						</span>
 					</template>
 					<template slot="date" scope="item">
-						{{ item.value | moment("YYYY-MM-DD, HH:mm:ss") }}
+						<div class="nowrap">
+							{{ item.value | moment("YYYY-MM-DD, HH:mm:ss") }}
+						</div>
 					</template>
 					<template slot="type" scope="item">
-						{{ item.value }}
+						{{ item.value | enumReadable }}
 					</template>
 					<template slot="description" scope="item">
-						{{ item.value }}
+						<div class="description-column">
+							{{ item.value }}
+						</div>
 					</template>
 				</b-table>
 			</div>
@@ -169,5 +173,8 @@ export default {
 			filter: grayscale(80%);
 		}
 	}
+}
+.description-column {
+	font-size: 85%;
 }
 </style>
