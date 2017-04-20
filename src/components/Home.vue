@@ -1,16 +1,11 @@
 <template>
 <div class="home">
 	<div class="main-photo text-center">
-		<h1 class="display-1">Coin<i class="fa fa-bitcoin"><span>&#3647;</span></i>lesk</h1>
-		<div class="buttons" v-if="!auth.authenticated">
-			<b-button :variant="'secondary'" :to="{ name: 'login' }">
-				<i class="fa fa-sign-in"></i> {{ $t('home.login') }}
-			</b-button>
-		</div>
-		<div class="buttons" v-else>
-			<b-button :variant="'secondary'" :to="{ name: 'authenticated' }">
-				<i class="fa fa-lock"></i> {{ $t('home.authenticatedPage') }}
-			</b-button>
+		<img src="../assets/about_cb_2.png" class="main-logo">
+		<div class="sub-pictures">
+			<a href="https://github.com/coinblesk" target="_blank" title="Open Source, Github"><img src="../assets/about_opensource.png"></a>
+			<a href="http://www.ifi.uzh.ch" target="_blank" title="Institute of Informatics, University of Zurich"><img src="../assets/about_ifi.png"></a>
+			<a href="http://www.uzh.ch" target="_blank" title="University of Zurich"><img src="../assets/about_uzh.png"></a>
 		</div>
 	</div>
 </div>
@@ -60,13 +55,15 @@ export default {
 	background-position: 50% 44%;
 	padding: 12vh;
 	
-	.display-1 {
-		color: white;
-		font-weight: 300;
-		text-shadow: 0px 7px 13px rgba(0,0,0,0.4);
+	.main-logo {
+		width: 60vmin;
 	}
-	.buttons {
-		margin-top: 7vh;
+	
+	.sub-pictures {
+		margin-top: 6vmin;
+		img {
+			height: 7vmin;
+		}
 	}
 }
 </style>

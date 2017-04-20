@@ -1,8 +1,10 @@
 <template>
 <div class="login">
 	<div class="container">
-		<div class="main-title">Coin<i class="fa fa-bitcoin"><span>&#3647;</span></i>lesk</div>
-		<div class="login-box bordered-box col-md-4">
+		<div class="col-md-4 offset-md-4">
+			<img class="logo" src="../assets/about_cb_2.png">
+		</div>
+		<div class="login-box bordered-box col-md-4 offset-md-4">
 			<form>
 				<b-form-fieldset :label="$t('login.email')">
 					<b-form-input v-model="email" type="text"></b-form-input>
@@ -83,12 +85,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '../styles/variables';
-.main-title {
-	font-size: 3em;
-	color: white;
-	text-shadow: 0 0 1em rgba(0,0,0,0.4);
-	text-align: center;
-	margin-bottom: 1em;
+.logo {
+	width: 70%;
+	margin: 0 auto 8vmin;
+	display: block;
 }
 .login {
 	margin: 0;
@@ -102,7 +102,6 @@ export default {
 .login-box {
 	padding: 20px;
 	background: #efefef;
-	margin: 0 auto;
 	border-radius: 5px;
 	box-shadow: 0 0 5em rgba(0,0,0,0.4);
 }
