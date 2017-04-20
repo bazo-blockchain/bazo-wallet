@@ -34,7 +34,7 @@ export default {
 						Vue.toasted.global.error(Translation.t('toasts.forbidden'));
 					}
 					if (response.status === 400) {
-						Vue.toasted.global.error(Translation.t('toasts.validationError'));
+						Vue.toasted.global.warn(Translation.t('toasts.validationError'));
 					}
 				}
 			});

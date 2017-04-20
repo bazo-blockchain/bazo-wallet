@@ -16,6 +16,7 @@
 			"internalError": "An internal error occured. The page will be reloaded.",
 			"sessionExpired": "Your session has expired. Please sign in again.",
 			"pageNotFound": "404 - The page could not be found. You've been redirected.",
+			"validationError": "A validation error has occurred.",
 			"languageSwitched": "Your language setting has successfully been switched to {language}"
 		}
 	},
@@ -36,6 +37,7 @@
 			"internalError": "Ein interner Fehler ist aufgetreten. Die Seite wird automatisch neu geladen.",
 			"sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
 			"pageNotFound": "404 - Die Seite wurde nicht gefunden. Sie wurden weitergeleitet.",
+			"validationError": "Ein Validierungsfehler ist aufgetreten.",
 			"languageSwitched": "Ihre Spracheinstellung wurde erfolgreich auf {language} geändert."
 		}
 	}

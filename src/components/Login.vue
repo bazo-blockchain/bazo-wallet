@@ -1,10 +1,12 @@
 <template>
-<div class="login">
+<div class="login login-registration">
 	<div class="container">
 		<div class="col-md-4 offset-md-4">
 			<img class="logo" src="../assets/about_cb_2.png">
 		</div>
-		<div class="login-box bordered-box col-md-4 offset-md-4">
+		<div class="form-box bordered-box col-md-4 offset-md-4">
+			<div class="main-title display-7">{{ $t('login.title') }}</div>
+			<hr>
 			<form>
 				<b-form-fieldset :label="$t('login.email')">
 					<b-form-input v-model="email" type="text"></b-form-input>
@@ -14,7 +16,7 @@
 				</b-form-fieldset>
 				<b-button @click.prevent="login" :block="true" variant="primary" :disabled="isLoading">{{ $t('login.submit') }}</b-button>
 			</form>
-			<div class="forgot-password-sign-up">
+			<div class="links-below">
 				<a class="forgot-password" href @click.prevent="forgotPassword">{{ $t('login.forgotPassword') }}</a>
 				<router-link :to="{ name: 'registration' }" class="sign-up">{{ $t('login.signUp') }}</router-link>
 			</div>
@@ -71,7 +73,7 @@ export default {
 			de: {
 				login: {
 					title: 'Anmelden',
-					email: 'E-Mail',
+					email: 'E-Mail Adresse',
 					password: 'Passwort',
 					submit: 'Anmelden',
 					signUp: 'Jetzt registrieren!',
@@ -83,14 +85,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../styles/variables';
-.logo {
-	width: 70%;
-	margin: 0 auto 8vmin;
-	display: block;
-}
-.login {
+
+.login-registration {
 	margin: 0;
 	width: 100%;
 	background: #4e4e4e;
@@ -98,30 +96,56 @@ export default {
 	height: 100vh;
 	/* height with navbar: 
 	height: calc(100vh - #{$navbarHeight}); */
-}
-.login-box {
-	padding: 20px;
-	background: #efefef;
-	border-radius: 5px;
-	box-shadow: 0 0 5em rgba(0,0,0,0.4);
-}
-.btn.btn-primary {
-	margin-top: 25px;
-	cursor: pointer;
-}
-.form-group {
-	margin-bottom: 5px;
-}
-.forgot-password-sign-up {
-	text-align: right;
-	margin-top: 20px;
-	font-size: 85%;
-	&:after {
-		content: "";
+	
+	.logo {
+		width: 70%;
+		margin: 0 auto 8vmin;
 		display: block;
-		clear: both;
 	}
 	
+	.form-box {
+		padding: 20px;
+		background: #efefef;
+		border-radius: 5px;
+		box-shadow: 0 0 5em rgba(0,0,0,0.4);
+	}
+	
+	.main-title {
+		text-align: center;
+		margin-bottom: 20px;
+	}
+	
+	.form-group {
+		margin-bottom: 5px;
+	}
+	
+	.btn.btn-primary {
+		margin-top: 25px;
+		cursor: pointer;
+	}
+	.links-below {
+		text-align: right;
+		margin-top: 20px;
+		font-size: 85%;
+		&:after {
+			content: "";
+			display: block;
+			clear: both;
+		}
+		:first-child {
+			float: left;
+		}
+		:last-child {
+			float: right;
+		}
+	}
+}
+</style>
+
+<style lang="scss" scoped>
+@import '../styles/variables';
+
+.login {
 	.sign-up {
 		float: left;
 	}

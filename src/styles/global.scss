@@ -116,3 +116,19 @@ body {
 	font-weight: 300;
 	line-height: 1.1;
 }
+
+/* bootstrap form error's */
+$red-error-input-color: #ffa3a3;
+input[type=text].form-error,
+input[type=password].form-error,
+input[type=email].form-error {
+	box-shadow: 0 0 0 1px $red-error-input-color;
+	&:focus {
+		border-color: transparent;
+	}
+}
+.custom-checkbox.form-error {
+	.custom-control-indicator {
+		box-shadow: 0 0 0 1px #fff, 0 0 0 3px $red-error-input-color;
+	}
+}

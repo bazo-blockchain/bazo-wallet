@@ -15,6 +15,10 @@ const Http = {
 			doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 	},
 
+	register: function (credentials) {
+		return Vue.http.post(HOST + '/user-account/create', credentials);
+	},
+
 	adminGetAccounts: function () {
 		return Vue.http.get(HOST + '/auth/admin/accounts');
 	},
