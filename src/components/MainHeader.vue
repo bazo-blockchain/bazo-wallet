@@ -10,7 +10,7 @@
 
 			<b-collapse is-nav id="nav_collapse">
 
-				<b-nav is-nav-bar v-if="auth.authenticated">
+				<b-nav is-nav-bar v-if="auth.authenticated && auth.role === 'ROLE_ADMIN'">
 					<b-nav-item :to="{ name: 'admin-accounts' }">{{ $t('header.adminAccounts') }}</b-nav-item>
 					<b-nav-item :to="{ name: 'admin-events' }">{{ $t('header.adminEvents') }}</b-nav-item>
 				</b-nav>
