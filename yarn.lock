@@ -2336,10 +2336,6 @@ find-up@^1.0.0, find-up@^1.1.2:
     path-exists "^2.0.0"
     pinkie-promise "^2.0.0"
 
-flag-icon-css@^2.8.0:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/flag-icon-css/-/flag-icon-css-2.8.0.tgz#ec10c20fe417ade787a095200630069ca436a569"
-
 flat-cache@^1.2.1:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/flat-cache/-/flat-cache-1.2.2.tgz#fa86714e72c21db88601761ecf2f555d1abc6b96"
@@ -5627,7 +5623,7 @@ vue-toasted@^1.0.27:
   version "1.0.27"
   resolved "https://registry.yarnpkg.com/vue-toasted/-/vue-toasted-1.0.27.tgz#84bd2068bfd565081cf27ba8f7fe084bf9ab1fc3"
 
-vue@^2.2.2, vue@^2.2.6:
+vue@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.2.6.tgz#451714b394dd6d4eae7b773c40c2034a59621aed"
 
