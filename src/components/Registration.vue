@@ -35,6 +35,7 @@
 
 <script>
 import Http from '@/services/Http';
+import Router from '@/config/Router';
 
 export default {
 	name: 'registration',
@@ -89,7 +90,8 @@ export default {
 				this.isLoading = true;
 				Http.register({ email: this.email, password: this.password }).then((response) => {
 					this.isLoading = false;
-					this.$toasted.global.success(this.$t('registration.success'));
+					this.$toasted.global.success(this.$t('registration.success'), { duration: 6000 });
+					Router.push({ name: 'activation', params: { email: this.email } });
 				}, () => {
 					this.isLoading = false;
 				});
@@ -107,7 +109,7 @@ export default {
 					acceptTerms1: 'I accept the',
 					acceptTerms2: 'terms and conditions',
 					submit: 'Register',
-					success: 'You have been registered successfully. Please log in now.'
+					success: 'You have been registered successfully. Please check your e-mails for the activation key.'
 				}
 			},
 			de: {
@@ -119,7 +121,7 @@ export default {
 					acceptTerms1: 'Ich akzeptiere die',
 					acceptTerms2: 'AGBs',
 					submit: 'Registrieren',
-					success: 'Sie haben sich erfolgreich registriert. Loggen Sie sich jetzt ein.'
+					success: 'Sie haben sich erfolgreich registriert. Bitte entnehmen Sie den Aktivierungsschlüssel Ihren E-Mails.'
 				}
 			}
 		}

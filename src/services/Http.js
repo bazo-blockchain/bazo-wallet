@@ -19,6 +19,11 @@ const Http = {
 		return Vue.http.post(HOST + '/user-account/create', credentials);
 	},
 
+	activate: function (data, doNotIntercept) {
+		return Vue.http.post(HOST + '/user-account/create-verify', data,
+				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
+	},
+
 	adminGetAccounts: function () {
 		return Vue.http.get(HOST + '/auth/admin/accounts');
 	},

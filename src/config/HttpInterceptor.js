@@ -19,7 +19,9 @@ export default {
 			const doNotIntercept = !!request.headers.get('DO_NOT_INTERCEPT');
 
 			next(function (response) {
-				if (/^(?!2|400$|401$|403$)/.test(response.status.toString())) {
+				if (/^5/.test(response.status.toString())) {
+					internalError();
+				} else if (/^(?!2|400$|401$|403$)/.test(response.status.toString()) && !doNotIntercept) {
 					internalError();
 				} else if (!doNotIntercept) {
 					if (response.status === 401) {
