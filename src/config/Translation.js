@@ -16,7 +16,7 @@ const setLanguageToStorage = (language) => {
 };
 const getBrowserLanguageOrEnglish = () => {
 	let browserLanguage = window.navigator.language || window.navigator.language;
-	if (browserLanguage === 'de') {
+	if (browserLanguage && /^de/i.test(browserLanguage)) {
 		return 'de';
 	} else {
 		return 'en';
