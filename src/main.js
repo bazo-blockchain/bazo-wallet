@@ -13,7 +13,6 @@ import ProgressBar from './config/ProgressBar';
 import Bootstrap from './config/Bootstrap';
 import './config/Filters';
 import 'font-awesome/scss/font-awesome.scss';
-import 'flag-icon-css/css/flag-icon.css';
 import './styles/global.scss';
 
 Vue.use(VueResource);

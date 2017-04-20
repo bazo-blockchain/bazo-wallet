@@ -5,7 +5,7 @@
 			<b-nav-toggle target="nav_collapse"></b-nav-toggle>
 
 			<b-link class="navbar-brand" :to="{ name: 'home' }">
-				<span>Coin<i class="fa fa-bitcoin"><span>&#3647;</span></i>lesk</span>
+				<img src="../assets/about_cb_2.png" class="logo">
 			</b-link>
 
 			<b-collapse is-nav id="nav_collapse">
@@ -20,26 +20,11 @@
 				</b-nav>
 
 				<b-nav is-nav-bar class="ml-auto">
-
-					<!-- Navbar dropdowns -->
-					<b-nav-item-dropdown right-alignment>
-						<template slot="text">
-							<span>{{ $t('language.' + currentLanguage) }}</span>
-						</template>
-
-						<b-dropdown-item @click="switchLanguage('en')" :class="{ 'active' : currentLanguage === 'en' }">
-							<i class="flag-icon flag-icon-gb"></i> {{ $t('language.en') }}
-						</b-dropdown-item>
-						<b-dropdown-item @click="switchLanguage('de')" :class="{ 'active' : currentLanguage === 'de' }">
-							<i class="flag-icon flag-icon-de"></i> {{ $t('language.de') }}
-						</b-dropdown-item>
-					</b-nav-item-dropdown>
-
 					<b-nav-item-dropdown v-if="auth.authenticated" right-alignment>
 						<template slot="text">
 							<span>
 								<i class="fa fa-user-circle-o"></i>
-								{{ shortEmail }}
+								{{ user.email }}
 							</span>
 						</template>
 
@@ -56,7 +41,6 @@
 					<b-nav-item v-else :to="{ name: 'login' }">
 						<i class="fa fa-sign-in"></i> {{ $t('header.signIn') }}
 					</b-nav-item>
-				 
 				</b-nav>
 			</b-collapse>
 		</div>
@@ -82,13 +66,6 @@ export default {
 	computed: {
 		currentLanguage: function () {
 			return this.$locale.current();
-		},
-		shortEmail: function () {
-			if (this.user.email) {
-				return this.user.email.substr(0, 10) + '...';
-			} else {
-				return null;
-			}
 		},
 		user: function () {
 			return this.$store.state.user;
@@ -127,7 +104,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.header {
-	background: #eee;
+.logo {
+	height: 22px;
+	margin-top: -3px;
 }
 </style>
