@@ -14,9 +14,17 @@ const hasLanguageInStorage = () => {
 const setLanguageToStorage = (language) => {
 	window.localStorage.setItem(KEY_LANGUAGE, language);
 };
+const getBrowserLanguageOrEnglish = () => {
+	let browserLanguage = window.navigator.language || window.navigator.language;
+	if (browserLanguage === 'de') {
+		return 'de';
+	} else {
+		return 'en';
+	}
+};
 
 const i18n = new VueI18n({
-	locale: hasLanguageInStorage() ? getLanguageFromStorage() : 'en',
+	locale: hasLanguageInStorage() ? getLanguageFromStorage() : getBrowserLanguageOrEnglish(),
 	fallbackLocale: 'en',
 	messages: globalTranslations,
 	silentTranslationWarn: true
