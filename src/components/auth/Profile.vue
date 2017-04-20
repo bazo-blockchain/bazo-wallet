@@ -33,11 +33,15 @@ export default {
 	computed: {
 		user: function () {
 			return this.$store.state.user;
+		},
+		currentLanguage: function () {
+			return this.$locale.current();
 		}
 	},
 	methods: {
 		setLanguage: function (newLanguage) {
 			this.$locale.change(newLanguage);
+			this.$toasted.global.success(this.$t('toasts.languageSwitched', { language: this.$t('language.' + this.currentLanguage) }));
 		}
 	},
 	i18n: {

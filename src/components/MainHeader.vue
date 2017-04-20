@@ -64,9 +64,6 @@ export default {
 		signout: Auth.logout
 	},
 	computed: {
-		currentLanguage: function () {
-			return this.$locale.current();
-		},
 		user: function () {
 			return this.$store.state.user;
 		}

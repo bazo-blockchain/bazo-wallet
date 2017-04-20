@@ -15,7 +15,8 @@
 			"forbidden": "You do not have the permission to access this site.",
 			"internalError": "An internal error occured. The page will be reloaded.",
 			"sessionExpired": "Your session has expired. Please sign in again.",
-			"pageNotFound": "404 - The page could not be found. You've been redirected."
+			"pageNotFound": "404 - The page could not be found. You've been redirected.",
+			"languageSwitched": "Your language setting has successfully been switched to {language}"
 		}
 	},
 	"de": {
@@ -34,7 +35,8 @@
 			"forbidden": "Sie verfügen nicht über die Berechtigung, diese Seite anzuzeigen.",
 			"internalError": "Ein interner Fehler ist aufgetreten. Die Seite wird automatisch neu geladen.",
 			"sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
-			"pageNotFound": "404 - Die Seite wurde nicht gefunden. Sie wurden weitergeleitet."
+			"pageNotFound": "404 - Die Seite wurde nicht gefunden. Sie wurden weitergeleitet.",
+			"languageSwitched": "Ihre Spracheinstellung wurde erfolgreich auf {language} geändert."
 		}
 	}
 }
