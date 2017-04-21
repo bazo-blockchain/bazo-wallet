@@ -37,10 +37,14 @@
 							{{ $t('header.signOut') }}
 						</b-dropdown-item>
 					</b-nav-item-dropdown>
-					
-					<b-nav-item v-else :to="{ name: 'login' }">
-						<i class="fa fa-sign-in"></i> {{ $t('header.signIn') }}
-					</b-nav-item>
+					<div v-else>
+						<b-nav-item :to="{ name: 'login' }" class="d-inline-block">
+							<i class="fa fa-sign-in"></i> {{ $t('header.signIn') }}
+						</b-nav-item>
+						<b-nav-item :to="{ name: 'registration' }" class="d-inline-block">
+							<i class="fa fa-user-plus"></i> {{ $t('header.register') }}
+						</b-nav-item>
+					</div>
 				</b-nav>
 			</b-collapse>
 		</div>
@@ -77,6 +81,7 @@ export default {
 				header: {
 					signIn: 'Sign In',
 					signOut: 'Sign Out',
+					register: 'Registration',
 					profile: 'Profile',
 					authenticated: 'Auth Page',
 					userAuthenticated: 'User Auth Page',
@@ -88,6 +93,7 @@ export default {
 				header: {
 					signIn: 'Anmelden',
 					signOut: 'Abmelden',
+					register: 'Registrieren',
 					profile: 'Profil',
 					authenticated: 'Auth Seite',
 					userAuthenticated: 'User-Auth Seite',

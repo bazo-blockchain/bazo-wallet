@@ -17,7 +17,7 @@
 			"sessionExpired": "Your session has expired. Please sign in again.",
 			"pageNotFound": "404 - The page could not be found. You've been redirected.",
 			"validationError": "Please fill out all fields correctly.",
-			"languageSwitched": "Your language setting has successfully been switched to {language}"
+			"languageSwitched": "Your language setting has successfully been switched to {language}."
 		}
 	},
 	"de": {
