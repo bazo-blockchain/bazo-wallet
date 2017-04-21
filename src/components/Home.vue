@@ -22,6 +22,10 @@ export default {
 			auth: Auth.auth
 		}
 	},
+	mounted: function () {
+		// if redirected from 404, header might not be visible (if before page was login, registration etc.)
+		this.$emit('toggle-header', true);
+	},
 	i18n: {
 		messages: {
 			en: {
