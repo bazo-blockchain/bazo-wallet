@@ -34,8 +34,9 @@
 </template>
 
 <script>
-import Http from '@/services/Http';
 import Router from '@/config/Router';
+import Http from '@/services/Http';
+import Util from '@/services/Util';
 
 export default {
 	name: 'registration',
@@ -51,19 +52,14 @@ export default {
 	},
 	computed: {
 		validEmail: function () {
-			return /^[_A-Za-z0-9-+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$/.test(this.email);
+			return Util.EMAIL_REGEX.test(this.email);
 		},
 		validPassword: function () {
-			if (this.password) {
-				return !(this.password.length < 6);
-			} else {
-				return false;
-			}
+			if (!this.password) { return false; }
+			return !(this.password.length < Util.PASSWORD_MIN_LENGTH);
 		},
 		validPasswordRepeat: function () {
-			if (!this.validPassword) {
-				return false;
-			}
+			if (!this.validPassword) { return false; }
 			return this.password === this.passwordRepeat;
 		},
 		validAcceptTerms: function () {
@@ -95,6 +91,8 @@ export default {
 				}, () => {
 					this.isLoading = false;
 				});
+			} else {
+				this.$toasted.global.warn(this.$t('toasts.validationError'));
 			}
 		}
 	},

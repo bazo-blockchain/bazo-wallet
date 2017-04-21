@@ -9,10 +9,10 @@
 			<hr>
 			<form>
 				<b-form-fieldset :label="$t('activation.email')">
-					<b-form-input v-model="email" type="email"></b-form-input>
+					<b-form-input v-model="emailInput" type="email" :class="{ 'form-error': !validEmail && formIsTouched }"></b-form-input>
 				</b-form-fieldset>
 				<b-form-fieldset :label="$t('activation.token')">
-					<b-form-input v-model="token" type="text"></b-form-input>
+					<b-form-input v-model="tokenInput" type="text" :class="{ 'form-error': !validToken && formIsTouched }"></b-form-input>
 				</b-form-fieldset>
 				<b-button @click.prevent="activate" :block="true" variant="primary" :disabled="isLoading">{{ $t('activation.submit') }}</b-button>
 			</form>
@@ -22,8 +22,9 @@
 </template>
 
 <script>
-import Http from '@/services/Http';
 import Router from '@/config/Router';
+import Http from '@/services/Http';
+import Util from '@/services/Util';
 
 export default {
 	name: 'activation',
@@ -31,7 +32,23 @@ export default {
 		return {
 			isLoading: false,
 			emailInput: '',
-			tokenInput: ''
+			tokenInput: '',
+			formIsTouched: false
+		}
+	},
+	computed: {
+		validEmail: function () {
+			return Util.EMAIL_REGEX.test(this.emailInput);
+		},
+		validToken: function () {
+			if (!this.tokenInput) { return false; }
+			return this.tokenInput.length === Util.TOKEN_LENGTH;
+		},
+		validForm: function () {
+			if (!this.formIsTouched) {
+				return true;
+			}
+			return this.validEmail && this.validToken;
 		}
 	},
 	props: [
@@ -52,7 +69,9 @@ export default {
 	},
 	methods: {
 		activate: function () {
-			if (this.token && this.token !== '') {
+			this.formIsTouched = true;
+
+			if (this.validForm) {
 				this.isLoading = true;
 				Http.activate({ email: this.emailInput, token: this.tokenInput }, true).then(() => {
 					this.$toasted.global.success(this.$t('activation.success'));
@@ -62,6 +81,8 @@ export default {
 					this.$toasted.global.warn(this.$t('activation.invalidToken'));
 					this.isLoading = false;
 				});
+			} else {
+				this.$toasted.global.warn(this.$t('toasts.validationError'))
 			}
 		}
 	},
