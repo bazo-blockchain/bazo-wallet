@@ -132,3 +132,23 @@ input[type=email].form-error {
 		box-shadow: 0 0 0 1px #fff, 0 0 0 3px $red-error-input-color;
 	}
 }
+
+/* add some shadow to the bootstrap popover */
+.popover {
+	box-shadow: 0 0 1em rgba(0,0,0,0.2);
+}
+
+/* some element may need more focus area, because they are too small */
+.increase-focus {
+	position: relative;
+	&:after {
+		content: "";
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 2em;
+		height: 2em;
+		z-index: 1061; /* 1 more than the popover */
+	}
+}

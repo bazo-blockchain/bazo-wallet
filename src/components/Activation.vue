@@ -11,8 +11,14 @@
 				<b-form-fieldset :label="$t('activation.email')">
 					<b-form-input v-model="emailInput" type="email" :class="{ 'form-error': !validEmail && formIsTouched }"></b-form-input>
 				</b-form-fieldset>
-				<b-form-fieldset :label="$t('activation.token')">
-					<b-form-input v-model="tokenInput" type="text" :class="{ 'form-error': !validToken && formIsTouched }"></b-form-input>
+				<b-form-fieldset>
+					<label class="col-form-label" for="activation-tokenInput">
+						{{ $t('activation.token') }}
+						<b-popover triggers="hover" :content="$t('activation.tokenInfo')">
+							<i class="fa fa-info-circle increase-focus"></i>
+						</b-popover>
+					</label>
+					<b-form-input v-model="tokenInput" id="activation-tokenInput" type="text" :class="{ 'form-error': !validToken && formIsTouched }"></b-form-input>
 				</b-form-fieldset>
 				<b-button @click.prevent="activate" :block="true" variant="primary" :disabled="isLoading">{{ $t('activation.submit') }}</b-button>
 			</form>
@@ -95,7 +101,8 @@ export default {
 					token: 'Activation Key',
 					submit: 'Activate',
 					success: 'You have been successfully activated. Please log in now.',
-					invalidToken: 'The provided activation key is incorrect.'
+					invalidToken: 'The provided activation key is incorrect.',
+					tokenInfo: '<i class="fa fa-envelope"></i> The activation key was sent to you by e-mail.'
 				}
 			},
 			de: {
@@ -105,10 +112,23 @@ export default {
 					token: 'Aktivierungsschlüssel',
 					submit: 'Aktivieren',
 					success: 'Sie haben Ihr Konto erfolgreich aktiviert. Bitte loggen Sie sich jetzt ein.',
-					invalidToken: 'Der Aktivierungsschlüssel ist inkorrekt.'
+					invalidToken: 'Der Aktivierungsschlüssel ist inkorrekt.',
+					tokenInfo: '<i class="fa fa-envelope"></i> Der Aktivierungsschlüssel wurde Ihnen per E-Mail zugeschickt.'
 				}
 			}
 		}
 	}
 };
 </script>
+
+<style lang="scss" scoped>
+label {
+	.fa {
+		cursor: help;
+		color: rgba(0,0,0,0.5);
+	}
+	> div {
+		display: inline-block;
+	}
+}
+</style>
