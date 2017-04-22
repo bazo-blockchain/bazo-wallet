@@ -152,3 +152,9 @@ input[type=email].form-error {
 		z-index: 1061; /* 1 more than the popover */
 	}
 }
+
+/* class to hide/deactivate button */
+.translucent {
+	opacity: 0.3;
+	filter: grayscale(80%);
+}

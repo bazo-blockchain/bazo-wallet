@@ -7,9 +7,10 @@ import Registration from '../components/Registration';
 import Login from '../components/Login';
 import Authenticated from '../components/auth/Authenticated';
 import UserAuthenticated from '../components/auth/user/UserAuthenticated';
-import AdminEvents from '../components/auth/admin/AdminEvents';
 import Profile from '../components/auth/Profile';
 import AdminAccounts from '../components/auth/admin/AdminAccounts';
+import AdminUserAccounts from '@/components/auth/admin/AdminUserAccounts';
+import AdminEvents from '../components/auth/admin/AdminEvents';
 import Translation from '../config/Translation';
 import ProgressBar from '../config/ProgressBar.js';
 
@@ -82,11 +83,16 @@ export default new VueRouter({
 		{ path: '/registration', name: 'registration', component: Registration },
 		{ path: '/activation/:email?/:token?', name: 'activation', component: Activation, props: true },
 		{ path: '/login', name: 'login', component: Login, beforeEnter: afterAuth },
+
 		{ path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: requireAuth },
-		{ path: '/auth/user/authenticated', name: 'user-authenticated', component: UserAuthenticated, beforeEnter: requireAuthAndUser },
 		{ path: '/auth/authenticated', name: 'authenticated', component: Authenticated, beforeEnter: requireAuth },
+
+		{ path: '/auth/user/authenticated', name: 'user-authenticated', component: UserAuthenticated, beforeEnter: requireAuthAndUser },
+
 		{ path: '/auth/admin/events', name: 'admin-events', component: AdminEvents, beforeEnter: requireAuthAndAdmin },
 		{ path: '/auth/admin/accounts', name: 'admin-accounts', component: AdminAccounts, beforeEnter: requireAuthAndAdmin },
+		{ path: '/auth/admin/user-accounts', name: 'admin-user-accounts', component: AdminUserAccounts, beforeEnter: requireAuthAndAdmin },
+
 		{ path: '*', name: 'everyOtherPage', component: Home, beforeEnter: error404 }
 	]
 });

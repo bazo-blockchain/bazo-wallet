@@ -24,6 +24,10 @@ const Http = {
 				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 	},
 
+	adminGetUserAccounts: function () {
+		return Vue.http.get(HOST + '/auth/admin/user-accounts');
+	},
+
 	adminGetAccounts: function () {
 		return Vue.http.get(HOST + '/auth/admin/accounts');
 	},

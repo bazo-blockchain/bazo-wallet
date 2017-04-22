@@ -166,10 +166,6 @@ export default {
 	.badge {
 		cursor: pointer;
 		padding: 0.4em 0.6em;
-		&.translucent {
-			opacity: 0.3;
-			filter: grayscale(80%);
-		}
 	}
 }
 .description-column {
