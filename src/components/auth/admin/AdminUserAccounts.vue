@@ -21,15 +21,18 @@
 							{{ item.value | moment("YYYY-MM-DD, HH:mm:ss") }}
 						</template>
 						<template slot="deleted" scope="item">
-							{{ item.value }}
+							<span v-html="item.value ? $t('adminUserAccounts.deletedYes') : $t('adminUserAccounts.deletedNo')"></span>
 						</template>
 						<template slot="userRole" scope="item">
-							<span style="display: none;">{{ item.value }}</span>
-							<span class="badge badge-primary" :class="{'translucent': item.value !== 'ADMIN'}">ADMIN</span>
-							<span class="badge badge-primary" :class="{'translucent': item.value !== 'USER'}">USER</span>
+							<span class="badge badge-primary">{{ item.value }}</span>
 						</template>
 						<template slot="balance" scope="item">
 							{{ item.value }}
+						</template>
+						<template slot="details" scope="item">
+							<b-button size="sm" :to="{ name: 'admin-user-accounts-detail', params: { email: item.item.email } }">
+								{{ $t('adminUserAccounts.detailsButton') }}
+							</b-button>
 						</template>
 					</b-table>
 		
@@ -80,6 +83,10 @@ export default {
 				balance: {
 					label: this.$t('adminUserAccounts.field.balance'),
 					sortable: true
+				},
+				details: {
+					label: this.$t('adminUserAccounts.field.details'),
+					sortable: false
 				}
 			};
 		}
@@ -108,24 +115,32 @@ export default {
 			en: {
 				adminUserAccounts: {
 					title: 'User account overview',
+					detailsButton: 'Details',
+					deletedYes: '<i class="fa fa-times fa-red"></i> Yes',
+					deletedNo: '<i class="fa fa-check fa-green"></i> No',
 					field: {
 						email: 'E-Mail',
 						creationDate: 'Creation Date',
 						deleted: 'Deleted?',
 						userRole: 'User Role',
-						balance: 'Balance'
+						balance: 'Balance',
+						details: 'Details'
 					}
 				}
 			},
 			de: {
 				adminUserAccounts: {
 					title: 'Benutzerkonten',
+					detailsButton: 'Details',
+					deletedYes: '<i class="fa fa-times fa-red"></i> Ja',
+					deletedNo: '<i class="fa fa-check fa-green"></i> Nein',
 					field: {
 						email: 'E-Mail',
 						creationDate: 'Erstelldatum',
 						deleted: 'Gelöscht?',
 						userRole: 'Benutzerrolle',
-						balance: 'Saldo'
+						balance: 'Saldo',
+						details: 'Details'
 					}
 				}
 			}
@@ -134,11 +149,3 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.badge {
-	cursor: pointer;
-	&.translucent {
-		opacity: 0.2;
-	}
-}
-</style>
