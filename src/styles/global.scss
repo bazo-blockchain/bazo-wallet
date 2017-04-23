@@ -158,3 +158,31 @@ input[type=email].form-error {
 	opacity: 0.3;
 	filter: grayscale(80%);
 }
+
+.display-1,
+.display-2,
+.display-3,
+.display-4,
+.display-5,
+.display-6,
+.display-7,
+.display-8 {
+	.text-muted {
+		font-weight: 300;
+	}
+}
+
+.fa {
+	&.fa-green {
+		color: #16a71a;
+	}
+	&.fa-red {
+		color: #d01b1b;
+	}
+}
+.btn {
+	cursor: pointer;
+	&.no-pointer {
+		cursor: default;
+	}
+}

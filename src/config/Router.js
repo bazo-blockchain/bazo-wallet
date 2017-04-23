@@ -10,6 +10,7 @@ import UserAuthenticated from '../components/auth/user/UserAuthenticated';
 import Profile from '../components/auth/Profile';
 import AdminAccounts from '../components/auth/admin/AdminAccounts';
 import AdminUserAccounts from '@/components/auth/admin/AdminUserAccounts';
+import AdminUserAccountsDetail from '@/components/auth/admin/AdminUserAccountsDetail';
 import AdminEvents from '../components/auth/admin/AdminEvents';
 import Translation from '../config/Translation';
 import ProgressBar from '../config/ProgressBar.js';
@@ -92,6 +93,7 @@ export default new VueRouter({
 		{ path: '/auth/admin/events', name: 'admin-events', component: AdminEvents, beforeEnter: requireAuthAndAdmin },
 		{ path: '/auth/admin/accounts', name: 'admin-accounts', component: AdminAccounts, beforeEnter: requireAuthAndAdmin },
 		{ path: '/auth/admin/user-accounts', name: 'admin-user-accounts', component: AdminUserAccounts, beforeEnter: requireAuthAndAdmin },
+		{ path: '/auth/admin/user-accounts-detail/:email', name: 'admin-user-accounts-detail', component: AdminUserAccountsDetail, props: true, beforeEnter: requireAuthAndAdmin },
 
 		{ path: '*', name: 'everyOtherPage', component: Home, beforeEnter: error404 }
 	]

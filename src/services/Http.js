@@ -24,6 +24,22 @@ const Http = {
 				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 	},
 
+	adminDeleteUser: function (email) {
+		const encodedEmail = window.encodeURIComponent(email);
+		return Vue.http.delete(HOST + '/auth/admin/user-accounts/' + encodedEmail);
+	},
+
+	adminSwitchUserRole: function (email) {
+		const encodedEmail = window.encodeURIComponent(email);
+		return Vue.http.post(HOST + '/auth/admin/user-accounts/' + encodedEmail + '/switch-role');
+	},
+
+	adminGetUserAccount: function (email, doNotIntercept) {
+		const encodedEmail = window.encodeURIComponent(email);
+		return Vue.http.get(HOST + '/auth/admin/user-accounts/' + encodedEmail,
+				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
+	},
+
 	adminGetUserAccounts: function () {
 		return Vue.http.get(HOST + '/auth/admin/user-accounts');
 	},
