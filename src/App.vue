@@ -3,7 +3,7 @@
 	<progress-bar></progress-bar>
 	<div v-if="initialLoadingComplete">
 		<main-header :shown="showHeader"></main-header>
-		<router-view v-on:toggle-header="toggleHeader"></router-view>
+		<router-view v-on:toggle-header="toggleHeader" v-on:set-body-background="setBodyBackground"></router-view>
 	</div>
 </div>
 </template>
@@ -27,6 +27,12 @@ export default {
 	methods: {
 		toggleHeader: function (show) {
 			this.showHeader = show;
+		},
+		setBodyBackground: function (color) {
+			if (color === 'dark') {
+				color = '#4e4e4e';
+			}
+			document.querySelector('body').style.background = color;
 		}
 	},
 	mounted: function () {

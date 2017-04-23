@@ -39,9 +39,11 @@ export default {
 	},
 	mounted: function () {
 		this.$emit('toggle-header', false);
+		this.$emit('set-body-background', 'dark');
 	},
 	beforeDestroy: function () {
 		this.$emit('toggle-header', true);
+		this.$emit('set-body-background', 'white');
 	},
 	methods: {
 		login: function () {
@@ -91,7 +93,6 @@ export default {
 .login-registration {
 	margin: 0;
 	width: 100%;
-	background: #4e4e4e;
 	padding-top: 20vh;
 	height: 100vh;
 	/* height with navbar: 

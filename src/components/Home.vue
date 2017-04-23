@@ -25,6 +25,7 @@ export default {
 	mounted: function () {
 		// if redirected from 404, header might not be visible (if before page was login, registration etc.)
 		this.$emit('toggle-header', true);
+		this.$emit('set-body-background', 'white');
 	},
 	i18n: {
 		messages: {

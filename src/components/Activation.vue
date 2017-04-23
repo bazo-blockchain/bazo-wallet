@@ -75,12 +75,14 @@ export default {
 		this.tokenInput = this.token;
 
 		this.$emit('toggle-header', false);
+		this.$emit('set-body-background', 'dark');
 		if (this.emailInput && this.tokenInput) {
 			this.activate();
 		}
 	},
 	beforeDestory: function () {
 		this.$emit('toggle-header', true);
+		this.$emit('set-body-background', 'white');
 	},
 	methods: {
 		activate: function () {
