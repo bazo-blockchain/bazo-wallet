@@ -12,11 +12,11 @@
 							</b-form-select>
 						</b-form-fieldset>
 						<b-form-fieldset horizontal label="Search" class="col-6" :label-size="2">
-							<b-form-input v-model="filter" placeholder="Type to Search"></b-form-input>
+							<b-form-input placeholder="Type to Search"></b-form-input>
 						</b-form-fieldset>
 					</div>
 		
-					<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter">
+					<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage">
 						<template slot="timeCreated" scope="item">
 							{{ item.value | moment("YYYY-MM-DD, HH:mm:ss") }}
 						</template>
@@ -70,41 +70,44 @@ export default {
 			isLoading: false,
 			items: [],
 			currentPage: 1,
-			perPage: 10,
-			filter: null,
-			fields: {
+			perPage: 10
+		};
+	},
+	computed: {
+		fields: function () {
+			return {
 				timeCreated: {
-					label: 'Created',
+					label: this.$t('adminAccounts.fields.timeCreated'),
 					sortable: true
 				},
 				privateKeyServer: {
-					label: 'Private Key Server',
+					label: this.$t('adminAccounts.fields.privateKeyServer'),
 					sortable: true
 				},
 				publicKeyServer: {
-					label: 'Public Key Server',
+					label: this.$t('adminAccounts.fields.publicKeyServer'),
 					sortable: true
 				},
 				publicKeyClient: {
-					label: 'Public Key Client',
+					label: this.$t('adminAccounts.fields.publicKeyClient'),
 					sortable: true
 				},
 				satoshiBalance: {
-					label: 'Satoshi Balance',
+					label: this.$t('adminAccounts.fields.satoshiBalance'),
 					sortable: true
 				},
 				virtualBalance: {
-					label: 'Virtual Balance',
+					label: this.$t('adminAccounts.fields.virtualBalance'),
 					sortable: true
 				},
 				totalBalance: {
-					label: 'Total Balance'
+					label: this.$t('adminAccounts.fields.totalBalance')
 				},
 				actions: {
-					label: 'Actions'
+					label: this.$t('adminAccounts.fields.actions')
 				}
-			}
-		};
+			};
+		}
 	},
 	mounted: function () {
 		this.updateData();
@@ -131,14 +134,34 @@ export default {
 				adminAccounts: {
 					title: 'Account overview',
 					noEntryAvailableTitle: 'Attention:',
-					noEntryAvailable: 'There is currently no account available.'
+					noEntryAvailable: 'There is currently no account available.',
+					fields: {
+						timeCreated: 'Created at',
+						privateKeyServer: 'Private Key Server',
+						publicKeyServer: 'Public Key Server',
+						publicKeyClient: 'Public Key Client',
+						satoshiBalance: 'Satoshi Balance',
+						virtualBalance: 'Virtual Balance',
+						totalBalance: 'Total Balance',
+						actions: 'Actions'
+					}
 				}
 			},
 			de: {
 				adminAccounts: {
 					title: 'Kontoübersicht',
 					noEntryAvailableTitle: 'Achtung:',
-					noEntryAvailable: 'Derzeit ist kein Konto verfügbar.'
+					noEntryAvailable: 'Derzeit ist kein Konto verfügbar.',
+					fields: {
+						timeCreated: 'Erstellt am',
+						privateKeyServer: 'Private Key Server',
+						publicKeyServer: 'Public Key Server',
+						publicKeyClient: 'Public Key Client',
+						satoshiBalance: 'Satoshi Saldo',
+						virtualBalance: 'Virtuelles Saldo',
+						totalBalance: 'Gesamtsaldo',
+						actions: 'Aktionen'
+					}
 				}
 			}
 		}
