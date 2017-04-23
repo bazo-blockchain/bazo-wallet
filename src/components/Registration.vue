@@ -74,9 +74,11 @@ export default {
 	},
 	mounted: function () {
 		this.$emit('toggle-header', false);
+		this.$emit('set-body-background', 'dark');
 	},
 	beforeDestroy: function () {
 		this.$emit('toggle-header', true);
+		this.$emit('set-body-background', 'white');
 	},
 	methods: {
 		register: function () {
@@ -84,11 +86,17 @@ export default {
 
 			if (this.validForm) {
 				this.isLoading = true;
-				Http.register({ email: this.email, password: this.password }).then((response) => {
+				Http.register({ email: this.email, password: this.password }, true).then((response) => {
 					this.isLoading = false;
 					this.$toasted.global.success(this.$t('registration.success'), { duration: 10000 });
 					Router.push({ name: 'activation', params: { email: this.email } });
-				}, () => {
+				}, (response) => {
+					// user already exists on 403
+					if (response.status === 403) {
+						this.$toasted.global.warn(this.$t('registration.userAlreadyExistsError'));
+					} else {
+						this.$toasted.global.warn(this.$t('toasts.validationError'));
+					}
 					this.isLoading = false;
 				});
 			} else {
@@ -107,7 +115,8 @@ export default {
 					acceptTerms1: 'I accept the',
 					acceptTerms2: 'terms and conditions',
 					submit: 'Register',
-					success: '<b>Please check your e-mails for the activation key.</b>'
+					success: '<b>Please check your e-mails for the activation key.</b>',
+					userAlreadyExistsError: 'A user with this e-mail address already exists.'
 				}
 			},
 			de: {
@@ -119,7 +128,8 @@ export default {
 					acceptTerms1: 'Ich akzeptiere die',
 					acceptTerms2: 'AGBs',
 					submit: 'Registrieren',
-					success: '<b>Bitte entnehmen Sie den Aktivierungsschlüssel Ihren E-Mails.</b>'
+					success: '<b>Bitte entnehmen Sie den Aktivierungsschlüssel Ihren E-Mails.</b>',
+					userAlreadyExistsError: 'Diese E-Mail-Adresse wird bereits verwendet.'
 				}
 			}
 		}
