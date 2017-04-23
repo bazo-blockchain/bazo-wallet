@@ -57,10 +57,19 @@ export default {
 			return this.validEmail && this.validToken;
 		}
 	},
-	props: [
-		'email',
-		'token'
-	],
+	props: {
+		email: String,
+		token: String
+	},
+	watch: {
+		// necessary, if somebody changes the URL, and the view is not rerendered completely
+		email: function () {
+			this.emailInput = this.email;
+		},
+		token: function () {
+			this.tokenInput = this.token;
+		}
+	},
 	mounted: function () {
 		this.emailInput = this.email;
 		this.tokenInput = this.token;
