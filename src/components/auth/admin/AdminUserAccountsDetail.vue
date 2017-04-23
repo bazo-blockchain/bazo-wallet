@@ -35,8 +35,12 @@
 						<td>
 							<span v-html="userAccount.deleted ? $t('adminUserAccountsDetail.deletedYes') : $t('adminUserAccountsDetail.deletedNo')"></span>
 							<button v-if="!userAccount.deleted && !userIsViewingHimself" class="btn btn-danger btn-sm" @click="deleteUser">
-								<i class="fa fa-ban"></i>
+								<i class="fa fa-times"></i>
 								{{ $t('adminUserAccountsDetail.deleteButton') }}
+							</button>
+							<button v-if="userAccount.deleted && !userIsViewingHimself" class="btn btn-success btn-sm" @click="undeleteUser">
+								<i class="fa fa-undo"></i>
+								{{ $t('adminUserAccountsDetail.undeleteButton') }}
 							</button>
 						</td>
 					</tr>
@@ -109,6 +113,16 @@ export default {
 				this.$toasted.global.error(this.$t('adminUserAccountsDetail.error'));
 				this.loadData();
 			});
+		},
+		undeleteUser: function () {
+			this.isLoading = true;
+			Http.adminUndeleteUser(this.email).then(() => {
+				this.$toasted.global.success(this.$t('adminUserAccountsDetail.successUndelete'));
+				this.loadData();
+			}, () => {
+				this.$toasted.global.error(this.$t('adminUserAccountsDetail.error'));
+				this.loadData();
+			});
 		}
 	},
 	i18n: {
@@ -117,6 +131,7 @@ export default {
 				adminUserAccountsDetail: {
 					title: 'User Account',
 					deleteButton: 'Delete!',
+					undeleteButton: 'Undo',
 					deletedYes: '<i class="fa fa-times fa-red"></i> Yes',
 					deletedNo: '<i class="fa fa-check fa-green"></i> No',
 					noUserFoundTitle: 'Attention:',
@@ -124,6 +139,7 @@ export default {
 					error: 'An error occurred. Please try it again later.',
 					successRoleChange: 'The user role was successfully changed.',
 					successDelete: 'The user was successfully marked as deleted.',
+					successUndelete: 'The user was successfully marked as&nbsp;<b>not</b>&nbsp;deleted.',
 					fields: {
 						email: 'E-Mail',
 						userRole: 'User Role',
@@ -137,6 +153,7 @@ export default {
 				adminUserAccountsDetail: {
 					title: 'Benutzerkonto',
 					deleteButton: 'Löschen!',
+					undeleteButton: 'Rückgängig machen',
 					deletedYes: '<i class="fa fa-times fa-red"></i> Ja',
 					deletedNo: '<i class="fa fa-check fa-green"></i> Nein',
 					noUserFoundTitle: 'Achtung:',
@@ -144,6 +161,7 @@ export default {
 					error: 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
 					successRoleChange: 'Die Benutzerrolle wurde erfolgreich gewechselt.',
 					successDelete: 'Der Benutzer wurde erfolgreich als gelöscht markiert.',
+					successUndelete: 'Der Benutzer wurde erfolgreich als&nbsp;<b>nicht</b>&nbsp;gelöscht markiert.',
 					fields: {
 						email: 'E-Mail Adresse',
 						userRole: 'Benutzerrolle',
@@ -172,7 +190,8 @@ export default {
 		opacity: 0.2;
 	}
 }
-.btn.btn-danger {
+.btn.btn-danger,
+.btn.btn-success {
 	margin-left: 40px;
 }
 </style>

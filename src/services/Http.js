@@ -26,7 +26,12 @@ const Http = {
 
 	adminDeleteUser: function (email) {
 		const encodedEmail = window.encodeURIComponent(email);
-		return Vue.http.delete(HOST + '/auth/admin/user-accounts/' + encodedEmail);
+		return Vue.http.delete(HOST + '/auth/admin/user-accounts/' + encodedEmail + '/delete');
+	},
+
+	adminUndeleteUser: function (email) {
+		const encodedEmail = window.encodeURIComponent(email);
+		return Vue.http.put(HOST + '/auth/admin/user-accounts/' + encodedEmail + '/undelete')
 	},
 
 	adminSwitchUserRole: function (email) {
