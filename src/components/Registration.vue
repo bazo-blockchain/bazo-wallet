@@ -89,7 +89,7 @@ export default {
 				Http.register({ email: this.email, password: this.password }, true).then((response) => {
 					this.isLoading = false;
 					this.$toasted.global.success(this.$t('registration.success'), { duration: 10000 });
-					Router.push({ name: 'activation', params: { email: this.email } });
+					Router.push({ name: 'home' });
 				}, (response) => {
 					// user already exists on 403
 					if (response.status === 403) {

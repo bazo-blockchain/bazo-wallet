@@ -3,6 +3,8 @@ import VueRouter from 'vue-router';
 import Home from '../components/Home';
 import Hello from '../components/Hello';
 import Activation from '../components/Activation';
+import PasswordForgotten from '../components/PasswordForgotten';
+import PasswordForgottenVerification from '../components/PasswordForgottenVerification';
 import Registration from '../components/Registration';
 import Login from '../components/Login';
 import Authenticated from '../components/auth/Authenticated';
@@ -82,6 +84,8 @@ export default new VueRouter({
 		{ path: '/', name: 'home', component: Home },
 		{ path: '/hello', name: 'hello', component: Hello },
 		{ path: '/registration', name: 'registration', component: Registration },
+		{ path: '/password-forgotten', name: 'password-forgotten', component: PasswordForgotten },
+		{ path: '/password-forgotten-verification/:email?/:token?', name: 'password-forgotten-verification', component: PasswordForgottenVerification, props: true },
 		{ path: '/activation/:email?/:token?', name: 'activation', component: Activation, props: true },
 		{ path: '/login', name: 'login', component: Login, beforeEnter: afterAuth },
 

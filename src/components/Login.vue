@@ -17,7 +17,7 @@
 				<b-button @click.prevent="login" :block="true" variant="primary" :disabled="isLoading">{{ $t('login.submit') }}</b-button>
 			</form>
 			<div class="links-below">
-				<a class="forgot-password" href @click.prevent="forgotPassword">{{ $t('login.forgotPassword') }}</a>
+				<router-link :to="{ name: 'password-forgotten' }" class="forgot-password">{{ $t('login.forgotPassword') }}</router-link>
 				<router-link :to="{ name: 'registration' }" class="sign-up">{{ $t('login.signUp') }}</router-link>
 			</div>
 		</div>
@@ -55,9 +55,6 @@ export default {
 					this.isLoading = false;
 				});
 			}
-		},
-		forgotPassword: function () {
-			console.log('forgot password');
 		}
 	},
 	i18n: {
