@@ -17,7 +17,8 @@
 			"sessionExpired": "Your session has expired. Please sign in again.",
 			"pageNotFound": "404 - The page could not be found. You've been redirected.",
 			"validationError": "Please fill out all fields correctly.",
-			"languageSwitched": "Your language setting has successfully been switched to {language}."
+			"languageSwitched": "Your language setting has successfully been switched to {language}.",
+			"userIsDeletedError": "Your user account was deleted. Please contact the administrator."
 		}
 	},
 	"de": {
@@ -38,7 +39,8 @@
 			"sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
 			"pageNotFound": "404 - Die Seite wurde nicht gefunden. Sie wurden weitergeleitet.",
 			"validationError": "Bitte füllen Sie alle Felder korrekt aus.",
-			"languageSwitched": "Ihre Spracheinstellung wurde erfolgreich auf {language} geändert."
+			"languageSwitched": "Ihre Spracheinstellung wurde erfolgreich auf {language} geändert.",
+			"userIsDeletedError": "Dieses Benutzerkonto wurde deaktiviert. Bitte kontaktieren Sie den Administrator."
 		}
 	}
 }

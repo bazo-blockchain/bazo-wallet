@@ -27,7 +27,9 @@ const Auth = {
 					}
 				});
 			}, response => {
-				if (/^4/.test(response.status.toString())) {
+				if (response.status === 406) {
+					Vue.toasted.global.error(Translation.t('toasts.userIsDeletedError'));
+				} else if (/^4/.test(response.status.toString())) {
 					Vue.toasted.global.warn(Translation.t('toasts.wrongPassword'));
 				}
 			});
