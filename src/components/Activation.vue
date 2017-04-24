@@ -95,11 +95,11 @@ export default {
 					this.isLoading = false;
 					Router.push({ path: '/login' });
 				}, () => {
-					this.$toasted.global.warn(this.$t('activation.invalidToken'));
+					this.$toasted.global.warn(this.$t('activation.invalidTokenOrEmail'));
 					this.isLoading = false;
 				});
 			} else {
-				this.$toasted.global.warn(this.$t('toasts.validationError'))
+				this.$toasted.global.warn(this.$t('toasts.validationError'));
 			}
 		}
 	},
@@ -112,7 +112,7 @@ export default {
 					token: 'Activation Key',
 					submit: 'Activate',
 					success: 'You have been successfully activated. Please log in now.',
-					invalidToken: 'The provided activation key is incorrect.',
+					invalidTokenOrEmail: 'The provided activation key or e-mail address is incorrect.',
 					tokenInfo: '<i class="fa fa-envelope"></i> The activation key was sent to you by e-mail.'
 				}
 			},
@@ -123,7 +123,7 @@ export default {
 					token: 'Aktivierungsschlüssel',
 					submit: 'Aktivieren',
 					success: 'Sie haben Ihr Konto erfolgreich aktiviert. Bitte loggen Sie sich jetzt ein.',
-					invalidToken: 'Der Aktivierungsschlüssel ist inkorrekt.',
+					invalidTokenOrEmail: 'Der Aktivierungsschlüssel oder die E-Mail Adresse ist inkorrekt.',
 					tokenInfo: '<i class="fa fa-envelope"></i> Der Aktivierungsschlüssel wurde Ihnen per E-Mail zugeschickt.'
 				}
 			}
