@@ -93,7 +93,7 @@ export default {
 .login-registration {
 	margin: 0;
 	width: 100%;
-	padding-top: 20vh;
+	padding-top: 10vh;
 	height: 100vh;
 	/* height with navbar: 
 	height: calc(100vh - #{$navbarHeight}); */
