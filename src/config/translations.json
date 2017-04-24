@@ -18,7 +18,7 @@
 			"pageNotFound": "404 - The page could not be found. You've been redirected.",
 			"validationError": "Please fill out all fields correctly.",
 			"languageSwitched": "Your language setting has successfully been switched to {language}.",
-			"userIsDeletedError": "Your user account was deleted. Please contact the administrator."
+			"userIsDeletedError": "This user account was deleted. Please contact the administrator."
 		}
 	},
 	"de": {

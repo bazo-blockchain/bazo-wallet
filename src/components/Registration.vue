@@ -94,6 +94,9 @@ export default {
 					// user already exists on 403
 					if (response.status === 403) {
 						this.$toasted.global.warn(this.$t('registration.userAlreadyExistsError'));
+					// user exists but was deleted on 406
+					} else if (response.status === 406) {
+						this.$toasted.global.error(this.$t('toasts.userIsDeletedError'));
 					} else {
 						this.$toasted.global.warn(this.$t('toasts.validationError'));
 					}
