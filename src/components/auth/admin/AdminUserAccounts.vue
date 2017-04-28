@@ -18,7 +18,7 @@
 							{{ item.value }}
 						</template>
 						<template slot="creationDate" scope="item">
-							{{ item.value | moment("YYYY-MM-DD, HH:mm:ss") }}
+							{{ item.value | moment(dateFormat) }}
 						</template>
 						<template slot="deleted" scope="item">
 							<span v-html="item.value ? $t('adminUserAccounts.deletedYes') : $t('adminUserAccounts.deletedNo')"></span>
@@ -49,6 +49,7 @@
 
 <script>
 import Http from '../../../services/Http';
+import Util from '@/services/Util';
 
 export default {
 	name: 'admin-accounts',
@@ -89,6 +90,9 @@ export default {
 					sortable: false
 				}
 			};
+		},
+		dateFormat: function () {
+			return Util.DATE_FORMAT;
 		}
 	},
 	mounted: function () {

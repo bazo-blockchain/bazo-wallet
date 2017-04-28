@@ -24,7 +24,7 @@
 					</tr>
 					<tr>
 						<th scope="row">{{ $t('adminUserAccountsDetail.fields.creationDate') }}</th>
-						<td>{{ userAccount.creationDate | moment("YYYY-MM-DD, HH:mm:ss") }}</td>
+						<td>{{ userAccount.creationDate | moment(dateFormat) }}</td>
 					</tr>
 					<tr>
 						<th scope="row">{{ $t('adminUserAccountsDetail.fields.balance') }}</th>
@@ -57,6 +57,7 @@
 
 <script>
 import Http from '@/services/Http';
+import Util from '@/services/Util';
 
 export default {
 	name: 'admin-user-accounts-detail',
@@ -72,6 +73,9 @@ export default {
 	computed: {
 		userIsViewingHimself: function () {
 			return this.$store.state.user.email === this.userAccount.email;
+		},
+		dateFormat: function () {
+			return Util.DATE_FORMAT;
 		}
 	},
 	watch: {

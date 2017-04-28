@@ -30,7 +30,7 @@
 					</template>
 					<template slot="date" scope="item">
 						<div class="nowrap">
-							{{ item.value | moment("YYYY-MM-DD, HH:mm:ss") }}
+							{{ item.value | moment(dateFormat) }}
 						</div>
 					</template>
 					<template slot="type" scope="item">
@@ -60,6 +60,7 @@
 
 <script>
 import Http from '../../../services/Http';
+import Util from '@/services/Util';
 
 export default {
 	name: 'test',
@@ -99,6 +100,11 @@ export default {
 					sortable: false
 				}
 			}
+		}
+	},
+	computed: {
+		dateFormat: function () {
+			return Util.DATE_FORMAT;
 		}
 	},
 	methods: {

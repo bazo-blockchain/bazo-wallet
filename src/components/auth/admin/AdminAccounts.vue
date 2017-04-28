@@ -18,7 +18,7 @@
 		
 					<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage">
 						<template slot="timeCreated" scope="item">
-							{{ item.value | moment("YYYY-MM-DD, HH:mm:ss") }}
+							{{ item.value | moment(dateFormat) }}
 						</template>
 						<template slot="privateKeyServer" scope="item">
 							{{ item.value }}
@@ -62,6 +62,7 @@
 
 <script>
 import Http from '../../../services/Http';
+import Util from '../../../services/Util';
 
 export default {
 	name: 'admin-accounts',
@@ -107,6 +108,9 @@ export default {
 					label: this.$t('adminAccounts.fields.actions')
 				}
 			};
+		},
+		dateFormat: function () {
+			return Util.DATE_FORMAT;
 		}
 	},
 	mounted: function () {
