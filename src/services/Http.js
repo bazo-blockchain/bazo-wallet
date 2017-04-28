@@ -35,6 +35,14 @@ const Http = {
 				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 	},
 
+	getForexCurrent: function (currency) {
+		return Vue.http.get(HOST + '/forex/exchange-rate/bitcoin/current/' + currency);
+	},
+
+	getForexHistory: function (currency) {
+		return Vue.http.get(HOST + '/forex/exchange-rate/bitcoin/history/' + currency);
+	},
+
 	adminDeleteUser: function (email) {
 		const encodedEmail = window.encodeURIComponent(email);
 		return Vue.http.delete(HOST + '/auth/admin/user-accounts/' + encodedEmail + '/delete');

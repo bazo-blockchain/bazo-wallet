@@ -9,7 +9,10 @@
 			</b-link>
 
 			<b-collapse is-nav id="nav_collapse">
-
+				
+				<b-nav is-nav-bar>
+					<b-nav-item :to="{ name: 'forex' }">{{ $t('header.forex') }}</b-nav-item>
+				</b-nav>
 				<b-nav is-nav-bar v-if="auth.authenticated && auth.role === 'ROLE_ADMIN'">
 					<b-nav-item :to="{ name: 'admin-accounts' }">{{ $t('header.adminAccounts') }}</b-nav-item>
 					<b-nav-item :to="{ name: 'admin-events' }">{{ $t('header.adminEvents') }}</b-nav-item>
@@ -84,6 +87,7 @@ export default {
 					signOut: 'Sign Out',
 					register: 'Registration',
 					profile: 'Profile',
+					forex: 'Market trend',
 					authenticated: 'Auth Page',
 					userAuthenticated: 'User Auth Page',
 					adminEvents: 'Events',
@@ -97,6 +101,7 @@ export default {
 					signOut: 'Abmelden',
 					register: 'Registrieren',
 					profile: 'Profil',
+					forex: 'Kursentwicklung',
 					authenticated: 'Auth Seite',
 					userAuthenticated: 'User-Auth Seite',
 					adminEvents: 'Events',

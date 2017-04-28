@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../components/Home';
 import Hello from '../components/Hello';
+import Forex from '@/components/Forex';
 import Activation from '../components/Activation';
 import PasswordForgotten from '../components/PasswordForgotten';
 import PasswordForgottenVerification from '../components/PasswordForgottenVerification';
@@ -82,12 +83,14 @@ const hideProgressBar = () => {
 export default new VueRouter({
 	routes: [
 		{ path: '/', name: 'home', component: Home },
-		{ path: '/hello', name: 'hello', component: Hello },
 		{ path: '/registration', name: 'registration', component: Registration },
 		{ path: '/password-forgotten', name: 'password-forgotten', component: PasswordForgotten },
 		{ path: '/password-forgotten-verification/:email?/:token?', name: 'password-forgotten-verification', component: PasswordForgottenVerification, props: true },
 		{ path: '/activation/:email?/:token?', name: 'activation', component: Activation, props: true },
 		{ path: '/login', name: 'login', component: Login, beforeEnter: afterAuth },
+
+		{ path: '/hello', name: 'hello', component: Hello },
+		{ path: '/forex', name: 'forex', component: Forex },
 
 		{ path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: requireAuth },
 		{ path: '/auth/authenticated', name: 'authenticated', component: Authenticated, beforeEnter: requireAuth },
