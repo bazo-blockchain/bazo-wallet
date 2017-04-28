@@ -16,10 +16,10 @@
 					<tr>
 						<th scope="row">{{ $t('adminUserAccountsDetail.fields.userRole') }}</th>
 						<td>
-							<button class="btn btn-sm btn-primary translucent" @click="switchRole" v-if="userAccount.userRole !== 'ADMIN' && !userIsViewingHimself">ADMIN</button>
-							<button class="btn btn-sm btn-primary no-pointer" v-if="userAccount.userRole === 'ADMIN'">ADMIN</button>
-							<button class="btn btn-sm btn-primary translucent" @click="switchRole" v-if="userAccount.userRole !== 'USER' && !userIsViewingHimself">USER</button>
-							<button class="btn btn-sm btn-primary no-pointer" v-if="userAccount.userRole === 'USER'">USER</button>
+							<button class="btn btn-sm btn-primary translucent" @click="switchRole" v-if="userAccount.userRole !== 'ROLE_ADMIN' && !userIsViewingHimself">ADMIN</button>
+							<button class="btn btn-sm btn-primary no-pointer" v-if="userAccount.userRole === 'ROLE_ADMIN'">ADMIN</button>
+							<button class="btn btn-sm btn-primary translucent" @click="switchRole" v-if="userAccount.userRole !== 'ROLE_USER' && !userIsViewingHimself">USER</button>
+							<button class="btn btn-sm btn-primary no-pointer" v-if="userAccount.userRole === 'ROLE_USER'">USER</button>
 						</td>
 					</tr>
 					<tr>
