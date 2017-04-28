@@ -25,6 +25,7 @@
 				<div class="chart-container" data-tz2u8w97hwptfwl3y57ywguux></div>
 			</div>
 			<div class="alert alert-warning" v-else>{{ $t('forex.errorHistory') }}</div>
+			<div class="powered-by">Powered by <a href="http://www.coindesk.com/price/" target="_blank">CoinDesk</a></div>
 		</div>
 	</div>
 </div>
@@ -162,6 +163,12 @@ export default {
 }
 .chart-container {
 	padding: 30px 20px;
+}
+.powered-by {
+	font-size: 12px;
+	text-align: right;
+	margin-top: 10px;
+	margin-right: 30px;
 }
 
 @media screen and (max-width: 1000px) {
