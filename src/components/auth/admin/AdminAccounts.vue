@@ -11,23 +11,14 @@
 							<b-form-select :options="[{text:10,value:10},{text:20,value:20},{text:50,value:50}]" v-model="perPage">
 							</b-form-select>
 						</b-form-fieldset>
-						<b-form-fieldset horizontal label="Search" class="col-6" :label-size="2">
-							<b-form-input placeholder="Type to Search"></b-form-input>
-						</b-form-fieldset>
 					</div>
 		
 					<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage">
 						<template slot="timeCreated" scope="item">
 							{{ item.value | moment(dateFormat) }}
 						</template>
-						<template slot="privateKeyServer" scope="item">
-							{{ item.value }}
-						</template>
-						<template slot="publicKeyServer" scope="item">
-							{{ item.value }}
-						</template>
 						<template slot="publicKeyClient" scope="item">
-							{{ item.value }}
+							<span class="short-key">{{ item.value }}</span>
 						</template>
 						<template slot="satoshiBalance" scope="item">
 							{{ item.value }}
@@ -39,7 +30,7 @@
 							{{ item.value }}
 						</template>
 						<template slot="actions" scope="item">
-							<b-btn size="sm" @click="details(item.item)">Details</b-btn>
+							<b-btn size="sm" :to="{ name: 'admin-accounts-detail', params: { publicKeyClient: item.item.publicKeyClient } }">Details</b-btn>
 						</template>
 					</b-table>
 		
@@ -79,14 +70,6 @@ export default {
 			return {
 				timeCreated: {
 					label: this.$t('adminAccounts.fields.timeCreated'),
-					sortable: true
-				},
-				privateKeyServer: {
-					label: this.$t('adminAccounts.fields.privateKeyServer'),
-					sortable: true
-				},
-				publicKeyServer: {
-					label: this.$t('adminAccounts.fields.publicKeyServer'),
 					sortable: true
 				},
 				publicKeyClient: {
@@ -141,8 +124,6 @@ export default {
 					noEntryAvailable: 'There is currently no account available.',
 					fields: {
 						timeCreated: 'Created at',
-						privateKeyServer: 'Private Key Server',
-						publicKeyServer: 'Public Key Server',
 						publicKeyClient: 'Public Key Client',
 						satoshiBalance: 'Satoshi Balance',
 						virtualBalance: 'Virtual Balance',
@@ -158,8 +139,6 @@ export default {
 					noEntryAvailable: 'Derzeit ist kein Konto verfügbar.',
 					fields: {
 						timeCreated: 'Erstellt am',
-						privateKeyServer: 'Private Key Server',
-						publicKeyServer: 'Public Key Server',
 						publicKeyClient: 'Public Key Client',
 						satoshiBalance: 'Satoshi Saldo',
 						virtualBalance: 'Virtuelles Saldo',

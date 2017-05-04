@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Mono:300,400|Roboto:300,400,400i,500);
 
 body {
 	margin: 0;
@@ -185,4 +185,21 @@ input[type=email].form-error {
 	&.no-pointer {
 		cursor: default;
 	}
+}
+
+.key,
+.short-key,
+.short-key-extended {
+	width: 6em;
+	text-overflow: ellipsis;
+	display: inline-block;
+	white-space: nowrap;
+	overflow: hidden;
+	font-family: 'Roboto Mono', monospace;
+}
+.short-key-extended {
+	width: 9em;
+}
+.key {
+	width: auto;
 }
