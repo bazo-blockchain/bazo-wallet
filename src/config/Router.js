@@ -11,6 +11,7 @@ import Login from '../components/Login';
 import Authenticated from '../components/auth/Authenticated';
 import UserAuthenticated from '../components/auth/user/UserAuthenticated';
 import Profile from '../components/auth/Profile';
+import AdminServerBalance from '../components/auth/admin/AdminServerBalance';
 import AdminAccountsDetail from '../components/auth/admin/AdminAccountsDetail';
 import AdminAccounts from '../components/auth/admin/AdminAccounts';
 import AdminUserAccounts from '@/components/auth/admin/AdminUserAccounts';
@@ -99,6 +100,7 @@ export default new VueRouter({
 		{ path: '/auth/user/authenticated', name: 'user-authenticated', component: UserAuthenticated, beforeEnter: requireAuthAndUser },
 
 		{ path: '/auth/admin/events', name: 'admin-events', component: AdminEvents, beforeEnter: requireAuthAndAdmin },
+		{ path: '/auth/admin/server-balance', name: 'admin-server-balance', component: AdminServerBalance, beforeEnter: requireAuthAndAdmin },
 		{ path: '/auth/admin/accounts', name: 'admin-accounts', component: AdminAccounts, beforeEnter: requireAuthAndAdmin },
 		{ path: '/auth/admin/accounts-detail/:publicKeyClient', name: 'admin-accounts-detail', component: AdminAccountsDetail, props: true, beforeEnter: requireAuthAndAdmin },
 		{ path: '/auth/admin/user-accounts', name: 'admin-user-accounts', component: AdminUserAccounts, beforeEnter: requireAuthAndAdmin },

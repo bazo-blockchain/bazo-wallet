@@ -17,6 +17,7 @@
 					<b-nav-item :to="{ name: 'admin-accounts' }">{{ $t('header.adminAccounts') }}</b-nav-item>
 					<b-nav-item :to="{ name: 'admin-events' }">{{ $t('header.adminEvents') }}</b-nav-item>
 					<b-nav-item :to="{ name: 'admin-user-accounts' }">{{ $t('header.adminUserAccounts') }}</b-nav-item>
+					<b-nav-item :to="{ name: 'admin-server-balance' }">{{ $t('header.adminServerBalance') }}</b-nav-item>
 				</b-nav>
 				<b-nav is-nav-bar v-if="auth.authenticated && auth.role === 'ROLE_USER'">
 					<b-nav-item :to="{ name: 'authenticated' }"><small>{{ $t('header.authenticated') }}</small></b-nav-item>
@@ -92,7 +93,8 @@ export default {
 					userAuthenticated: 'User Auth Page',
 					adminEvents: 'Events',
 					adminAccounts: 'Accounts',
-					adminUserAccounts: 'User Accounts'
+					adminUserAccounts: 'User Accounts',
+					adminServerBalance: 'Server Balance'
 				}
 			},
 			de: {
@@ -106,7 +108,8 @@ export default {
 					userAuthenticated: 'User-Auth Seite',
 					adminEvents: 'Events',
 					adminAccounts: 'Konten',
-					adminUserAccounts: 'Benutzerkonten'
+					adminUserAccounts: 'Benutzerkonten',
+					adminServerBalance: 'Server Balance'
 				}
 			}
 		}

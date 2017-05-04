@@ -74,6 +74,10 @@ const Http = {
 
 	adminGetEvents: function (urgence) {
 		return Vue.http.get(HOST + '/auth/admin/events', { params: { urgence } });
+	},
+
+	adminGetServerBalance: function () {
+		return Vue.http.get(HOST + '/auth/admin/server-balance');
 	}
 
 };

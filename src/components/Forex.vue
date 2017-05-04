@@ -8,7 +8,7 @@
 				<label>{{ $t('forex.selectCurrency') }}: </label>
 				<b-form-select v-model="selectedCurrency" :options="['USD', 'EUR', 'CHF', 'JPY', 'CNY']" class="md-3"></b-form-select>
 			</div>
-			<div  v-if="current.rate">
+			<div v-if="current.rate">
 				<h2 class="display-7">{{ $t('forex.subtitleCurrent') }}</h2>
 				<p class="display-3 price">
 					<span class="value">1 BTC = {{ formatCurrency(current.rate) }} {{ current.currencyTo }}</span>
