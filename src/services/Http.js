@@ -35,12 +35,12 @@ const Http = {
 				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 	},
 
-	getForexCurrent: function (currency) {
-		return Vue.http.get(HOST + '/forex/exchange-rate/bitcoin/current/' + currency);
+	getForexCurrent: function (vendor, currency) {
+		return Vue.http.get(HOST + '/forex/exchange-rate/bitcoin', { params: { currency: currency, vendor: vendor } });
 	},
 
-	getForexHistory: function (currency) {
-		return Vue.http.get(HOST + '/forex/exchange-rate/bitcoin/history/' + currency);
+	getForexHistory: function (vendor, currency) {
+		return Vue.http.get(HOST + '/forex/exchange-rate/bitcoin/history', { params: { currency: currency, vendor: vendor } });
 	},
 
 	adminDeleteUser: function (email) {

@@ -6,7 +6,11 @@
 		<div v-if="!isLoading">
 			<div class="currency-selector">
 				<label>{{ $t('forex.selectCurrency') }}: </label>
-				<b-form-select v-model="selectedCurrency" :options="['USD', 'EUR', 'CHF', 'JPY', 'CNY']" class="md-3"></b-form-select>
+				<b-form-select v-model="selectedCurrencyCurrent" :options="optionsCurrency" class="md-3"></b-form-select>
+			</div>
+			<div class="currency-vendor">
+				<label>{{ $t('forex.selectVendor') }}: </label>
+				<b-form-select v-model="selectedVendorCurrent" :options="optionsVendor" class="md-3"></b-form-select>
 			</div>
 			<div v-if="current.rate">
 				<h2 class="display-7">{{ $t('forex.subtitleCurrent') }}</h2>
@@ -20,12 +24,21 @@
 			</div>
 			<div class="alert alert-warning" v-else>{{ $t('forex.errorCurrent') }}</div>
 			<hr>
-			<div v-if="history.length > 0">
+			<div class="history" v-if="history.length > 0">
+				<div class="currency-selector">
+					<label>{{ $t('forex.selectCurrency') }}: </label>
+					<b-form-select v-model="selectedCurrencyHistory" :options="optionsCurrency" class="md-3"></b-form-select>
+				</div>
+				<div class="currency-vendor">
+					<b-form-select v-model="selectedVendorHistory" :options="optionsVendor" :disabled="true" class="md-3"></b-form-select>
+				</div>
 				<h2 class="display-7">{{ $t('forex.subtitleHistory') }}</h2>
 				<div class="chart-container" data-tz2u8w97hwptfwl3y57ywguux></div>
 			</div>
 			<div class="alert alert-warning" v-else>{{ $t('forex.errorHistory') }}</div>
-			<div class="powered-by">Powered by <a href="http://www.coindesk.com/price/" target="_blank">CoinDesk</a></div>
+			<div class="powered-by">Powered by 
+				<a href="http://www.coindesk.com/price/" target="_blank">CoinDesk</a>/<a href="https://www.bitstamp.net/" target="_blank">Bitstamp</a>
+			</div>
 		</div>
 	</div>
 </div>
@@ -42,7 +55,12 @@ export default {
 	data: function () {
 		return {
 			isLoading: false,
-			selectedCurrency: 'USD',
+			selectedCurrencyCurrent: 'USD',
+			selectedCurrencyHistory: 'USD',
+			selectedVendorCurrent: 'COINDESK',
+			selectedVendorHistory: 'COINDESK',
+			optionsVendor: [ 'COINDESK', 'BITSTAMP' ],
+			optionsCurrency: [ 'USD', 'EUR', 'CHF' ],
 			current: {},
 			history: [],
 			chart: null
@@ -58,8 +76,8 @@ export default {
 			this.isLoading = true;
 
 			Promise.all([
-				Http.getForexCurrent(this.selectedCurrency),
-				Http.getForexHistory(this.selectedCurrency)
+				Http.getForexCurrent(this.selectedVendorCurrent, this.selectedCurrencyCurrent),
+				Http.getForexHistory(this.selectedVendorHistory, this.selectedCurrencyHistory)
 			]).then((responses) => {
 				this.current = responses[0].body;
 				this.history = responses[1].body;
@@ -102,7 +120,13 @@ export default {
 		}
 	},
 	watch: {
-		selectedCurrency: function () {
+		selectedCurrencyCurrent: function () {
+			this.loadData();
+		},
+		selectedCurrencyHistory: function () {
+			this.loadData();
+		},
+		selectedVendorCurrent: function () {
 			this.loadData();
 		}
 	},
@@ -119,7 +143,8 @@ export default {
 					lastUpdated: 'Last updated',
 					errorCurrent: 'The current market price could not be loaded.',
 					errorHistory: 'The trend over the last 30 days could not be loaded.',
-					selectCurrency: 'Select currency'
+					selectCurrency: 'Select currency',
+					selectVendor: 'Select vendor'
 				}
 			},
 			de: {
@@ -130,7 +155,8 @@ export default {
 					lastUpdated: 'Letztes Update',
 					errorCurrent: 'Der aktuelle Kurs konnte nicht geladen werden.',
 					errorHistory: 'Die Kursentwicklung der letzten 30 Tage konnte nicht geladen werden',
-					selectCurrency: 'Währung wählen'
+					selectCurrency: 'Währung wählen',
+					selectVendor: 'Anbieter wählen'
 				}
 			}
 		}
@@ -157,6 +183,13 @@ export default {
 }
 .currency-selector {
 	float: right;
+	padding-left: 25px;
+	select {
+		margin-left: 10px;
+	}
+}
+.currency-vendor {
+	float: right;
 	select {
 		margin-left: 10px;
 	}
@@ -169,6 +202,9 @@ export default {
 	text-align: right;
 	margin-top: 10px;
 	margin-right: 30px;
+}
+.history {
+	margin-top: 30px;
 }
 
 @media screen and (max-width: 1000px) {
