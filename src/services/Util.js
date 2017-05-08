@@ -8,6 +8,10 @@ const Util = {
 		// see http://stackoverflow.com/a/43208223/3233827
 		let val = (value / 1).toFixed(2).replace('.', ',');
 		return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\'');
+	},
+	formatSatoshi: function (value) {
+		let val = (value / 1).toFixed(0);
+		return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\'');
 	}
 
 };

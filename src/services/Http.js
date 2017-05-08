@@ -78,6 +78,10 @@ const Http = {
 
 	adminGetServerBalance: function () {
 		return Vue.http.get(HOST + '/auth/admin/server-balance');
+	},
+
+	adminPostServerPotBaseline: function (amount) {
+		return Vue.http.post(HOST + '/auth/admin/server-pot-baseline', { params: { amount } });
 	}
 
 };
