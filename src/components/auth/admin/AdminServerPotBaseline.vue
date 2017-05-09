@@ -50,6 +50,7 @@ export default {
 		return {
 			isLoading: false,
 			items: [],
+			currentTotal: 0,
 			newAmount: '',
 			formIsTouched: false,
 			newAmountMax: Number.MAX_SAFE_INTEGER,
@@ -59,14 +60,6 @@ export default {
 	computed: {
 		dateFormat: function () {
 			return Util.DATE_FORMAT;
-		},
-		currentTotal: function () {
-			let totalAmount = 0;
-			for (let i = 0; i < this.items.length; i++) {
-				let item = this.items[i];
-				totalAmount += item.amount;
-			}
-			return totalAmount;
 		},
 		fields: function () {
 			return {
@@ -86,8 +79,13 @@ export default {
 	methods: {
 		loadData: function () {
 			this.isLoading = true;
-			Http.adminGetAllServerPotBaselineAmounts().then(response => {
-				this.items = response.body;
+
+			Promise.all([
+				Http.adminGetTotalServerPotBaselineAmount(),
+				Http.adminGetAllServerPotBaselineAmounts()
+			]).then(responses => {
+				this.currentTotal = responses[0].body;
+				this.items = responses[1].body;
 				this.isLoading = false;
 			}, () => {
 				this.isLoading = false;

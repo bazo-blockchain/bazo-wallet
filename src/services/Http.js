@@ -86,6 +86,10 @@ const Http = {
 
 	adminGetAllServerPotBaselineAmounts: function () {
 		return Vue.http.get(HOST + '/auth/admin/server-pot-baseline');
+	},
+
+	adminGetTotalServerPotBaselineAmount: function () {
+		return Vue.http.get(HOST + '/auth/admin/server-pot-baseline/total');
 	}
 
 };
