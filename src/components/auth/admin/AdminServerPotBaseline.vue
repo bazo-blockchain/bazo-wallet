@@ -2,40 +2,48 @@
 	<div>
 		<b-modal id="admin-server-pot-baseline" :title="$t('adminServerPotBaseline.title')"
 				:hide-footer="true" size="md" @shown="loadData" @hidden="modalWasClosed">
-			<div class="table">
-				<b-table striped hover :items="items" :fields="fields">
-					<template slot="id" scope="item">
-						{{ item.value }}
-					</template>
-					<template slot="timestamp" scope="item">
-						{{ item.value | moment(dateFormat) }}
-					</template>
-					<template slot="amount" scope="item">
-						{{ formatSatoshi(item.value) }}
-					</template>
-				</b-table>
+			<div v-if="!isLoading">
+				<div class="table">
+					<b-table striped hover :items="items" :fields="fields">
+						<template slot="id" scope="item">
+							{{ item.value }}
+						</template>
+						<template slot="timestamp" scope="item">
+							{{ item.value | moment(dateFormat) }}
+						</template>
+						<template slot="amount" scope="item">
+							{{ formatSatoshi(item.value) }}
+						</template>
+					</b-table>
+					<div v-if="items.length === 0">
+						<p class="text-center">
+							<i>{{ $t('adminServerPotBaseline.noEntries') }}</i>
+						</p>
+						<hr>
+					</div>
+				</div>
+				
+				<div class="current-total-wrapper">
+					<div class="current-total">
+						<label>
+							{{ $t('adminServerPotBaseline.currentTotal') }}:
+						</label>
+						<span class="value">
+							{{ formatSatoshi(currentTotal) }}
+						</span>
+					</div>
+				</div>
+				<form class="row" @submit.stop.prevent="saveNewAmount">
+					<div class="col-md-8">
+						<b-form-input v-model.number="newAmount" type="number"
+								:placeholder="$t('adminServerPotBaseline.newAmountPlaceholder')"
+								:max="newAmountMax" :min="newAmountMin"></b-form-input>
+					</div>
+					<div class="col-md-4">
+						<b-button variant="primary" :block="true">{{ $t('adminServerPotBaseline.newAmountButton') }}</b-button>
+					</div>
+				</form>
 			</div>
-			
-			<div class="current-total-wrapper">
-				<div class="current-total">
-					<label>
-						{{ $t('adminServerPotBaseline.currentTotal') }}:
-					</label>
-					<span class="value">
-						{{ formatSatoshi(currentTotal) }}
-					</span>
-				</div>
-			</div>
-			<form class="row" @submit.stop.prevent="saveNewAmount">
-				<div class="col-md-8">
-					<b-form-input v-model.number="newAmount" type="number"
-							:placeholder="$t('adminServerPotBaseline.newAmountPlaceholder')"
-							:max="newAmountMax" :min="newAmountMin"></b-form-input>
-				</div>
-				<div class="col-md-4">
-					<b-button variant="primary" :block="true">{{ $t('adminServerPotBaseline.newAmountButton') }}</b-button>
-				</div>
-			</form>
 		</b-modal>
 	</div>
 </template>
@@ -94,6 +102,7 @@ export default {
 		saveNewAmount: function () {
 			this.isLoading = true;
 			Http.adminPostServerPotBaseline(this.newAmount).then(() => {
+				this.$toasted.global.success(this.$t('adminServerPotBaseline.newAmountSuccess'));
 				this.newAmount = '';
 				this.loadData();
 			}, () => {
@@ -117,6 +126,8 @@ export default {
 					newAmountPlaceholder: 'Add satoshis (+/-)',
 					newAmountButton: 'Add satoshis',
 					currentTotal: 'Current Total',
+					noEntries: 'No entries available',
+					newAmountSuccess: 'New amount was successfully added',
 					fields: {
 						timestamp: 'Added at',
 						amount: 'Amount'
@@ -129,6 +140,8 @@ export default {
 					newAmountPlaceholder: 'Weitere Satoshis hinzufügen (+/-)',
 					newAmountButton: 'Hinzufügen',
 					currentTotal: 'Derzeitiges Total',
+					noEntries: 'Keine Einträge vorhanden',
+					newAmountSuccess: 'Der neue Betrag wurde erfolgreich hinzugefügt.',
 					fields: {
 						timestamp: 'Hinzugefügt am',
 						amount: 'Betrag'
