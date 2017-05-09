@@ -43,6 +43,14 @@
 						</b-dropdown-item>
 					</b-nav-item-dropdown>
 					<div v-else>
+						<b-nav-item class="d-inline-block">
+							<span @click="switchLanguage('en')" v-if="currentLanguage === 'de'">
+								<i class="fa fa-language"></i> {{ $t('language.de') }}
+							</span>
+							<span @click="switchLanguage('de')" v-if="currentLanguage === 'en'">
+								<i class="fa fa-language"></i> {{ $t('language.en') }}
+							</span>
+						</b-nav-item>
 						<b-nav-item :to="{ name: 'login' }" class="d-inline-block">
 							<i class="fa fa-sign-in"></i> {{ $t('header.signIn') }}
 						</b-nav-item>
@@ -75,6 +83,9 @@ export default {
 	computed: {
 		user: function () {
 			return this.$store.state.user;
+		},
+		currentLanguage: function () {
+			return this.$locale.current();
 		}
 	},
 	props: {
