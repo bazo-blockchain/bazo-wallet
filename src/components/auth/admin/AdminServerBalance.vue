@@ -8,15 +8,15 @@
 				<div class="row equation">
 					<div class="col-md-3 equation-box sum-of-all-pending-transactions">
 						<div class="value">{{ formatSatoshi(balance.sumOfAllPendingTransactions) }}</div>
-						<div class="description">&#931; of all pending transactions</div>
+						<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllPendingTransactions') }}</div>
 					</div>
 					<div class="col-md-3 equation-box sum-of-all-virtual-balances">
 						<div class="value">{{ formatSatoshi(balance.sumOfAllVirtualBalances) }}</div>
-						<div class="description">&#931; of all virtual balances</div>
+						<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllVirtualBalances') }}</div>
 					</div>
 					<div class="col-md-3 equation-box server-pot-baseline">
 						<div class="value">{{ formatSatoshi(balance.serverPotBaseline) }}</div>
-						<div class="description">Server Pot Baseline 
+						<div class="description">{{ $t('adminServerBalance.serverPotBaseline') }}
 							<button class="btn btn-secondary btn-sm" @click="$root.$emit('show::modal','admin-server-pot-baseline')">
 								<i class="fa fa-edit increase-focus"></i>
 							</button>
@@ -24,33 +24,33 @@
 					</div>
 					<div class="col-md-3 equation-box server-pot-current ">
 						<div class="value">{{ formatSatoshi(balance.serverPotCurrent) }}</div>
-						<div class="description">Server Pot Current</div>
+						<div class="description"> {{ $t('adminServerBalance.serverPotCurrent') }}</div>
 					</div>
 				</div>
 				<hr>
 				<div class="row equation">
 					<div class="col-md-3 equation-box sum-of-all-pending-transactions">
 						<div class="value">{{ formatSatoshi(balance.sumOfAllPendingTransactions) }}</div>
-						<div class="description">&#931; of all pending transactions</div>
+						<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllPendingTransactions') }}</div>
 					</div>
 					<div class="col-md-3 equation-box sum-of-all-virtual-balances">
 						<div class="value">{{ formatSatoshi(balance.sumOfAllVirtualBalances) }}</div>
-						<div class="description">&#931; of all virtual balances</div>
+						<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllVirtualBalances') }}</div>
 					</div>
 					<div class="col-md-3 equation-box server-pot">
 						<div class="value">{{ formatSatoshi(balance.serverPotBaseline - balance.serverPotCurrent) }}</div>
-						<div class="description">Server Pot</div>
+						<div class="description"> {{ $t('adminServerBalance.serverPot') }}</div>
 					</div>
 				</div>
 				<hr>
 				<div class="row equation">
 					<div class="col-md-3 equation-box sum-of-all-pending-transactions">
 						<div class="value">{{ formatSatoshi(balance.sumOfAllPendingTransactions) }}</div>
-						<div class="description">&#931; of all pending transactions</div>
+						<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllPendingTransactions') }}</div>
 					</div>
 					<div class="col-md-3 equation-box server">
 						<div class="value">{{ formatSatoshi(balance.sumOfAllVirtualBalances + balance.serverPotBaseline - balance.serverPotCurrent) }}</div>
-						<div class="description">Server</div>
+						<div class="description">{{ $t('adminServerBalance.server') }}</div>
 					</div>
 					<div class="col-md-3 equation-box equality">
 						<div class="positive" v-if="balance.sumOfAllPendingTransactions === balance.sumOfAllVirtualBalances + balance.serverPotBaseline - balance.serverPotCurrent">
@@ -110,13 +110,25 @@ export default {
 			en: {
 				adminServerBalance: {
 					title: 'Server Balance',
-					error: 'The data could not be loaded.'
+					error: 'The data could not be loaded.',
+					sumOfAllPendingTransactions: 'of all pending transactions',
+					sumOfAllVirtualBalances: 'of all virtual balances',
+					serverPotBaseline: 'Server Pot Baseline',
+					serverPotCurrent: 'Current Server Pot',
+					serverPot: 'Server Pot',
+					server: 'Server'
 				}
 			},
 			de: {
 				adminServerBalance: {
 					title: 'Server Balance',
-					error: 'Die Daten konnten nicht geladen werden.'
+					error: 'Die Daten konnten nicht geladen werden.',
+					sumOfAllPendingTransactions: 'aller laufenden Transaktionen',
+					sumOfAllVirtualBalances: 'aller virtuellen Saldi',
+					serverPotBaseline: 'Server Pot Grundstock',
+					serverPotCurrent: 'Aktueller Server Pot',
+					serverPot: 'Server Pot',
+					server: 'Server'
 				}
 			}
 		}
