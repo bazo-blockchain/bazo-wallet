@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import Http from '../../../services/Http';
+import Http from '@/services/Http';
 import Util from '@/services/Util';
 
 export default {
