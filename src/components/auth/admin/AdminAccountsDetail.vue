@@ -154,7 +154,7 @@ export default {
 	methods: {
 		loadData: function () {
 			this.isLoading = true;
-			Http.adminGetAccounts().then((response) => {
+			Http.Auth.Admin.getAccounts().then((response) => {
 				this.account = null;
 				for (let i = 0; i < response.body.length; i++) {
 					if (response.body[i].publicKeyClient === this.publicKeyClient) {

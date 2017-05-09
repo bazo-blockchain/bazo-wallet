@@ -89,8 +89,8 @@ export default {
 			this.isLoading = true;
 
 			Promise.all([
-				Http.adminGetTotalServerPotBaselineAmount(),
-				Http.adminGetAllServerPotBaselineAmounts()
+				Http.Auth.Admin.getTotalServerPotBaselineAmount(),
+				Http.Auth.Admin.getAllServerPotBaselineAmounts()
 			]).then(responses => {
 				this.currentTotal = responses[0].body;
 				this.items = responses[1].body;
@@ -101,7 +101,7 @@ export default {
 		},
 		saveNewAmount: function () {
 			this.isLoading = true;
-			Http.adminPostServerPotBaseline(this.newAmount).then(() => {
+			Http.Auth.Admin.postServerPotBaseline(this.newAmount).then(() => {
 				this.$toasted.global.success(this.$t('adminServerPotBaseline.newAmountSuccess'));
 				this.newAmount = '';
 				this.loadData();

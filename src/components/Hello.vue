@@ -42,7 +42,7 @@ export default {
 			Auth.logout();
 		},
 		admin: function () {
-			Http.adminGetAccounts().then(function (response) {
+			Http.Auth.Admin.getAccounts().then(function (response) {
 				console.log(response);
 			});
 		}

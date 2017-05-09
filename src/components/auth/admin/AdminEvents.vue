@@ -132,7 +132,7 @@ export default {
 		},
 		loadData: function () {
 			this.isLoading = true;
-			Http.adminGetEvents(this.urgence).then((response) => {
+			Http.Auth.Admin.getEvents(this.urgence).then((response) => {
 				this.items = response.body;
 				this.isLoading = false;
 			}, () => {

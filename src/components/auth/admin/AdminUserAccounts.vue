@@ -105,7 +105,7 @@ export default {
 		updateData: function () {
 			this.isLoading = true;
 
-			Http.adminGetUserAccounts()
+			Http.Auth.Admin.getUserAccounts()
 				.then((response) => {
 					this.items = response.body;
 					this.isLoading = false;

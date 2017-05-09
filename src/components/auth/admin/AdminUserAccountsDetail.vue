@@ -91,7 +91,7 @@ export default {
 	methods: {
 		loadData: function () {
 			this.isLoading = true;
-			Http.adminGetUserAccount(this.email, true).then((response) => {
+			Http.Auth.Admin.getUserAccount(this.email, true).then((response) => {
 				this.userAccount = response.body;
 				this.isLoading = false;
 			}, () => {
@@ -100,7 +100,7 @@ export default {
 		},
 		switchRole: function () {
 			this.isLoading = true;
-			Http.adminSwitchUserRole(this.email).then(() => {
+			Http.Auth.Admin.switchUserRole(this.email).then(() => {
 				this.loadData();
 				this.$toasted.global.success(this.$t('adminUserAccountsDetail.successRoleChange'));
 			}, () => {
@@ -110,7 +110,7 @@ export default {
 		},
 		deleteUser: function () {
 			this.isLoading = true;
-			Http.adminDeleteUser(this.email).then(() => {
+			Http.Auth.Admin.deleteUser(this.email).then(() => {
 				this.$toasted.global.success(this.$t('adminUserAccountsDetail.successDelete'));
 				this.loadData();
 			}, () => {
@@ -120,7 +120,7 @@ export default {
 		},
 		undeleteUser: function () {
 			this.isLoading = true;
-			Http.adminUndeleteUser(this.email).then(() => {
+			Http.Auth.Admin.undeleteUser(this.email).then(() => {
 				this.$toasted.global.success(this.$t('adminUserAccountsDetail.successUndelete'));
 				this.loadData();
 			}, () => {

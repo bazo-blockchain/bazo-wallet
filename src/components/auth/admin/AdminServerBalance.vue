@@ -91,7 +91,7 @@ export default {
 		loadData: function () {
 			this.isLoading = true;
 
-			Http.adminGetServerBalance().then((response) => {
+			Http.Auth.Admin.getServerBalance().then((response) => {
 				this.balance = response.body;
 				this.isLoading = false;
 			}, () => {

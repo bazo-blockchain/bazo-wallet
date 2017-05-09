@@ -23,7 +23,7 @@ const store = new Vuex.Store({
 		},
 		updateUser: function (context) {
 			if (Auth.auth.authenticated) {
-				return Http.getUser(true)
+				return Http.Auth.getUser(true)
 					.then(response => {
 						context.commit('updateUser', response.body);
 					}, response => {
