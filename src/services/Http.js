@@ -81,7 +81,11 @@ const Http = {
 	},
 
 	adminPostServerPotBaseline: function (amount) {
-		return Vue.http.post(HOST + '/auth/admin/server-pot-baseline', { params: { amount } });
+		return Vue.http.post(HOST + '/auth/admin/server-pot-baseline', null, { params: { amount } });
+	},
+
+	adminGetAllServerPotBaselineAmounts: function () {
+		return Vue.http.get(HOST + '/auth/admin/server-pot-baseline');
 	}
 
 };

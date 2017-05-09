@@ -17,7 +17,7 @@
 					<div class="col-md-3 equation-box server-pot-baseline">
 						<div class="value">{{ formatSatoshi(balance.serverPotBaseline) }}</div>
 						<div class="description">Server Pot Baseline 
-							<button class="btn btn-secondary btn-sm" @click="editServerPotBaseline">
+							<button class="btn btn-secondary btn-sm" @click="$root.$emit('show::modal','admin-server-pot-baseline')">
 								<i class="fa fa-edit increase-focus"></i>
 							</button>
 						</div>
@@ -68,6 +68,8 @@
 			</div>
 			<div class="alert alert-warning" v-else>{{ $t('adminServerBalance.error') }}</div>
 		</div>
+		
+		<admin-server-pot-baseline @modal-closed="loadData"></admin-server-pot-baseline>
 	</div>
 </div>
 </template>
@@ -75,6 +77,7 @@
 <script>
 import Http from '@/services/Http';
 import Util from '@/services/Util';
+import AdminServerPotBaseline from './AdminServerPotBaseline';
 
 export default {
 	name: 'admin-server-balance',
@@ -101,6 +104,7 @@ export default {
 	mounted: function () {
 		this.loadData();
 	},
+	components: { AdminServerPotBaseline },
 	i18n: {
 		messages: {
 			en: {
