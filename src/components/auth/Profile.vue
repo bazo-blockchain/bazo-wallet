@@ -3,11 +3,7 @@
 		<div class="container">
 			<h1 class="display-4">{{ $t('profile.title', { user: user.email }) }}</h1>
 			<hr>
-			<h2 class="display-7">{{ $t('profile.information.title') }}</h2>
-			<pre><code>{{ user }}</code></pre>
-			<pre><code>{{ auth }}</code></pre>
-			<hr>
-			<h2 class="display-7">Switch your language</h2>
+			<h2 class="display-7">{{ $t('profile.switchLanguage') }}</h2>
 			<a class="btn btn-link" @click="setLanguage('de')">
 				<i class="flag-icon flag-icon-de"></i>
 				{{ $t('language.de') }}
@@ -16,6 +12,16 @@
 				<i class="flag-icon flag-icon-en"></i>
 				{{ $t('language.en') }}
 			</a>
+			<hr>
+			<h2 class="display-7">{{ $t('profile.information.title') }}</h2>
+			<div class="row">
+				<div class="col-md-6">
+					<pre><code>{{ user }}</code></pre>
+				</div>
+				<div class="col-md-6">
+					<pre><code>{{ auth }}</code></pre>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -49,6 +55,7 @@ export default {
 			en: {
 				profile: {
 					title: 'Profile of {user}',
+					switchLanguage: 'Change to your preferred language',
 					information: {
 						title: 'Information about your profile'
 					}
@@ -57,6 +64,7 @@ export default {
 			de: {
 				profile: {
 					title: 'Profil von {user}',
+					switchLanguage: 'Sprache wechseln',
 					information: {
 						title: 'Informationen über Ihr Profil'
 					}
