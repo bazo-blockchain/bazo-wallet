@@ -33,6 +33,52 @@
 							</td>
 						</tr>
 						<tr>
+							<th scope="row">{{ $t('adminAccountsDetail.fields.locked') }}</th>
+							<td>
+								<span v-if="accountDetail.account.locked">
+									<i class="fa fa-ban"></i>
+									{{ $t('adminAccountsDetail.locked') }}
+								</span>
+								<span v-else>
+									<i class="fa fa-check"></i>
+									{{ $t('adminAccountsDetail.notLocked') }}
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">{{ $t('adminAccountsDetail.fields.broadcastBefore') }}</th>
+							<td>
+								<span v-if="accountDetail.account.broadcastBefore">
+									{{ accountDetail.account.broadcastBefore | moment(dateFormat) }}
+								</span>
+								<span v-else>
+									<i class="fa fa-minus"></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">{{ $t('adminAccountsDetail.fields.nonce') }}</th>
+							<td>
+								<span v-if="accountDetail.account.nonce">
+									{{ accountDetail.account.nonce | moment(dateFormat) }}
+								</span>
+								<span v-else>
+									<i class="fa fa-minus"></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">{{ $t('adminAccountsDetail.fields.channelTransaction') }}</th>
+							<td>
+								<span v-if="accountDetail.account.channelTransaction">
+									{{ accountDetail.account.channelTransaction | moment(dateFormat) }}
+								</span>
+								<span v-else>
+									<i class="fa fa-minus"></i>
+								</span>
+							</td>
+						</tr>
+						<tr>
 							<th scope="row">{{ $t('adminAccountsDetail.fields.virtualBalance') }}</th>
 							<td>{{ accountDetail.account.virtualBalance }}</td>
 						</tr>
@@ -64,11 +110,11 @@
 						<template slot="locked" scope="item">
 							<span v-if="item.value">
 								<i class="fa fa-ban"></i>
-								Yes
+								{{ $t('adminAccountsDetail.locked') }}
 							</span>
 							<span v-else>
 								<i class="fa fa-check"></i>
-								No
+								{{ $t('adminAccountsDetail.notLocked') }}
 							</span>
 						</template>
 						<template slot="lockedUntil" scope="item">
@@ -172,6 +218,8 @@ export default {
 					timeLockedAddresses: 'Time locked Bitcoin addresses',
 					noTimeLockedAddressFoundTitle: 'Attention:',
 					noTimeLockedAddressFound: 'No time locked Bitcoin address was found under this account.',
+					locked: 'Locked',
+					notLocked: 'Not Locked',
 					fields: {
 						publicKeyClient: 'Public Key Client',
 						privateKeyServer: 'Private Key Server',
@@ -185,7 +233,10 @@ export default {
 						addressUrl: 'Address URL',
 						locked: 'Locked',
 						lockedUntil: 'Locked until',
-						balance: 'Balance'
+						balance: 'Balance',
+						broadcastBefore: 'Broadcast Before',
+						nonce: 'Nonce',
+						channelTransaction: 'Channel Transaction'
 					}
 				}
 			},
@@ -197,6 +248,8 @@ export default {
 					timeLockedAddresses: 'Bitcoin-Adressen, die zeitlich begrenzt sind',
 					noTimeLockedAddressFoundTitle: 'Achtung:',
 					noTimeLockedAddressFound: 'Es wurden keine zeitlich beschränkten Bitcoin-Adressen gefunden für dieses Konto.',
+					locked: 'Gesperrt',
+					notLocked: 'Nicht gesperrt',
 					fields: {
 						publicKeyClient: 'Public Key Client',
 						privateKeyServer: 'Private Key Server',
@@ -210,7 +263,10 @@ export default {
 						addressUrl: 'Adress-Link',
 						locked: 'Gesperrt',
 						lockedUntil: 'Gesperrt bis',
-						balance: 'Saldo'
+						balance: 'Saldo',
+						broadcastBefore: 'Broadcast vor',
+						nonce: 'Nonce',
+						channelTransaction: 'Channel Transaktion'
 					}
 				}
 			}
