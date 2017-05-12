@@ -7,48 +7,48 @@
 		</h1>
 		<hr>
 		<div v-if="!isLoading">
-			<div v-if="account">
+			<div v-if="accountDetail">
 				<table class="table table-striped">
 					<tbody>
 						<tr>
 							<th scope="row">{{ $t('adminAccountsDetail.fields.timeCreated') }}</th>
-							<td>{{ account.timeCreated | moment(dateFormat) }}</td>
+							<td>{{ accountDetail.account.timeCreated | moment(dateFormat) }}</td>
 						</tr>
 						<tr>
 							<th scope="row">{{ $t('adminAccountsDetail.fields.publicKeyClient') }}</th>
 							<td>
-								<span class="key">{{ account.publicKeyClient }}</span>
+								<span class="key">{{ accountDetail.account.publicKeyClient }}</span>
 							</td>
 						</tr>
 						<tr>
 							<th scope="row">{{ $t('adminAccountsDetail.fields.privateKeyServer') }}</th>
 							<td>
-								<span class="key">{{ account.privateKeyServer }}</span>
+								<span class="key">{{ accountDetail.account.privateKeyServer }}</span>
 							</td>
 						</tr>
 						<tr>
 							<th scope="row">{{ $t('adminAccountsDetail.fields.publicKeyServer') }}</th>
 							<td>
-								<span class="key">{{ account.publicKeyServer }}</span>
+								<span class="key">{{ accountDetail.account.publicKeyServer }}</span>
 							</td>
 						</tr>
 						<tr>
 							<th scope="row">{{ $t('adminAccountsDetail.fields.virtualBalance') }}</th>
-							<td>{{ account.virtualBalance }}</td>
+							<td>{{ accountDetail.account.virtualBalance }}</td>
 						</tr>
 						<tr>
 							<th scope="row">{{ $t('adminAccountsDetail.fields.satoshiBalance') }}</th>
-							<td>{{ account.satoshiBalance }}</td>
+							<td>{{ accountDetail.account.satoshiBalance }}</td>
 						</tr>
 						<tr>
 							<th scope="row">{{ $t('adminAccountsDetail.fields.totalBalance') }}</th>
-							<td>{{ account.totalBalance }}</td>
+							<td>{{ accountDetail.account.totalBalance }}</td>
 						</tr>
 					</tbody>
 				</table>
 				<h2 class="display-7 time-locked-addresses-title">{{ $t('adminAccountsDetail.timeLockedAddresses') }}:</h2>
-				<div v-if="account.timeLockedAddresses && account.timeLockedAddresses.length > 0">
-					<b-table striped hover :items="account.timeLockedAddresses" :fields="timeLockedAddressesFields">
+				<div v-if="accountDetail.timeLockedAddresses && accountDetail.timeLockedAddresses.length > 0">
+					<b-table striped hover :items="accountDetail.timeLockedAddresses" :fields="timeLockedAddressesFields">
 						<template slot="createdAt" scope="item">
 							{{ item.value | moment(dateFormat) }}
 						</template>
@@ -102,7 +102,7 @@ export default {
 	data () {
 		return {
 			isLoading: false,
-			account: null
+			accountDetail: null
 		}
 	},
 	props: {
@@ -144,7 +144,7 @@ export default {
 	watch: {
 		// necessary, if somebody changes the URL, and the view is not rerendered completely
 		publicKeyClient: function () {
-			this.account = null;
+			this.accountDetail = null;
 			this.loadData();
 		}
 	},
@@ -154,14 +154,8 @@ export default {
 	methods: {
 		loadData: function () {
 			this.isLoading = true;
-			Http.Auth.Admin.getAccounts().then((response) => {
-				this.account = null;
-				for (let i = 0; i < response.body.length; i++) {
-					if (response.body[i].publicKeyClient === this.publicKeyClient) {
-						this.account = response.body[i];
-						break;
-					}
-				}
+			Http.Auth.Admin.getAccount(this.publicKeyClient).then((response) => {
+				this.accountDetail = response.body;
 				this.isLoading = false;
 			}, () => {
 				this.isLoading = false;

@@ -58,6 +58,9 @@ const Http = {
 			getUserAccounts: function () {
 				return Vue.http.get(HOST + '/auth/admin/user-accounts');
 			},
+			getAccount: function (publicKeyClient) {
+				return Vue.http.get(HOST + '/auth/admin/accounts/' + publicKeyClient);
+			},
 			getAccounts: function () {
 				return Vue.http.get(HOST + '/auth/admin/accounts');
 			},
