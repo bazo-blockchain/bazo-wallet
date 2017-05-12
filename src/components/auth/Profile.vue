@@ -17,7 +17,7 @@
 					{{ $t('language.en') }}
 				</a>
 			</span>
-			<div v-if="user.balance == 0">
+			<div v-if="user.balance > 0">
 				<hr>
 				<h2 class="display-7">
 					<i class="fa fa-warning"></i>
