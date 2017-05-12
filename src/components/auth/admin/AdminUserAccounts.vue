@@ -24,7 +24,7 @@
 							<span v-html="item.value ? $t('adminUserAccounts.deletedYes') : $t('adminUserAccounts.deletedNo')"></span>
 						</template>
 						<template slot="userRole" scope="item">
-							<span class="badge badge-primary">{{ item.value }}</span>
+							<span class="badge badge-primary">{{ item.value ? item.value.replace(/^ROLE_/, '') : null }}</span>
 						</template>
 						<template slot="balance" scope="item">
 							{{ item.value }}

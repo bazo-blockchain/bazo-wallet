@@ -1,26 +1,29 @@
 <template>
 	<div class="profile">
 		<div class="container">
-			<h1 class="display-4">{{ $t('profile.title', { user: user.email }) }}</h1>
+			<h1 class="display-4">{{ $t('profile.title') }}
+				<small class="text-muted">{{ user.email }}</small>
+				<span class="user-role badge badge-primary" v-if="auth.role === 'ROLE_ADMIN'">ADMIN</span>
+			</h1>
 			<hr>
-			<h2 class="display-7">{{ $t('profile.switchLanguage') }}</h2>
-			<a class="btn btn-link" @click="setLanguage('de')">
-				<i class="flag-icon flag-icon-de"></i>
-				{{ $t('language.de') }}
-			</a>
-			<a class="btn btn-link" @click="setLanguage('en')">
-				<i class="flag-icon flag-icon-en"></i>
-				{{ $t('language.en') }}
-			</a>
-			<hr>
-			<h2 class="display-7">{{ $t('profile.information.title') }}</h2>
-			<div class="row">
-				<div class="col-md-6">
-					<pre><code>{{ user }}</code></pre>
-				</div>
-				<div class="col-md-6">
-					<pre><code>{{ auth }}</code></pre>
-				</div>
+			<span class="display-7 language-title">{{ $t('profile.switchLanguage') }}:</span>
+			<span class="language-buttons">
+				<a class="btn btn-link" @click="setLanguage('de')">
+					<i class="flag-icon flag-icon-de"></i>
+					{{ $t('language.de') }}
+				</a>
+				<a class="btn btn-link" @click="setLanguage('en')">
+					<i class="flag-icon flag-icon-en"></i>
+					{{ $t('language.en') }}
+				</a>
+			</span>
+			<div v-if="user.balance == 0">
+				<hr>
+				<h2 class="display-7">
+					<i class="fa fa-warning"></i>
+					{{ $t('profile.balanceOverZero.title') }} ({{ user.balance }} satoshi):
+				</h2>
+				<p>{{ $t('profile.balanceOverZero.description') }}</p>
 			</div>
 		</div>
 	</div>
@@ -54,19 +57,21 @@ export default {
 		messages: {
 			en: {
 				profile: {
-					title: 'Profile of {user}',
+					title: 'Profile',
 					switchLanguage: 'Change to your preferred language',
-					information: {
-						title: 'Information about your profile'
+					balanceOverZero: {
+						title: 'You have coins left on this platform',
+						description: 'This feature is not supported anymore. Please contact the support to withdraw the remaining coins.'
 					}
 				}
 			},
 			de: {
 				profile: {
-					title: 'Profil von {user}',
+					title: 'Profil',
 					switchLanguage: 'Sprache wechseln',
-					information: {
-						title: 'Informationen über Ihr Profil'
+					balanceOverZero: {
+						title: 'Sie haben verbleibende Bitcoins auf dieser Platform',
+						description: 'Diese Funktion ist nicht mehr unterstützt. Bitte wenden Sie sich an den Support für eine Auszahlung.'
 					}
 				}
 			}
@@ -79,9 +84,19 @@ export default {
 .btn.btn-link {
 	cursor: pointer;
 }
-pre {
-	background-color: #f7f7f9;
-	border-radius: 0.25rem;
-	padding: 15px 15px;
+.user-role {
+	position: absolute;
+	top: 0;
+	font-size: 16px;
+	margin-left: 10px;
+}
+.language-title {
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+.language-buttons {
+	display: inline-block;
+	vertical-align: middle;
 }
 </style>

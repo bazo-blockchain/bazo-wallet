@@ -188,12 +188,6 @@ export default {
 .display-4 small {
 	font-size: 70%;
 }
-.badge {
-	cursor: pointer;
-	&.translucent {
-		opacity: 0.2;
-	}
-}
 .btn.btn-danger,
 .btn.btn-success {
 	margin-left: 40px;
