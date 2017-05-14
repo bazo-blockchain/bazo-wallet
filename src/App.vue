@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import MainHeader from './components/MainHeader';
-import ProgressBar from './components/ProgressBar';
+import MainHeader from '@/components/MainHeader';
+import ProgressBar from '@/components/ProgressBar';
 
 export default {
 	name: 'app',

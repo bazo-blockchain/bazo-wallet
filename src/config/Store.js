@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Auth from '../services/Auth';
-import Http from '../services/Http';
+import Auth from '@/services/Auth';
+import Http from '@/services/Http';
 
 Vue.use(Vuex);
 

@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import Auth from '../services/Auth';
-import Http from '../services/Http';
+import Auth from '@/services/Auth';
+import Http from '@/services/Http';
 
 export default {
 	name: 'hello',

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-import globalTranslations from '../config/translations.json';
+import globalTranslations from '@/config/translations.json';
 
 Vue.use(VueI18n);
 

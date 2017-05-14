@@ -77,7 +77,7 @@
 <script>
 import Http from '@/services/Http';
 import Util from '@/services/Util';
-import AdminServerPotBaseline from './AdminServerPotBaseline';
+import AdminServerPotBaseline from '@/components/auth/admin/AdminServerPotBaseline';
 
 export default {
 	name: 'admin-server-balance',

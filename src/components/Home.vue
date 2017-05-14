@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Auth from '../services/Auth';
+import Auth from '@/services/Auth';
 
 export default {
 	name: 'home',

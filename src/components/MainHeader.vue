@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import Auth from '../services/Auth.js';
+import Auth from '@/services/Auth.js';
 
 export default {
 	name: 'main-header',

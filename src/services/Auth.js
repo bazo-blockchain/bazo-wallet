@@ -1,8 +1,8 @@
 import Vue from 'vue';
-import Translation from '../config/Translation';
-import Router from '../config/Router';
-import Http from '../services/Http';
-import Store from '../config/Store';
+import Translation from '@/config/Translation';
+import Router from '@/config/Router';
+import Http from '@/services/Http';
+import Store from '@/config/Store';
 
 const KEY_TOKEN = 'coinblesk_token';
 

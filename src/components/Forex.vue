@@ -45,9 +45,9 @@
 </template>
 
 <script>
-import Http from '../services/Http';
-import Util from '../services/Util';
-import Chartist from '../config/Chartist';
+import Http from '@/services/Http';
+import Util from '@/services/Util';
+import Chartist from '@/config/Chartist';
 import moment from 'moment';
 
 export default {

@@ -52,8 +52,8 @@
 </template>
 
 <script>
-import Http from '../../../services/Http';
-import Util from '../../../services/Util';
+import Http from '@/services/Http';
+import Util from '@/services/Util';
 
 export default {
 	name: 'admin-accounts',

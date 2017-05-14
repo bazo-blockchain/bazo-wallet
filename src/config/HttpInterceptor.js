@@ -1,7 +1,7 @@
 import Vue from 'vue';
-import Auth from '../services/Auth';
-import Router from '../config/Router';
-import Translation from '../config/Translation';
+import Auth from '@/services/Auth';
+import Router from '@/config/Router';
+import Translation from '@/config/Translation';
 
 const internalError = () => {
 	Vue.toasted.global.errorNoIcon('<i class="fa fa-times"></i>' + Translation.t('toasts.internalError'));
