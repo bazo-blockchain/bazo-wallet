@@ -4,29 +4,31 @@
 
 ## Build Setup
 
-# install dependencies
+#### Install dependencies
     yarn install
 
-# serve with hot reload at localhost:8080
+#### Serve with hot reload at localhost:8080
     yarn run dev
 
-# build for production with minification
+#### Build for production with minification
     yarn run build
 
-# build for production and view the bundle analyzer report
+#### Build for production and view the bundle analyzer report
     npm_config_report=true yarn build
-### Windows `cmd`
+##### Windows `cmd`
     set npm_config_report=true
     yarn build
     set npm_config_report=false
 
-# run unit tests
+#### Run unit tests
     yarn run unit
 
-# run all tests
+#### Run all tests
     yarn test
 
-# recompile bitcoin.js to `src` folder <sub>[linux only, windows → cygwin]</sub>
+#### Recompile bitcoin.js to `src` folder
+> Bitcoin.js is usually used in Node.js environments and must be compiled into a web-friendly version. The `compile-bitcoinjs.sh` installs all project (dev & normal) dependencies (including bitcoin.js in the node version) and recompiles it to a web version. This version is then stored in `src/config/library-bitcoinjs.min`. Use a linux system for this (or Cygwin for Windows).
+
     yarn run compile-bitcoinjs
-    # OR
+    // OR
     bash compile-bitcoinjs.sh
