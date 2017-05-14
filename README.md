@@ -1,31 +1,32 @@
-# coinblesk
+# coinblesk-frontend
 
-> A Vue.js project
+> Coinblesk-Frontend
 
 ## Build Setup
 
-``` bash
 # install dependencies
-yarn install
+    yarn install
 
 # serve with hot reload at localhost:8080
-yarn run dev
+    yarn run dev
 
 # build for production with minification
-yarn run build
+    yarn run build
 
 # build for production and view the bundle analyzer report
-npm_config_report=true yarn build
+    npm_config_report=true yarn build
 ### Windows `cmd`
-set npm_config_report=true
-yarn build
-set npm_config_report=false
+    set npm_config_report=true
+    yarn build
+    set npm_config_report=false
 
 # run unit tests
-yarn run unit
+    yarn run unit
 
 # run all tests
-yarn test
-```
+    yarn test
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+# recompile bitcoin.js to `src` folder <sub>[linux only, windows → cygwin]</sub>
+    yarn run compile-bitcoinjs
+    # OR
+    bash compile-bitcoinjs.sh
