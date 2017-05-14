@@ -23,6 +23,7 @@
 			<li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
 		</ul>
 	</div>
+	<button @click="test">test</button>
 </div>
 </template>
 
@@ -45,6 +46,9 @@ export default {
 			Http.Auth.Admin.getAccounts().then(function (response) {
 				console.log(response);
 			});
+		},
+		test: function () {
+			console.log(window.bitcoin);
 		}
 	}
 };

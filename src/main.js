@@ -3,17 +3,18 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
 import VueMoment from 'vue-moment';
-import App from './App';
-import Translation from './config/Translation';
-import Router from './config/Router';
-import Store from './config/Store';
-import Toaster from './config/Toaster';
-import HttpInterceptor from './config/HttpInterceptor';
-import ProgressBar from './config/ProgressBar';
-import Bootstrap from './config/Bootstrap';
-import './config/Filters';
+import App from '@/App';
+import Translation from '@/config/Translation';
+import Router from '@/config/Router';
+import Store from '@/config/Store';
+import Toaster from '@/config/Toaster';
+import HttpInterceptor from '@/config/HttpInterceptor';
+import ProgressBar from '@/config/ProgressBar';
+import Bootstrap from '@/config/Bootstrap';
+import '@/config/Filters';
 import 'font-awesome/scss/font-awesome.scss';
-import './styles/global.scss';
+import '@/styles/global.scss';
+import '@/config/library-bitcoinjs.min.js';
 
 Vue.use(VueResource);
 Vue.use(VueMoment);
