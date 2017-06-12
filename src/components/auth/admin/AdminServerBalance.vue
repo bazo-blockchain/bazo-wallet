@@ -53,7 +53,7 @@
 						<div class="description">{{ $t('adminServerBalance.server') }}</div>
 					</div>
 					<div class="col-md-3 equation-box equality">
-						<div class="positive" v-if="balance.sumOfAllPendingTransactions === balance.sumOfAllVirtualBalances + balance.serverPotBaseline - balance.serverPotCurrent">
+						<div class="positive" v-if="balance.inSync">
 							<span>
 								<i class="fa fa-check"></i> EQUAL
 							</span>
