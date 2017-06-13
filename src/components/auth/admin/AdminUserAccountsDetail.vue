@@ -44,6 +44,17 @@
 							</button>
 						</td>
 					</tr>
+					<tr>
+						<th scope="row">{{ $t('adminUserAccountsDetail.fields.account') }}</th>
+						<td>
+							<span v-if="userAccount.accountPublicKeyClient" class="short-key-extended">
+								{{ userAccount.accountPublicKeyClient }}
+							</span>
+							<span v-else>
+								<i class="fa fa-minus"></i>
+							</span>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 			<div v-else class="alert alert-warning">
@@ -149,7 +160,8 @@ export default {
 						userRole: 'User Role',
 						creationDate: 'Creation Date',
 						balance: 'Balance',
-						deleted: 'Deleted?'
+						deleted: 'Deleted?',
+						account: 'Account'
 					}
 				}
 			},
@@ -171,7 +183,8 @@ export default {
 						userRole: 'Benutzerrolle',
 						creationDate: 'Erstelldatum',
 						balance: 'Saldo',
-						deleted: 'Gelöscht?'
+						deleted: 'Gelöscht?',
+						account: 'Konto'
 					}
 				}
 			}
