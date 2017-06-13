@@ -14,9 +14,9 @@
 					</div>
 		
 					<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage">
-						<template slot="userAccount" scope="item">
+						<template slot="userAccountEmail" scope="item">
 							<span v-if="item.value">
-								<router-link :to="{ name: 'admin-user-accounts-detail', params: { email: item.value.email } }">{{ item.value.email }}</router-link>
+								<router-link :to="{ name: 'admin-user-accounts-detail', params: { email: item.value } }">{{ item.value }}</router-link>
 							</span>
 							<span v-else>
 								<i class="fa fa-minus"></i>
@@ -76,7 +76,7 @@ export default {
 	computed: {
 		fields: function () {
 			return {
-				userAccount: {
+				userAccountEmail: {
 					label: this.$t('adminAccounts.fields.belongsToUser'),
 					sortable: true
 				},

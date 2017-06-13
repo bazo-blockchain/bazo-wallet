@@ -12,8 +12,8 @@
 					<tbody>
 						<tr>
 							<th scope="row">{{ $t('adminAccountsDetail.fields.belongsToUser') }}</th>
-							<td v-if="accountDetail.account.userAccount">
-								<router-link :to="{ name: 'admin-user-accounts-detail', params: { email: accountDetail.account.userAccount.email } }">{{ accountDetail.account.userAccount.email }}</router-link>
+							<td v-if="accountDetail.account.userAccountEmail">
+								<router-link :to="{ name: 'admin-user-accounts-detail', params: { email: accountDetail.account.userAccountEmail } }">{{ accountDetail.account.userAccountEmail }}</router-link>
 							</td>
 							<td v-else>
 								<i class="fa fa-minus"></i>
