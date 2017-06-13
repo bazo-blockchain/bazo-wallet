@@ -14,6 +14,14 @@
 					</div>
 		
 					<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage">
+						<template slot="userAccount" scope="item">
+							<span v-if="item.value">
+								<router-link :to="{ name: 'admin-user-accounts-detail', params: { email: item.value.email } }">{{ item.value.email }}</router-link>
+							</span>
+							<span v-else>
+								<i class="fa fa-minus"></i>
+							</span>
+						</template>
 						<template slot="timeCreated" scope="item">
 							{{ item.value | moment(dateFormat) }}
 						</template>
@@ -68,6 +76,10 @@ export default {
 	computed: {
 		fields: function () {
 			return {
+				userAccount: {
+					label: this.$t('adminAccounts.fields.belongsToUser'),
+					sortable: true
+				},
 				timeCreated: {
 					label: this.$t('adminAccounts.fields.timeCreated'),
 					sortable: true
@@ -123,6 +135,7 @@ export default {
 					noEntryAvailableTitle: 'Attention:',
 					noEntryAvailable: 'There is currently no account available.',
 					fields: {
+						belongsToUser: 'Belongs to user',
 						timeCreated: 'Created at',
 						publicKeyClient: 'Public Key Client',
 						satoshiBalance: 'Satoshi Balance',
@@ -138,6 +151,7 @@ export default {
 					noEntryAvailableTitle: 'Achtung:',
 					noEntryAvailable: 'Derzeit ist kein Konto verfügbar.',
 					fields: {
+						belongsToUser: 'Gehört Benutzer',
 						timeCreated: 'Erstellt am',
 						publicKeyClient: 'Public Key Client',
 						satoshiBalance: 'Satoshi Saldo',

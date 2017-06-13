@@ -11,6 +11,15 @@
 				<table class="table table-striped">
 					<tbody>
 						<tr>
+							<th scope="row">{{ $t('adminAccountsDetail.fields.belongsToUser') }}</th>
+							<td v-if="accountDetail.account.userAccount">
+								<router-link :to="{ name: 'admin-user-accounts-detail', params: { email: accountDetail.account.userAccount.email } }">{{ accountDetail.account.userAccount.email }}</router-link>
+							</td>
+							<td v-else>
+								<i class="fa fa-minus"></i>
+							</td>
+						</tr>
+						<tr>
 							<th scope="row">{{ $t('adminAccountsDetail.fields.timeCreated') }}</th>
 							<td>{{ accountDetail.account.timeCreated | moment(dateFormat) }}</td>
 						</tr>
@@ -245,6 +254,7 @@ export default {
 					seeBelow: 'See below',
 					channelTransaction: 'Version {version}; {numInputs} Inputs, {numOutputs} Outputs ({outputs})',
 					fields: {
+						belongsToUser: 'Belongs to user',
 						publicKeyClient: 'Public Key Client',
 						privateKeyServer: 'Private Key Server',
 						publicKeyServer: 'Public Key Server',
@@ -277,6 +287,7 @@ export default {
 					seeBelow: 'Siehe unten',
 					channelTransaction: 'Version {version}; {numInputs} Eingänge, {numOutputs} Ausgänge ({outputs})',
 					fields: {
+						belongsToUser: 'Gehört zum Benutzer',
 						publicKeyClient: 'Public Key Client',
 						privateKeyServer: 'Private Key Server',
 						publicKeyServer: 'Public Key Server',
