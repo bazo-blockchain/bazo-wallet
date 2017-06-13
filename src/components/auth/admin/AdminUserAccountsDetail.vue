@@ -48,7 +48,9 @@
 						<th scope="row">{{ $t('adminUserAccountsDetail.fields.account') }}</th>
 						<td>
 							<span v-if="userAccount.accountPublicKeyClient" class="short-key-extended">
-								{{ userAccount.accountPublicKeyClient }}
+								<router-link :to="{ name: 'admin-accounts-detail', params: { publicKeyClient: userAccount.accountPublicKeyClient } }">
+									{{ userAccount.accountPublicKeyClient }}
+								</router-link>
 							</span>
 							<span v-else>
 								<i class="fa fa-minus"></i>
