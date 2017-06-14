@@ -238,76 +238,6 @@ export default {
 				this.isLoading = false;
 			});
 		}
-	},
-	i18n: {
-		messages: {
-			en: {
-				adminAccountsDetail: {
-					title: 'Account',
-					noAccountFoundTitle: 'Attention:',
-					noAccountFound: 'No account with this public client key was found.',
-					timeLockedAddresses: 'Time locked Bitcoin addresses',
-					noTimeLockedAddressFoundTitle: 'Attention:',
-					noTimeLockedAddressFound: 'No time locked Bitcoin address was found under this account.',
-					locked: 'Locked',
-					notLocked: 'Not Locked',
-					seeBelow: 'See below',
-					channelTransaction: 'Version {version}; {numInputs} Inputs, {numOutputs} Outputs ({outputs})',
-					fields: {
-						belongsToUser: 'Belongs to user',
-						publicKeyClient: 'Public Key Client',
-						privateKeyServer: 'Private Key Server',
-						publicKeyServer: 'Public Key Server',
-						timeCreated: 'Created at',
-						virtualBalance: 'Virtual Balance',
-						satoshiBalance: 'Satoshi Balance',
-						totalBalance: 'Total Balance',
-						createdAt: 'Created at',
-						bitcoinAddress: 'Bitcoin address',
-						addressUrl: 'Address URL',
-						locked: 'Locked',
-						lockedUntil: 'Locked until',
-						balance: 'Balance',
-						broadcastBefore: 'Broadcast Before',
-						nonce: 'Nonce',
-						channelTransaction: 'Channel Transaction'
-					}
-				}
-			},
-			de: {
-				adminAccountsDetail: {
-					title: 'Konto',
-					noAccountFoundTitle: 'Achtung:',
-					noAccountFound: 'Es wurde kein Konto mit diesem Client Public Key gefunden.',
-					timeLockedAddresses: 'Bitcoin-Adressen, die zeitlich begrenzt sind',
-					noTimeLockedAddressFoundTitle: 'Achtung:',
-					noTimeLockedAddressFound: 'Es wurden keine zeitlich beschränkten Bitcoin-Adressen gefunden für dieses Konto.',
-					locked: 'Gesperrt',
-					notLocked: 'Nicht gesperrt',
-					seeBelow: 'Siehe unten',
-					channelTransaction: 'Version {version}; {numInputs} Eingänge, {numOutputs} Ausgänge ({outputs})',
-					fields: {
-						belongsToUser: 'Gehört zum Benutzer',
-						publicKeyClient: 'Public Key Client',
-						privateKeyServer: 'Private Key Server',
-						publicKeyServer: 'Public Key Server',
-						timeCreated: 'Erstellt am',
-						virtualBalance: 'Virtuelles Saldo',
-						satoshiBalance: 'Satoshi Saldo',
-						totalBalance: 'Totales Saldo',
-						createdAt: 'Erstellt am',
-						bitcoinAddress: 'Bitcoin-Adresse',
-						addressUrl: 'Adress-Link',
-						locked: 'Gesperrt',
-						lockedUntil: 'Gesperrt bis',
-						balance: 'Saldo',
-						broadcastBefore: 'Broadcast vor',
-						nonce: 'Nonce',
-						channelTransaction: 'Channel Transaktion'
-					}
-				}
-			}
-		}
 	}
 };
 </script>
@@ -323,3 +253,74 @@ export default {
 	margin-bottom: 20px;
 }
 </style>
+
+<i18n>
+{
+	"en": {
+		"adminAccountsDetail": {
+			"title": "Account",
+			"noAccountFoundTitle": "Attention:",
+			"noAccountFound": "No account with this public client key was found.",
+			"timeLockedAddresses": "Time locked Bitcoin addresses",
+			"noTimeLockedAddressFoundTitle": "Attention:",
+			"noTimeLockedAddressFound": "No time locked Bitcoin address was found under this account.",
+			"locked": "Locked",
+			"notLocked": "Not Locked",
+			"seeBelow": "See below",
+			"channelTransaction": "Version {version}; {numInputs} Inputs, {numOutputs} Outputs ({outputs})",
+			"fields": {
+				"belongsToUser": "Belongs to user",
+				"publicKeyClient": "Public Key Client",
+				"privateKeyServer": "Private Key Server",
+				"publicKeyServer": "Public Key Server",
+				"timeCreated": "Created at",
+				"virtualBalance": "Virtual Balance",
+				"satoshiBalance": "Satoshi Balance",
+				"totalBalance": "Total Balance",
+				"createdAt": "Created at",
+				"bitcoinAddress": "Bitcoin address",
+				"addressUrl": "Address URL",
+				"locked": "Locked",
+				"lockedUntil": "Locked until",
+				"balance": "Balance",
+				"broadcastBefore": "Broadcast Before",
+				"nonce": "Nonce",
+				"channelTransaction": "Channel Transaction"
+			}
+		}
+	},
+	"de": {
+		"adminAccountsDetail": {
+			"title": "Konto",
+			"noAccountFoundTitle": "Achtung:",
+			"noAccountFound": "Es wurde kein Konto mit diesem Client Public Key gefunden.",
+			"timeLockedAddresses": "Bitcoin-Adressen, die zeitlich begrenzt sind",
+			"noTimeLockedAddressFoundTitle": "Achtung:",
+			"noTimeLockedAddressFound": "Es wurden keine zeitlich beschränkten Bitcoin-Adressen gefunden für dieses Konto.",
+			"locked": "Gesperrt",
+			"notLocked": "Nicht gesperrt",
+			"seeBelow": "Siehe unten",
+			"channelTransaction": "Version {version}; {numInputs} Eingänge, {numOutputs} Ausgänge ({outputs})",
+			"fields": {
+				"belongsToUser": "Gehört zum Benutzer",
+				"publicKeyClient": "Public Key Client",
+				"privateKeyServer": "Private Key Server",
+				"publicKeyServer": "Public Key Server",
+				"timeCreated": "Erstellt am",
+				"virtualBalance": "Virtuelles Saldo",
+				"satoshiBalance": "Satoshi Saldo",
+				"totalBalance": "Totales Saldo",
+				"createdAt": "Erstellt am",
+				"bitcoinAddress": "Bitcoin-Adresse",
+				"addressUrl": "Adress-Link",
+				"locked": "Gesperrt",
+				"lockedUntil": "Gesperrt bis",
+				"balance": "Saldo",
+				"broadcastBefore": "Broadcast vor",
+				"nonce": "Nonce",
+				"channelTransaction": "Channel Transaktion"
+			}
+		}
+	}
+}
+</i18n>

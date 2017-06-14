@@ -52,30 +52,6 @@ export default {
 			this.$locale.change(newLanguage);
 			this.$toasted.global.success(this.$t('toasts.languageSwitched', { language: this.$t('language.' + this.currentLanguage) }));
 		}
-	},
-	i18n: {
-		messages: {
-			en: {
-				profile: {
-					title: 'Profile',
-					switchLanguage: 'Change to your preferred language',
-					balanceOverZero: {
-						title: 'You have coins left on this platform',
-						description: 'This feature is not supported anymore. Please contact the support to withdraw the remaining coins.'
-					}
-				}
-			},
-			de: {
-				profile: {
-					title: 'Profil',
-					switchLanguage: 'Sprache wechseln',
-					balanceOverZero: {
-						title: 'Sie haben verbleibende Bitcoins auf dieser Platform',
-						description: 'Diese Funktion ist nicht mehr unterstützt. Bitte wenden Sie sich an den Support für eine Auszahlung.'
-					}
-				}
-			}
-		}
 	}
 };
 </script>
@@ -100,3 +76,28 @@ export default {
 	vertical-align: middle;
 }
 </style>
+
+<i18n>
+{
+	"en": {
+		"profile": {
+			"title": "Profile",
+			"switchLanguage": "Change to your preferred language",
+			"balanceOverZero": {
+				"title": "You have coins left on this platform",
+				"description": "This feature is not supported anymore. Please contact the support to withdraw the remaining coins."
+			}
+		}
+	},
+	"de": {
+		"profile": {
+			"title": "Profil",
+			"switchLanguage": "Sprache wechseln",
+			"balanceOverZero": {
+				"title": "Sie haben verbleibende Bitcoins auf dieser Platform",
+				"description": "Diese Funktion ist nicht mehr unterstützt. Bitte wenden Sie sich an den Support für eine Auszahlung."
+			}
+		}
+	}
+}
+</i18n>

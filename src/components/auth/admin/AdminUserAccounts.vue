@@ -113,43 +113,43 @@ export default {
 					this.isLoading = false;
 				});
 		}
-	},
-	i18n: {
-		messages: {
-			en: {
-				adminUserAccounts: {
-					title: 'User account overview',
-					detailsButton: 'Details',
-					deletedYes: '<i class="fa fa-times fa-red"></i> Yes',
-					deletedNo: '<i class="fa fa-check fa-green"></i> No',
-					field: {
-						email: 'E-Mail',
-						creationDate: 'Creation Date',
-						deleted: 'Deleted?',
-						userRole: 'User Role',
-						balance: 'Balance',
-						details: 'Details'
-					}
-				}
-			},
-			de: {
-				adminUserAccounts: {
-					title: 'Benutzerkonten',
-					detailsButton: 'Details',
-					deletedYes: '<i class="fa fa-times fa-red"></i> Ja',
-					deletedNo: '<i class="fa fa-check fa-green"></i> Nein',
-					field: {
-						email: 'E-Mail',
-						creationDate: 'Erstelldatum',
-						deleted: 'Gelöscht?',
-						userRole: 'Benutzerrolle',
-						balance: 'Saldo',
-						details: 'Details'
-					}
-				}
-			}
-		}
 	}
 };
 </script>
 
+<i18n>
+{
+	"en": {
+		"adminUserAccounts": {
+			"title": "User account overview",
+			"detailsButton": "Details",
+			"deletedYes": "Yes",
+			"deletedNo": "No",
+			"field": {
+				"email": "E-Mail",
+				"creationDate": "Creation Date",
+				"deleted": "Deleted?",
+				"userRole": "User Role",
+				"balance": "Balance",
+				"details": "Details"
+			}
+		}
+	},
+	"de": {
+		"adminUserAccounts": {
+			"title": "Benutzerkonten",
+			"detailsButton": "Details",
+			"deletedYes": "Ja",
+			"deletedNo": "Nein",
+			"field": {
+				"email": "E-Mail",
+				"creationDate": "Erstelldatum",
+				"deleted": "Gelöscht?",
+				"userRole": "Benutzerrolle",
+				"balance": "Saldo",
+				"details": "Details"
+			}
+		}
+	}
+}
+</i18n>

@@ -132,34 +132,6 @@ export default {
 	},
 	mounted: function () {
 		this.loadData();
-	},
-	i18n: {
-		messages: {
-			en: {
-				forex: {
-					title: 'Market trend',
-					subtitleCurrent: 'Current market price',
-					subtitleHistory: 'Trend over the last 30 days',
-					lastUpdated: 'Last updated',
-					errorCurrent: 'The current market price could not be loaded.',
-					errorHistory: 'The trend over the last 30 days could not be loaded.',
-					selectCurrency: 'Select currency',
-					selectVendor: 'Select vendor'
-				}
-			},
-			de: {
-				forex: {
-					title: 'Kursentwicklung',
-					subtitleCurrent: 'Aktueller Kurs',
-					subtitleHistory: 'Kursentwicklung der letzten 30 Tage',
-					lastUpdated: 'Letztes Update',
-					errorCurrent: 'Der aktuelle Kurs konnte nicht geladen werden.',
-					errorHistory: 'Die Kursentwicklung der letzten 30 Tage konnte nicht geladen werden',
-					selectCurrency: 'Währung wählen',
-					selectVendor: 'Anbieter wählen'
-				}
-			}
-		}
 	}
 };
 </script>
@@ -230,3 +202,33 @@ export default {
 	}
 }
 </style>
+
+
+<i18n>
+{
+	"en": {
+		"forex": {
+			"title": "Market trend",
+			"subtitleCurrent": "Current market price",
+			"subtitleHistory": "Trend over the last 30 days",
+			"lastUpdated": "Last updated",
+			"errorCurrent": "The current market price could not be loaded.",
+			"errorHistory": "The trend over the last 30 days could not be loaded.",
+			"selectCurrency": "Select currency",
+			"selectVendor": "Select vendor"
+		}
+	},
+	"de": {
+		"forex": {
+			"title": "Kursentwicklung",
+			"subtitleCurrent": "Aktueller Kurs",
+			"subtitleHistory": "Kursentwicklung der letzten 30 Tage",
+			"lastUpdated": "Letztes Update",
+			"errorCurrent": "Der aktuelle Kurs konnte nicht geladen werden.",
+			"errorHistory": "Die Kursentwicklung der letzten 30 Tage konnte nicht geladen werden",
+			"selectCurrency": "Währung wählen",
+			"selectVendor": "Anbieter wählen"
+		}
+	}
+}
+</i18n>

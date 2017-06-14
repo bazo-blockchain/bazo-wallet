@@ -104,35 +104,7 @@ export default {
 	mounted: function () {
 		this.loadData();
 	},
-	components: { AdminServerPotBaseline },
-	i18n: {
-		messages: {
-			en: {
-				adminServerBalance: {
-					title: 'Server Balance',
-					error: 'The data could not be loaded.',
-					sumOfAllPendingTransactions: 'of all pending transactions',
-					sumOfAllVirtualBalances: 'of all virtual balances',
-					serverPotBaseline: 'Server Pot Baseline',
-					serverPotCurrent: 'Current Server Pot',
-					serverPot: 'Server Pot',
-					server: 'Server'
-				}
-			},
-			de: {
-				adminServerBalance: {
-					title: 'Server Balance',
-					error: 'Die Daten konnten nicht geladen werden.',
-					sumOfAllPendingTransactions: 'aller laufenden Transaktionen',
-					sumOfAllVirtualBalances: 'aller virtuellen Saldi',
-					serverPotBaseline: 'Server Pot Grundstock',
-					serverPotCurrent: 'Aktueller Server Pot',
-					serverPot: 'Server Pot',
-					server: 'Server'
-				}
-			}
-		}
-	}
+	components: { AdminServerPotBaseline }
 };
 </script>
 
@@ -236,3 +208,32 @@ export default {
 	}
 }
 </style>
+
+<i18n>
+{
+	"en": {
+		"adminServerBalance": {
+			"title": "Server Balance",
+			"error": "The data could not be loaded.",
+			"sumOfAllPendingTransactions": "of all pending transactions",
+			"sumOfAllVirtualBalances": "of all virtual balances",
+			"serverPotBaseline": "Server Pot Baseline",
+			"serverPotCurrent": "Current Server Pot",
+			"serverPot": "Server Pot",
+			"server": "Server"
+		}
+	},
+	"de": {
+		"adminServerBalance": {
+			"title": "Server Balance",
+			"error": "Die Daten konnten nicht geladen werden.",
+			"sumOfAllPendingTransactions": "aller laufenden Transaktionen",
+			"sumOfAllVirtualBalances": "aller virtuellen Saldi",
+			"serverPotBaseline": "Server Pot Grundstock",
+			"serverPotCurrent": "Aktueller Server Pot",
+			"serverPot": "Server Pot",
+			"server": "Server"
+		}
+	}
+}
+</i18n>

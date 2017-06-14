@@ -26,22 +26,6 @@ export default {
 		// if redirected from 404, header might not be visible (if before page was login, registration etc.)
 		this.$emit('toggle-header', true);
 		this.$emit('set-body-background', 'white');
-	},
-	i18n: {
-		messages: {
-			en: {
-				home: {
-					login: 'Sign In',
-					authenticatedPage: 'Auth Page'
-				}
-			},
-			de: {
-				home: {
-					login: 'Anmelden',
-					authenticatedPage: 'Auth Seite'
-				}
-			}
-		}
 	}
 };
 </script>
@@ -72,3 +56,20 @@ export default {
 	}
 }
 </style>
+
+<i18n>
+{
+	"en": {
+		"home": {
+			"login": "Sign In",
+			"authenticatedPage": "Auth Page"
+		}
+	},
+	"de": {
+		"home": {
+			"login": "Anmelden",
+			"authenticatedPage": "Auth Seite"
+		}
+	}
+}
+</i18n>

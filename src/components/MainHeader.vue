@@ -90,40 +90,6 @@ export default {
 	},
 	props: {
 		shown: Boolean
-	},
-	i18n: {
-		messages: {
-			en: {
-				header: {
-					signIn: 'Sign In',
-					signOut: 'Sign Out',
-					register: 'Registration',
-					profile: 'Profile',
-					forex: 'Market trend',
-					authenticated: 'Auth Page',
-					userAuthenticated: 'User Auth Page',
-					adminEvents: 'Events',
-					adminAccounts: 'Accounts',
-					adminUserAccounts: 'User Accounts',
-					adminServerBalance: 'Server Balance'
-				}
-			},
-			de: {
-				header: {
-					signIn: 'Anmelden',
-					signOut: 'Abmelden',
-					register: 'Registrieren',
-					profile: 'Profil',
-					forex: 'Kursentwicklung',
-					authenticated: 'Auth Seite',
-					userAuthenticated: 'User-Auth Seite',
-					adminEvents: 'Events',
-					adminAccounts: 'Konten',
-					adminUserAccounts: 'Benutzerkonten',
-					adminServerBalance: 'Server Balance'
-				}
-			}
-		}
 	}
 };
 </script>
@@ -134,3 +100,38 @@ export default {
 	margin-top: -3px;
 }
 </style>
+
+<i18n>
+{
+	"en": {
+		"header": {
+			"signIn": "Sign In",
+			"signOut": "Sign Out",
+			"register": "Registration",
+			"profile": "Profile",
+			"forex": "Market trend",
+			"authenticated": "Auth Page",
+			"userAuthenticated": "User Auth Page",
+			"adminEvents": "Events",
+			"adminAccounts": "Accounts",
+			"adminUserAccounts": "User Accounts",
+			"adminServerBalance": "Server Balance"
+		}
+	},
+	"de": {
+		"header": {
+			"signIn": "Anmelden",
+			"signOut": "Abmelden",
+			"register": "Registrieren",
+			"profile": "Profil",
+			"forex": "Kursentwicklung",
+			"authenticated": "Auth Seite",
+			"userAuthenticated": "User-Auth Seite",
+			"adminEvents": "Events",
+			"adminAccounts": "Konten",
+			"adminUserAccounts": "Benutzerkonten",
+			"adminServerBalance": "Server Balance"
+		}
+	}
+}
+</i18n>

@@ -13,6 +13,7 @@
     "compile-bitcoinjs": "bash compile-bitcoinjs.sh"
   },
   "dependencies": {
+    "@kazupon/vue-i18n-loader": "^0.1.1",
     "bootstrap": "4.0.0-alpha.6",
     "bootstrap-vue": "^0.14.0",
     "chartist": "^0.11.0",

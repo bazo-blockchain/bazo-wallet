@@ -75,28 +75,29 @@ export default {
 				this.$toasted.global.warn(this.$t('toasts.validationError'))
 			}
 		}
-	},
-	i18n: {
-		messages: {
-			en: {
-				passwordForgotten: {
-					title: 'Password Forgotten',
-					email: 'E-Mail Address',
-					submit: 'Submit',
-					success: 'You should receive now an e-mail with a link. Please open this link to reset your password.',
-					invalidEmail: 'The provided e-mail address could not be found in the system.'
-				}
-			},
-			de: {
-				passwordForgotten: {
-					title: 'Passwort vergessen',
-					email: 'E-Mail Adresse',
-					submit: 'Abschicken',
-					success: 'Sie werden jetzt ein E-Mail mit einem Link erhalten. Bitte folgen Sie diesem Link, um Ihr Passwort zurückzusetzen.',
-					invalidEmail: 'Die angegebene E-Mail Adresse konnte nicht gefunden werden.'
-				}
-			}
-		}
 	}
 };
 </script>
+
+<i18n>
+{
+	"en": {
+		"passwordForgotten": {
+			"title": "Password Forgotten",
+			"email": "E-Mail Address",
+			"submit": "Submit",
+			"success": "You should receive now an e-mail with a link. Please open this link to reset your password.",
+			"invalidEmail": "The provided e-mail address could not be found in the system."
+		}
+	},
+	"de": {
+		"passwordForgotten": {
+			"title": "Passwort vergessen",
+			"email": "E-Mail Adresse",
+			"submit": "Abschicken",
+			"success": "Sie werden jetzt ein E-Mail mit einem Link erhalten. Bitte folgen Sie diesem Link, um Ihr Passwort zurückzusetzen.",
+			"invalidEmail": "Die angegebene E-Mail Adresse konnte nicht gefunden werden."
+		}
+	}
+}
+</i18n>

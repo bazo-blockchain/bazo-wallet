@@ -117,38 +117,6 @@ export default {
 	},
 	mounted: function () {
 		this.loadData();
-	},
-	i18n: {
-		messages: {
-			en: {
-				adminServerPotBaseline: {
-					title: 'Server Pot Baseline',
-					newAmountPlaceholder: 'Add satoshis (+/-)',
-					newAmountButton: 'Add satoshis',
-					currentTotal: 'Current Total',
-					noEntries: 'No entries available',
-					newAmountSuccess: 'New amount was successfully added',
-					fields: {
-						timestamp: 'Added at',
-						amount: 'Amount'
-					}
-				}
-			},
-			de: {
-				adminServerPotBaseline: {
-					title: 'Server Pot Grundstock',
-					newAmountPlaceholder: 'Weitere Satoshis hinzufügen (+/-)',
-					newAmountButton: 'Hinzufügen',
-					currentTotal: 'Derzeitiges Total',
-					noEntries: 'Keine Einträge vorhanden',
-					newAmountSuccess: 'Der neue Betrag wurde erfolgreich hinzugefügt.',
-					fields: {
-						timestamp: 'Hinzugefügt am',
-						amount: 'Betrag'
-					}
-				}
-			}
-		}
 	}
 };
 </script>
@@ -189,3 +157,36 @@ export default {
 	}
 }
 </style>
+
+<i18n>
+{
+	"en": {
+		"adminServerPotBaseline": {
+			"title": "Server Pot Baseline",
+			"newAmountPlaceholder": "Add satoshis (+/-)",
+			"newAmountButton": "Add satoshis",
+			"currentTotal": "Current Total",
+			"noEntries": "No entries available",
+			"newAmountSuccess": "New amount was successfully added",
+			"fields": {
+				"timestamp": "Added at",
+				"amount": "Amount"
+			}
+		}
+	},
+	"de": {
+		"adminServerPotBaseline": {
+			"title": "Server Pot Grundstock",
+			"newAmountPlaceholder": "Weitere Satoshis hinzufügen (+/-)",
+			"newAmountButton": "Hinzufügen",
+			"currentTotal": "Derzeitiges Total",
+			"noEntries": "Keine Einträge vorhanden",
+			"newAmountSuccess": "Der neue Betrag wurde erfolgreich hinzugefügt.",
+			"fields": {
+				"timestamp": "Hinzugefügt am",
+				"amount": "Betrag"
+			}
+		}
+	}
+}
+</i18n>

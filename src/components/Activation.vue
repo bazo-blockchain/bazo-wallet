@@ -102,32 +102,6 @@ export default {
 				this.$toasted.global.warn(this.$t('toasts.validationError'));
 			}
 		}
-	},
-	i18n: {
-		messages: {
-			en: {
-				activation: {
-					title: 'Account Activation',
-					email: 'E-Mail',
-					token: 'Activation Key',
-					submit: 'Activate',
-					success: 'You have been successfully activated. Please log in now.',
-					invalidTokenOrEmail: 'The provided activation key or e-mail address is incorrect.',
-					tokenInfo: '<i class="fa fa-envelope"></i> The activation key was sent to you by e-mail.'
-				}
-			},
-			de: {
-				activation: {
-					title: 'Kontoaktivierung',
-					email: 'E-Mail Adresse',
-					token: 'Aktivierungsschlüssel',
-					submit: 'Aktivieren',
-					success: 'Sie haben Ihr Konto erfolgreich aktiviert. Bitte loggen Sie sich jetzt ein.',
-					invalidTokenOrEmail: 'Der Aktivierungsschlüssel oder die E-Mail Adresse ist inkorrekt.',
-					tokenInfo: '<i class="fa fa-envelope"></i> Der Aktivierungsschlüssel wurde Ihnen per E-Mail zugeschickt.'
-				}
-			}
-		}
 	}
 };
 </script>
@@ -143,3 +117,30 @@ label {
 	}
 }
 </style>
+
+<i18n>
+{
+	"en": {
+		"activation": {
+			"title": "Account Activation",
+			"email": "E-Mail",
+			"token": "Activation Key",
+			"submit": "Activate",
+			"success": "You have been successfully activated. Please log in now.",
+			"invalidTokenOrEmail": "The provided activation key or e-mail address is incorrect.",
+			"tokenInfo": "The activation key was sent to you by e-mail."
+		}
+	},
+	"de": {
+		"activation": {
+			"title": "Kontoaktivierung",
+			"email": "E-Mail Adresse",
+			"token": "Aktivierungsschlüssel",
+			"submit": "Aktivieren",
+			"success": "Sie haben Ihr Konto erfolgreich aktiviert. Bitte loggen Sie sich jetzt ein.",
+			"invalidTokenOrEmail": "Der Aktivierungsschlüssel oder die E-Mail Adresse ist inkorrekt.",
+			"tokenInfo": "Der Aktivierungsschlüssel wurde Ihnen per E-Mail zugeschickt."
+		}
+	}
+}
+</i18n>

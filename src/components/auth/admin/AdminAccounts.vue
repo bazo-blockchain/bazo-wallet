@@ -126,42 +126,43 @@ export default {
 					this.isLoading = false;
 				});
 		}
-	},
-	i18n: {
-		messages: {
-			en: {
-				adminAccounts: {
-					title: 'Account overview',
-					noEntryAvailableTitle: 'Attention:',
-					noEntryAvailable: 'There is currently no account available.',
-					fields: {
-						belongsToUser: 'Belongs to user',
-						timeCreated: 'Created at',
-						publicKeyClient: 'Public Key Client',
-						satoshiBalance: 'Satoshi Balance',
-						virtualBalance: 'Virtual Balance',
-						totalBalance: 'Total Balance',
-						actions: 'Actions'
-					}
-				}
-			},
-			de: {
-				adminAccounts: {
-					title: 'Kontoübersicht',
-					noEntryAvailableTitle: 'Achtung:',
-					noEntryAvailable: 'Derzeit ist kein Konto verfügbar.',
-					fields: {
-						belongsToUser: 'Gehört Benutzer',
-						timeCreated: 'Erstellt am',
-						publicKeyClient: 'Public Key Client',
-						satoshiBalance: 'Satoshi Saldo',
-						virtualBalance: 'Virtuelles Saldo',
-						totalBalance: 'Gesamtsaldo',
-						actions: 'Aktionen'
-					}
-				}
-			}
-		}
 	}
 };
 </script>
+
+<i18n>
+{
+	"en": {
+		"adminAccounts": {
+			"title": "Account overview",
+			"noEntryAvailableTitle": "Attention:",
+			"noEntryAvailable": "There is currently no account available.",
+			"fields": {
+				"belongsToUser": "Belongs to user",
+				"timeCreated": "Created at",
+				"publicKeyClient": "Public Key Client",
+				"satoshiBalance": "Satoshi Balance",
+				"virtualBalance": "Virtual Balance",
+				"totalBalance": "Total Balance",
+				"actions": "Actions"
+			}
+		}
+	},
+	"de": {
+		"adminAccounts": {
+			"title": "Kontoübersicht",
+			"noEntryAvailableTitle": "Achtung:",
+			"noEntryAvailable": "Derzeit ist kein Konto verfügbar.",
+			"fields": {
+				"belongsToUser": "Gehört Benutzer",
+				"timeCreated": "Erstellt am",
+				"publicKeyClient": "Public Key Client",
+				"satoshiBalance": "Satoshi Saldo",
+				"virtualBalance": "Virtuelles Saldo",
+				"totalBalance": "Gesamtsaldo",
+				"actions": "Aktionen"
+			}
+		}
+	}
+}
+</i18n>

@@ -56,30 +56,6 @@ export default {
 				});
 			}
 		}
-	},
-	i18n: {
-		messages: {
-			en: {
-				login: {
-					title: 'Sign In',
-					email: 'E-Mail',
-					password: 'Password',
-					submit: 'Sign in',
-					signUp: 'Sign up now!',
-					forgotPassword: 'Forgot your password?'
-				}
-			},
-			de: {
-				login: {
-					title: 'Anmelden',
-					email: 'E-Mail Adresse',
-					password: 'Passwort',
-					submit: 'Anmelden',
-					signUp: 'Jetzt registrieren!',
-					forgotPassword: 'Passwort vergessen?'
-				}
-			}
-		}
 	}
 };
 </script>
@@ -152,3 +128,28 @@ export default {
 	}
 }
 </style>
+
+<i18n>
+{
+	"en": {
+		"login": {
+			"title": "Sign In",
+			"email": "E-Mail",
+			"password": "Password",
+			"submit": "Sign in",
+			"signUp": "Sign up now!",
+			"forgotPassword": "Forgot your password?"
+		}
+	},
+	"de": {
+		"login": {
+			"title": "Anmelden",
+			"email": "E-Mail Adresse",
+			"password": "Passwort",
+			"submit": "Anmelden",
+			"signUp": "Jetzt registrieren!",
+			"forgotPassword": "Passwort vergessen?"
+		}
+	}
+}
+</i18n>

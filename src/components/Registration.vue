@@ -106,36 +106,6 @@ export default {
 				this.$toasted.global.warn(this.$t('toasts.validationError'));
 			}
 		}
-	},
-	i18n: {
-		messages: {
-			en: {
-				registration: {
-					title: 'Registration',
-					email: 'E-Mail',
-					password: 'Password',
-					passwordRepeat: 'Repeat Password',
-					acceptTerms1: 'I accept the',
-					acceptTerms2: 'terms and conditions',
-					submit: 'Register',
-					success: '<b>Please check your e-mails for the activation key.</b>',
-					userAlreadyExistsError: 'A user with this e-mail address already exists.'
-				}
-			},
-			de: {
-				registration: {
-					title: 'Registrierung',
-					email: 'E-Mail Adresse',
-					password: 'Passwort',
-					passwordRepeat: 'Passwort wiederholen',
-					acceptTerms1: 'Ich akzeptiere die',
-					acceptTerms2: 'AGBs',
-					submit: 'Registrieren',
-					success: '<b>Bitte entnehmen Sie den Aktivierungsschlüssel Ihren E-Mails.</b>',
-					userAlreadyExistsError: 'Diese E-Mail-Adresse wird bereits verwendet.'
-				}
-			}
-		}
 	}
 };
 </script>
@@ -148,3 +118,34 @@ export default {
 	}
 }
 </style>
+
+<i18n>
+{
+	"en": {
+		"registration": {
+			"title": "Registration",
+			"email": "E-Mail",
+			"password": "Password",
+			"passwordRepeat": "Repeat Password",
+			"acceptTerms1": "I accept the",
+			"acceptTerms2": "terms and conditions",
+			"submit": "Register",
+			"success": "<b>Please check your e-mails for the activation key.</b>",
+			"userAlreadyExistsError": "A user with this e-mail address already exists."
+		}
+	},
+	"de": {
+		"registration": {
+			"title": "Registrierung",
+			"email": "E-Mail Adresse",
+			"password": "Passwort",
+			"passwordRepeat": "Passwort wiederholen",
+			"acceptTerms1": "Ich akzeptiere die",
+			"acceptTerms2": "AGBs",
+			"submit": "Registrieren",
+			"success": "<b>Bitte entnehmen Sie den Aktivierungsschlüssel Ihren E-Mails.</b>",
+			"userAlreadyExistsError": "Diese E-Mail-Adresse wird bereits verwendet."
+		}
+	}
+}
+</i18n>

@@ -117,36 +117,6 @@ export default {
 				this.$toasted.global.warn(this.$t('toasts.validationError'));
 			}
 		}
-	},
-	i18n: {
-		messages: {
-			en: {
-				passwordForgottenVerification: {
-					title: 'Password Forgotten',
-					email: 'E-Mail Address',
-					token: 'Activation Key',
-					newPassword: 'New Password',
-					newPasswordRepeat: 'Repeat New Password',
-					submit: 'Submit',
-					success: 'Your password has been successfully reset. Please log in now.',
-					invalidTokenOrEmail: 'The provided activation key or e-mail address is incorrect.',
-					tokenInfo: '<i class="fa fa-envelope"></i> The activation key was sent to you by e-mail.'
-				}
-			},
-			de: {
-				passwordForgottenVerification: {
-					title: 'Password vergessen',
-					email: 'E-Mail Adresse',
-					token: 'Aktivierungsschlüssel',
-					newPassword: 'Neues Passwort',
-					newPasswordRepeat: 'Neues Passwort wiederholen',
-					submit: 'Abschicken',
-					success: 'Sie haben Ihr Passwort erfolgreich geändert. Bitte loggen Sie sich jetzt ein.',
-					invalidTokenOrEmail: 'Der Aktivierungsschlüssel oder die E-Mail Adresse ist inkorrekt.',
-					tokenInfo: '<i class="fa fa-envelope"></i> Der Aktivierungsschlüssel wurde Ihnen per E-Mail zugeschickt.'
-				}
-			}
-		}
 	}
 };
 </script>
@@ -162,3 +132,34 @@ label {
 	}
 }
 </style>
+
+<i18n>
+{
+	"en": {
+		"passwordForgottenVerification": {
+			"title": "Password Forgotten",
+			"email": "E-Mail Address",
+			"token": "Activation Key",
+			"newPassword": "New Password",
+			"newPasswordRepeat": "Repeat New Password",
+			"submit": "Submit",
+			"success": "Your password has been successfully reset. Please log in now.",
+			"invalidTokenOrEmail": "The provided activation key or e-mail address is incorrect.",
+			"tokenInfo": "The activation key was sent to you by e-mail."
+		}
+	},
+	"de": {
+		"passwordForgottenVerification": {
+			"title": "Password vergessen",
+			"email": "E-Mail Adresse",
+			"token": "Aktivierungsschlüssel",
+			"newPassword": "Neues Passwort",
+			"newPasswordRepeat": "Neues Passwort wiederholen",
+			"submit": "Abschicken",
+			"success": "Sie haben Ihr Passwort erfolgreich geändert. Bitte loggen Sie sich jetzt ein.",
+			"invalidTokenOrEmail": "Der Aktivierungsschlüssel oder die E-Mail Adresse ist inkorrekt.",
+			"tokenInfo": "Der Aktivierungsschlüssel wurde Ihnen per E-Mail zugeschickt."
+		}
+	}
+}
+</i18n>

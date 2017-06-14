@@ -142,24 +142,6 @@ export default {
 	},
 	mounted: function () {
 		this.loadData();
-	},
-	i18n: {
-		messages: {
-			en: {
-				adminEvents: {
-					title: 'Event overview',
-					noEntryAvailableTitle: 'Attention:',
-					noEntryAvailable: 'There is currently no event available.'
-				}
-			},
-			de: {
-				adminEvents: {
-					title: 'Eventübersicht',
-					noEntryAvailableTitle: 'Achtung:',
-					noEntryAvailable: 'Momentan ist kein Event verfügbar.'
-				}
-			}
-		}
 	}
 };
 </script>
@@ -186,3 +168,22 @@ export default {
 	}
 }
 </style>
+
+<i18n>
+{
+	"en": {
+		"adminEvents": {
+			"title": "Event overview",
+			"noEntryAvailableTitle": "Attention:",
+			"noEntryAvailable": "There is currently no event available."
+		}
+	},
+	"de": {
+		"adminEvents": {
+			"title": "Eventübersicht",
+			"noEntryAvailableTitle": "Achtung:",
+			"noEntryAvailable": "Momentan ist kein Event verfügbar."
+		}
+	}
+}
+</i18n>

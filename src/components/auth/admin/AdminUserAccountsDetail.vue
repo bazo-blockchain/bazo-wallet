@@ -141,56 +141,6 @@ export default {
 				this.loadData();
 			});
 		}
-	},
-	i18n: {
-		messages: {
-			en: {
-				adminUserAccountsDetail: {
-					title: 'User Account',
-					deleteButton: 'Delete!',
-					undeleteButton: 'Undo',
-					deletedYes: '<i class="fa fa-times fa-red"></i> Yes',
-					deletedNo: '<i class="fa fa-check fa-green"></i> No',
-					noUserFoundTitle: 'Attention:',
-					noUserFound: 'No user with this e-mail address was found.',
-					error: 'An error occurred. Please try it again later.',
-					successRoleChange: 'The user role was successfully changed.',
-					successDelete: 'The user was successfully marked as deleted.',
-					successUndelete: 'The user was successfully marked as&nbsp;<b>not</b>&nbsp;deleted.',
-					fields: {
-						email: 'E-Mail',
-						userRole: 'User Role',
-						creationDate: 'Creation Date',
-						balance: 'Balance',
-						deleted: 'Deleted?',
-						account: 'Account'
-					}
-				}
-			},
-			de: {
-				adminUserAccountsDetail: {
-					title: 'Benutzerkonto',
-					deleteButton: 'Löschen!',
-					undeleteButton: 'Rückgängig machen',
-					deletedYes: '<i class="fa fa-times fa-red"></i> Ja',
-					deletedNo: '<i class="fa fa-check fa-green"></i> Nein',
-					noUserFoundTitle: 'Achtung:',
-					noUserFound: 'Es wurde kein Benutzer mit dieser E-Mail Adresse gefunden.',
-					error: 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
-					successRoleChange: 'Die Benutzerrolle wurde erfolgreich gewechselt.',
-					successDelete: 'Der Benutzer wurde erfolgreich als gelöscht markiert.',
-					successUndelete: 'Der Benutzer wurde erfolgreich als&nbsp;<b>nicht</b>&nbsp;gelöscht markiert.',
-					fields: {
-						email: 'E-Mail Adresse',
-						userRole: 'Benutzerrolle',
-						creationDate: 'Erstelldatum',
-						balance: 'Saldo',
-						deleted: 'Gelöscht?',
-						account: 'Konto'
-					}
-				}
-			}
-		}
 	}
 };
 </script>
@@ -208,3 +158,54 @@ export default {
 	margin-left: 40px;
 }
 </style>
+
+<i18n>
+{
+	"en": {
+		"adminUserAccountsDetail": {
+			"title": "User Account",
+			"deleteButton": "Delete!",
+			"undeleteButton": "Undo",
+			"deletedYes": "Yes",
+			"deletedNo": "No",
+			"noUserFoundTitle": "Attention:",
+			"noUserFound": "No user with this e-mail address was found.",
+			"error": "An error occurred. Please try it again later.",
+			"successRoleChange": "The user role was successfully changed.",
+			"successDelete": "The user was successfully marked as deleted.",
+			"successUndelete": "The user was successfully marked as&nbsp;<b>not</b>&nbsp;deleted.",
+			"fields": {
+				"email": "E-Mail",
+				"userRole": "User Role",
+				"creationDate": "Creation Date",
+				"balance": "Balance",
+				"deleted": "Deleted?",
+				"account": "Account"
+			}
+		}
+	},
+	"de": {
+		"adminUserAccountsDetail": {
+			"title": "Benutzerkonto",
+			"deleteButton": "Löschen!",
+			"undeleteButton": "Rückgängig machen",
+			"deletedYes": "Ja",
+			"deletedNo": "Nein",
+			"noUserFoundTitle": "Achtung:",
+			"noUserFound": "Es wurde kein Benutzer mit dieser E-Mail Adresse gefunden.",
+			"error": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
+			"successRoleChange": "Die Benutzerrolle wurde erfolgreich gewechselt.",
+			"successDelete": "Der Benutzer wurde erfolgreich als gelöscht markiert.",
+			"successUndelete": "Der Benutzer wurde erfolgreich als&nbsp;<b>nicht</b>&nbsp;gelöscht markiert.",
+			"fields": {
+				"email": "E-Mail Adresse",
+				"userRole": "Benutzerrolle",
+				"creationDate": "Erstelldatum",
+				"balance": "Saldo",
+				"deleted": "Gelöscht?",
+				"account": "Konto"
+			}
+		}
+	}
+}
+</i18n>
