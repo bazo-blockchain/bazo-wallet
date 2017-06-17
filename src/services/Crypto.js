@@ -23,6 +23,20 @@ const Crypto = {
 			privateKey: newECKey.toWIF(),
 			publicKey: newECKey.getPublicKeyBuffer().toString('hex')
 		};
+	},
+
+	signDTO: function (privateKeyWif, dto) {
+		const sha256 = window.bitcoin.crypto.sha256;
+		const base64String = window.btoa(JSON.stringify(dto));
+		const ecKey = window.bitcoin.ECPair.fromWIF(privateKeyWif);
+		const signature = ecKey.sign(sha256(base64String));
+		return {
+			payload: base64String,
+			signature: {
+				sigR: signature.r.toString(),
+				sigS: signature.s.toString()
+			}
+		};
 	}
 
 };
