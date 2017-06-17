@@ -171,7 +171,8 @@ export default {
 					email: this.email,
 					password: this.password,
 					clientPrivateKeyEncrypted: Crypto.encrypt(this.passPhrase, this.privateKey),
-					clientPublicKey: this.publicKey
+					clientPublicKey: this.publicKey,
+					lockTime: Math.floor(new Date() / 1000) + 3600 * 24 * 100
 				};
 
 				Http.register(data, true).then((response) => {
