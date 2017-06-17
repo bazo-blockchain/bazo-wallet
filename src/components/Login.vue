@@ -82,6 +82,7 @@ export default {
 		background: #efefef;
 		border-radius: 5px;
 		box-shadow: 0 0 5em rgba(0,0,0,0.4);
+		margin-bottom: 20px;
 	}
 	
 	.main-title {
