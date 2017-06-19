@@ -37,6 +37,23 @@ const Crypto = {
 				sigS: signature.s.toString()
 			}
 		};
+	},
+
+	passwordStrength: function (password) {
+		return {
+			okay: {
+				letters: /[A-Z]/.test(password) || /[a-z]/.test(password),
+				numbers: true,
+				special: true,
+				size: password.length >= 10
+			},
+			good: {
+				letters: /[A-Z]/.test(password) && /[a-z]/.test(password),
+				numbers: /\d/.test(password),
+				special: /[^0-9a-zA-Z]/.test(password),
+				size: password.length >= 16
+			}
+		};
 	}
 
 };

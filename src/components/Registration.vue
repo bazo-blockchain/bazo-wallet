@@ -50,6 +50,22 @@
 				</div>
 				<b-form-fieldset :label="$t('registration.passPhrase')">
 					<b-form-input v-model="passPhrase" type="password" name="passPhrase" :class="{ 'form-error': !validPassPhrase && formIsTouched }"></b-form-input>
+					<div class="passphrase-strength">
+						<div class="bar" :class="passPhraseStrengthClasses.size">
+							<div class="text">
+								{{ $t('registration.size') }}
+							</div>
+						</div>
+						<div class="bar" :class="passPhraseStrengthClasses.letters">
+							<div class="text">A-Z, a-z</div>
+						</div>
+						<div class="bar" :class="passPhraseStrengthClasses.numbers">
+							<div class="text">012345...</div>
+						</div>
+						<div class="bar" :class="passPhraseStrengthClasses.special">
+							<div class="text">$@!</div>
+						</div>
+					</div>
 				</b-form-fieldset>
 				<b-form-fieldset :label="$t('registration.passPhraseRepeat')">
 					<b-form-input v-model="passPhraseRepeat" type="password" name="passPhraseRepeat" :class="{ 'form-error': !validPassPhraseRepeat && formIsTouched }"></b-form-input>
@@ -112,9 +128,33 @@ export default {
 		validAcceptTerms: function () {
 			return !!this.acceptTerms;
 		},
+		passPhraseStrengthClasses: function () {
+			const passPhraseStrength = Crypto.passwordStrength(this.passPhrase);
+
+			const classes = {
+				size: this.passPhrase.length > 0 ? {
+					'red': !passPhraseStrength.okay.size && !passPhraseStrength.good.size,
+					'orange': passPhraseStrength.okay.size && !passPhraseStrength.good.size,
+					'green': passPhraseStrength.okay.size && passPhraseStrength.good.size } : {},
+				letters: this.passPhrase.length > 0 ? {
+					'red': !passPhraseStrength.okay.letters && !passPhraseStrength.good.letters,
+					'orange': passPhraseStrength.okay.letters && !passPhraseStrength.good.letters,
+					'green': passPhraseStrength.okay.letters && passPhraseStrength.good.letters } : {},
+				numbers: this.passPhrase.length > 0 ? {
+					'red': !passPhraseStrength.okay.numbers && !passPhraseStrength.good.numbers,
+					'orange': passPhraseStrength.okay.numbers && !passPhraseStrength.good.numbers,
+					'green': passPhraseStrength.okay.numbers && passPhraseStrength.good.numbers } : {},
+				special: this.passPhrase.length > 0 ? {
+					'red': !passPhraseStrength.okay.special && !passPhraseStrength.good.special,
+					'orange': passPhraseStrength.okay.special && !passPhraseStrength.good.special,
+					'green': passPhraseStrength.okay.special && passPhraseStrength.good.special } : {}
+			};
+			return classes;
+		},
 		validPassPhrase: function () {
 			if (!this.passPhrase) { return false; }
-			return !(this.password.length < Util.PASSWORD_MIN_LENGTH);
+			const passPhraseStrength = Crypto.passwordStrength(this.passPhrase);
+			return (passPhraseStrength.okay.size && passPhraseStrength.okay.letters && passPhraseStrength.okay.numbers && passPhraseStrength.okay.special)
 		},
 		validPassPhraseRepeat: function () {
 			if (!this.validPassPhrase) { return false; }
@@ -231,6 +271,53 @@ export default {
 			}
 		}
 	}
+	.passphrase-strength {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		width: 100%;
+		border-spacing: 10px 10px;
+		padding-top: 5px;
+		padding-bottom: 18px;
+		
+		.bar {
+			height: 4px;
+			background: #ddd;
+			position: relative;
+			width: auto;
+			margin-right: 7px;
+			flex: 1;
+			position: relative;
+			transition: 0.2s ease background-color;
+			border-radius: 2px;
+			
+			&:first-child {
+				margin-left: 2px;
+			}
+			&:last-child {
+				margin-right: 2px;
+			}
+			
+			&.red {
+				background-color: #ff6e6e;
+			}
+			&.orange {
+				background-color: #fbbf51;
+			}
+			&.green {
+				background-color: #74c274;
+			}
+			
+			.text {
+				display: block;
+				text-align: center;
+				white-space: nowrap;
+				font-size: 11px;
+				padding-top: 6px;
+			}
+		}
+	}
 }
 </style>
 
@@ -254,7 +341,8 @@ export default {
 			"passPhraseRepeat": "Repeat Pass Phrase",
 			"submit": "Submit",
 			"accountCreationInfo": "We've created a Bitcoin account for you. The private key will be stored in encrypted form on the server. Please enter a secret pass phrase to encrypt the private key. <b>Attention: Afterwards, you cannot change the pass phrase anymore.</b>",
-			"goBack": "Go back to step 1"
+			"goBack": "Go back to step 1",
+			"size": "Length"
 		}
 	},
 	"de": {
@@ -275,7 +363,8 @@ export default {
 			"passPhraseRepeat": "Pass-Phrase wiederholen",
 			"submit": "Abschicken",
 			"accountCreationInfo": "Wir haben für Sie ein Bitcoin-Konto angelegt. Der private Schlüssel wird verschlüsselt auf dem Server gespeichert. Geben Sie eine geheime Pass-Phrase ein, um den Schlüssel zu verschlüsseln. <b>Achtung: Sie können diese Pass-Phrase nicht mehr ändern.</b>",
-			"goBack": "Zurück zu Schritt 1"
+			"goBack": "Zurück zu Schritt 1",
+			"size": "Länge"
 		}
 	}
 }
