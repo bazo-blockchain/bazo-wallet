@@ -5,12 +5,14 @@
 		<main-header :shown="showHeader"></main-header>
 		<router-view v-on:toggle-header="toggleHeader" v-on:set-body-background="setBodyBackground"></router-view>
 	</div>
+	<offline-message></offline-message>
 </div>
 </template>
 
 <script>
 import MainHeader from '@/components/MainHeader';
 import ProgressBar from '@/components/ProgressBar';
+import OfflineMessage from '@/components/OfflineMessage';
 
 export default {
 	name: 'app',
@@ -22,7 +24,8 @@ export default {
 	},
 	components: {
 		ProgressBar,
-		MainHeader
+		MainHeader,
+		OfflineMessage
 	},
 	methods: {
 		toggleHeader: function (show) {
