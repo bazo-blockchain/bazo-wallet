@@ -101,9 +101,9 @@ var webpackConfig = merge(baseWebpackConfig, {
     ]),
     // service worker caching
     new SWPrecacheWebpackPlugin({
-      cacheId: 'my-vue-app',
+      cacheId: 'coinblesk-light-cache',
       filename: 'service-worker.js',
-      staticFileGlobs: ['dist/**/*.{js,html,css}'],
+      staticFileGlobs: ['dist/**/*.{js,html,css,eot,woff2,woff,ttf,png,jpg,svg,gif,json}'],
       minify: true,
       stripPrefix: 'dist/'
     })
