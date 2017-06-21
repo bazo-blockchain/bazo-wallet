@@ -1,7 +1,7 @@
 import Vue from 'vue';
-import Auth from '@/services/Auth';
 import Router from '@/config/Router';
 import Translation from '@/config/Translation';
+import Store from '@/config/Store';
 
 const internalError = () => {
 	Vue.toasted.global.errorNoIcon('<i class="fa fa-times"></i>' + Translation.t('toasts.internalError'));
@@ -15,18 +15,31 @@ export default {
 
 	intercept: function () {
 		Vue.http.interceptors.push(function (request, next) {
-			request.headers.set('Authorization', Auth.getAuthHeader());
 			const doNotIntercept = !!request.headers.get('DO_NOT_INTERCEPT');
+			request.headers.set('Authorization', (() => {
+				if (!Store.state.auth.authenticated) {
+					return null;
+				} else {
+					return 'Bearer ' + Store.state.auth.token;
+				}
+			})());
 
 			next(function (response) {
-				if (/(^5)|(^0$)/.test(response.status.toString())) {
+				if (/^5/.test(response.status.toString())) {
 					internalError();
+				} else if (/(^0$)/.test(response.status.toString())) {
+					// optional, must be detected anyway somewhere else
+					Store.dispatch('setOffline', true);
 				} else if (/^(?!2|400$|401$|403$)/.test(response.status.toString()) && !doNotIntercept) {
 					internalError();
 				} else if (!doNotIntercept) {
 					if (response.status === 401) {
-						if (Auth.auth.authenticated) {
-							Auth.sessionExpired();
+						if (Store.state.auth.authenticated) {
+							// session expired, token not valid anymore
+							Store.dispatch('clearAuth');
+							Store.dispatch('clearUser');
+							Vue.toasted.global.warnNoIcon('<i class="fa fa-sign-out">' + Translation.t('toasts.sessionExpired'));
+							Router.push({ path: '/login' });
 						} else {
 							Vue.toasted.global.warn(Translation.t('toasts.unauthorized'), { duration: 6000 });
 							Router.push({ path: '/login' });

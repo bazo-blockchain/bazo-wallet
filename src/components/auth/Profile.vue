@@ -30,18 +30,17 @@
 </template>
 
 <script>
-import Auth from '@/services/Auth';
-
 export default {
 	name: 'profile',
 	data: () => {
-		return {
-			auth: Auth.auth
-		};
+		return {};
 	},
 	computed: {
 		user: function () {
 			return this.$store.state.user;
+		},
+		auth: function () {
+			return this.$store.state.auth;
 		},
 		currentLanguage: function () {
 			return this.$locale.current();

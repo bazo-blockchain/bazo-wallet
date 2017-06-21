@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import Auth from '@/services/Auth';
+import Http from '@/services/Http';
 
 export default {
 	name: 'test',
@@ -49,10 +49,31 @@ export default {
 		login: function () {
 			if (!this.isLoading) {
 				this.isLoading = true;
-				const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
+
 				const credentials = { email: this.email, password: this.password };
-				Auth.login(credentials, redirect).then(() => {
+				const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
+
+				Http.login(credentials).then((response) => {
+					return this.$store.dispatch('updateAuth', response.body.token);
+				}, (response) => {
+					if (response.status === 406) {
+						this.$toasted.global.error(this.$t('toasts.userIsDeletedError'));
+					} else if (/^4/.test(response.status.toString())) {
+						this.$toasted.global.warn(this.$t('toasts.wrongPassword'));
+					}
 					this.isLoading = false;
+					return Promise.reject();
+				}).then(() => {
+					return this.$store.dispatch('updateUser');
+				}).then(() => {
+					this.$toasted.global.successNoIcon('<i class="fa fa-sign-in"></i>' + this.$t('toasts.signedIn'));
+					if (redirect) {
+						this.$router.push({ path: redirect });
+					}
+				}, () => {
+					this.isLoading = false;
+					this.$toasted.global.error(this.$t('toasts.internalError'));
+					this.$store.dispatch('clearAuth');
 				});
 			}
 		}

@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import Auth from '@/services/Auth';
 import Http from '@/services/Http';
 
 export default {
@@ -39,9 +38,6 @@ export default {
 		}
 	},
 	methods: {
-		logout: function () {
-			Auth.logout();
-		},
 		admin: function () {
 			Http.Auth.Admin.getAccounts().then(function (response) {
 				console.log(response);

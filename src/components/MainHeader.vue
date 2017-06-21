@@ -65,24 +65,28 @@
 </template>
 
 <script>
-import Auth from '@/services/Auth.js';
-
 export default {
 	name: 'main-header',
 	data: function () {
-		return {
-			auth: Auth.auth
-		};
+		return {};
 	},
 	methods: {
 		switchLanguage: function (newLanguage) {
 			this.$locale.change(newLanguage);
 		},
-		signout: Auth.logout
+		signout: function () {
+			this.$store.dispatch('clearAuth');
+			this.$store.dispatch('clearUser');
+			this.$toasted.global.successNoIcon('<i class="fa fa-sign-out"></i>' + this.$t('toasts.signedOff'));
+			this.$router.push({ 'path': '/' });
+		}
 	},
 	computed: {
 		user: function () {
 			return this.$store.state.user;
+		},
+		auth: function () {
+			return this.$store.state.auth;
 		},
 		currentLanguage: function () {
 			return this.$locale.current();

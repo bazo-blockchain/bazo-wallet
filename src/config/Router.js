@@ -19,13 +19,12 @@ import AdminUserAccountsDetail from '@/components/auth/admin/AdminUserAccountsDe
 import AdminEvents from '@/components/auth/admin/AdminEvents';
 import Translation from '@/config/Translation';
 import ProgressBar from '@/config/ProgressBar.js';
-
-import Auth from '../services/Auth';
+import Store from '@/config/Store';
 
 Vue.use(VueRouter);
 
 const requireAuth = (to, _from, next) => {
-	if (!Auth.auth.authenticated) {
+	if (!Store.state.auth.authenticated) {
 		Vue.toasted.global.warn(Translation.t('toasts.unauthorized'), { duration: 6000 });
 		next({
 			path: '/login',
@@ -37,9 +36,9 @@ const requireAuth = (to, _from, next) => {
 };
 
 const requireAuthAndRole = (role, to, _from, next) => {
-	if (!Auth.auth.authenticated) {
+	if (!Store.state.auth.authenticated) {
 		requireAuth(to, _from, next);
-	} else if (Auth.auth.role !== role) {
+	} else if (Store.state.auth.role !== role) {
 		Vue.toasted.global.warn(Translation.t('toasts.forbidden'), { duration: 6000 });
 		next({
 			path: '/'
@@ -57,7 +56,7 @@ const requireAuthAndUser = (to, _from, next) => {
 };
 
 const afterAuth = (_to, from, next) => {
-	if (Auth.auth.authenticated) {
+	if (Store.state.auth.authenticated) {
 		next(from.path);
 		hideProgressBar();
 	} else {
@@ -85,10 +84,10 @@ const hideProgressBar = () => {
 export default new VueRouter({
 	routes: [
 		{ path: '/', name: 'home', component: Home },
-		{ path: '/registration', name: 'registration', component: Registration },
-		{ path: '/password-forgotten', name: 'password-forgotten', component: PasswordForgotten },
+		{ path: '/registration', name: 'registration', component: Registration, beforeEnter: afterAuth },
+		{ path: '/password-forgotten', name: 'password-forgotten', component: PasswordForgotten, beforeEnter: afterAuth },
 		{ path: '/password-forgotten-verification/:email?/:token?', name: 'password-forgotten-verification', component: PasswordForgottenVerification, props: true },
-		{ path: '/activation/:email?/:token?', name: 'activation', component: Activation, props: true },
+		{ path: '/activation/:email?/:token?', name: 'activation', component: Activation, props: true, beforeEnter: afterAuth },
 		{ path: '/login', name: 'login', component: Login, beforeEnter: afterAuth },
 
 		{ path: '/hello', name: 'hello', component: Hello },

@@ -12,15 +12,11 @@
 </template>
 
 <script>
-import Auth from '@/services/Auth';
-
 export default {
 	name: 'home',
 
 	data: function () {
-		return {
-			auth: Auth.auth
-		}
+		return {};
 	},
 	mounted: function () {
 		// if redirected from 404, header might not be visible (if before page was login, registration etc.)
