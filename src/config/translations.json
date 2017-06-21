@@ -18,7 +18,8 @@
 			"pageNotFound": "404 - The page could not be found. You've been redirected.",
 			"validationError": "Please fill out all fields correctly.",
 			"languageSwitched": "Your language setting has successfully been switched to {language}.",
-			"userIsDeletedError": "This user account was deleted. Please contact the administrator."
+			"userIsDeletedError": "This user account was deleted. Please contact the administrator.",
+			"offline": "You are currently offline."
 		}
 	},
 	"de": {
@@ -40,7 +41,8 @@
 			"pageNotFound": "404 - Die Seite wurde nicht gefunden. Sie wurden weitergeleitet.",
 			"validationError": "Bitte füllen Sie alle Felder korrekt aus.",
 			"languageSwitched": "Ihre Spracheinstellung wurde erfolgreich auf {language} geändert.",
-			"userIsDeletedError": "Dieses Benutzerkonto wurde deaktiviert. Bitte kontaktieren Sie den Administrator."
+			"userIsDeletedError": "Dieses Benutzerkonto wurde deaktiviert. Bitte kontaktieren Sie den Administrator.",
+			"offline": "Sie sind derzeit offline."
 		}
 	}
 }
