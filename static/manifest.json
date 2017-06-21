@@ -1,6 +1,6 @@
 {
-  "name": "coinblesk-frontend",
-  "short_name": "coinblesk-frontend",
+  "name": "Coinblesk Light",
+  "short_name": "Coinblesk Light",
   "icons": [
     {
       "src": "/static/img/icons/android-chrome-192x192.png",
