@@ -9,7 +9,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
 	state: {
-		language: 'en',
+		language: null,
 		user: null,
 		auth: {
 			token: null,
