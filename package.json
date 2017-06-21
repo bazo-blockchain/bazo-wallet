@@ -26,7 +26,8 @@
     "vue-resource": "^1.2.1",
     "vue-router": "^2.3.1",
     "vue-toasted": "^1.0.27",
-    "vuex": "^2.2.1"
+    "vuex": "^2.2.1",
+    "vuex-persistedstate": "^1.4.1"
   },
   "devDependencies": {
     "@kazupon/vue-i18n-loader": "^0.1.1",
