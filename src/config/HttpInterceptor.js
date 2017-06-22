@@ -28,16 +28,15 @@ export default {
 				if (/^5/.test(response.status.toString())) {
 					internalError();
 				} else if (/(^0$)/.test(response.status.toString())) {
-					// optional, must be detected anyway somewhere else
-					Store.dispatch('setOffline', true);
+					// a request was made, even though the user is offline, should not happen!
+					Vue.toasted.global.warn(Translation.t('toasts.offline'));
 				} else if (/^(?!2|400$|401$|403$)/.test(response.status.toString()) && !doNotIntercept) {
 					internalError();
 				} else if (!doNotIntercept) {
 					if (response.status === 401) {
 						if (Store.state.auth.authenticated) {
 							// session expired, token not valid anymore
-							Store.dispatch('clearAuth');
-							Store.dispatch('clearUser');
+							Store.dispatch('logout');
 							Vue.toasted.global.warnNoIcon('<i class="fa fa-sign-out">' + Translation.t('toasts.sessionExpired'));
 							Router.push({ path: '/login' });
 						} else {

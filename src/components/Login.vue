@@ -73,7 +73,7 @@ export default {
 				}, () => {
 					this.isLoading = false;
 					this.$toasted.global.error(this.$t('toasts.internalError'));
-					this.$store.dispatch('clearAuth');
+					this.$store.dispatch('logout');
 				});
 			}
 		}

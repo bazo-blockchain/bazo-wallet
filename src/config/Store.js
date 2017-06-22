@@ -69,8 +69,7 @@ const store = new Vuex.Store({
 						return Promise.resolve();
 					}, response => {
 						if (response.status !== 0) {
-							context.commit('clearUser');
-							context.commit('clearAuth');
+							context.dispatch('logout');
 							Vue.toasted.global.warnNoIcon('<i class="fa fa-sign-out"></i>' + Translation.t('toasts.sessionExpired'));
 							Router.push({ path: '/login' });
 
@@ -98,12 +97,9 @@ const store = new Vuex.Store({
 		setOffline: function (context, offline) {
 			context.commit('setOffline', !!offline);
 		},
-
-		clearUser: function (context) {
-			return context.commit('clearUser');
-		},
-		clearAuth: function (context) {
-			return context.commit('clearAuth');
+		logout: function (context) {
+			context.commit('clearUser');
+			context.commit('clearAuth');
 		}
 	},
 	plugins: [

@@ -75,8 +75,7 @@ export default {
 			this.$locale.change(newLanguage);
 		},
 		signout: function () {
-			this.$store.dispatch('clearAuth');
-			this.$store.dispatch('clearUser');
+			this.$store.dispatch('logout');
 			this.$toasted.global.successNoIcon('<i class="fa fa-sign-out"></i>' + this.$t('toasts.signedOff'));
 			this.$router.push({ 'path': '/' });
 		}
