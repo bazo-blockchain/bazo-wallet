@@ -13,7 +13,12 @@
 
 <script>
 export default {
+	// the home component must be offline available,
+	// otherwise the routing breaks (it's the fallback
+	// page of every other page, which is not available
+	// offline)
 	name: 'home',
+	offline: true,
 
 	data: function () {
 		return {};

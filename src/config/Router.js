@@ -23,29 +23,77 @@ import Store from '@/config/Store';
 
 Vue.use(VueRouter);
 
-const requireAuth = (to, _from, next) => {
-	if (!Store.state.auth.authenticated) {
-		Vue.toasted.global.warn(Translation.t('toasts.unauthorized'), { duration: 6000 });
-		next({
-			path: '/login',
-			query: { redirect: to.fullPath }
-		});
+// returns a boolean, if page is unaccessible
+const isUnavailableBecauseOffline = (to) => {
+	// if online: always accesible
+	if (!Store.state.offline) {
+		return false;
+	}
+
+	let routeComponent = null;
+	for (let i = 0; i < routes.length; i++) {
+		let route = routes[i];
+		if (route.name === to.name) {
+			routeComponent = route.component;
+			break;
+		}
+	}
+
+	// if the "to"-component has a flag offline,
+	// and it is set to true, the page is accesible
+	// even though the page is offline
+	if (routeComponent) {
+		return !routeComponent.offline;
+	} else {
+		return true;
+	}
+};
+// redirects to "home", make sure, home is offline available
+const redirectBecauseUnavailable = (next) => {
+	next({ path: '/' });
+	Vue.toasted.global.warnNoIcon(Translation.t('toasts.offlineModeNoAccess'), { duration: 6000 });
+	hideProgressBar();
+};
+
+const noAuth = (to, _from, next) => {
+	if (isUnavailableBecauseOffline(to)) {
+		redirectBecauseUnavailable(next);
 	} else {
 		next();
 	}
 };
 
-const requireAuthAndRole = (role, to, _from, next) => {
-	if (!Store.state.auth.authenticated) {
-		requireAuth(to, _from, next);
-	} else if (Store.state.auth.role !== role) {
-		Vue.toasted.global.warn(Translation.t('toasts.forbidden'), { duration: 6000 });
-		next({
-			path: '/'
-		});
-		hideProgressBar();
+const requireAuth = (to, _from, next) => {
+	if (isUnavailableBecauseOffline(to)) {
+		redirectBecauseUnavailable(next);
 	} else {
-		next();
+		if (!Store.state.auth.authenticated) {
+			Vue.toasted.global.warn(Translation.t('toasts.unauthorized'), { duration: 6000 });
+			next({
+				path: '/login',
+				query: { redirect: to.fullPath }
+			});
+		} else {
+			next();
+		}
+	}
+};
+
+const requireAuthAndRole = (role, to, _from, next) => {
+	if (isUnavailableBecauseOffline(to)) {
+		redirectBecauseUnavailable(next);
+	} else {
+		if (!Store.state.auth.authenticated) {
+			requireAuth(to, _from, next);
+		} else if (Store.state.auth.role !== role) {
+			Vue.toasted.global.warn(Translation.t('toasts.forbidden'), { duration: 6000 });
+			next({
+				path: '/'
+			});
+			hideProgressBar();
+		} else {
+			next();
+		}
 	}
 };
 const requireAuthAndAdmin = (to, _from, next) => {
@@ -56,11 +104,15 @@ const requireAuthAndUser = (to, _from, next) => {
 };
 
 const afterAuth = (_to, from, next) => {
-	if (Store.state.auth.authenticated) {
-		next(from.path);
-		hideProgressBar();
+	if (isUnavailableBecauseOffline(_to)) {
+		redirectBecauseUnavailable(next);
 	} else {
-		next();
+		if (Store.state.auth.authenticated) {
+			next(from.path);
+			hideProgressBar();
+		} else {
+			next();
+		}
 	}
 };
 
@@ -81,30 +133,33 @@ const hideProgressBar = () => {
 	}, 100);
 };
 
-export default new VueRouter({
-	routes: [
-		{ path: '/', name: 'home', component: Home },
-		{ path: '/registration', name: 'registration', component: Registration, beforeEnter: afterAuth },
-		{ path: '/password-forgotten', name: 'password-forgotten', component: PasswordForgotten, beforeEnter: afterAuth },
-		{ path: '/password-forgotten-verification/:email?/:token?', name: 'password-forgotten-verification', component: PasswordForgottenVerification, props: true },
-		{ path: '/activation/:email?/:token?', name: 'activation', component: Activation, props: true, beforeEnter: afterAuth },
-		{ path: '/login', name: 'login', component: Login, beforeEnter: afterAuth },
+// make sure to always use the beforeEnter property: if no authentication is required, use "noAuth"
+// this is necessary, because noAuth checks the offline state of the application and denies access,
+// if the components offline flag is not set.
+const routes = [
+	{ path: '/', name: 'home', component: Home, beforeEnter: noAuth },
+	{ path: '/hello', name: 'hello', component: Hello, beforeEnter: noAuth },
+	{ path: '/forex', name: 'forex', component: Forex, beforeEnter: noAuth },
 
-		{ path: '/hello', name: 'hello', component: Hello },
-		{ path: '/forex', name: 'forex', component: Forex },
+	{ path: '/registration', name: 'registration', component: Registration, beforeEnter: noAuth },
+	{ path: '/password-forgotten', name: 'password-forgotten', component: PasswordForgotten, beforeEnter: noAuth },
+	{ path: '/password-forgotten-verification/:email?/:token?', name: 'password-forgotten-verification', component: PasswordForgottenVerification, props: true, beforeEnter: noAuth },
+	{ path: '/activation/:email?/:token?', name: 'activation', component: Activation, props: true, beforeEnter: noAuth },
+	{ path: '/login', name: 'login', component: Login, beforeEnter: afterAuth },
 
-		{ path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: requireAuth },
-		{ path: '/auth/authenticated', name: 'authenticated', component: Authenticated, beforeEnter: requireAuth },
+	{ path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: requireAuth },
+	{ path: '/auth/authenticated', name: 'authenticated', component: Authenticated, beforeEnter: requireAuth },
 
-		{ path: '/auth/user/authenticated', name: 'user-authenticated', component: UserAuthenticated, beforeEnter: requireAuthAndUser },
+	{ path: '/auth/user/authenticated', name: 'user-authenticated', component: UserAuthenticated, beforeEnter: requireAuthAndUser },
 
-		{ path: '/auth/admin/events', name: 'admin-events', component: AdminEvents, beforeEnter: requireAuthAndAdmin },
-		{ path: '/auth/admin/server-balance', name: 'admin-server-balance', component: AdminServerBalance, beforeEnter: requireAuthAndAdmin },
-		{ path: '/auth/admin/accounts', name: 'admin-accounts', component: AdminAccounts, beforeEnter: requireAuthAndAdmin },
-		{ path: '/auth/admin/accounts-detail/:publicKeyClient', name: 'admin-accounts-detail', component: AdminAccountsDetail, props: true, beforeEnter: requireAuthAndAdmin },
-		{ path: '/auth/admin/user-accounts', name: 'admin-user-accounts', component: AdminUserAccounts, beforeEnter: requireAuthAndAdmin },
-		{ path: '/auth/admin/user-accounts-detail/:email', name: 'admin-user-accounts-detail', component: AdminUserAccountsDetail, props: true, beforeEnter: requireAuthAndAdmin },
+	{ path: '/auth/admin/events', name: 'admin-events', component: AdminEvents, beforeEnter: requireAuthAndAdmin },
+	{ path: '/auth/admin/server-balance', name: 'admin-server-balance', component: AdminServerBalance, beforeEnter: requireAuthAndAdmin },
+	{ path: '/auth/admin/accounts', name: 'admin-accounts', component: AdminAccounts, beforeEnter: requireAuthAndAdmin },
+	{ path: '/auth/admin/accounts-detail/:publicKeyClient', name: 'admin-accounts-detail', component: AdminAccountsDetail, props: true, beforeEnter: requireAuthAndAdmin },
+	{ path: '/auth/admin/user-accounts', name: 'admin-user-accounts', component: AdminUserAccounts, beforeEnter: requireAuthAndAdmin },
+	{ path: '/auth/admin/user-accounts-detail/:email', name: 'admin-user-accounts-detail', component: AdminUserAccountsDetail, props: true, beforeEnter: requireAuthAndAdmin },
 
-		{ path: '*', name: 'everyOtherPage', component: Home, beforeEnter: error404 }
-	]
-});
+	{ path: '*', name: 'everyOtherPage', component: Home, beforeEnter: error404 }
+]
+
+export default new VueRouter({ routes });
