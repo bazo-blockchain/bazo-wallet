@@ -51,7 +51,7 @@ const isUnavailableBecauseOffline = (to) => {
 // redirects to "home", make sure, home is offline available
 const redirectBecauseUnavailable = (next) => {
 	next({ path: '/' });
-	Vue.toasted.global.warnNoIcon(Translation.t('toasts.offlineModeNoAccess'), { duration: 6000 });
+	Vue.toasted.global.warnNoIcon(Translation.t('toasts.offlineModeRedirect'), { duration: 6000 });
 	hideProgressBar();
 };
 

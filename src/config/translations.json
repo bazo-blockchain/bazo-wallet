@@ -20,7 +20,6 @@
 			"languageSwitched": "Your language setting has successfully been switched to {language}.",
 			"userIsDeletedError": "This user account was deleted. Please contact the administrator.",
 			"offlineError": "<i class='fa fa-wifi'></i>&nbsp;Your request was not successful, because you are currently offline.",
-			"offlineModeNoAccess": "<i class='fa fa-wifi'></i>&nbsp;This page is only available if you are online.",
 			"offlineModeRedirect": "<i class='fa fa-wifi'></i>&nbsp;You have been redirect to the home page, because the previous site was not available&nbsp;<b>offline</b>."
 		}
 	},
@@ -45,7 +44,6 @@
 			"languageSwitched": "Ihre Spracheinstellung wurde erfolgreich auf {language} geändert.",
 			"userIsDeletedError": "Dieses Benutzerkonto wurde deaktiviert. Bitte kontaktieren Sie den Administrator.",
 			"offlineError": "<i class='fa fa-wifi'></i>&nbsp;Ihre Anfrage war nicht erfolgreich, da Sie&nbsp;<b>offline</b>&nbsp;sind.",
-			"offlineModeNoAccess": "<i class='fa fa-wifi'></i>&nbsp;Diese Seite ist nur&nbsp;<b>online</b>&nbsp;verfügbar.",
 			"offlineModeRedirect": "<i class='fa fa-wifi'></i>&nbsp;Sie wurden auf die Startseite weitergeleitet, da die vorherige Seite&nbsp;<b>offline</b>&nbsp;nicht verfügbar ist."
 		}
 	}
