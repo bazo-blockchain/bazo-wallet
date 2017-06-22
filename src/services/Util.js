@@ -3,6 +3,7 @@ const Util = {
 	TOKEN_LENGTH: 36,
 	PASSWORD_MIN_LENGTH: 6,
 	DATE_FORMAT: 'YYYY-MM-DD, HH:mm:ss',
+	DATE_ONLY_FORMAT: 'YYYY-MM-DD',
 
 	formatCurrency: function (value) {
 		// see http://stackoverflow.com/a/43208223/3233827

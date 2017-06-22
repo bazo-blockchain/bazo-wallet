@@ -24,11 +24,17 @@ const Http = {
 		return Vue.http.post(HOST + '/user-account/forgot-verify', data,
 				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 	},
-	getForexCurrent: function (vendor, currency) {
-		return Vue.http.get(HOST + '/forex/exchange-rate/bitcoin', { params: { currency: currency, vendor: vendor } });
+	getForexCurrent: function (vendor, currency, doNotIntercept) {
+		return Vue.http.get(HOST + '/forex/exchange-rate/bitcoin', {
+				headers: doNotIntercept ? DO_NOT_INTERCEPT : undefined,
+				params: { currency: currency, vendor: vendor }
+		});
 	},
-	getForexHistory: function (vendor, currency) {
-		return Vue.http.get(HOST + '/forex/exchange-rate/bitcoin/history', { params: { currency: currency, vendor: vendor } });
+	getForexHistory: function (vendor, currency, doNotIntercept) {
+		return Vue.http.get(HOST + '/forex/exchange-rate/bitcoin/history', {
+				headers: doNotIntercept ? DO_NOT_INTERCEPT : undefined,
+				params: { currency: currency, vendor: vendor }
+		});
 	},
 
 	Auth: {

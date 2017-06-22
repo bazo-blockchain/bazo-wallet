@@ -3,17 +3,19 @@
 	<div class="container">
 		<h1 class="display-4">{{ $t('forex.title') }}</h1>
 		<hr>
-		<div v-if="!isLoading">
-			<div class="currency-selector">
+		<div class="selectors">
+			<div class="selector">
 				<label>{{ $t('forex.selectCurrency') }}: </label>
-				<b-form-select v-model="selectedCurrencyCurrent" :options="optionsCurrency" class="md-3"></b-form-select>
+				<b-form-select v-model="selectedCurrency" :options="optionsCurrency" class="md-3"></b-form-select>
 			</div>
-			<div class="currency-vendor">
+			<div class="selector">
 				<label>{{ $t('forex.selectVendor') }}: </label>
-				<b-form-select v-model="selectedVendorCurrent" :options="optionsVendor" class="md-3"></b-form-select>
+				<b-form-select v-model="selectedVendor" :options="optionsVendor" class="md-3"></b-form-select>
 			</div>
+		</div>
+		<h2 class="display-7">{{ $t('forex.subtitleCurrent') }}</h2>
+		<div v-if="!isLoadingCurrent">
 			<div v-if="current.rate">
-				<h2 class="display-7">{{ $t('forex.subtitleCurrent') }}</h2>
 				<p class="display-3 price">
 					<span class="value">1 BTC = {{ formatCurrency(current.rate) }} {{ current.currencyTo }}</span>
 					<span class="date">
@@ -23,19 +25,20 @@
 				</p>
 			</div>
 			<div class="alert alert-warning" v-else>{{ $t('forex.errorCurrent') }}</div>
-			<hr>
-			<div class="history" v-if="history.length > 0">
-				<div class="currency-selector">
-					<label>{{ $t('forex.selectCurrency') }}: </label>
-					<b-form-select v-model="selectedCurrencyHistory" :options="optionsCurrency" class="md-3"></b-form-select>
+		</div>
+		<hr>
+		<h2 class="display-7 history-title">{{ $t('forex.subtitleHistory') }}</h2>
+		<div class="history" v-if="!isLoadingHistory">	
+			<div class="last-updated" v-if="history.length > 0">
+				<span class="intro">{{ $t('forex.lastUpdated') }}:</span>
+				<span class="date">{{ history[history.length - 1].updatedAt | moment(dateOnlyFormat) }}</span>
 				</div>
-				<div class="currency-vendor">
-					<b-form-select v-model="selectedVendorHistory" :options="optionsVendor" :disabled="true" class="md-3"></b-form-select>
-				</div>
-				<h2 class="display-7">{{ $t('forex.subtitleHistory') }}</h2>
+			<div v-if="history.length > 0">
 				<div class="chart-container" data-tz2u8w97hwptfwl3y57ywguux></div>
 			</div>
-			<div class="alert alert-warning" v-else>{{ $t('forex.errorHistory') }}</div>
+			<div class="no-data" v-else>
+				<div class="alert alert-warning">{{ $t('forex.errorHistory') }}</div>
+			</div>
 			<div class="powered-by">Powered by 
 				<a href="http://www.coindesk.com/price/" target="_blank">CoinDesk</a>/<a href="https://www.bitstamp.net/" target="_blank">Bitstamp</a>
 			</div>
@@ -54,11 +57,10 @@ export default {
 	name: 'forex',
 	data: function () {
 		return {
-			isLoading: false,
-			selectedCurrencyCurrent: 'USD',
-			selectedCurrencyHistory: 'USD',
-			selectedVendorCurrent: 'COINDESK',
-			selectedVendorHistory: 'COINDESK',
+			isLoadingCurrent: false,
+			isLoadingHistory: false,
+			selectedCurrency: 'USD',
+			selectedVendor: 'COINDESK',
 			optionsVendor: [ 'COINDESK', 'BITSTAMP' ],
 			optionsCurrency: [ 'USD', 'EUR', 'CHF' ],
 			current: {},
@@ -69,24 +71,34 @@ export default {
 	computed: {
 		dateFormat: function () {
 			return Util.DATE_FORMAT;
+		},
+		dateOnlyFormat: function () {
+			return Util.DATE_ONLY_FORMAT;
 		}
 	},
 	methods: {
 		loadData: function () {
-			this.isLoading = true;
+			this.isLoadingCurrent = true;
+			this.isLoadingHistory = true;
+			this.clearChart();
 
-			Promise.all([
-				Http.getForexCurrent(this.selectedVendorCurrent, this.selectedCurrencyCurrent),
-				Http.getForexHistory(this.selectedVendorHistory, this.selectedCurrencyHistory)
-			]).then((responses) => {
-				this.current = responses[0].body;
-				this.history = responses[1].body;
-				this.mountChart();
-				this.isLoading = false;
+			Http.getForexCurrent(this.selectedVendor, this.selectedCurrency, true).then((response) => {
+				this.current = response.body;
+				this.isLoadingCurrent = false;
 			}, () => {
 				this.current = {};
+				this.isLoadingCurrent = false;
+			});
+
+			Http.getForexHistory(this.selectedVendor, this.selectedCurrency, true).then((response) => {
+				this.clearChart();
+				this.history = response.body;
+				this.mountChart();
+				this.isLoadingHistory = false;
+			}, () => {
 				this.history = [];
-				this.isLoading = false;
+				this.clearChart();
+				this.isLoadingHistory = false;
 			});
 		},
 		formatCurrency: Util.formatCurrency,
@@ -117,21 +129,28 @@ export default {
 					}
 				});
 			}, 100);
-		}
-	},
-	watch: {
-		selectedCurrencyCurrent: function () {
-			this.loadData();
 		},
-		selectedCurrencyHistory: function () {
-			this.loadData();
-		},
-		selectedVendorCurrent: function () {
-			this.loadData();
+		clearChart: function () {
+			if (this.chart) {
+				this.chart.detach();
+				const element = document.querySelector('.chart-container[data-tz2u8w97hwptfwl3y57ywguux]');
+				while (element.firstChild) {
+					element.removeChild(element.firstChild);
+				}
+				this.chart = null;
+			}
 		}
 	},
 	mounted: function () {
 		this.loadData();
+	},
+	watch: {
+		selectedCurrency: function () {
+			this.loadData();
+		},
+		selectedVendor: function () {
+			this.loadData();
+		}
 	}
 };
 </script>
@@ -153,21 +172,31 @@ export default {
 		}
 	}
 }
-.currency-selector {
-	float: right;
-	padding-left: 25px;
-	select {
-		margin-left: 10px;
-	}
-}
-.currency-vendor {
-	float: right;
-	select {
-		margin-left: 10px;
+.selectors {
+	margin-bottom: 15px;
+	font-size: 0;
+	
+	.selector {
+		display: inline-block;
+		vertical-align: middle;
+		white-space: nowrap;
+		font-size: 16px;
+		margin-bottom: 20px;
+		margin-top: 4px;
+		
+		select {
+			margin-left: 10px;
+		}
+		& + .selector {
+			margin-left: 20px;
+		}
 	}
 }
 .chart-container {
 	padding: 30px 20px;
+}
+.no-data {
+	margin-top: 20px;
 }
 .powered-by {
 	font-size: 12px;
@@ -175,8 +204,15 @@ export default {
 	margin-top: 10px;
 	margin-right: 30px;
 }
-.history {
+.history-title {
 	margin-top: 30px;
+}
+.history {
+	.last-updated {
+		.intro {
+			font-weight: 500;
+		}
+	}
 }
 
 @media screen and (max-width: 1000px) {
@@ -213,7 +249,7 @@ export default {
 			"subtitleHistory": "Trend over the last 30 days",
 			"lastUpdated": "Last updated",
 			"errorCurrent": "The current market price could not be loaded.",
-			"errorHistory": "The trend over the last 30 days could not be loaded.",
+			"errorHistory": "The trend over the last 30 days could not be loaded. There may be no data available from this vendor.",
 			"selectCurrency": "Select currency",
 			"selectVendor": "Select vendor"
 		}
@@ -225,7 +261,7 @@ export default {
 			"subtitleHistory": "Kursentwicklung der letzten 30 Tage",
 			"lastUpdated": "Letztes Update",
 			"errorCurrent": "Der aktuelle Kurs konnte nicht geladen werden.",
-			"errorHistory": "Die Kursentwicklung der letzten 30 Tage konnte nicht geladen werden",
+			"errorHistory": "Die Kursentwicklung der letzten 30 Tage konnte nicht geladen werden. Möglicherweise stellt dieser Anbieter keine Daten zur Verfügung.",
 			"selectCurrency": "Währung wählen",
 			"selectVendor": "Anbieter wählen"
 		}
