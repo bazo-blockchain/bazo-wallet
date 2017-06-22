@@ -15,7 +15,7 @@
 		</div>
 		<h2 class="display-7">{{ $t('forex.subtitleCurrent') }}</h2>
 		<div v-if="!isLoadingCurrent">
-			<div v-if="current.rate">
+			<div v-if="current && current.rate">
 				<p class="display-3 price">
 					<span class="value">1 BTC = {{ formatCurrency(current.rate) }} {{ current.currencyTo }}</span>
 					<span class="date">
@@ -24,16 +24,18 @@
 					</span>
 				</p>
 			</div>
-			<div class="alert alert-warning" v-else>{{ $t('forex.errorCurrent') }}</div>
+			<div class="no-data" v-else>
+				<div class="alert alert-warning">{{ $t('forex.errorCurrent') }}</div>
+			</div>
 		</div>
 		<hr>
 		<h2 class="display-7 history-title">{{ $t('forex.subtitleHistory') }}</h2>
 		<div class="history" v-if="!isLoadingHistory">	
-			<div class="last-updated" v-if="history.length > 0">
-				<span class="intro">{{ $t('forex.lastUpdated') }}:</span>
-				<span class="date">{{ history[history.length - 1].updatedAt | moment(dateOnlyFormat) }}</span>
+			<div v-if="history && history.length > 0">
+				<div class="last-updated">
+					<span class="intro">{{ $t('forex.lastUpdated') }}:</span>
+					<span class="date">{{ history[history.length - 1].updatedAt | moment(dateOnlyFormat) }}</span>
 				</div>
-			<div v-if="history.length > 0">
 				<div class="chart-container" data-tz2u8w97hwptfwl3y57ywguux></div>
 			</div>
 			<div class="no-data" v-else>
@@ -50,11 +52,14 @@
 <script>
 import HttpService from '@/services/HttpService';
 import UtilService from '@/services/UtilService';
+import CacheService from '@/services/CacheService';
 import Chartist from '@/config/Chartist';
 import moment from 'moment';
 
 export default {
 	name: 'forex',
+	offline: true,
+
 	data: function () {
 		return {
 			isLoadingCurrent: false,
@@ -82,24 +87,45 @@ export default {
 			this.isLoadingHistory = true;
 			this.clearChart();
 
-			HttpService.getForexCurrent(this.selectedVendor, this.selectedCurrency, true).then((response) => {
-				this.current = response.body;
-				this.isLoadingCurrent = false;
-			}, () => {
-				this.current = {};
-				this.isLoadingCurrent = false;
-			});
+			if (this.$store.state.offline) {
+				CacheService.getCache('forex', [ 'current', this.selectedVendor, this.selectedCurrency ]).then((value) => {
+					this.current = value || {};
+					this.isLoadingCurrent = false;
+				}, () => {
+					this.current = {};
+					this.isLoadingCurrent = false;
+				});
+				CacheService.getCache('forex', [ 'history', this.selectedVendor, this.selectedCurrency ]).then((value) => {
+					this.clearChart();
+					this.history = value || [];
+					this.mountChart();
+					this.isLoadingHistory = false;
+				}, () => {
+					this.history = [];
+					this.isLoadingHistory = false;
+				});
+			} else {
+				HttpService.getForexCurrent(this.selectedVendor, this.selectedCurrency, true).then((response) => {
+					this.current = response.body;
+					CacheService.setCache('forex', this.current, [ 'current', this.selectedVendor, this.selectedCurrency ]);
+					this.isLoadingCurrent = false;
+				}, () => {
+					this.current = {};
+					this.isLoadingCurrent = false;
+				});
 
-			HttpService.getForexHistory(this.selectedVendor, this.selectedCurrency, true).then((response) => {
-				this.clearChart();
-				this.history = response.body;
-				this.mountChart();
-				this.isLoadingHistory = false;
-			}, () => {
-				this.history = [];
-				this.clearChart();
-				this.isLoadingHistory = false;
-			});
+				HttpService.getForexHistory(this.selectedVendor, this.selectedCurrency, true).then((response) => {
+					this.clearChart();
+					this.history = response.body;
+					this.mountChart();
+					CacheService.setCache('forex', this.history, [ 'history', this.selectedVendor, this.selectedCurrency ]);
+					this.isLoadingHistory = false;
+				}, () => {
+					this.history = [];
+					this.clearChart();
+					this.isLoadingHistory = false;
+				});
+			}
 		},
 		formatCurrency: UtilService.formatCurrency,
 		mountChart: function () {
@@ -143,6 +169,11 @@ export default {
 	},
 	mounted: function () {
 		this.loadData();
+		this.$store.watch((state) => {
+			return state.offline;
+		}, () => {
+			this.loadData();
+		});
 	},
 	watch: {
 		selectedCurrency: function () {
@@ -249,7 +280,7 @@ export default {
 			"subtitleCurrent": "Current market price",
 			"subtitleHistory": "Trend over the last 30 days",
 			"lastUpdated": "Last updated",
-			"errorCurrent": "The current market price could not be loaded.",
+			"errorCurrent": "The market price could not be loaded.",
 			"errorHistory": "The trend over the last 30 days could not be loaded. There may be no data available from this vendor.",
 			"selectCurrency": "Select currency",
 			"selectVendor": "Select vendor"
@@ -261,7 +292,7 @@ export default {
 			"subtitleCurrent": "Aktueller Kurs",
 			"subtitleHistory": "Kursentwicklung der letzten 30 Tage",
 			"lastUpdated": "Letztes Update",
-			"errorCurrent": "Der aktuelle Kurs konnte nicht geladen werden.",
+			"errorCurrent": "Der Kurs konnte nicht geladen werden.",
 			"errorHistory": "Die Kursentwicklung der letzten 30 Tage konnte nicht geladen werden. Möglicherweise stellt dieser Anbieter keine Daten zur Verfügung.",
 			"selectCurrency": "Währung wählen",
 			"selectVendor": "Anbieter wählen"
