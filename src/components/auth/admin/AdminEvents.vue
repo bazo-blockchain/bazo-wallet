@@ -59,8 +59,8 @@
 </template>
 
 <script>
-import Http from '@/services/Http';
-import Util from '@/services/Util';
+import HttpService from '@/services/HttpService';
+import UtilService from '@/services/UtilService';
 
 export default {
 	name: 'test',
@@ -104,7 +104,7 @@ export default {
 	},
 	computed: {
 		dateFormat: function () {
-			return Util.DATE_FORMAT;
+			return UtilService.DATE_FORMAT;
 		}
 	},
 	methods: {
@@ -132,7 +132,7 @@ export default {
 		},
 		loadData: function () {
 			this.isLoading = true;
-			Http.Auth.Admin.getEvents(this.urgence).then((response) => {
+			HttpService.Auth.Admin.getEvents(this.urgence).then((response) => {
 				this.items = response.body;
 				this.isLoading = false;
 			}, () => {

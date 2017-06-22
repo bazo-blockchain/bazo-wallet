@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import PersistedState from 'vuex-persistedstate'
-import Http from '@/services/Http';
+import HttpService from '@/services/HttpService';
 import Translation from '@/config/Translation';
 import Router from '@/config/Router';
 
@@ -63,7 +63,7 @@ const store = new Vuex.Store({
 
 		updateUser: function (context) {
 			if (context.state.auth.authenticated) {
-				return Http.Auth.getUser(true)
+				return HttpService.Auth.getUser(true)
 					.then((response) => {
 						context.commit('updateUser', response.body);
 						return Promise.resolve();

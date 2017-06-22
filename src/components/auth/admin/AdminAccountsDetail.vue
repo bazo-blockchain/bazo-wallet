@@ -149,8 +149,8 @@
 </template>
 
 <script>
-import Http from '@/services/Http';
-import Util from '@/services/Util';
+import HttpService from '@/services/HttpService';
+import UtilService from '@/services/UtilService';
 
 export default {
 	name: 'admin-accounts-detail',
@@ -187,7 +187,7 @@ export default {
 			}
 		},
 		dateFormat: function () {
-			return Util.DATE_FORMAT;
+			return UtilService.DATE_FORMAT;
 		},
 		timeLockedAddressesFields: function () {
 			return {
@@ -231,7 +231,7 @@ export default {
 	methods: {
 		loadData: function () {
 			this.isLoading = true;
-			Http.Auth.Admin.getAccount(this.publicKeyClient).then((response) => {
+			HttpService.Auth.Admin.getAccount(this.publicKeyClient).then((response) => {
 				this.accountDetail = response.body;
 				this.isLoading = false;
 			}, () => {

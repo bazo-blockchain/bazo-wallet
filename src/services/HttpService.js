@@ -3,7 +3,7 @@ import Vue from 'vue';
 const HOST = getCurrentHost() + ':8080';
 const DO_NOT_INTERCEPT = { 'DO_NOT_INTERCEPT': 'enabled' };
 
-const Http = {
+const HttpService = {
 	login: function (credentials, doNotIntercept) {
 		return Vue.http.put(HOST + '/user-account/login', credentials,
 				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
@@ -89,7 +89,7 @@ const Http = {
 	}
 };
 
-export default Http;
+export default HttpService;
 
 function getCurrentHost () {
 	let protocol = window.location.protocol;

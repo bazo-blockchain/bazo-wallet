@@ -20,8 +20,8 @@
 
 <script>
 import Router from '@/config/Router';
-import Http from '@/services/Http';
-import Util from '@/services/Util';
+import HttpService from '@/services/HttpService';
+import UtilService from '@/services/UtilService';
 
 export default {
 	name: 'password-forgotten',
@@ -34,7 +34,7 @@ export default {
 	},
 	computed: {
 		validEmail: function () {
-			return Util.EMAIL_REGEX.test(this.email);
+			return UtilService.EMAIL_REGEX.test(this.email);
 		},
 		validForm: function () {
 			if (!this.formIsTouched) {
@@ -58,7 +58,7 @@ export default {
 			if (this.validForm) {
 				this.isLoading = true;
 
-				Http.forgotPassword(this.email, true).then(() => {
+				HttpService.forgotPassword(this.email, true).then(() => {
 					this.$toasted.global.success(this.$t('passwordForgotten.success'), { duration: 6000 });
 					this.isLoading = false;
 					Router.push({ name: 'home' });

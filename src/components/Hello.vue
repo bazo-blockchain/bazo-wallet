@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import Http from '@/services/Http';
+import HttpService from '@/services/HttpService';
 
 export default {
 	name: 'hello',
@@ -39,7 +39,7 @@ export default {
 	},
 	methods: {
 		admin: function () {
-			Http.Auth.Admin.getAccounts().then(function (response) {
+			HttpService.Auth.Admin.getAccounts().then(function (response) {
 				console.log(response);
 			});
 		},

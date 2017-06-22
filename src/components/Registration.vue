@@ -92,9 +92,9 @@
 
 <script>
 import Router from '@/config/Router';
-import Http from '@/services/Http';
-import Util from '@/services/Util';
-import Crypto from '@/services/Crypto';
+import HttpService from '@/services/HttpService';
+import UtilService from '@/services/UtilService';
+import CryptoService from '@/services/CryptoService';
 
 export default {
 	name: 'registration',
@@ -115,11 +115,11 @@ export default {
 	},
 	computed: {
 		validEmail: function () {
-			return Util.EMAIL_REGEX.test(this.email);
+			return UtilService.EMAIL_REGEX.test(this.email);
 		},
 		validPassword: function () {
 			if (!this.password) { return false; }
-			return !(this.password.length < Util.PASSWORD_MIN_LENGTH);
+			return !(this.password.length < UtilService.PASSWORD_MIN_LENGTH);
 		},
 		validPasswordRepeat: function () {
 			if (!this.validPassword) { return false; }
@@ -129,7 +129,7 @@ export default {
 			return !!this.acceptTerms;
 		},
 		passPhraseStrengthClasses: function () {
-			const passPhraseStrength = Crypto.passwordStrength(this.passPhrase);
+			const passPhraseStrength = CryptoService.passwordStrength(this.passPhrase);
 
 			const classes = {
 				size: this.passPhrase.length > 0 ? {
@@ -153,7 +153,7 @@ export default {
 		},
 		validPassPhrase: function () {
 			if (!this.passPhrase) { return false; }
-			const passPhraseStrength = Crypto.passwordStrength(this.passPhrase);
+			const passPhraseStrength = CryptoService.passwordStrength(this.passPhrase);
 			return (passPhraseStrength.okay.size && passPhraseStrength.okay.letters && passPhraseStrength.okay.numbers && passPhraseStrength.okay.special)
 		},
 		validPassPhraseRepeat: function () {
@@ -192,7 +192,7 @@ export default {
 				if (this.privateKey === '' || this.publicKey === '') {
 					// wait a few milliseconds to show the keys
 					window.setTimeout(() => {
-						var key = Crypto.createKey();
+						var key = CryptoService.createKey();
 						this.publicKey = key.publicKey;
 						this.privateKey = key.privateKey;
 					}, 1000);
@@ -210,12 +210,12 @@ export default {
 				const data = {
 					email: this.email,
 					password: this.password,
-					clientPrivateKeyEncrypted: Crypto.encrypt(this.passPhrase, this.privateKey),
+					clientPrivateKeyEncrypted: CryptoService.encrypt(this.passPhrase, this.privateKey),
 					clientPublicKey: this.publicKey,
 					lockTime: Math.floor(new Date() / 1000) + 3600 * 24 * 100
 				};
 
-				Http.register(data, true).then((response) => {
+				HttpService.register(data, true).then((response) => {
 					this.isLoading = false;
 					this.$toasted.global.success(this.$t('registration.success'), { duration: 10000 });
 					Router.push({ name: 'home' });

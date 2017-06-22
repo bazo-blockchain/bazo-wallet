@@ -49,8 +49,8 @@
 </template>
 
 <script>
-import Util from '@/services/Util';
-import Http from '@/services/Http';
+import UtilService from '@/services/UtilService';
+import HttpService from '@/services/HttpService';
 
 export default {
 	name: 'admin-server-pot-baseline',
@@ -67,7 +67,7 @@ export default {
 	},
 	computed: {
 		dateFormat: function () {
-			return Util.DATE_FORMAT;
+			return UtilService.DATE_FORMAT;
 		},
 		fields: function () {
 			return {
@@ -89,8 +89,8 @@ export default {
 			this.isLoading = true;
 
 			Promise.all([
-				Http.Auth.Admin.getTotalServerPotBaselineAmount(),
-				Http.Auth.Admin.getAllServerPotBaselineAmounts()
+				HttpService.Auth.Admin.getTotalServerPotBaselineAmount(),
+				HttpService.Auth.Admin.getAllServerPotBaselineAmounts()
 			]).then(responses => {
 				this.currentTotal = responses[0].body;
 				this.items = responses[1].body;
@@ -101,7 +101,7 @@ export default {
 		},
 		saveNewAmount: function () {
 			this.isLoading = true;
-			Http.Auth.Admin.postServerPotBaseline(this.newAmount).then(() => {
+			HttpService.Auth.Admin.postServerPotBaseline(this.newAmount).then(() => {
 				this.$toasted.global.success(this.$t('adminServerPotBaseline.newAmountSuccess'));
 				this.newAmount = '';
 				this.loadData();
@@ -113,7 +113,7 @@ export default {
 			this.newAmount = '';
 			this.$emit('modal-closed');
 		},
-		formatSatoshi: Util.formatSatoshi
+		formatSatoshi: UtilService.formatSatoshi
 	},
 	mounted: function () {
 		this.loadData();

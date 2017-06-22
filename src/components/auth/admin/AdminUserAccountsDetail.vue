@@ -69,8 +69,8 @@
 </template>
 
 <script>
-import Http from '@/services/Http';
-import Util from '@/services/Util';
+import HttpService from '@/services/HttpService';
+import UtilService from '@/services/UtilService';
 
 export default {
 	name: 'admin-user-accounts-detail',
@@ -88,7 +88,7 @@ export default {
 			return this.$store.state.user.email === this.userAccount.email;
 		},
 		dateFormat: function () {
-			return Util.DATE_FORMAT;
+			return UtilService.DATE_FORMAT;
 		}
 	},
 	watch: {
@@ -104,7 +104,7 @@ export default {
 	methods: {
 		loadData: function () {
 			this.isLoading = true;
-			Http.Auth.Admin.getUserAccount(this.email, true).then((response) => {
+			HttpService.Auth.Admin.getUserAccount(this.email, true).then((response) => {
 				this.userAccount = response.body;
 				this.isLoading = false;
 			}, () => {
@@ -113,7 +113,7 @@ export default {
 		},
 		switchRole: function () {
 			this.isLoading = true;
-			Http.Auth.Admin.switchUserRole(this.email).then(() => {
+			HttpService.Auth.Admin.switchUserRole(this.email).then(() => {
 				this.loadData();
 				this.$toasted.global.success(this.$t('adminUserAccountsDetail.successRoleChange'));
 			}, () => {
@@ -123,7 +123,7 @@ export default {
 		},
 		deleteUser: function () {
 			this.isLoading = true;
-			Http.Auth.Admin.deleteUser(this.email).then(() => {
+			HttpService.Auth.Admin.deleteUser(this.email).then(() => {
 				this.$toasted.global.success(this.$t('adminUserAccountsDetail.successDelete'));
 				this.loadData();
 			}, () => {
@@ -133,7 +133,7 @@ export default {
 		},
 		undeleteUser: function () {
 			this.isLoading = true;
-			Http.Auth.Admin.undeleteUser(this.email).then(() => {
+			HttpService.Auth.Admin.undeleteUser(this.email).then(() => {
 				this.$toasted.global.success(this.$t('adminUserAccountsDetail.successUndelete'));
 				this.loadData();
 			}, () => {

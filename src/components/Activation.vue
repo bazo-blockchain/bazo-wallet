@@ -29,8 +29,8 @@
 
 <script>
 import Router from '@/config/Router';
-import Http from '@/services/Http';
-import Util from '@/services/Util';
+import HttpService from '@/services/HttpService';
+import UtilService from '@/services/UtilService';
 
 export default {
 	name: 'activation',
@@ -44,11 +44,11 @@ export default {
 	},
 	computed: {
 		validEmail: function () {
-			return Util.EMAIL_REGEX.test(this.emailInput);
+			return UtilService.EMAIL_REGEX.test(this.emailInput);
 		},
 		validToken: function () {
 			if (!this.tokenInput) { return false; }
-			return this.tokenInput.length === Util.TOKEN_LENGTH;
+			return this.tokenInput.length === UtilService.TOKEN_LENGTH;
 		},
 		validForm: function () {
 			if (!this.formIsTouched) {
@@ -90,7 +90,7 @@ export default {
 
 			if (this.validForm) {
 				this.isLoading = true;
-				Http.activate({ email: this.emailInput, token: this.tokenInput }, true).then(() => {
+				HttpService.activate({ email: this.emailInput, token: this.tokenInput }, true).then(() => {
 					this.$toasted.global.success(this.$t('activation.success'));
 					this.isLoading = false;
 					Router.push({ path: '/login' });

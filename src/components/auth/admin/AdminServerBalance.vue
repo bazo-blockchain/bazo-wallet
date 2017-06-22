@@ -75,8 +75,8 @@
 </template>
 
 <script>
-import Http from '@/services/Http';
-import Util from '@/services/Util';
+import HttpService from '@/services/HttpService';
+import UtilService from '@/services/UtilService';
 import AdminServerPotBaseline from '@/components/auth/admin/AdminServerPotBaseline';
 
 export default {
@@ -91,7 +91,7 @@ export default {
 		loadData: function () {
 			this.isLoading = true;
 
-			Http.Auth.Admin.getServerBalance().then((response) => {
+			HttpService.Auth.Admin.getServerBalance().then((response) => {
 				this.balance = response.body;
 				this.isLoading = false;
 			}, () => {
@@ -99,7 +99,7 @@ export default {
 				this.isLoading = false;
 			});
 		},
-		formatSatoshi: Util.formatSatoshi
+		formatSatoshi: UtilService.formatSatoshi
 	},
 	mounted: function () {
 		this.loadData();

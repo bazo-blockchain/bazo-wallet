@@ -60,8 +60,8 @@
 </template>
 
 <script>
-import Http from '@/services/Http';
-import Util from '@/services/Util';
+import HttpService from '@/services/HttpService';
+import UtilService from '@/services/UtilService';
 
 export default {
 	name: 'admin-accounts',
@@ -105,7 +105,7 @@ export default {
 			};
 		},
 		dateFormat: function () {
-			return Util.DATE_FORMAT;
+			return UtilService.DATE_FORMAT;
 		}
 	},
 	mounted: function () {
@@ -118,7 +118,7 @@ export default {
 		updateData: function () {
 			this.isLoading = true;
 
-			Http.Auth.Admin.getAccounts()
+			HttpService.Auth.Admin.getAccounts()
 				.then((response) => {
 					this.items = response.body;
 					this.isLoading = false;

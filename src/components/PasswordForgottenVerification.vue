@@ -35,8 +35,8 @@
 
 <script>
 import Router from '@/config/Router';
-import Http from '@/services/Http';
-import Util from '@/services/Util';
+import HttpService from '@/services/HttpService';
+import UtilService from '@/services/UtilService';
 
 export default {
 	name: 'password-forgotten-verification',
@@ -52,15 +52,15 @@ export default {
 	},
 	computed: {
 		validEmail: function () {
-			return Util.EMAIL_REGEX.test(this.emailInput);
+			return UtilService.EMAIL_REGEX.test(this.emailInput);
 		},
 		validToken: function () {
 			if (!this.tokenInput) { return false; }
-			return this.tokenInput.length === Util.TOKEN_LENGTH;
+			return this.tokenInput.length === UtilService.TOKEN_LENGTH;
 		},
 		validNewPassword: function () {
 			if (!this.newPassword) { return false; }
-			return !(this.newPassword.length < Util.PASSWORD_MIN_LENGTH);
+			return !(this.newPassword.length < UtilService.PASSWORD_MIN_LENGTH);
 		},
 		validNewPasswordRepeat: function () {
 			if (!this.validNewPassword) { return false; }
@@ -105,7 +105,7 @@ export default {
 				this.isLoading = true;
 				const data = { email: this.emailInput, token: this.tokenInput, newPassword: this.newPassword };
 
-				Http.forgotPasswordVerification(data, true).then(() => {
+				HttpService.forgotPasswordVerification(data, true).then(() => {
 					this.$toasted.global.success(this.$t('passwordForgottenVerification.success'));
 					this.isLoading = false;
 					Router.push({ path: '/login' });

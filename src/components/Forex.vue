@@ -48,8 +48,8 @@
 </template>
 
 <script>
-import Http from '@/services/Http';
-import Util from '@/services/Util';
+import HttpService from '@/services/HttpService';
+import UtilService from '@/services/UtilService';
 import Chartist from '@/config/Chartist';
 import moment from 'moment';
 
@@ -70,10 +70,10 @@ export default {
 	},
 	computed: {
 		dateFormat: function () {
-			return Util.DATE_FORMAT;
+			return UtilService.DATE_FORMAT;
 		},
 		dateOnlyFormat: function () {
-			return Util.DATE_ONLY_FORMAT;
+			return UtilService.DATE_ONLY_FORMAT;
 		}
 	},
 	methods: {
@@ -82,7 +82,7 @@ export default {
 			this.isLoadingHistory = true;
 			this.clearChart();
 
-			Http.getForexCurrent(this.selectedVendor, this.selectedCurrency, true).then((response) => {
+			HttpService.getForexCurrent(this.selectedVendor, this.selectedCurrency, true).then((response) => {
 				this.current = response.body;
 				this.isLoadingCurrent = false;
 			}, () => {
@@ -90,7 +90,7 @@ export default {
 				this.isLoadingCurrent = false;
 			});
 
-			Http.getForexHistory(this.selectedVendor, this.selectedCurrency, true).then((response) => {
+			HttpService.getForexHistory(this.selectedVendor, this.selectedCurrency, true).then((response) => {
 				this.clearChart();
 				this.history = response.body;
 				this.mountChart();
@@ -101,7 +101,7 @@ export default {
 				this.isLoadingHistory = false;
 			});
 		},
-		formatCurrency: Util.formatCurrency,
+		formatCurrency: UtilService.formatCurrency,
 		mountChart: function () {
 			const chartData = [];
 			for (let i = 0; i < this.history.length; i++) {
@@ -201,8 +201,9 @@ export default {
 .powered-by {
 	font-size: 12px;
 	text-align: right;
-	margin-top: 10px;
+	margin-top: 0;
 	margin-right: 30px;
+	margin-bottom: 20px;
 }
 .history-title {
 	margin-top: 30px;

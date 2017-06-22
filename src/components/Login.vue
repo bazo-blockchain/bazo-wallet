@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import Http from '@/services/Http';
+import HttpService from '@/services/HttpService';
 
 export default {
 	name: 'test',
@@ -53,7 +53,7 @@ export default {
 				const credentials = { email: this.email, password: this.password };
 				const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
 
-				Http.login(credentials, true).then((response) => {
+				HttpService.login(credentials, true).then((response) => {
 					this.$store.dispatch('updateAuth', response.body.token);
 					this.$store.dispatch('updateUser').then(() => {
 						this.$toasted.global.successNoIcon('<i class="fa fa-sign-in"></i>' + this.$t('toasts.signedIn'));
