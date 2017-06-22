@@ -32,6 +32,8 @@
 <script>
 export default {
 	name: 'profile',
+	offline: true,
+
 	data: () => {
 		return {};
 	},
