@@ -160,8 +160,12 @@ export default {
 			if (this.chart) {
 				this.chart.detach();
 				const element = document.querySelector('.chart-container[data-tz2u8w97hwptfwl3y57ywguux]');
-				while (element.firstChild) {
-					element.removeChild(element.firstChild);
+				let i = 0;
+				if (element && i < 100) {
+					while (element.firstChild) {
+						element.removeChild(element.firstChild);
+						i++;
+					}
 				}
 				this.chart = null;
 			}
