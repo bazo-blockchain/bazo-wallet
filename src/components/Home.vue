@@ -37,7 +37,7 @@ export default {
 }
 
 .main-photo {
-	background-image: url('../assets/001-large.png');
+	background-image: url('../assets/001-large.jpg');
 	width: 100%;
 	height: calc(100vh - 56px);
 	background-size: cover;
