@@ -4,24 +4,24 @@
 
 			<b-nav-toggle target="nav_collapse"></b-nav-toggle>
 
-			<b-link class="navbar-brand" :to="{ name: 'home' }">
+			<b-link class="navbar-brand" :to="{ name: 'home' }" :class="offlineCheck('home')">
 				<img src="../assets/about_cb_2.png" class="logo">
 			</b-link>
 
 			<b-collapse is-nav id="nav_collapse">
 				
 				<b-nav is-nav-bar>
-					<b-nav-item :to="{ name: 'forex' }">{{ $t('header.forex') }}</b-nav-item>
+					<b-nav-item :to="{ name: 'forex' }" :class="offlineCheck('forex')">{{ $t('header.forex') }}</b-nav-item>
 				</b-nav>
 				<b-nav is-nav-bar v-if="auth.authenticated && auth.role === 'ROLE_ADMIN'">
-					<b-nav-item :to="{ name: 'admin-accounts' }">{{ $t('header.adminAccounts') }}</b-nav-item>
-					<b-nav-item :to="{ name: 'admin-events' }">{{ $t('header.adminEvents') }}</b-nav-item>
-					<b-nav-item :to="{ name: 'admin-user-accounts' }">{{ $t('header.adminUserAccounts') }}</b-nav-item>
-					<b-nav-item :to="{ name: 'admin-server-balance' }">{{ $t('header.adminServerBalance') }}</b-nav-item>
+					<b-nav-item :to="{ name: 'admin-accounts' }" :class="offlineCheck('admin-accounts')">{{ $t('header.adminAccounts') }}</b-nav-item>
+					<b-nav-item :to="{ name: 'admin-events' }" :class="offlineCheck('admin-events')">{{ $t('header.adminEvents') }}</b-nav-item>
+					<b-nav-item :to="{ name: 'admin-user-accounts' }" :class="offlineCheck('admin-user-accounts')">{{ $t('header.adminUserAccounts') }}</b-nav-item>
+					<b-nav-item :to="{ name: 'admin-server-balance' }" :class="offlineCheck('admin-server-balance')">{{ $t('header.adminServerBalance') }}</b-nav-item>
 				</b-nav>
 				<b-nav is-nav-bar v-if="auth.authenticated && auth.role === 'ROLE_USER'">
-					<b-nav-item :to="{ name: 'authenticated' }"><small>{{ $t('header.authenticated') }}</small></b-nav-item>
-					<b-nav-item :to="{ name: 'user-authenticated' }"><small>{{ $t('header.userAuthenticated') }}</small></b-nav-item>
+					<b-nav-item :to="{ name: 'authenticated' }" :class="offlineCheck('authenticated')"><small>{{ $t('header.authenticated') }}</small></b-nav-item>
+					<b-nav-item :to="{ name: 'user-authenticated' }" :class="offlineCheck('user-authenticated')"><small>{{ $t('header.userAuthenticated') }}</small></b-nav-item>
 				</b-nav>
 
 				<b-nav is-nav-bar class="ml-auto">
@@ -33,7 +33,7 @@
 							</span>
 						</template>
 
-						<b-dropdown-item :to="{ name: 'profile' }">
+						<b-dropdown-item :to="{ name: 'profile' }" :class="offlineCheck('profile')">
 							<i class="fa fa-user-circle"></i>
 							{{ $t('header.profile') }}
 						</b-dropdown-item>
@@ -51,10 +51,10 @@
 								<i class="fa fa-language"></i> {{ $t('language.en') }}
 							</span>
 						</b-nav-item>
-						<b-nav-item :to="{ name: 'login' }" class="d-inline-block">
+						<b-nav-item :to="{ name: 'login' }" class="d-inline-block" :class="offlineCheck('login')">
 							<i class="fa fa-sign-in"></i> {{ $t('header.signIn') }}
 						</b-nav-item>
-						<b-nav-item :to="{ name: 'registration' }" class="d-inline-block">
+						<b-nav-item :to="{ name: 'registration' }" class="d-inline-block" :class="offlineCheck('registration')">
 							<i class="fa fa-user-plus"></i> {{ $t('header.register') }}
 						</b-nav-item>
 					</div>
@@ -78,6 +78,11 @@ export default {
 			this.$store.dispatch('logout');
 			this.$toasted.global.successNoIcon('<i class="fa fa-sign-out"></i>' + this.$t('toasts.signedOff'));
 			this.$router.push({ 'path': '/' });
+		},
+		offlineCheck: function (routeName) {
+			return {
+				offline: this.isOffline && this.offlineRoutes.indexOf(routeName) === -1
+			}
 		}
 	},
 	computed: {
@@ -89,6 +94,12 @@ export default {
 		},
 		currentLanguage: function () {
 			return this.$locale.current();
+		},
+		offlineRoutes: function () {
+			return this.$router.$offlineRoutes();
+		},
+		isOffline: function () {
+			return this.$store.state.offline;
 		}
 	},
 	props: {

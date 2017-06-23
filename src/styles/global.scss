@@ -9,6 +9,14 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+.offline {
+	filter: grayscale(1) !important;
+	opacity: 0.4 !important;
+	&, & * {
+		cursor: not-allowed !important;
+	}
+}
+
 #toasted-container {
 	.coinblesk-toast {
 		cursor: default;

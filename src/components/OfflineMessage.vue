@@ -1,5 +1,5 @@
 ﻿<template>
-<div :class="{'shown': offline}" class="offline">
+<div :class="{'shown': offline}" class="offline-message">
 	<div class="box">
 		<i class="fa fa-wifi"></i>
 		<span class="text">
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.offline {
+.offline-message {
 	opacity: 0;
 	visibility: hidden; 
 	transition: 0.3s ease all;
@@ -69,7 +69,7 @@ export default {
 }
 
 @media only screen and (max-width: 600px) {
-	.offline .box > .text > small {
+	.offline-message .box > .text > small {
 		display: none;
 	}
 }

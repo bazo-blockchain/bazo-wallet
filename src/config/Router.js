@@ -48,16 +48,22 @@ const isUnavailableBecauseOffline = (to) => {
 		return true;
 	}
 };
-// redirects to "home", make sure, home is offline available
-const redirectBecauseUnavailable = (next) => {
-	next({ path: '/' });
+// if a user is offline and routes to an unavailable route, it blocks
+// the request if the "from" variable is set or redirects to the home
+// screen (from is not set when route is directly accessed by URL)
+const redirectBecauseUnavailable = (from, next) => {
+	if (from && from.path) {
+		next(from.path);
+	} else {
+		next({ path: '/' });
+	}
 	Vue.toasted.global.warnNoIcon(Translation.t('toasts.offlineModeRedirect'), { duration: 6000 });
 	hideProgressBar();
 };
 
 const noAuth = (to, _from, next) => {
 	if (isUnavailableBecauseOffline(to)) {
-		redirectBecauseUnavailable(next);
+		redirectBecauseUnavailable(_from, next);
 	} else {
 		next();
 	}
@@ -65,7 +71,7 @@ const noAuth = (to, _from, next) => {
 
 const requireAuth = (to, _from, next) => {
 	if (isUnavailableBecauseOffline(to)) {
-		redirectBecauseUnavailable(next);
+		redirectBecauseUnavailable(_from, next);
 	} else {
 		if (!Store.state.auth.authenticated) {
 			Vue.toasted.global.warn(Translation.t('toasts.unauthorized'), { duration: 6000 });
@@ -81,7 +87,7 @@ const requireAuth = (to, _from, next) => {
 
 const requireAuthAndRole = (role, to, _from, next) => {
 	if (isUnavailableBecauseOffline(to)) {
-		redirectBecauseUnavailable(next);
+		redirectBecauseUnavailable(_from, next);
 	} else {
 		if (!Store.state.auth.authenticated) {
 			requireAuth(to, _from, next);
@@ -105,7 +111,7 @@ const requireAuthAndUser = (to, _from, next) => {
 
 const afterAuth = (_to, from, next) => {
 	if (isUnavailableBecauseOffline(_to)) {
-		redirectBecauseUnavailable(next);
+		redirectBecauseUnavailable(from, next);
 	} else {
 		if (Store.state.auth.authenticated) {
 			next(from.path);
@@ -133,9 +139,10 @@ const hideProgressBar = () => {
 	}, 100);
 };
 
-// make sure to always use the beforeEnter property: if no authentication is required, use "noAuth"
-// this is necessary, because noAuth checks the offline state of the application and denies access,
-// if the components offline flag is not set.
+// ALWAYS USE a name: the offline routing decision works with the name and the component's offline flag
+// ALWAYS USE the beforeEnter property: if no authentication is required, use "noAuth". this is necessary
+// because noAuth checks the offline state of the application and denies access, if the components offline
+// flag is not set.
 const routes = [
 	{ path: '/', name: 'home', component: Home, beforeEnter: noAuth },
 	{ path: '/hello', name: 'hello', component: Hello, beforeEnter: noAuth },
@@ -161,5 +168,28 @@ const routes = [
 
 	{ path: '*', name: 'everyOtherPage', component: Home, beforeEnter: error404 }
 ]
+
+// add a method $offlineRoutes to every Router object: the resulting array contains a list of routing names
+VueRouter.prototype.$offlineRoutes = function () {
+	const Router = this;
+	const offlineRoutes = [];
+	const warn = () => { console.warn('A problem occured while reading the Router options.'); };
+
+	if (Router && Router.options && Router.options.routes && Router.options.routes.length > 0) {
+		for (let i = 0; i < Router.options.routes.length; i++) {
+			let route = Router.options.routes[i];
+			if (route && route.component && route.name) {
+				if (route.component.offline) {
+					offlineRoutes.push(route.name);
+				}
+			} else {
+				warn();
+			}
+		}
+	} else {
+		warn();
+	}
+	return offlineRoutes;
+};
 
 export default new VueRouter({ routes });
