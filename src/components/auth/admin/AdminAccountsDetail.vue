@@ -111,7 +111,7 @@
 							<span class="key">{{ item.value }}</span>
 						</template>
 						<template slot="adddressUrl" scope="item">
-							<a :href="item.value" target="_blank">
+							<a :href="item.value" target="_blank" rel="noopener">
 								Link
 								<i class="fa fa-external-link"></i>
 							</a>

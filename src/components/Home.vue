@@ -1,11 +1,11 @@
 <template>
 <div class="home">
 	<div class="main-photo text-center">
-		<img src="../assets/about_cb_2.png" class="main-logo">
+		<img src="../assets/about_cb_2.png" class="main-logo" alt="Coinblesk">
 		<div class="sub-pictures">
-			<a href="https://github.com/coinblesk" target="_blank" title="Open Source, Github"><img src="../assets/about_opensource.png"></a>
-			<a href="http://www.ifi.uzh.ch" target="_blank" title="Institute of Informatics, University of Zurich"><img src="../assets/about_ifi.png"></a>
-			<a href="http://www.uzh.ch" target="_blank" title="University of Zurich"><img src="../assets/about_uzh.png"></a>
+			<a href="https://github.com/coinblesk" target="_blank" rel="noopener" title="Open Source, Github"><img src="../assets/about_opensource.png" alt="Open Source"></a>
+			<a href="http://www.ifi.uzh.ch" target="_blank" rel="noopener" title="Institute of Informatics, University of Zurich"><img src="../assets/about_ifi.png" alt="IfI"></a>
+			<a href="http://www.uzh.ch" target="_blank" rel="noopener" title="University of Zurich"><img src="../assets/about_uzh.png" alt="UZH"></a>
 		</div>
 	</div>
 </div>

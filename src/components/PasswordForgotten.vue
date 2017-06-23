@@ -2,7 +2,7 @@
 <div class="password-forgotten login-registration">
 	<div class="container">
 		<div class="col-md-4 offset-md-4">
-			<img class="logo" src="../assets/about_cb_2.png">
+			<img class="logo" src="../assets/about_cb_2.png" alt="Coinblesk">
 		</div>
 		<div class="form-box bordered-box col-md-4 offset-md-4">
 			<div class="main-title display-7">{{ $t('passwordForgotten.title') }}</div>

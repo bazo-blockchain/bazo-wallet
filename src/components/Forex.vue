@@ -42,7 +42,7 @@
 				<div class="alert alert-warning">{{ $t('forex.errorHistory') }}</div>
 			</div>
 			<div class="powered-by">Powered by 
-				<a href="http://www.coindesk.com/price/" target="_blank">CoinDesk</a>/<a href="https://www.bitstamp.net/" target="_blank">Bitstamp</a>
+				<a href="http://www.coindesk.com/price/" target="_blank" rel="noopener">CoinDesk</a>/<a href="https://www.bitstamp.net/" target="_blank" rel="noopener">Bitstamp</a>
 			</div>
 		</div>
 	</div>

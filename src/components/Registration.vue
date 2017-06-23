@@ -2,7 +2,7 @@
 <div class="registration login-registration">
 	<div class="container">
 		<div class="col-md-4 offset-md-4">
-			<img class="logo" src="../assets/about_cb_2.png">
+			<img class="logo" src="../assets/about_cb_2.png" alt="Coinblesk">
 		</div>
 		<div class="form-box bordered-box" :class="{ 'col-md-4': stepNumber===1, 'offset-md-4': stepNumber===1, 'col-md-6': stepNumber===2, 'offset-md-3': stepNumber===2 }">
 			<div class="main-title display-7">{{ $t('registration.title') }}
@@ -23,7 +23,7 @@
 				<div class="text-center">
 					<b-form-checkbox v-model="acceptTerms" :class="{'form-error': !validAcceptTerms && formIsTouched }">
 						{{ $t('registration.acceptTerms1') }}
-						<a href="/terms" target="_blank">{{ $t('registration.acceptTerms2') }}</a>.
+						<a href="/terms" target="_blank" rel="noopener">{{ $t('registration.acceptTerms2') }}</a>.
 					</b-form-checkbox>
 				</div>
 				<b-button @click.prevent="submitToSecondStep" :block="true" variant="primary" :disabled="isLoading">

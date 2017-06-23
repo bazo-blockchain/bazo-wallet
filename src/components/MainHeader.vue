@@ -5,7 +5,7 @@
 			<b-nav-toggle target="nav_collapse"></b-nav-toggle>
 
 			<b-link class="navbar-brand" :to="{ name: 'home' }" :class="offlineCheck('home')">
-				<img src="../assets/about_cb_2.png" class="logo">
+				<img src="../assets/about_cb_2.png" class="logo" alt="Coinblesk">
 			</b-link>
 
 			<b-collapse is-nav id="nav_collapse">
