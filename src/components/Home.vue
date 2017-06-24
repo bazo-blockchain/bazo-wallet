@@ -1,8 +1,7 @@
 <template>
 <div class="home">
 	<div class="main-photo text-center">
-		<img src="../assets/about_cb_2.png" class="main-logo" alt="Coinblesk">
-		<div class="sub-pictures">
+		<div class="logos">
 			<a href="https://github.com/coinblesk" target="_blank" rel="noopener" title="Open Source, Github"><img src="../assets/about_opensource.png" alt="Open Source"></a>
 			<a href="http://www.ifi.uzh.ch" target="_blank" rel="noopener" title="Institute of Informatics, University of Zurich"><img src="../assets/about_ifi.png" alt="IfI"></a>
 			<a href="http://www.uzh.ch" target="_blank" rel="noopener" title="University of Zurich"><img src="../assets/about_uzh.png" alt="UZH"></a>
@@ -26,7 +25,12 @@ export default {
 	mounted: function () {
 		// if redirected from 404, header might not be visible (if before page was login, registration etc.)
 		this.$emit('toggle-header', true);
+		this.$emit('toggle-side-bar', true);
+		this.$emit('toggle-side-bar-triangle', false);
 		this.$emit('set-body-background', 'white');
+	},
+	beforeDestroy: function () {
+		this.$emit('toggle-side-bar-triangle', true);
 	}
 };
 </script>
@@ -39,20 +43,23 @@ export default {
 .main-photo {
 	background-image: url('../assets/001-large.jpg');
 	width: 100%;
-	height: calc(100vh - 56px);
+	height: calc(100vh - 40px);
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: 50% 44%;
 	padding: 12vh;
+	position: relative;
 	
 	.main-logo {
 		width: 60vmin;
 	}
 	
-	.sub-pictures {
-		margin-top: 6vmin;
+	.logos {
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
 		img {
-			height: 7vmin;
+			height: 70px;
 		}
 	}
 }

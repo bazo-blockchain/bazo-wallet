@@ -1,6 +1,6 @@
 <template>
 <div class="events">
-	<div class="container">
+	<div class="compact">
 		<h1 class="display-4">{{ $t('adminEvents.title') }}</h1>
 		<hr>
 		<div v-if="!isLoading">

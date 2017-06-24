@@ -1,6 +1,6 @@
 <template>
 <div class="forex">
-	<div class="container">
+	<div class="compact">
 		<h1 class="display-4">{{ $t('forex.title') }}</h1>
 		<hr>
 		<div class="selectors">

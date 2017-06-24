@@ -1,6 +1,6 @@
 <template>
 <div class="admin-accounts-detail">
-	<div class="container">
+	<div class="compact">
 		<h1 class="display-4">
 			{{ $t('adminAccountsDetail.title') }}
 			<small class="text-muted short-key-extended">{{ publicKeyClient }}</small>

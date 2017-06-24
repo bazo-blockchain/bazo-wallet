@@ -1,6 +1,6 @@
 <template>
 	<div class="profile">
-		<div class="container">
+		<div class="compact">
 			<h1 class="display-4">{{ $t('profile.title') }}
 				<small class="text-muted">{{ user.email }}</small>
 				<span class="user-role badge badge-primary" v-if="auth.role === 'ROLE_ADMIN'">ADMIN</span>

@@ -1,6 +1,6 @@
 <template>
 <div class="authenticated">
-	<div class="container" v-html="message"></div>
+	<div class="compact" v-html="message"></div>
 </div>
 </template>
 

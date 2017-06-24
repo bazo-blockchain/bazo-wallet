@@ -1,6 +1,6 @@
 <template>
 <div class="admin-server-balance">
-	<div class="container">
+	<div class="compact">
 		<h1 class="display-4">{{ $t('adminServerBalance.title') }}</h1>
 		<hr>
 		<div v-if="!isLoading">

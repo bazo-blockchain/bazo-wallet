@@ -1,6 +1,6 @@
 <template>
 <div class="admin-user-accounts-detail">
-	<div class="container">
+	<div class="compact">
 		<h1 class="display-4">
 			{{ $t('adminUserAccountsDetail.title') }}
 			<small class="text-muted">{{ email }}</small>

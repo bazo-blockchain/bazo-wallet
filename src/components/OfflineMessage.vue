@@ -45,6 +45,7 @@ export default {
 		border-radius: 2px;
 		font-size: 20px;
 		font-weight: 300;
+		z-index: 999;
 		
 		> .fa {
 			position: absolute;
