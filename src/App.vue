@@ -72,6 +72,7 @@ export default {
 	flex-direction: row;
 	.side-bar {
 		z-index: 999;
+		flex-shrink: 0;
 	}
 	.main-view {
 		flex-grow: 1;
