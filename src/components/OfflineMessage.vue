@@ -29,6 +29,9 @@ export default {
 	opacity: 0;
 	visibility: hidden; 
 	transition: 0.3s ease all;
+	position: relative;
+	z-index: 999;
+	
 	&.shown {
 		opacity: 1;
 		visibility: visible; 
