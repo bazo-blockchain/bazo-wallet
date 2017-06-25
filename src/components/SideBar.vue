@@ -104,7 +104,6 @@ export default {
 			this.$router.push({ 'path': '/' });
 		},
 		dynamicLinkClasses: function (routeName) {
-			console.log(routeName, !this.showTriangle);
 			return {
 				offline: this.isOffline && this.offlineRoutes.indexOf(routeName) === -1,
 				selected: routeName === this.$route.name || routeName + '-detail' === this.$route.name,
