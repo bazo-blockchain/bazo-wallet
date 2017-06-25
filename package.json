@@ -90,7 +90,7 @@
     "sinon-chai": "^2.8.0",
     "sw-precache-webpack-plugin": "^0.9.1",
     "url-loader": "^0.5.8",
-    "vue-loader": "^12.1.0",
+    "vue-loader": "^12.2.1",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.3.3",
     "webpack": "^2.6.1",

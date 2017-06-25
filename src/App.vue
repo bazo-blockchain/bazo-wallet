@@ -93,7 +93,7 @@ export default {
 		flex-shrink: 0;
 		width: 0;
 		
-		.side-bar {
+		/deep/ .side-bar {
 			position: fixed;
 			top: 0;
 			left: 0;
@@ -101,10 +101,15 @@ export default {
 			margin-left: -100%;
 			transition: 0.3s ease all;
 			background: $side-bar-black;
+			
+			.entries .entry.selected:after {
+				opacity: 0;
+				visibility: hidden;
+			}
 		}
 	
 		&.shown {
-			.side-bar {
+			/deep/ .side-bar {
 				margin-left: 0;
 			}
 			.hamburger {
@@ -145,7 +150,7 @@ export default {
 		.side-bar-wrapper {
 			width: 0;
 
-			.side-bar {
+			/deep/ .side-bar {
 				width: 300px;
 			}
 			.hamburger {
@@ -164,9 +169,14 @@ export default {
 		.side-bar-wrapper {
 			width: 300px;
 
-			.side-bar {
+			/deep/ .side-bar {
 				width: 300px;
 				margin-left: 0;
+				
+				.entries .entry.selected:after {
+					opacity: 1;
+					visibility: visible;
+				}
 			}
 			.hamburger {
 				display: none;
@@ -179,7 +189,7 @@ export default {
 		.side-bar-wrapper {
 			width: 350px;
 			
-			.side-bar {
+			/deep/ .side-bar {
 				width: 350px;
 				margin-left: 0;
 			}
