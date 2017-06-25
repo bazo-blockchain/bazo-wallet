@@ -10,7 +10,7 @@
 				<i class="fa fa-bars"></i>
 			</div>
 		</div>
-		<div class="main-view" @click="hamburgerClicked = false">
+		<div class="main-view" @click="hamburgerClicked = false" :class="{ 'grayed-out': hamburgerClicked }">
 			<main-header :shown="showHeader" :transparent="showHeaderTransparent"></main-header>
 			<router-view
 				@toggle-header="toggleHeader"
@@ -86,6 +86,25 @@ export default {
 
 	.main-view {
 		flex-grow: 1;
+		
+		&:after {
+			content: "";
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 150;
+			background-color: rgba(0,0,0,0.5);
+			transition: 0.3s ease all;
+			opacity: 0;
+			visibility: hidden;
+		}
+		&.grayed-out:after {
+			opacity: 1;
+			visibility: visible;
+		}
 	}
 
 	.side-bar-wrapper {
@@ -182,6 +201,10 @@ export default {
 				display: none;
 			}
 		}
+		.main-view.grayed-out:after {
+			opacity: 0;
+			visibility: hidden;
+		}
 	}
 }
 @media (min-width: 1400px) {
@@ -191,10 +214,6 @@ export default {
 			
 			/deep/ .side-bar {
 				width: 350px;
-				margin-left: 0;
-			}
-			.hamburger {
-				display: none;
 			}
 		}
 	}
