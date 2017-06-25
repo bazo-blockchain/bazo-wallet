@@ -3,7 +3,7 @@
 		<div class="logo-container">
 			<img class="logo" src="../assets/about_cb_2.png" alt="Coinblesk" :to="{ 'name': 'home' }">
 		</div>
-		<div class="entries">
+		<div class="entries" :class="{ 'offline-mode': isOffline }">
 			
 			<router-link class="entry" :to="{ name: 'home' }" :class="dynamicLinkClasses('home')">
 				<i class="fa fa-home"></i>
@@ -132,6 +132,12 @@ export default {
 	overflow-y: auto;
 	height: calc(100vh - 2em - 2.2em - 2.5em);
 	padding-bottom: 10px;
+	
+	&.offline-mode {
+		/* create space for the offline message */
+		padding-bottom: 96px;
+	}
+	
 	.entry {
 		position: relative;
 		cursor: pointer;
