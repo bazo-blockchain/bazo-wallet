@@ -6,9 +6,10 @@
 			<side-bar :show-triangle="showSideBarTriangle"></side-bar>
 		</div>
 		<div class="main-view">
-			<main-header :shown="showHeader"></main-header>
+			<main-header :shown="showHeader" :transparent="showHeaderTransparent"></main-header>
 			<router-view
 				@toggle-header="toggleHeader"
+				@toggle-header-transparent="toggleHeaderTransparent"
 				@toggle-side-bar="toggleSideBar"
 				@toggle-side-bar-triangle="toggleSideBarTriangle"
 				@set-body-background="setBodyBackground"></router-view>
@@ -29,6 +30,7 @@ export default {
 	data: function () {
 		return {
 			showHeader: true,
+			showHeaderTransparent: false,
 			showSideBar: true,
 			showSideBarTriangle: true,
 			initialLoadingComplete: false
@@ -43,6 +45,9 @@ export default {
 	methods: {
 		toggleHeader: function (show) {
 			this.showHeader = show;
+		},
+		toggleHeaderTransparent: function (show) {
+			this.showHeaderTransparent = show;
 		},
 		toggleSideBar: function (show) {
 			this.showSideBar = show;

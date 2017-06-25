@@ -25,11 +25,14 @@ export default {
 	mounted: function () {
 		// if redirected from 404, header might not be visible (if before page was login, registration etc.)
 		this.$emit('toggle-header', true);
+		this.$emit('set-body-background', 'white');
+
+		this.$emit('toggle-header-transparent', true);
 		this.$emit('toggle-side-bar', true);
 		this.$emit('toggle-side-bar-triangle', false);
-		this.$emit('set-body-background', 'white');
 	},
 	beforeDestroy: function () {
+		this.$emit('toggle-header-transparent', false);
 		this.$emit('toggle-side-bar-triangle', true);
 	}
 };
@@ -43,11 +46,10 @@ export default {
 .main-photo {
 	background-image: url('../assets/001-large.jpg');
 	width: 100%;
-	height: calc(100vh - 40px);
+	height: 100vh;
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: 50% 44%;
-	padding: 12vh;
 	position: relative;
 	
 	.main-logo {

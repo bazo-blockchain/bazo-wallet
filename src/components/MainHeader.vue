@@ -1,5 +1,5 @@
 <template>
-	<div class="header-bar-wrapper" v-if="shown">
+	<div class="header-bar-wrapper" v-if="shown" :class="{ 'transparent': transparent }">
 		<div class="header-bar">
 			<div class="buttons pull-right" v-if="auth.authenticated">
 				<div class="button">
@@ -48,6 +48,10 @@ export default {
 	data: function () {
 		return {};
 	},
+	props: {
+		shown: Boolean,
+		transparent: Boolean
+	},
 	methods: {
 		switchLanguage: function (newLanguage) {
 			this.$locale.change(newLanguage);
@@ -79,9 +83,6 @@ export default {
 		isOffline: function () {
 			return this.$store.state.offline;
 		}
-	},
-	props: {
-		shown: Boolean
 	}
 };
 </script>
@@ -91,6 +92,23 @@ export default {
 	position: relative;
 	height: 40px;
 	width: 100%;
+	
+	&.transparent {
+		height: 0;
+		.header-bar {
+			text-shadow: 0 0 5px rgba(0, 0, 0, 0.58);
+			height: 70px;
+			font-weight: 500;
+			padding-right: 10px;
+			background-color: transparent;
+			border-bottom-color: transparent;
+			
+			.buttons .button a {
+				font-size: 120%;
+				color: white;
+			}
+		}
+	}
 	
 	.header-bar {
 		background: #f1f1f1;
