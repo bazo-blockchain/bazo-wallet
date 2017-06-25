@@ -74,10 +74,14 @@
 </template>
 
 <script>
+import Hammer from 'hammerjs';
+
 export default {
 	name: 'side-bar',
 	data: function () {
-		return {};
+		return {
+			hammer: null
+		};
 	},
 	props: {
 		showTriangle: Boolean
@@ -100,6 +104,7 @@ export default {
 			this.$router.push({ 'path': '/' });
 		},
 		dynamicLinkClasses: function (routeName) {
+			console.log(routeName, !this.showTriangle);
 			return {
 				offline: this.isOffline && this.offlineRoutes.indexOf(routeName) === -1,
 				selected: routeName === this.$route.name || routeName + '-detail' === this.$route.name,
@@ -107,9 +112,22 @@ export default {
 			};
 		},
 		closeMenu: function () {
-			console.log('test');
 			this.$emit('close-menu');
+		},
+		hammerSwipeHandler: function (event) {
+			if (event.direction === Hammer.DIRECTION_LEFT) {
+				this.closeMenu();
+			}
 		}
+	},
+	mounted: function () {
+		this.hammer = new Hammer(this.$el);
+		this.hammer.on('swipe', this.hammerSwipeHandler);
+	},
+	beforeDestroy: function () {
+		this.hammer.off('swipe', this.hammerSwipeHandler);
+		this.hammer.destroy();
+		this.hammer = null;
 	}
 }
 </script>
@@ -175,7 +193,8 @@ export default {
 				opacity: 1
 			}
 			&.hide-triangle:after {
-				opacity: 0;
+				opacity: 0 !important;
+				visibility: hidden !important;
 			}
 			.fa {
 				opacity: 1;
