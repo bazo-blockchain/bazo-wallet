@@ -3,8 +3,10 @@
 	<progress-bar></progress-bar>
 	<div id="app-container" v-if="initialLoadingComplete">
 		<div class="side-bar-wrapper" v-if="showSideBar" :class="{ shown: hamburgerClicked }">
-			<side-bar :show-triangle="showSideBarTriangle"></side-bar>
-			<div class="hamburger" @click="toggleHamburger">
+			<side-bar
+				:show-triangle="showSideBarTriangle"
+				@close-menu="hamburgerClicked = false"></side-bar>
+			<div class="hamburger" @click="hamburgerClicked = !hamburgerClicked">
 				<i class="fa fa-bars"></i>
 			</div>
 		</div>
@@ -58,10 +60,6 @@ export default {
 		},
 		toggleSideBarTriangle: function (show) {
 			this.showSideBarTriangle = show;
-		},
-		toggleHamburger: function () {
-			this.hamburgerClicked = !this.hamburgerClicked;
-			this.handleResize();
 		},
 		setBodyBackground: function (color) {
 			if (color === 'dark') {

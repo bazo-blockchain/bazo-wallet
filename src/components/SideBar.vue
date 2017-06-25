@@ -5,11 +5,11 @@
 		</div>
 		<div class="entries" :class="{ 'offline-mode': isOffline }">
 			
-			<router-link class="entry" :to="{ name: 'home' }" :class="dynamicLinkClasses('home')">
+			<router-link class="entry" :to="{ name: 'home' }" :class="dynamicLinkClasses('home')" @click.native="closeMenu">
 				<i class="fa fa-home"></i>
 				<span class="text">{{ $t('sideBar.home') }}</span>
 			</router-link>
-			<router-link class="entry" :to="{ name: 'forex' }" :class="dynamicLinkClasses('forex')">
+			<router-link class="entry" :to="{ name: 'forex' }" :class="dynamicLinkClasses('forex')" @click.native="closeMenu">
 				<i class="fa fa-bitcoin"></i>
 				<span class="text">{{ $t('sideBar.forex') }}</span>
 			</router-link>
@@ -17,19 +17,19 @@
 			<div v-if="auth.authenticated && auth.role === 'ROLE_ADMIN'">
 				<div class="separator"></div>
 				<div class="subtitle">{{ $t('sideBar.administration').toUpperCase() }}</div>
-				<router-link class="entry" :to="{ name: 'admin-accounts' }" :class="dynamicLinkClasses('admin-accounts')">
+				<router-link class="entry" :to="{ name: 'admin-accounts' }" :class="dynamicLinkClasses('admin-accounts')" @click.native="closeMenu">
 					<i class="fa fa-bars"></i>
 					<span class="text">{{ $t('sideBar.adminAccounts') }}</span>
 				</router-link>
-				<router-link class="entry" :to="{ name: 'admin-events' }" :class="dynamicLinkClasses('admin-events')">
+				<router-link class="entry" :to="{ name: 'admin-events' }" :class="dynamicLinkClasses('admin-events')" @click.native="closeMenu">
 					<i class="fa fa-calendar-times-o"></i>
 					<span class="text">{{ $t('sideBar.adminEvents') }}</span>
 				</router-link>
-				<router-link class="entry" :to="{ name: 'admin-user-accounts' }" :class="dynamicLinkClasses('admin-user-accounts')">
+				<router-link class="entry" :to="{ name: 'admin-user-accounts' }" :class="dynamicLinkClasses('admin-user-accounts')" @click.native="closeMenu">
 					<i class="fa fa-users"></i>
 					<span class="text">{{ $t('sideBar.adminUserAccounts') }}</span>
 				</router-link>
-				<router-link class="entry" :to="{ name: 'admin-server-balance' }" :class="dynamicLinkClasses('admin-server-balance')">
+				<router-link class="entry" :to="{ name: 'admin-server-balance' }" :class="dynamicLinkClasses('admin-server-balance')" @click.native="closeMenu">
 					<i class="fa fa-balance-scale"></i>
 					<span class="text">{{ $t('sideBar.adminServerBalance') }}</span>
 				</router-link>
@@ -37,11 +37,11 @@
 			
 			<div v-if="auth.authenticated && auth.role === 'ROLE_USER'">
 				<div class="separator"></div>
-				<router-link class="entry" :to="{ name: 'authenticated' }" :class="dynamicLinkClasses('authenticated')">
+				<router-link class="entry" :to="{ name: 'authenticated' }" :class="dynamicLinkClasses('authenticated')" @click.native="closeMenu">
 					<i class="fa fa-bitcoin"></i>
 					<span class="text">{{ $t('sideBar.authenticated') }}</span>
 				</router-link>
-				<router-link class="entry" :to="{ name: 'user-authenticated' }" :class="dynamicLinkClasses('user-authenticated')">
+				<router-link class="entry" :to="{ name: 'user-authenticated' }" :class="dynamicLinkClasses('user-authenticated')" @click.native="closeMenu">
 					<i class="fa fa-bitcoin"></i>
 					<span class="text">{{ $t('sideBar.userAuthenticated') }}</span>
 				</router-link>
@@ -50,21 +50,21 @@
 			<div class="separator"></div>
 			<div class="subtitle">{{ $t('sideBar.accountManagement').toUpperCase() }}</div>
 			<div v-if="auth.authenticated">
-				<router-link class="entry" :to="{ name: 'profile' }" :class="dynamicLinkClasses('profile')">
+				<router-link class="entry" :to="{ name: 'profile' }" :class="dynamicLinkClasses('profile')" @click.native="closeMenu">
 					<i class="fa fa-user-o"></i>
 					<span class="text">{{ $t('sideBar.profile') }}</span>
 				</router-link>
-				<a class="entry" @click="logout">
+				<a class="entry" @click="logout(); closeMenu();">
 					<i class="fa fa-sign-out"></i>
 					<span class="text">{{ $t('sideBar.logout') }}</span>
 				</a>
 			</div>
 			<div v-else>
-				<router-link class="entry" :to="{ name: 'login' }" :class="dynamicLinkClasses('login')">
+				<router-link class="entry" :to="{ name: 'login' }" :class="dynamicLinkClasses('login')" @click.native="closeMenu">
 					<i class="fa fa-sign-in"></i>
 					<span class="text">{{ $t('sideBar.login') }}</span>
 				</router-link>
-				<router-link class="entry" :to="{ name: 'registration' }" :class="dynamicLinkClasses('registration')">
+				<router-link class="entry" :to="{ name: 'registration' }" :class="dynamicLinkClasses('registration')" @click.native="closeMenu">
 					<i class="fa fa-user-plus"></i>
 					<span class="text">{{ $t('sideBar.registration') }}</span>
 				</router-link>
@@ -105,6 +105,10 @@ export default {
 				selected: routeName === this.$route.name || routeName + '-detail' === this.$route.name,
 				'hide-triangle': !this.showTriangle
 			};
+		},
+		closeMenu: function () {
+			console.log('test');
+			this.$emit('close-menu');
 		}
 	}
 }
