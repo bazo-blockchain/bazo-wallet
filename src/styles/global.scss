@@ -9,6 +9,10 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+*::selection {
+	background-color: rgba(21, 172, 67, 0.9);
+	color: white;
+}
 .offline {
 	filter: grayscale(1) !important;
 	opacity: 0.4 !important;
