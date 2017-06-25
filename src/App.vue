@@ -2,15 +2,15 @@
 <div id="app">
 	<progress-bar></progress-bar>
 	<div id="app-container" v-if="initialLoadingComplete">
-		<div class="side-bar-wrapper" v-if="showSideBar" :class="{ shown: barIsShown }">
+		<div class="side-bar-wrapper" v-if="showSideBar" :class="{ shown: sideBarIsShown }">
 			<side-bar
 				:show-triangle="showSideBarTriangle"
-				@close-menu="barIsShown = false"></side-bar>
-			<div class="hamburger" @click="barIsShown = !barIsShown">
+				@close-menu="sideBarIsShown = false"></side-bar>
+			<div class="hamburger" @click="sideBarIsShown = !sideBarIsShown">
 				<i class="fa fa-bars"></i>
 			</div>
 		</div>
-		<div class="main-view" @click="barIsShown = false" :class="{ 'grayed-out': barIsShown }">
+		<div class="main-view" @click="sideBarIsShown = false" :class="{ 'grayed-out': sideBarIsShown }">
 			<main-header :shown="showHeader" :transparent="showHeaderTransparent"></main-header>
 			<router-view
 				@toggle-header="toggleHeader"
@@ -39,7 +39,7 @@ export default {
 			showSideBar: true,
 			showSideBarTriangle: true,
 			initialLoadingComplete: false,
-			barIsShown: false
+			sideBarIsShown: false
 		};
 	},
 	components: {
@@ -73,10 +73,10 @@ export default {
 		},
 		resizeHandler: function () {
 			// hides menu when the window is resized to the large
-			// view. after the change, the watcher of barIsShown
+			// view. after the change, the watcher of sideBarIsShown
 			// is setting the overflow styles of the body tag
 			if (this.screenIsLarge()) {
-				this.barIsShown = false;
+				this.sideBarIsShown = false;
 			}
 		}
 	},
@@ -90,8 +90,8 @@ export default {
 		window.removeEventListener('resize', this.resizeHandler);
 	},
 	watch: {
-		barIsShown: function () {
-			if (!this.barIsShown) {
+		sideBarIsShown: function () {
+			if (!this.sideBarIsShown) {
 				document.querySelector('body').style.overflow = 'initial';
 			} else {
 				document.querySelector('body').style.overflow = 'hidden';
