@@ -150,6 +150,9 @@ export default {
 		font-weight: 500;
 		text-decoration: none;
 		transition: 0.2s ease background-color;
+		&:hover {
+			background-color: #414141;
+		}
 		
 		&:after {
 			content: "";

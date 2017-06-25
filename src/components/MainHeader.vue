@@ -194,9 +194,13 @@ export default {
 		opacity: 1;
 		visibility: visible;
 	}
-	.header-bar-wrapper .header-bar .buttons {
-		opacity: 0;
-		visibility: hidden;
+	.header-bar-wrapper .header-bar {
+		background: #626262;
+		border-bottom-color: #464646;
+		.buttons {
+			opacity: 0;
+			visibility: hidden;
+		}
 	}
 }
 </style>
