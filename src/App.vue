@@ -2,15 +2,15 @@
 <div id="app">
 	<progress-bar></progress-bar>
 	<div id="app-container" v-if="initialLoadingComplete">
-		<div class="side-bar-wrapper" v-if="showSideBar" :class="{ shown: hamburgerClicked }">
+		<div class="side-bar-wrapper" v-if="showSideBar" :class="{ shown: barIsShown }">
 			<side-bar
 				:show-triangle="showSideBarTriangle"
-				@close-menu="hamburgerClicked = false"></side-bar>
-			<div class="hamburger" @click="hamburgerClicked = !hamburgerClicked">
+				@close-menu="barIsShown = false"></side-bar>
+			<div class="hamburger" @click="barIsShown = !barIsShown">
 				<i class="fa fa-bars"></i>
 			</div>
 		</div>
-		<div class="main-view" @click="hamburgerClicked = false" :class="{ 'grayed-out': hamburgerClicked }">
+		<div class="main-view" @click="barIsShown = false" :class="{ 'grayed-out': barIsShown }">
 			<main-header :shown="showHeader" :transparent="showHeaderTransparent"></main-header>
 			<router-view
 				@toggle-header="toggleHeader"
@@ -39,7 +39,7 @@ export default {
 			showSideBar: true,
 			showSideBarTriangle: true,
 			initialLoadingComplete: false,
-			hamburgerClicked: false
+			barIsShown: false
 		};
 	},
 	components: {
@@ -66,12 +66,37 @@ export default {
 				color = '#4e4e4e';
 			}
 			document.querySelector('body').style.background = color;
+		},
+		screenIsLarge: function () {
+			// adapt the 1210px if the styles change
+			return window.matchMedia('(min-width: 1210px)').matches;
+		},
+		resizeHandler: function () {
+			// hides menu when the window is resized to the large
+			// view. after the change, the watcher of barIsShown
+			// is setting the overflow styles of the body tag
+			if (this.screenIsLarge()) {
+				this.barIsShown = false;
+			}
 		}
 	},
 	mounted: function () {
 		this.$store.dispatch('initialize').then(() => {
 			this.initialLoadingComplete = true;
 		});
+		window.addEventListener('resize', this.resizeHandler);
+	},
+	beforeDestory: function () {
+		window.removeEventListener('resize', this.resizeHandler);
+	},
+	watch: {
+		barIsShown: function () {
+			if (!this.barIsShown) {
+				document.querySelector('body').style.overflow = 'initial';
+			} else {
+				document.querySelector('body').style.overflow = 'hidden';
+			}
+		}
 	}
 };
 </script>
@@ -183,6 +208,7 @@ export default {
 		}
 	}
 }
+/* if the 1210px change, adapt also the JavaScript function screenIsLarge() */
 @media (min-width: 1210px) {
 	#app-container {
 		.side-bar-wrapper {
@@ -201,10 +227,10 @@ export default {
 				display: none;
 			}
 		}
-		.main-view.grayed-out:after {
+		/*.main-view.grayed-out:after {
 			opacity: 0;
 			visibility: hidden;
-		}
+		}*/
 	}
 }
 @media (min-width: 1400px) {
