@@ -4,6 +4,7 @@
 			<img class="logo" src="../assets/about_cb_2.png" alt="Coinblesk" :to="{ 'name': 'home' }">
 		</div>
 		<div class="entries">
+			
 			<router-link class="entry" :to="{ name: 'home' }" :class="dynamicLinkClasses('home')">
 				<i class="fa fa-home"></i>
 				<span class="text">{{ $t('sideBar.home') }}</span>
@@ -12,9 +13,10 @@
 				<i class="fa fa-bitcoin"></i>
 				<span class="text">{{ $t('sideBar.forex') }}</span>
 			</router-link>
+			
 			<div v-if="auth.authenticated && auth.role === 'ROLE_ADMIN'">
 				<div class="separator"></div>
-				<div class="subtitle">{{ $t('sideBar.administration') }}</div>
+				<div class="subtitle">{{ $t('sideBar.administration').toUpperCase() }}</div>
 				<router-link class="entry" :to="{ name: 'admin-accounts' }" :class="dynamicLinkClasses('admin-accounts')">
 					<i class="fa fa-bars"></i>
 					<span class="text">{{ $t('sideBar.adminAccounts') }}</span>
@@ -32,6 +34,7 @@
 					<span class="text">{{ $t('sideBar.adminServerBalance') }}</span>
 				</router-link>
 			</div>
+			
 			<div v-if="auth.authenticated && auth.role === 'ROLE_USER'">
 				<div class="separator"></div>
 				<router-link class="entry" :to="{ name: 'authenticated' }" :class="dynamicLinkClasses('authenticated')">
@@ -41,6 +44,29 @@
 				<router-link class="entry" :to="{ name: 'user-authenticated' }" :class="dynamicLinkClasses('user-authenticated')">
 					<i class="fa fa-bitcoin"></i>
 					<span class="text">{{ $t('sideBar.userAuthenticated') }}</span>
+				</router-link>
+			</div>
+
+			<div class="separator"></div>
+			<div class="subtitle">{{ $t('sideBar.accountManagement').toUpperCase() }}</div>
+			<div v-if="auth.authenticated">
+				<router-link class="entry" :to="{ name: 'profile' }" :class="dynamicLinkClasses('profile')">
+					<i class="fa fa-user-o"></i>
+					<span class="text">{{ $t('sideBar.profile') }}</span>
+				</router-link>
+				<a class="entry" @click="logout">
+					<i class="fa fa-sign-out"></i>
+					<span class="text">{{ $t('sideBar.logout') }}</span>
+				</a>
+			</div>
+			<div v-else>
+				<router-link class="entry" :to="{ name: 'login' }" :class="dynamicLinkClasses('login')">
+					<i class="fa fa-sign-in"></i>
+					<span class="text">{{ $t('sideBar.login') }}</span>
+				</router-link>
+				<router-link class="entry" :to="{ name: 'registration' }" :class="dynamicLinkClasses('registration')">
+					<i class="fa fa-user-plus"></i>
+					<span class="text">{{ $t('sideBar.registration') }}</span>
 				</router-link>
 			</div>
 		</div>
@@ -68,7 +94,7 @@ export default {
 		}
 	},
 	methods: {
-		signout: function () {
+		logout: function () {
 			this.$store.dispatch('logout');
 			this.$toasted.global.successNoIcon('<i class="fa fa-sign-out"></i>' + this.$t('toasts.signedOff'));
 			this.$router.push({ 'path': '/' });
@@ -88,10 +114,7 @@ export default {
 @import '../styles/variables';
 
 .side-bar {
-	position: fixed;
-	width: 100%;
-	height: 100%;
-	background: #353535;
+	background: $side-bar-black;
 	color: #e5e5e5;
 	font-size: 18px;
 }
@@ -108,6 +131,7 @@ export default {
 .entries {
 	overflow-y: auto;
 	height: calc(100vh - 2em - 2.2em - 2.5em);
+	padding-bottom: 10px;
 	.entry {
 		position: relative;
 		cursor: pointer;
@@ -190,7 +214,12 @@ export default {
 			"adminEvents": "Events",
 			"adminAccounts": "Accounts",
 			"adminUserAccounts": "User Accounts",
-			"adminServerBalance": "Server Balance"
+			"adminServerBalance": "Server Balance",
+			"accountManagement":"Account Management",
+			"profile": "Profile",
+			"login": "Login",
+			"logout": "Logout",
+			"registration": "Registration"
 		}
 	},
 	"de": {
@@ -204,7 +233,12 @@ export default {
 			"adminEvents": "Events",
 			"adminAccounts": "Konten",
 			"adminUserAccounts": "Benutzerkonten",
-			"adminServerBalance": "Server Balance"
+			"adminServerBalance": "Server Balance",
+			"accountManagement": "Kontoverwaltung",
+			"profile": "Profil anzeigen",
+			"login": "Login",
+			"logout": "Logout",
+			"registration": "Registrierung"
 		}
 	}
 }

@@ -51,6 +51,7 @@ export default {
 	background-repeat: no-repeat;
 	background-position: 50% 44%;
 	position: relative;
+	box-shadow: inset 2px 0 16px rgba(0,0,0,0.3);
 	
 	.main-logo {
 		width: 60vmin;

@@ -2,10 +2,13 @@
 <div id="app">
 	<progress-bar></progress-bar>
 	<div id="app-container" v-if="initialLoadingComplete">
-		<div class="side-bar" v-if="showSideBar">
+		<div class="side-bar-wrapper" v-if="showSideBar" :class="{ shown: hamburgerClicked }">
 			<side-bar :show-triangle="showSideBarTriangle"></side-bar>
+			<div class="hamburger" @click="toggleHamburger">
+				<i class="fa fa-bars"></i>
+			</div>
 		</div>
-		<div class="main-view">
+		<div class="main-view" @click="hamburgerClicked = false">
 			<main-header :shown="showHeader" :transparent="showHeaderTransparent"></main-header>
 			<router-view
 				@toggle-header="toggleHeader"
@@ -33,7 +36,8 @@ export default {
 			showHeaderTransparent: false,
 			showSideBar: true,
 			showSideBarTriangle: true,
-			initialLoadingComplete: false
+			initialLoadingComplete: false,
+			hamburgerClicked: false
 		};
 	},
 	components: {
@@ -55,6 +59,10 @@ export default {
 		toggleSideBarTriangle: function (show) {
 			this.showSideBarTriangle = show;
 		},
+		toggleHamburger: function () {
+			this.hamburgerClicked = !this.hamburgerClicked;
+			this.handleResize();
+		},
 		setBodyBackground: function (color) {
 			if (color === 'dark') {
 				color = '#4e4e4e';
@@ -71,41 +79,116 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import './styles/variables';
+
 #app-container {
 	display: flex;
 	align-items: stretch;
 	flex-direction: row;
-	.side-bar {
-		z-index: 999;
-		flex-shrink: 0;
-	}
+
 	.main-view {
 		flex-grow: 1;
 	}
-}
-</style>
 
-<style lang="scss">
-@mixin set-view-width($side-bar-width) {
-	#app-container .side-bar {
-		width: $side-bar-width;
-	}
-	#app-container .main-view .header-bar {
-		padding-left: $side-bar-width;
+	.side-bar-wrapper {
+		z-index: 999;
+		flex-shrink: 0;
+		width: 0;
+		
+		.side-bar {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			margin-left: -100%;
+			transition: 0.3s ease all;
+			background: $side-bar-black;
+		}
+	
+		&.shown {
+			.side-bar {
+				margin-left: 0;
+			}
+			.hamburger {
+				left: 100%;
+				margin-left: -2em;
+				background: transparent;
+				font-size: 1.3em;
+				transition: 0.3s ease left;
+			}
+		}
+		
+		.hamburger {
+			position: fixed;
+			top: 0;
+			left: 0;
+			opacity: 1;
+			visibility: visible;
+			font-size: 25px;
+			width: 2em;
+			height: 2em;
+			color: white;
+			margin-left: 0;
+			background: $side-bar-black;
+			cursor: pointer;
+	
+			.fa {
+				display: block;
+				transform: translate(-50%, -50%);
+				position: absolute;
+				top: 50%;
+				left: 50%;
+			}
+		}
 	}
 }
-@include set-view-width(100px);
+@media (min-width: 500px) {
+	#app-container {
+		.side-bar-wrapper {
+			width: 0;
 
-@media (min-width: 576px) {
-	@include set-view-width(200px);
+			.side-bar {
+				width: 300px;
+			}
+			.hamburger {
+				left: 0;
+			}
+			&.shown {
+				.hamburger {
+					left: 300px;
+				}
+			}
+		}
+	}
 }
-@media (min-width: 768px) {
-	@include set-view-width(250px);
+@media (min-width: 1210px) {
+	#app-container {
+		.side-bar-wrapper {
+			width: 300px;
+
+			.side-bar {
+				width: 300px;
+				margin-left: 0;
+			}
+			.hamburger {
+				display: none;
+			}
+		}
+	}
 }
-@media (min-width: 992px) {
-	@include set-view-width(300px);
-}
-@media (min-width: 1200px) {
-	@include set-view-width(350px);
+@media (min-width: 1400px) {
+	#app-container {
+		.side-bar-wrapper {
+			width: 350px;
+			
+			.side-bar {
+				width: 350px;
+				margin-left: 0;
+			}
+			.hamburger {
+				display: none;
+			}
+		}
+	}
 }
 </style>

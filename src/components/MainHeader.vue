@@ -1,6 +1,9 @@
 <template>
 	<div class="header-bar-wrapper" v-if="shown" :class="{ 'transparent': transparent }">
 		<div class="header-bar">
+			<img class="logo" src="../assets/about_cb_2.png" alt="Coinblesk">
+			
+			<!-- buttons are hidden on small screens -->
 			<div class="buttons pull-right" v-if="auth.authenticated">
 				<div class="button">
 					<router-link class="profile" :to="{ name: 'profile' }" :class="offlineCheck('profile')">
@@ -16,6 +19,8 @@
 					</a>
 				</div>
 			</div>
+			
+			<!-- buttons are hidden on small screens -->
 			<div class="buttons pull-right" v-else>
 				<div class="button">
 					<a @click="switchLanguage('en')" v-if="currentLanguage === 'de'">
@@ -88,6 +93,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../styles/variables';
+
 .header-bar-wrapper {
 	position: relative;
 	height: 40px;
@@ -120,7 +127,17 @@ export default {
 		left: 0;
 		top: 0;
 		
+		.logo {
+			max-width: 70%;
+			max-height: 40px;
+			transform: translate(-50%, -50%);
+			position: absolute;
+			top: 50%;
+			left: 50%;
+		}
+		
 		.buttons {
+			transition: 0.3s ease all;
 			height: 100%;
 			.button {
 				display: inline-block;
@@ -167,8 +184,20 @@ export default {
 	}
 }
 .logo {
+	opacity: 0;
+	visibility: hidden;
 	height: 22px;
-	margin-top: -3px;
+	margin-top: -1px;
+}
+@media (max-width: $breakpoint-hide-header) {
+	.logo {
+		opacity: 1;
+		visibility: visible;
+	}
+	.header-bar-wrapper .header-bar .buttons {
+		opacity: 0;
+		visibility: hidden;
+	}
 }
 </style>
 
