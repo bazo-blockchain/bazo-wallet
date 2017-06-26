@@ -2,7 +2,7 @@
 <div id="app">
 	<progress-bar></progress-bar>
 	<div id="app-container" v-if="initialLoadingComplete">
-		<div class="side-bar-wrapper" v-if="showSideBar" :class="{ shown: sideBarIsShown }">
+		<div class="side-bar-wrapper" v-show="showSideBar" :class="{ shown: sideBarIsShown }">
 			<side-bar
 				:show-triangle="showSideBarTriangle"
 				@close-menu="sideBarIsShown = false"></side-bar>
