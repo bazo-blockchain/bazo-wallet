@@ -70,6 +70,11 @@
 				</router-link>
 			</div>
 		</div>
+		<div class="language-picker" :class="{ 'offline-mode': isOffline }">
+			<div class="language" :class="{'selected': currentLanguage === language}" v-for="language in ['en', 'de']" @click="changeLanguage(language)">
+				<span class="text">{{ language.toUpperCase() }}</span>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -95,6 +100,9 @@ export default {
 		},
 		auth: function () {
 			return this.$store.state.auth;
+		},
+		currentLanguage: function () {
+			return this.$locale.current();
 		}
 	},
 	methods: {
@@ -117,6 +125,9 @@ export default {
 			if (event.direction === Hammer.DIRECTION_LEFT) {
 				this.closeMenu();
 			}
+		},
+		changeLanguage: function (newLanguage) {
+			this.$locale.change(newLanguage);
 		}
 	},
 	mounted: function () {
@@ -133,6 +144,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '../styles/variables';
+
+$language-picker-height: 3.9em;
+
+/* offline-mode needs place for offline-message */
+$language-picker-height-offline: 8.9em;
 
 .side-bar {
 	background: $side-bar-black;
@@ -151,12 +167,13 @@ export default {
 }
 .entries {
 	overflow-y: auto;
-	height: calc(100vh - 2em - 2.2em - 2.5em);
+	height: calc(100vh - 2em - 2.2em - 2.5em - #{$language-picker-height});
 	padding-bottom: 10px;
 	
 	&.offline-mode {
 		/* create space for the offline message */
 		padding-bottom: 96px;
+		height: calc(100vh - 2em - 2.2em - 2.5em - #{$language-picker-height-offline});
 	}
 	
 	.entry {
@@ -168,7 +185,7 @@ export default {
 		text-decoration: none;
 		transition: 0.2s ease background-color;
 		&:hover {
-			background-color: #414141;
+			background-color: #454545;
 		}
 		
 		&:after {
@@ -226,6 +243,45 @@ export default {
 		margin-bottom: 0.7em;
 		font-size: 0.8em;
 		margin-left: 0.8em;
+	}
+}
+.language-picker {
+	display: block;
+	text-align: center;
+	padding-top: 0.8em;
+	height: $language-picker-height;
+	
+	&.offline-mode {
+		height: $language-picker-height-offline;
+	}
+	
+	.language {
+		display: inline-block;
+		width: 2.3em;
+		height: 2.3em;
+		border-radius: 100px;
+		position: relative;
+		cursor: pointer;
+		&.selected {
+			&, &:hover {
+				background: #626262;
+			}
+		}
+		&:hover {
+			background: #454545;
+		}
+		& + .language {
+			margin-left: 0.2em;
+		}
+		
+		.text {
+			display: block;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			font-size: 15px;
+		}
 	}
 }
 </style>
