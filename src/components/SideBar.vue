@@ -269,6 +269,8 @@ $language-picker-height-offline: 8.9em;
 		border-radius: 100px;
 		position: relative;
 		cursor: pointer;
+		transition: 0.2s ease all;
+		
 		&.selected {
 			&, &:hover {
 				background: #626262;
