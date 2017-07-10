@@ -82,63 +82,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import '../styles/variables';
-
-.login-registration {
-	margin: 0;
-	width: 100%;
-	padding-top: 10vh;
-	height: 100vh;
-	/* height with navbar: 
-	height: calc(100vh - #{$navbarHeight}); */
-	
-	.logo {
-		width: 70%;
-		margin: 0 auto 8vmin;
-		display: block;
-	}
-	
-	.form-box {
-		padding: 20px;
-		background: #efefef;
-		border-radius: 5px;
-		box-shadow: 0 0 5em rgba(0,0,0,0.4);
-		margin-bottom: 20px;
-	}
-	
-	.main-title {
-		text-align: center;
-		margin-bottom: 20px;
-	}
-	
-	.form-group {
-		margin-bottom: 5px;
-	}
-	
-	.btn.btn-primary {
-		margin-top: 25px;
-		cursor: pointer;
-	}
-	.links-below {
-		text-align: right;
-		margin-top: 20px;
-		font-size: 85%;
-		&:after {
-			content: "";
-			display: block;
-			clear: both;
-		}
-		:first-child {
-			float: left;
-		}
-		:last-child {
-			float: right;
-		}
-	}
-}
-</style>
-
 <style lang="scss" scoped>
 @import '../styles/variables';
 
