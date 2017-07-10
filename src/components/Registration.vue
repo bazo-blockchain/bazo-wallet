@@ -1,9 +1,6 @@
 <template>
 <div class="registration login-registration">
 	<div class="container">
-		<div class="col-md-4 offset-md-4">
-			<img class="logo" src="../assets/about_cb_2.png" alt="Coinblesk">
-		</div>
 		<div class="form-box bordered-box" :class="{ 'col-md-4': stepNumber===1, 'offset-md-4': stepNumber===1, 'col-md-6': stepNumber===2, 'offset-md-3': stepNumber===2 }">
 			<div class="main-title display-7">{{ $t('registration.title') }}
 				<small>&ndash; {{ $t('registration.titleStep', { step: stepNumber }) }}</small>
