@@ -6,13 +6,7 @@
 			<!-- buttons are hidden on small screens -->
 			<div class="buttons pull-right" v-if="auth.authenticated">
 				<div class="button" v-if="auth.role === 'ROLE_USER'">
-					<a class="balance">
-						<i class="fa fa-bitcoin"></i>
-						<span class="value">{{ totalBalanceFormatted }}</span>
-						<b-tooltip :content="balanceDateFormatted" placement="bottom" class="info" offset="-10px 0">
-							<i class="fa fa-info-circle increase-focus" :class="{ 'red': isOffline }"></i>
-						</b-tooltip>
-					</a>
+					<balance></balance>
 				</div>
 				<div class="button">
 					<router-link class="profile" :to="{ name: 'profile' }" :class="offlineCheck('profile')">
@@ -57,8 +51,7 @@
 </template>
 
 <script>
-import moment from 'moment';
-import UtilService from '@/services/UtilService';
+import Balance from '@/components/auth/user/Balance';
 
 export default {
 	name: 'main-header',
@@ -70,6 +63,9 @@ export default {
 	props: {
 		shown: Boolean,
 		transparent: Boolean
+	},
+	components: {
+		Balance
 	},
 	methods: {
 		switchLanguage: function (newLanguage) {
@@ -103,21 +99,6 @@ export default {
 		},
 		auth: function () {
 			return this.$store.state.auth;
-		},
-		userBalance: function () {
-			return this.$store.state.userBalance;
-		},
-		totalBalanceFormatted: function () {
-			if (this.userBalance && this.userBalance.totalBalance) {
-				return UtilService.formatSatoshi(this.userBalance.totalBalance);
-			}
-			return 0;
-		},
-		balanceDateFormatted: function () {
-			if (this.userBalance && this.userBalance.lastUpdate) {
-				return this.$t('header.balanceLastUpdate', { timestamp: moment(this.userBalance.lastUpdate).format(UtilService.DATE_FORMAT) });
-			}
-			return '';
 		},
 		currentLanguage: function () {
 			return this.$locale.current();
@@ -217,35 +198,7 @@ export default {
 					cursor: pointer;
 				}
 				
-				.balance {
-					font-size: 17px;
-					font-weight: 300;
-					cursor: initial;
-					
-					.fa, .value, .info {
-						display: inline-block;
-						vertical-align: middle;
-					}
-					.info {
-						line-height: 0;
-					}
-					
-					.fa-info-circle {
-						color: #bfbfbf;
-						font-size: 80%;
-						margin-left: 3px;
-						margin-right: 10px;
-						cursor: help;
-						line-height: 0;
-						&.red {
-							color: #d83838;
-							animation: bumping 2s infinite;
-							text-shadow: 0 0 5px rgba(255, 255, 255, 0.58);
-						}
-					}
-				}
-				
-				a {
+				a, /deep/ .balance {
 					display: inline-block;
 					position: relative;
 					top: 50%;
@@ -254,17 +207,14 @@ export default {
 					cursor: pointer;
 					text-decoration: none;
 				}
+				
+				/deep/ .balance {
+					font-size: 17px;
+					font-weight: 300;
+					cursor: initial;
+				}
 			}
 		}
-	}
-}
-@keyframes bumping {
-	0%,
-	100% {
-		transform: scale(1);
-	},
-	50% {
-		transform: scale(1.2);
 	}
 }
 .logo {

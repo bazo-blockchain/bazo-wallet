@@ -189,13 +189,17 @@ export default {
 		}
 	}
 }
-@media (min-width: 500px) {
+@media (min-width: 550px) {
 	#app-container {
 		.side-bar-wrapper {
 			width: 0;
 
 			/deep/ .side-bar {
 				width: 300px;
+				
+				.balance-wrapper {
+					display: none;
+				}
 			}
 			.hamburger {
 				left: 0;

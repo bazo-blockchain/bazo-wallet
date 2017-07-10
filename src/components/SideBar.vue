@@ -74,12 +74,16 @@
 			<div class="language" :class="{'selected': currentLanguage === language}" v-for="language in ['en', 'de']" @click="changeLanguage(language)">
 				<span class="text">{{ language.toUpperCase() }}</span>
 			</div>
+			<div class="balance-wrapper" v-if="auth.role === 'ROLE_USER'">
+				<balance tooltip-placement="top"></balance>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
 import Hammer from 'hammerjs';
+import Balance from '@/components/auth/user/Balance';
 
 export default {
 	name: 'side-bar',
@@ -90,6 +94,9 @@ export default {
 	},
 	props: {
 		showTriangle: Boolean
+	},
+	components: {
+		Balance
 	},
 	computed: {
 		isOffline: function () {
@@ -281,6 +288,21 @@ $language-picker-height-offline: 8.9em;
 			left: 50%;
 			transform: translate(-50%,-50%);
 			font-size: 15px;
+		}
+	}
+	.balance-wrapper {
+		display: inline-block;
+		vertical-align: top;
+		height: 2.3em;
+		position: relative;
+		padding-top: 0.35em;
+		margin-left: 0.75em;
+		padding-left: 0.75em;
+		border-left: 1px solid #656565;
+		font-weight: 300;
+		
+		/deep/ .balance .fa.fa-info-circle {
+			margin-right: 0;
 		}
 	}
 }
