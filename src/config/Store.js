@@ -29,6 +29,14 @@ const store = new Vuex.Store({
 		clearUser: function (state) {
 			state.user = null;
 		},
+		updateUserBalance: function (state, userBalance) {
+			userBalance.lastUpdate = new Date();
+			state.userBalance = userBalance;
+		},
+		clearUserBalance: function (state) {
+			state.userBalance = null;
+		},
+
 		updateLanguage: function (state, language) {
 			state.language = language;
 		},
@@ -84,6 +92,24 @@ const store = new Vuex.Store({
 				return Promise.reject();
 			}
 		},
+
+		updateUserBalance: function (context) {
+			if (context.state.auth.authenticated && context.state.auth.role === 'ROLE_USER') {
+				return HttpService.Auth.User.getUserBalance(false)
+					.then((response) => {
+						context.commit('updateUserBalance', response.body);
+					}, response => {
+						if (response.status !== 0) {
+							context.commit('clearUserBalance');
+						}
+						return Promise.reject();
+					});
+			} else {
+				context.commit('clearUserBalance');
+				return Promise.reject();
+			}
+		},
+
 		updateLanguage: function (context, language) {
 			return context.commit('updateLanguage', language);
 		},
@@ -98,6 +124,7 @@ const store = new Vuex.Store({
 			context.commit('setOffline', !!offline);
 		},
 		logout: function (context) {
+			context.commit('clearUserBalance');
 			context.commit('clearUser');
 			context.commit('clearAuth');
 		}
@@ -106,7 +133,7 @@ const store = new Vuex.Store({
 		// persists vuex state to localstorage (only the given paths)
 		PersistedState({
 			key: 'coinblesk_vuex_store',
-			paths: [ 'auth', 'user', 'language' ]
+			paths: [ 'auth', 'user', 'language', 'userBalance' ]
 		})
 	]
 });

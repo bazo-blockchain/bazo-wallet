@@ -5,6 +5,15 @@
 			
 			<!-- buttons are hidden on small screens -->
 			<div class="buttons pull-right" v-if="auth.authenticated">
+				<div class="button" v-if="auth.role === 'ROLE_USER'">
+					<a class="balance">
+						<i class="fa fa-bitcoin"></i>
+						<span class="value">{{ totalBalanceFormatted }}</span>
+						<b-tooltip :content="balanceDateFormatted" placement="bottom" class="info" offset="-10px 0">
+							<i class="fa fa-info-circle increase-focus" :class="{ 'red': isOffline }"></i>
+						</b-tooltip>
+					</a>
+				</div>
 				<div class="button">
 					<router-link class="profile" :to="{ name: 'profile' }" :class="offlineCheck('profile')">
 						<img class="user-image" :alt="user.email" src="../assets/user.svg">
@@ -48,10 +57,15 @@
 </template>
 
 <script>
+import moment from 'moment';
+import UtilService from '@/services/UtilService';
+
 export default {
 	name: 'main-header',
 	data: function () {
-		return {};
+		return {
+			userBalanceIsLoading: false
+		};
 	},
 	props: {
 		shown: Boolean,
@@ -70,6 +84,17 @@ export default {
 			return {
 				offline: this.isOffline && this.offlineRoutes.indexOf(routeName) === -1
 			}
+		},
+		loadUserBalance: function () {
+			if (!this.userBalanceIsLoading && !this.isOffline) {
+				this.userBalanceIsLoading = true;
+
+				this.$store.dispatch('updateUserBalance').then(() => {
+					this.userBalanceIsLoading = false;
+				}, () => {
+					this.userBalanceIsLoading = false;
+				});
+			}
 		}
 	},
 	computed: {
@@ -78,6 +103,21 @@ export default {
 		},
 		auth: function () {
 			return this.$store.state.auth;
+		},
+		userBalance: function () {
+			return this.$store.state.userBalance;
+		},
+		totalBalanceFormatted: function () {
+			if (this.userBalance && this.userBalance.totalBalance) {
+				return UtilService.formatSatoshi(this.userBalance.totalBalance);
+			}
+			return 0;
+		},
+		balanceDateFormatted: function () {
+			if (this.userBalance && this.userBalance.lastUpdate) {
+				return this.$t('header.balanceLastUpdate', { timestamp: moment(this.userBalance.lastUpdate).format(UtilService.DATE_FORMAT) });
+			}
+			return '';
 		},
 		currentLanguage: function () {
 			return this.$locale.current();
@@ -88,6 +128,13 @@ export default {
 		isOffline: function () {
 			return this.$store.state.offline;
 		}
+	},
+	mounted: function () {
+		this.loadUserBalance();
+		window.setInterval(this.loadUserBalance, 20000);
+	},
+	beforeDestory: function () {
+		window.clearInterval(this.loadUserBalance);
 	}
 };
 </script>
@@ -170,6 +217,34 @@ export default {
 					cursor: pointer;
 				}
 				
+				.balance {
+					font-size: 17px;
+					font-weight: 300;
+					cursor: initial;
+					
+					.fa, .value, .info {
+						display: inline-block;
+						vertical-align: middle;
+					}
+					.info {
+						line-height: 0;
+					}
+					
+					.fa-info-circle {
+						color: #bfbfbf;
+						font-size: 80%;
+						margin-left: 3px;
+						margin-right: 10px;
+						cursor: help;
+						line-height: 0;
+						&.red {
+							color: #d83838;
+							animation: bumping 2s infinite;
+							text-shadow: 0 0 5px rgba(255, 255, 255, 0.58);
+						}
+					}
+				}
+				
 				a {
 					display: inline-block;
 					position: relative;
@@ -181,6 +256,15 @@ export default {
 				}
 			}
 		}
+	}
+}
+@keyframes bumping {
+	0%,
+	100% {
+		transform: scale(1);
+	},
+	50% {
+		transform: scale(1.2);
 	}
 }
 .logo {
@@ -211,14 +295,16 @@ export default {
 		"header": {
 			"signIn": "Sign In",
 			"logout": "Sign Out",
-			"register": "Registration"
+			"register": "Registration",
+			"balanceLastUpdate": "Last Update:<br>{timestamp}"
 		}
 	},
 	"de": {
 		"header": {
 			"signIn": "Anmelden",
 			"logout": "Abmelden",
-			"register": "Registrieren"
+			"register": "Registrieren",
+			"balanceLastUpdate": "Letztes Update:<br>{timestamp}"
 		}
 	}
 }

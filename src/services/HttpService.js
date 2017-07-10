@@ -43,6 +43,12 @@ const HttpService = {
 					doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 		},
 
+		User: {
+			getUserBalance: function (showProgressBar) {
+				return Vue.http.get(HOST + '/auth/user/balance', { showProgressBar: !(showProgressBar === false) });
+			}
+		},
+
 		Admin: {
 			deleteUser: function (email) {
 				const encodedEmail = window.encodeURIComponent(email);
