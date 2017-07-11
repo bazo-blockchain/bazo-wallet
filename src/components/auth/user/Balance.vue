@@ -1,7 +1,7 @@
 <template>
 <a class="balance">
 	<i class="fa fa-bitcoin"></i>
-	<span class="value">{{ totalBalanceFormatted }}</span>
+	<span class="value">{{ totalBalanceBTC }}</span>
 	<b-tooltip :content="balanceDateFormatted" :placement="tooltipPlacement" class="info" :offset="offset">
 		<i class="fa fa-info-circle increase-focus" :class="{ 'red': isOffline }"></i>
 	</b-tooltip>
@@ -32,9 +32,9 @@ export default {
 		userBalance: function () {
 			return this.$store.state.userBalance;
 		},
-		totalBalanceFormatted: function () {
+		totalBalanceBTC: function () {
 			if (this.userBalance && this.userBalance.totalBalance) {
-				return UtilService.formatSatoshi(this.userBalance.totalBalance);
+				return UtilService.convertSatoshiToBitcoin(this.userBalance.totalBalance);
 			}
 			return 0;
 		},

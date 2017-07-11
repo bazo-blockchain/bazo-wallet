@@ -37,12 +37,12 @@
 						</div>
 						<div class="col-md-4">
 							<b-form-fieldset :label="$t('userSend.maxAmount')">
-								<div class="form-control disabled mono">{{ totalBalanceFormatted }} BTC</div>
+								<div class="form-control disabled mono">{{ convertSatoshiToBitcoin(totalBalance) }} BTC</div>
 							</b-form-fieldset>
 						</div>
 					</div>
 					<div class="description-forex-rate" v-html="$t('userSend.descriptionForexRate', { forex: forexRate.rate })" v-if="selectedCurrency === 'USD'"></div>
-					<b-button class="submit-button" :block="true" variant="primary" @click.prevent="submit" :disabled="formIsTouched && !validForm">{{ $t('userSend.button', { amount: formatSatoshi(btcAmount) }) }}</b-button>
+					<b-button class="submit-button" :block="true" variant="primary" @click.prevent="submit" :disabled="formIsTouched && !validForm">{{ $t('userSend.button', { amount: btcAmount }) }}</b-button>
 				</form>
 			</div>
 
@@ -82,9 +82,6 @@ export default {
 				totalBalance = this.$store.state.userBalance.totalBalance;
 			}
 			return totalBalance;
-		},
-		totalBalanceFormatted: function () {
-			return UtilService.formatSatoshi(this.totalBalance);
 		},
 		btcAmount: function () {
 			if (this.isLoading) {
@@ -148,7 +145,7 @@ export default {
 			this.$toasted.global.success(this.$t('userSend.transactionSuccessful'));
 			this.$router.push({ name: 'home' });
 		},
-		formatSatoshi: UtilService.formatSatoshi
+		convertSatoshiToBitcoin: UtilService.convertSatoshiToBitcoin
 	},
 	mounted: function () {
 		this.isLoading = true;

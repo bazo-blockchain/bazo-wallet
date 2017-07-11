@@ -13,6 +13,12 @@ const UtilService = {
 	formatSatoshi: function (value) {
 		let val = (value / 1).toFixed(0);
 		return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\'');
+	},
+	convertSatoshiToBitcoin: function (satoshi) {
+		return window.parseInt(satoshi, 10) / 100000000;
+	},
+	convertBitcoinToSatoshi: function (bitcoin) {
+		return Math.round(window.parseFloat(bitcoin) * 100000000);
 	}
 
 };
