@@ -3,7 +3,7 @@
 	<div class="compact">
 		<h1 class="display-4">{{ $t('send.title') }}</h1>
 		<hr>
-		<div class="box-wrapper">
+		<div class="box-wrapper" v-if="!isLoading">
 			<div class="box">
 				<div class="main-title display-7">{{ $t('send.boxTitle') }}</div>
 				<hr>
@@ -26,7 +26,7 @@
 									<b-form-input v-model="amount" class="mono"></b-form-input>
 									<b-input-group-button slot="right">
 										<b-dropdown :text="selectedCurrency" variant="default" right>
-											<b-dropdown-item v-for="currency in ['BTC', 'USD']" @click="selectedCurrency = currency" :key="currency">
+											<b-dropdown-item v-for="currency in allowedCurrencies" @click="selectedCurrency = currency" :key="currency">
 											<span class="currency">{{ currency }}</span>
 											<i class="fa fa-check" v-if="currency === selectedCurrency"></i>
 											</b-dropdown-item>
@@ -41,10 +41,8 @@
 							</b-form-fieldset>
 						</div>
 					</div>
-					<b-form-fieldset :label="$t('send.note')">
-						<b-form-input :placeholder="$t('send.notePlaceholder')"></b-form-input>
-					</b-form-fieldset>
-					<b-button class="submit-button" :block="true" variant="primary">{{ $t('send.button', { amount: formatSatoshi(amount) }) }}</b-button>
+					<div class="description-forex-rate" v-html="$t('send.descriptionForexRate', { forex: forexRate.rate })" v-if="selectedCurrency === 'USD'"></div>
+					<b-button class="submit-button" :block="true" variant="primary">{{ $t('send.button', { amount: formatSatoshi(btcAmount) }) }}</b-button>
 				</form>
 			</div>
 		</div>
@@ -54,14 +52,18 @@
 
 <script>
 import UtilService from '@/services/UtilService';
+import HttpService from '@/services/HttpService';
 
 export default {
 	name: 'user-send',
 	data: function () {
 		return {
+			isLoading: true,
 			selectedCurrency: 'BTC',
+			allowedCurrencies: ['BTC', 'USD'],
 			amount: 0,
-			address: ''
+			address: '',
+			forexRate: {}
 		}
 	},
 	computed: {
@@ -74,13 +76,39 @@ export default {
 		},
 		totalBalanceFormatted: function () {
 			return UtilService.formatSatoshi(this.totalBalance);
+		},
+		btcAmount: function () {
+			if (this.isLoading) {
+				return 0;
+			}
+			if (this.selectedCurrency === 'USD') {
+				return this.amount / this.forexRate.rate;
+			} else {
+				return this.amount;
+			}
 		}
 	},
 	methods: {
+		loadForexRate: function () {
+			return HttpService.getForexCurrent('BITSTAMP', 'USD').then(response => {
+				this.forexRate = response.body;
+				return Promise.resolve();
+			});
+		},
 		openSearch: function () {
 			console.log('search');
 		},
 		formatSatoshi: UtilService.formatSatoshi
+	},
+	mounted: function () {
+		this.isLoading = true;
+		this.loadForexRate().then(() => {
+			this.isLoading = false;
+			window.setInterval(this.loadForexRate, 60000);
+		});
+	},
+	beforeDestory: function () {
+		window.clearInterval(this.loadForexRate);
 	}
 };
 </script>
@@ -105,10 +133,20 @@ export default {
 		font-size: 85%;
 	}
 	.submit-button {
-		margin-top: 30px;
+		margin-top: 20px;
 	}
 	.form-group {
 		margin-bottom: 10px;
+	}
+	.description-forex-rate {
+		margin-top: 10px;
+		margin-left: 5px;
+		padding-left: 10px;
+		border-left: 2px solid #888;
+		font-size: 14px;
+		padding-bottom: 3px;
+		padding-top: 3px;
+		font-style: italic;
 	}
 	/deep/ {
 		.dropdown-item {
@@ -142,8 +180,7 @@ export default {
 			"lookup": "Lookup",
 			"amount": "Amount",
 			"maxAmount": "Maximal amount",
-			"note": "Note",
-			"notePlaceholder": "Add a message (optional)",
+			"descriptionForexRate": "The current forex rate BTC/USD is <span class='mono'>{forex}</span>.",
 			"button": "Send {amount} BTC"
 		}
 	},
@@ -156,8 +193,7 @@ export default {
 			"lookup": "Suchen",
 			"amount": "Betrag",
 			"maxAmount": "Maximalbetrag",
-			"note": "Notiz",
-			"notePlaceholder": "Nachricht schreiben (optional)",
+			"descriptionForexRate": "Der aktuelle Wechselkurs BTC/USD beträgt <span class='mono'>{forex}</span>.",
 			"button": "{amount} BTC versenden"
 		}
 	}
