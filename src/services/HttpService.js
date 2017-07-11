@@ -46,6 +46,9 @@ const HttpService = {
 		User: {
 			getUserBalance: function (showProgressBar) {
 				return Vue.http.get(HOST + '/auth/user/balance', { showProgressBar: !(showProgressBar === false) });
+			},
+			getEncryptedPrivateKey: function () {
+				return Vue.http.get(HOST + '/auth/user/encrypted-private-key');
 			}
 		},
 
