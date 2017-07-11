@@ -1,7 +1,7 @@
 <template>
 <div class="password-forgotten login-registration">
-	<div class="container">
-		<div class="form-box bordered-box col-md-4 offset-md-4">
+	<div class="compact">
+		<div class="form-box bordered-box">
 			<div class="main-title display-7">{{ $t('passwordForgotten.title') }}</div>
 			<hr>
 			<form>
