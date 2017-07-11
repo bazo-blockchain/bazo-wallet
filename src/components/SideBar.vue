@@ -45,6 +45,10 @@
 					<i class="fa fa-bitcoin"></i>
 					<span class="text">{{ $t('sideBar.userAuthenticated') }}</span>
 				</router-link>
+				<router-link class="entry" :to="{ name: 'user-send' }" :class="dynamicLinkClasses('user-send')" @click.native="closeMenu">
+					<i class="fa fa-bitcoin"></i>
+					<span class="text">{{ $t('sideBar.userSend') }}</span>
+				</router-link>
 			</div>
 
 			<div class="separator"></div>
@@ -322,6 +326,7 @@ $language-picker-height-offline: 8.9em;
 			"forex": "Market trend",
 			"authenticated": "Auth Page",
 			"userAuthenticated": "User Auth Page",
+			"userSend": "Send Bitcoins",
 			"adminEvents": "Events",
 			"adminAccounts": "Accounts",
 			"adminUserAccounts": "User Accounts",
@@ -341,6 +346,7 @@ $language-picker-height-offline: 8.9em;
 			"forex": "Kursentwicklung",
 			"authenticated": "Auth Seite",
 			"userAuthenticated": "User-Auth Seite",
+			"userSend": "Bitcoins versenden",
 			"adminEvents": "Events",
 			"adminAccounts": "Konten",
 			"adminUserAccounts": "Benutzerkonten",

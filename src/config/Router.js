@@ -10,6 +10,7 @@ import Registration from '@/components/Registration';
 import Login from '@/components/Login';
 import Authenticated from '@/components/auth/Authenticated';
 import UserAuthenticated from '@/components/auth/user/UserAuthenticated';
+import UserSend from '@/components/auth/user/UserSend';
 import Profile from '@/components/auth/Profile';
 import AdminServerBalance from '@/components/auth/admin/AdminServerBalance';
 import AdminAccountsDetail from '@/components/auth/admin/AdminAccountsDetail';
@@ -158,6 +159,7 @@ const routes = [
 	{ path: '/auth/authenticated', name: 'authenticated', component: Authenticated, beforeEnter: requireAuth },
 
 	{ path: '/auth/user/authenticated', name: 'user-authenticated', component: UserAuthenticated, beforeEnter: requireAuthAndUser },
+	{ path: '/auth/user/send', name: 'user-send', component: UserSend, beforeEnter: requireAuthAndUser },
 
 	{ path: '/auth/admin/events', name: 'admin-events', component: AdminEvents, beforeEnter: requireAuthAndAdmin },
 	{ path: '/auth/admin/server-balance', name: 'admin-server-balance', component: AdminServerBalance, beforeEnter: requireAuthAndAdmin },

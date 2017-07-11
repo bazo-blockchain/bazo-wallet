@@ -229,10 +229,25 @@ input[type=number].form-error {
 .key {
 	width: auto;
 }
+.mono {
+	font-family: "Roboto Mono", Consolas, monospace;
+}
 
 .compact {
 	margin-top: 50px;
 	margin-bottom: 50px;
 	margin-left: 47px;
 	margin-right: 40px;
+}
+@media (max-width: $breakpoint-hide-header) {
+	.compact {
+		margin-left: 15px;
+		margin-right: 15px;
+		margin-top: 60px;
+		margin-bottom: 20px;
+	}
+}
+
+.form-control.disabled {
+	background-color: #eceeef;
 }
