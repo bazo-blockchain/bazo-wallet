@@ -147,7 +147,8 @@ $red-error-input-color: #ffa3a3;
 input[type=text].form-error,
 input[type=password].form-error,
 input[type=email].form-error,
-input[type=number].form-error {
+input[type=number].form-error,
+div.form-error {
 	box-shadow: 0 0 0 1px $red-error-input-color;
 	&:focus {
 		border-color: transparent;

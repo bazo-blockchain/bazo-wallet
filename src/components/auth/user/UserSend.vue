@@ -37,7 +37,9 @@
 						</div>
 						<div class="col-md-4">
 							<b-form-fieldset :label="$t('userSend.maxAmount')">
-								<div class="form-control disabled mono">{{ convertSatoshiToBitcoin(totalBalance) }} BTC</div>
+								<div class="form-control disabled mono" :class="{ 'form-error': formIsTouched && maximumAmountExceeded }">
+									{{ convertSatoshiToBitcoin(totalBalance) }} BTC
+								</div>
 							</b-form-fieldset>
 						</div>
 					</div>
@@ -97,8 +99,16 @@ export default {
 			if (this.amount <= 0) {
 				return false;
 			}
-			// TODO validation if btcAmount exceeds balance
+			if (this.maximumAmountExceeded) {
+				return false;
+			}
 			return true;
+		},
+		maximumAmountExceeded: function () {
+			if (!this.$store.state.userBalance) {
+				return true;
+			}
+			return this.$store.state.userBalance.totalBalance * UtilService.SATOSHI_PER_BITCOIN < this.btcAmount;
 		},
 		validAddress: function () {
 			if (this.address === '') {
