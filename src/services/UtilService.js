@@ -4,23 +4,23 @@ const UtilService = {
 	PASSWORD_MIN_LENGTH: 6,
 	DATE_FORMAT: 'YYYY-MM-DD, HH:mm:ss',
 	DATE_ONLY_FORMAT: 'YYYY-MM-DD',
+	SATOSHI_PER_BITCOIN: 100000000
+};
 
-	formatCurrency: function (value) {
-		// see http://stackoverflow.com/a/43208223/3233827
-		let val = (value / 1).toFixed(2).replace('.', ',');
-		return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\'');
-	},
-	formatSatoshi: function (value) {
-		let val = (value / 1).toFixed(0);
-		return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\'');
-	},
-	convertSatoshiToBitcoin: function (satoshi) {
-		return window.parseInt(satoshi, 10) / 100000000;
-	},
-	convertBitcoinToSatoshi: function (bitcoin) {
-		return Math.round(window.parseFloat(bitcoin) * 100000000);
-	}
-
+UtilService.formatCurrency = function (value) {
+	// see http://stackoverflow.com/a/43208223/3233827
+	let val = (value / 1).toFixed(2).replace('.', ',');
+	return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\'');
+};
+UtilService.formatSatoshi = function (value) {
+	let val = (value / 1).toFixed(0);
+	return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\'');
+};
+UtilService.convertSatoshiToBitcoin = function (satoshi) {
+	return window.parseInt(satoshi, 10) / UtilService.SATOSHI_PER_BITCOIN;
+};
+UtilService.convertBitcoinToSatoshi = function (bitcoin) {
+	return Math.round(window.parseFloat(bitcoin) * UtilService.SATOSHI_PER_BITCOIN);
 };
 
 export default UtilService;

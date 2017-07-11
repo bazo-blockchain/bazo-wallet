@@ -88,7 +88,7 @@ export default {
 				return 0;
 			}
 			if (this.selectedCurrency === 'USD') {
-				return this.amount / this.forexRate.rate;
+				return Math.round((this.amount / this.forexRate.rate) * UtilService.SATOSHI_PER_BITCOIN) / UtilService.SATOSHI_PER_BITCOIN;
 			} else {
 				return this.amount;
 			}
