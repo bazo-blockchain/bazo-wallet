@@ -58,7 +58,7 @@ import UtilService from '@/services/UtilService';
 import CacheService from '@/services/CacheService';
 import Chartist from '@/config/Chartist';
 import moment from 'moment';
-import Spinner from '@/components/auth/user/Spinner';
+import Spinner from '@/components/Spinner';
 
 export default {
 	name: 'forex',

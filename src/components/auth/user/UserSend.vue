@@ -62,7 +62,7 @@ import UtilService from '@/services/UtilService';
 import HttpService from '@/services/HttpService';
 import CryptoService from '@/services/CryptoService';
 import UserDecryptPrivateKey from '@/components/auth/user/UserDecryptPrivateKey';
-import Spinner from '@/components/auth/user/Spinner';
+import Spinner from '@/components/Spinner';
 
 export default {
 	name: 'user-send',
