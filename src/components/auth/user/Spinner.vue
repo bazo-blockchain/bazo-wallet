@@ -35,6 +35,7 @@ export default {
 	opacity: 0;
 	visibility: hidden;
 	transition: 0.3s ease all;
+	min-height: 300px;
 	
 	&.shown {
 		opacity: 1;

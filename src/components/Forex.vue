@@ -4,7 +4,7 @@
 		<h1 class="display-4">{{ $t('forex.title') }}</h1>
 		<hr>
 		<div class="pos-rel">
-			<spinner :isLoading="isLoadingCurrent || isLoadingHistory"></spinner>
+			<spinner :is-loading="isLoadingCurrent || isLoadingHistory"></spinner>
 			<div class="selectors">
 				<div class="selector">
 					<label>{{ $t('forex.selectCurrency') }}: </label>

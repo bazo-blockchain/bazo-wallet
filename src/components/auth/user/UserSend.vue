@@ -3,52 +3,55 @@
 	<div class="compact">
 		<h1 class="display-4">{{ $t('userSend.title') }}</h1>
 		<hr>
-		<div class="box-wrapper" v-if="!isLoading">
-			<div class="box">
-				<div class="main-title display-7">{{ $t('userSend.boxTitle') }}</div>
-				<hr>
-				<form>
-					<b-form-fieldset :label="$t('userSend.receiver')">
-						<b-input-group>
-							<b-form-input v-model="address" type="text" class="address-input" :placeholder="$t('userSend.receiverPlaceholder')" :class="{ 'form-error': formIsTouched && !validAddress }"></b-form-input>
-							<b-input-group-button slot="right">
-								<b-button @click.prevent="openSearch">
-									<i class="fa fa-search"></i>
-									{{ $t('userSend.lookup') }}
-								</b-button>
-							</b-input-group-button>
-						</b-input-group>
-					</b-form-fieldset>
-					<div class="row">
-						<div class="col-md-8">
-							<b-form-fieldset :label="$t('userSend.amount')">
-								<b-input-group>
-									<b-form-input v-model="amount" class="mono amount-input" type="number" min="0" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
-									<b-input-group-button slot="right">
-										<b-dropdown :text="selectedCurrency" variant="default" right>
-											<b-dropdown-item v-for="currency in allowedCurrencies" @click="selectedCurrency = currency" :key="currency">
-											<span class="currency">{{ currency }}</span>
-											<i class="fa fa-check" v-if="currency === selectedCurrency"></i>
-											</b-dropdown-item>
-										</b-dropdown>
-									</b-input-group-button>
-								</b-input-group>
-							</b-form-fieldset>
+		<div class="pos-rel">
+			<spinner :is-loading="isLoading"></spinner>
+			<div class="box-wrapper" v-if="!isLoading">
+				<div class="box">
+					<div class="main-title display-7">{{ $t('userSend.boxTitle') }}</div>
+					<hr>
+					<form>
+						<b-form-fieldset :label="$t('userSend.receiver')">
+							<b-input-group>
+								<b-form-input v-model="address" type="text" class="address-input" :placeholder="$t('userSend.receiverPlaceholder')" :class="{ 'form-error': formIsTouched && !validAddress }"></b-form-input>
+								<b-input-group-button slot="right">
+									<b-button @click.prevent="openSearch">
+										<i class="fa fa-search"></i>
+										{{ $t('userSend.lookup') }}
+									</b-button>
+								</b-input-group-button>
+							</b-input-group>
+						</b-form-fieldset>
+						<div class="row">
+							<div class="col-md-8">
+								<b-form-fieldset :label="$t('userSend.amount')">
+									<b-input-group>
+										<b-form-input v-model="amount" class="mono amount-input" type="number" min="0" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
+										<b-input-group-button slot="right">
+											<b-dropdown :text="selectedCurrency" variant="default" right>
+												<b-dropdown-item v-for="currency in allowedCurrencies" @click="selectedCurrency = currency" :key="currency">
+												<span class="currency">{{ currency }}</span>
+												<i class="fa fa-check" v-if="currency === selectedCurrency"></i>
+												</b-dropdown-item>
+											</b-dropdown>
+										</b-input-group-button>
+									</b-input-group>
+								</b-form-fieldset>
+							</div>
+							<div class="col-md-4">
+								<b-form-fieldset :label="$t('userSend.maxAmount')">
+									<div class="form-control disabled mono" :class="{ 'form-error': formIsTouched && maximumAmountExceeded }">
+										{{ convertSatoshiToBitcoin(totalBalance) }} BTC
+									</div>
+								</b-form-fieldset>
+							</div>
 						</div>
-						<div class="col-md-4">
-							<b-form-fieldset :label="$t('userSend.maxAmount')">
-								<div class="form-control disabled mono" :class="{ 'form-error': formIsTouched && maximumAmountExceeded }">
-									{{ convertSatoshiToBitcoin(totalBalance) }} BTC
-								</div>
-							</b-form-fieldset>
-						</div>
-					</div>
-					<div class="description-forex-rate" v-html="$t('userSend.descriptionForexRate', { forex: forexRate.rate })" v-if="selectedCurrency === 'USD'"></div>
-					<b-button class="submit-button" :block="true" variant="primary" @click.prevent="submit" :disabled="formIsTouched && !validForm">{{ $t('userSend.button', { amount: btcAmount }) }}</b-button>
-				</form>
+						<div class="description-forex-rate" v-html="$t('userSend.descriptionForexRate', { forex: forexRate.rate })" v-if="selectedCurrency === 'USD'"></div>
+						<b-button class="submit-button" :block="true" variant="primary" @click.prevent="submit" :disabled="formIsTouched && !validForm">{{ $t('userSend.button', { amount: btcAmount }) }}</b-button>
+					</form>
+				</div>
+	
+				<user-decrypt-private-key @private-key-decrypted="signDTO" :encrypted-private-key="encryptedPrivateKey"></user-decrypt-private-key>
 			</div>
-
-			<user-decrypt-private-key @private-key-decrypted="signDTO" :encrypted-private-key="encryptedPrivateKey"></user-decrypt-private-key>
 		</div>
 	</div>
 </div>
@@ -59,6 +62,7 @@ import UtilService from '@/services/UtilService';
 import HttpService from '@/services/HttpService';
 import CryptoService from '@/services/CryptoService';
 import UserDecryptPrivateKey from '@/components/auth/user/UserDecryptPrivateKey';
+import Spinner from '@/components/auth/user/Spinner';
 
 export default {
 	name: 'user-send',
@@ -75,6 +79,7 @@ export default {
 		}
 	},
 	components: {
+		Spinner,
 		UserDecryptPrivateKey
 	},
 	computed: {
