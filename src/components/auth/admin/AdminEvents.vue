@@ -3,54 +3,57 @@
 	<div class="compact">
 		<h1 class="display-4">{{ $t('adminEvents.title') }}</h1>
 		<hr>
-		<div v-if="!isLoading">
-			<div class="event-urgence-selector">
-				<span class="badge badge-very-danger" @click="changeUrgence('FATAL')" :class="{ 'translucent': !badges.FATAL }"><i class="fa fa-exclamation"></i> FATAL</span>
-				<span class="badge badge-danger" @click="changeUrgence('ERROR')" :class="{ 'translucent': !badges.ERROR }">ERROR</span>
-				<span class="badge badge-warning" @click="changeUrgence('WARN')" :class="{ 'translucent': !badges.WARN }">WARN</span>
-				<span class="badge badge-primary" @click="changeUrgence('INFO')" :class="{ 'translucent': !badges.INFO }">INFO</span>
-				<span class="badge badge-info" @click="changeUrgence('DEBUG')" :class="{ 'translucent': !badges.DEBUG }">DEBUG</span>
-			</div>
-			<div v-if="items.length > 0">
-				<label class="rows-per-page">
-					Rows per Page
-					<b-form-select :options="[{text:50,value:50},{text:100,value:100},{text:200,value:200}]" v-model="perPage"></b-form-select>
-				</label>
-				<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage">
-					<template slot="id" scope="item">
-						{{ item.value }}
-					</template>
-					<template slot="urgence" scope="item">
-						<span class="badge" :class="{'badge-very-danger': item.value === 'FATAL',
-							'badge-danger': item.value === 'ERROR', 'badge-warning': item.value === 'WARN',
-							'badge-primary': item.value === 'INFO', 'badge-info': item.value === 'DEBUG', }">
-							<i v-if="item.value === 'FATAL'" class="fa fa-exclamation"></i>
-							{{ item.value }}
-						</span>
-					</template>
-					<template slot="date" scope="item">
-						<div class="nowrap">
-							{{ item.value | moment(dateFormat) }}
-						</div>
-					</template>
-					<template slot="type" scope="item">
-						{{ item.value | enumReadable }}
-					</template>
-					<template slot="description" scope="item">
-						<div class="description-column">
-							{{ item.value }}
-						</div>
-					</template>
-				</b-table>
-				
-				<div class="justify-content-center row my-1 pagination-bar">
-					<b-pagination size="md" :total-rows="this.items.length" :per-page="perPage" v-model="currentPage"></b-pagination>
+		<div class="pos-rel">
+			<spinner :is-loading="isLoading"></spinner>
+			<div v-if="!isLoading">
+				<div class="event-urgence-selector">
+					<span class="badge badge-very-danger" @click="changeUrgence('FATAL')" :class="{ 'translucent': !badges.FATAL }"><i class="fa fa-exclamation"></i> FATAL</span>
+					<span class="badge badge-danger" @click="changeUrgence('ERROR')" :class="{ 'translucent': !badges.ERROR }">ERROR</span>
+					<span class="badge badge-warning" @click="changeUrgence('WARN')" :class="{ 'translucent': !badges.WARN }">WARN</span>
+					<span class="badge badge-primary" @click="changeUrgence('INFO')" :class="{ 'translucent': !badges.INFO }">INFO</span>
+					<span class="badge badge-info" @click="changeUrgence('DEBUG')" :class="{ 'translucent': !badges.DEBUG }">DEBUG</span>
 				</div>
-			</div>
-			<div v-else>
-				<div class="alert alert-warning">
-					<b>{{ $t('adminEvents.noEntryAvailableTitle') }}</b>
-					{{ $t('adminEvents.noEntryAvailable') }}
+				<div v-if="items.length > 0">
+					<label class="rows-per-page">
+						Rows per Page
+						<b-form-select :options="[{text:50,value:50},{text:100,value:100},{text:200,value:200}]" v-model="perPage"></b-form-select>
+					</label>
+					<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage">
+						<template slot="id" scope="item">
+							{{ item.value }}
+						</template>
+						<template slot="urgence" scope="item">
+							<span class="badge" :class="{'badge-very-danger': item.value === 'FATAL',
+								'badge-danger': item.value === 'ERROR', 'badge-warning': item.value === 'WARN',
+								'badge-primary': item.value === 'INFO', 'badge-info': item.value === 'DEBUG', }">
+								<i v-if="item.value === 'FATAL'" class="fa fa-exclamation"></i>
+								{{ item.value }}
+							</span>
+						</template>
+						<template slot="date" scope="item">
+							<div class="nowrap">
+								{{ item.value | moment(dateFormat) }}
+							</div>
+						</template>
+						<template slot="type" scope="item">
+							{{ item.value | enumReadable }}
+						</template>
+						<template slot="description" scope="item">
+							<div class="description-column">
+								{{ item.value }}
+							</div>
+						</template>
+					</b-table>
+					
+					<div class="justify-content-center row my-1 pagination-bar">
+						<b-pagination size="md" :total-rows="this.items.length" :per-page="perPage" v-model="currentPage"></b-pagination>
+					</div>
+				</div>
+				<div v-else>
+					<div class="alert alert-warning">
+						<b>{{ $t('adminEvents.noEntryAvailableTitle') }}</b>
+						{{ $t('adminEvents.noEntryAvailable') }}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -61,9 +64,10 @@
 <script>
 import HttpService from '@/services/HttpService';
 import UtilService from '@/services/UtilService';
+import Spinner from '@/components/Spinner';
 
 export default {
-	name: 'test',
+	name: 'admin-events',
 	data: function () {
 		return {
 			isLoading: false,
@@ -101,6 +105,9 @@ export default {
 				}
 			}
 		}
+	},
+	components: {
+		Spinner
 	},
 	computed: {
 		dateFormat: function () {

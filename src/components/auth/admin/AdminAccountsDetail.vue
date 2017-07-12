@@ -6,45 +6,121 @@
 			<small class="text-muted short-key-extended">{{ publicKeyClient }}</small>
 		</h1>
 		<hr>
-		<div v-if="!isLoading">
-			<div v-if="accountDetail">
-				<table class="table table-striped">
-					<tbody>
-						<tr>
-							<th scope="row">{{ $t('adminAccountsDetail.fields.belongsToUser') }}</th>
-							<td v-if="accountDetail.account.userAccountEmail">
-								<router-link :to="{ name: 'admin-user-accounts-detail', params: { email: accountDetail.account.userAccountEmail } }">{{ accountDetail.account.userAccountEmail }}</router-link>
-							</td>
-							<td v-else>
-								<i class="fa fa-minus"></i>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">{{ $t('adminAccountsDetail.fields.timeCreated') }}</th>
-							<td>{{ accountDetail.account.timeCreated | moment(dateFormat) }}</td>
-						</tr>
-						<tr>
-							<th scope="row">{{ $t('adminAccountsDetail.fields.publicKeyClient') }}</th>
-							<td>
-								<span class="key">{{ accountDetail.account.publicKeyClient }}</span>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">{{ $t('adminAccountsDetail.fields.privateKeyServer') }}</th>
-							<td>
-								<span class="key">{{ accountDetail.account.privateKeyServer }}</span>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">{{ $t('adminAccountsDetail.fields.publicKeyServer') }}</th>
-							<td>
-								<span class="key">{{ accountDetail.account.publicKeyServer }}</span>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">{{ $t('adminAccountsDetail.fields.locked') }}</th>
-							<td>
-								<span v-if="accountDetail.account.locked">
+		<div class="pos-rel">
+			<spinner :is-loading="isLoading"></spinner>
+
+			<div v-if="!isLoading">
+				<div v-if="accountDetail">
+					<table class="table table-striped">
+						<tbody>
+							<tr>
+								<th scope="row">{{ $t('adminAccountsDetail.fields.belongsToUser') }}</th>
+								<td v-if="accountDetail.account.userAccountEmail">
+									<router-link :to="{ name: 'admin-user-accounts-detail', params: { email: accountDetail.account.userAccountEmail } }">{{ accountDetail.account.userAccountEmail }}</router-link>
+								</td>
+								<td v-else>
+									<i class="fa fa-minus"></i>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">{{ $t('adminAccountsDetail.fields.timeCreated') }}</th>
+								<td>{{ accountDetail.account.timeCreated | moment(dateFormat) }}</td>
+							</tr>
+							<tr>
+								<th scope="row">{{ $t('adminAccountsDetail.fields.publicKeyClient') }}</th>
+								<td>
+									<span class="key">{{ accountDetail.account.publicKeyClient }}</span>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">{{ $t('adminAccountsDetail.fields.privateKeyServer') }}</th>
+								<td>
+									<span class="key">{{ accountDetail.account.privateKeyServer }}</span>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">{{ $t('adminAccountsDetail.fields.publicKeyServer') }}</th>
+								<td>
+									<span class="key">{{ accountDetail.account.publicKeyServer }}</span>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">{{ $t('adminAccountsDetail.fields.locked') }}</th>
+								<td>
+									<span v-if="accountDetail.account.locked">
+										<i class="fa fa-ban"></i>
+										{{ $t('adminAccountsDetail.locked') }}
+									</span>
+									<span v-else>
+										<i class="fa fa-check"></i>
+										{{ $t('adminAccountsDetail.notLocked') }}
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">{{ $t('adminAccountsDetail.fields.broadcastBefore') }}</th>
+								<td>
+									<span v-if="accountDetail.account.broadcastBefore">
+										{{ accountDetail.account.broadcastBefore | moment(dateFormat) }}
+									</span>
+									<span v-else>
+										<i class="fa fa-minus"></i>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">{{ $t('adminAccountsDetail.fields.nonce') }}</th>
+								<td>
+									<span v-if="accountDetail.account.nonce">
+										{{ accountDetail.account.nonce | moment(dateFormat) }}
+									</span>
+									<span v-else>
+										<i class="fa fa-minus"></i>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">{{ $t('adminAccountsDetail.fields.channelTransaction') }}</th>
+								<td>
+									<span v-if="accountDetail.account.channelTransaction">
+										{{ $t('adminAccountsDetail.channelTransaction', channelTransaction) }}
+									</span>
+									<span v-else>
+										<i class="fa fa-minus"></i>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">{{ $t('adminAccountsDetail.fields.virtualBalance') }}</th>
+								<td>{{ accountDetail.account.virtualBalance }}</td>
+							</tr>
+							<tr>
+								<th scope="row">{{ $t('adminAccountsDetail.fields.satoshiBalance') }}</th>
+								<td>{{ accountDetail.account.satoshiBalance }}</td>
+							</tr>
+							<tr>
+								<th scope="row">{{ $t('adminAccountsDetail.fields.totalBalance') }}</th>
+								<td>{{ accountDetail.account.totalBalance }}</td>
+							</tr>
+						</tbody>
+					</table>
+					<h2 class="display-7 time-locked-addresses-title">{{ $t('adminAccountsDetail.timeLockedAddresses') }}:</h2>
+					<div v-if="accountDetail.timeLockedAddresses && accountDetail.timeLockedAddresses.length > 0">
+						<b-table striped hover :items="accountDetail.timeLockedAddresses" :fields="timeLockedAddressesFields">
+							<template slot="createdAt" scope="item">
+								{{ item.value | moment(dateFormat) }}
+							</template>
+							<template slot="bitcoinAddress" scope="item">
+								<span class="key">{{ item.value }}</span>
+							</template>
+							<template slot="adddressUrl" scope="item">
+								<a :href="item.value" target="_blank" rel="noopener">
+									Link
+									<i class="fa fa-external-link"></i>
+								</a>
+							</template>
+							<template slot="locked" scope="item">
+								<span v-if="item.value">
 									<i class="fa fa-ban"></i>
 									{{ $t('adminAccountsDetail.locked') }}
 								</span>
@@ -52,96 +128,24 @@
 									<i class="fa fa-check"></i>
 									{{ $t('adminAccountsDetail.notLocked') }}
 								</span>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">{{ $t('adminAccountsDetail.fields.broadcastBefore') }}</th>
-							<td>
-								<span v-if="accountDetail.account.broadcastBefore">
-									{{ accountDetail.account.broadcastBefore | moment(dateFormat) }}
-								</span>
-								<span v-else>
-									<i class="fa fa-minus"></i>
-								</span>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">{{ $t('adminAccountsDetail.fields.nonce') }}</th>
-							<td>
-								<span v-if="accountDetail.account.nonce">
-									{{ accountDetail.account.nonce | moment(dateFormat) }}
-								</span>
-								<span v-else>
-									<i class="fa fa-minus"></i>
-								</span>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">{{ $t('adminAccountsDetail.fields.channelTransaction') }}</th>
-							<td>
-								<span v-if="accountDetail.account.channelTransaction">
-									{{ $t('adminAccountsDetail.channelTransaction', channelTransaction) }}
-								</span>
-								<span v-else>
-									<i class="fa fa-minus"></i>
-								</span>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">{{ $t('adminAccountsDetail.fields.virtualBalance') }}</th>
-							<td>{{ accountDetail.account.virtualBalance }}</td>
-						</tr>
-						<tr>
-							<th scope="row">{{ $t('adminAccountsDetail.fields.satoshiBalance') }}</th>
-							<td>{{ accountDetail.account.satoshiBalance }}</td>
-						</tr>
-						<tr>
-							<th scope="row">{{ $t('adminAccountsDetail.fields.totalBalance') }}</th>
-							<td>{{ accountDetail.account.totalBalance }}</td>
-						</tr>
-					</tbody>
-				</table>
-				<h2 class="display-7 time-locked-addresses-title">{{ $t('adminAccountsDetail.timeLockedAddresses') }}:</h2>
-				<div v-if="accountDetail.timeLockedAddresses && accountDetail.timeLockedAddresses.length > 0">
-					<b-table striped hover :items="accountDetail.timeLockedAddresses" :fields="timeLockedAddressesFields">
-						<template slot="createdAt" scope="item">
-							{{ item.value | moment(dateFormat) }}
-						</template>
-						<template slot="bitcoinAddress" scope="item">
-							<span class="key">{{ item.value }}</span>
-						</template>
-						<template slot="adddressUrl" scope="item">
-							<a :href="item.value" target="_blank" rel="noopener">
-								Link
-								<i class="fa fa-external-link"></i>
-							</a>
-						</template>
-						<template slot="locked" scope="item">
-							<span v-if="item.value">
-								<i class="fa fa-ban"></i>
-								{{ $t('adminAccountsDetail.locked') }}
-							</span>
-							<span v-else>
-								<i class="fa fa-check"></i>
-								{{ $t('adminAccountsDetail.notLocked') }}
-							</span>
-						</template>
-						<template slot="lockedUntil" scope="item">
-							{{ item.value | moment(dateFormat) }}
-						</template>
-						<template slot="balance" scope="item">
-							{{ item.value }}
-						</template>
-					</b-table>
+							</template>
+							<template slot="lockedUntil" scope="item">
+								{{ item.value | moment(dateFormat) }}
+							</template>
+							<template slot="balance" scope="item">
+								{{ item.value }}
+							</template>
+						</b-table>
+					</div>
+					<div v-else class="alert alert-warning">
+						<b>{{ $t('adminAccountsDetail.noTimeLockedAddressFoundTitle') }}</b>
+						{{ $t('adminAccountsDetail.noTimeLockedAddressFound') }}
+					</div>
 				</div>
 				<div v-else class="alert alert-warning">
-					<b>{{ $t('adminAccountsDetail.noTimeLockedAddressFoundTitle') }}</b>
-					{{ $t('adminAccountsDetail.noTimeLockedAddressFound') }}
+					<b>{{ $t('adminAccountsDetail.noAccountFoundTitle') }}</b>
+					{{ $t('adminAccountsDetail.noAccountFound') }}
 				</div>
-			</div>
-			<div v-else class="alert alert-warning">
-				<b>{{ $t('adminAccountsDetail.noAccountFoundTitle') }}</b>
-				{{ $t('adminAccountsDetail.noAccountFound') }}
 			</div>
 		</div>
 	</div>
@@ -151,6 +155,7 @@
 <script>
 import HttpService from '@/services/HttpService';
 import UtilService from '@/services/UtilService';
+import Spinner from '@/components/Spinner';
 
 export default {
 	name: 'admin-accounts-detail',
@@ -162,6 +167,9 @@ export default {
 	},
 	props: {
 		publicKeyClient: String
+	},
+	components: {
+		Spinner
 	},
 	computed: {
 		channelTransaction: function () {

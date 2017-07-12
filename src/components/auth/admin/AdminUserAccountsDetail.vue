@@ -6,62 +6,66 @@
 			<small class="text-muted">{{ email }}</small>
 		</h1>
 		<hr>
-		<div v-if="!isLoading">
-			<table class="table table-striped" v-if="userAccount.email">
-				<tbody>
-					<tr>
-						<th scope="row">{{ $t('adminUserAccountsDetail.fields.email') }}</th>
-						<td>{{ userAccount.email }}</td>
-					</tr>
-					<tr>
-						<th scope="row">{{ $t('adminUserAccountsDetail.fields.userRole') }}</th>
-						<td>
-							<button class="btn btn-sm btn-primary translucent" @click="switchRole" v-if="userAccount.userRole !== 'ROLE_ADMIN' && !userIsViewingHimself">ADMIN</button>
-							<button class="btn btn-sm btn-primary no-pointer" v-if="userAccount.userRole === 'ROLE_ADMIN'">ADMIN</button>
-							<button class="btn btn-sm btn-primary translucent" @click="switchRole" v-if="userAccount.userRole !== 'ROLE_USER' && !userIsViewingHimself">USER</button>
-							<button class="btn btn-sm btn-primary no-pointer" v-if="userAccount.userRole === 'ROLE_USER'">USER</button>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">{{ $t('adminUserAccountsDetail.fields.creationDate') }}</th>
-						<td>{{ userAccount.creationDate | moment(dateFormat) }}</td>
-					</tr>
-					<tr>
-						<th scope="row">{{ $t('adminUserAccountsDetail.fields.balance') }}</th>
-						<td>{{ userAccount.balance }}</td>
-					</tr>
-					<tr>
-						<th scope="row">{{ $t('adminUserAccountsDetail.fields.deleted') }}</th>
-						<td>
-							<span v-html="userAccount.deleted ? $t('adminUserAccountsDetail.deletedYes') : $t('adminUserAccountsDetail.deletedNo')"></span>
-							<button v-if="!userAccount.deleted && !userIsViewingHimself" class="btn btn-danger btn-sm" @click="deleteUser">
-								<i class="fa fa-times"></i>
-								{{ $t('adminUserAccountsDetail.deleteButton') }}
-							</button>
-							<button v-if="userAccount.deleted && !userIsViewingHimself" class="btn btn-success btn-sm" @click="undeleteUser">
-								<i class="fa fa-undo"></i>
-								{{ $t('adminUserAccountsDetail.undeleteButton') }}
-							</button>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">{{ $t('adminUserAccountsDetail.fields.account') }}</th>
-						<td>
-							<span v-if="userAccount.accountPublicKeyClient" class="short-key-extended">
-								<router-link :to="{ name: 'admin-accounts-detail', params: { publicKeyClient: userAccount.accountPublicKeyClient } }">
-									{{ userAccount.accountPublicKeyClient }}
-								</router-link>
-							</span>
-							<span v-else>
-								<i class="fa fa-minus"></i>
-							</span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<div v-else class="alert alert-warning">
-				<b>{{ $t('adminUserAccountsDetail.noUserFoundTitle') }}</b>
-				{{ $t('adminUserAccountsDetail.noUserFound') }}
+		<div class="pos-rel">
+			<spinner :is-loading="isLoading"></spinner>
+			
+			<div v-if="!isLoading">
+				<table class="table table-striped" v-if="userAccount.email">
+					<tbody>
+						<tr>
+							<th scope="row">{{ $t('adminUserAccountsDetail.fields.email') }}</th>
+							<td>{{ userAccount.email }}</td>
+						</tr>
+						<tr>
+							<th scope="row">{{ $t('adminUserAccountsDetail.fields.userRole') }}</th>
+							<td>
+								<button class="btn btn-sm btn-primary translucent" @click="switchRole" v-if="userAccount.userRole !== 'ROLE_ADMIN' && !userIsViewingHimself">ADMIN</button>
+								<button class="btn btn-sm btn-primary no-pointer" v-if="userAccount.userRole === 'ROLE_ADMIN'">ADMIN</button>
+								<button class="btn btn-sm btn-primary translucent" @click="switchRole" v-if="userAccount.userRole !== 'ROLE_USER' && !userIsViewingHimself">USER</button>
+								<button class="btn btn-sm btn-primary no-pointer" v-if="userAccount.userRole === 'ROLE_USER'">USER</button>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">{{ $t('adminUserAccountsDetail.fields.creationDate') }}</th>
+							<td>{{ userAccount.creationDate | moment(dateFormat) }}</td>
+						</tr>
+						<tr>
+							<th scope="row">{{ $t('adminUserAccountsDetail.fields.balance') }}</th>
+							<td>{{ userAccount.balance }}</td>
+						</tr>
+						<tr>
+							<th scope="row">{{ $t('adminUserAccountsDetail.fields.deleted') }}</th>
+							<td>
+								<span v-html="userAccount.deleted ? $t('adminUserAccountsDetail.deletedYes') : $t('adminUserAccountsDetail.deletedNo')"></span>
+								<button v-if="!userAccount.deleted && !userIsViewingHimself" class="btn btn-danger btn-sm" @click="deleteUser">
+									<i class="fa fa-times"></i>
+									{{ $t('adminUserAccountsDetail.deleteButton') }}
+								</button>
+								<button v-if="userAccount.deleted && !userIsViewingHimself" class="btn btn-success btn-sm" @click="undeleteUser">
+									<i class="fa fa-undo"></i>
+									{{ $t('adminUserAccountsDetail.undeleteButton') }}
+								</button>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">{{ $t('adminUserAccountsDetail.fields.account') }}</th>
+							<td>
+								<span v-if="userAccount.accountPublicKeyClient" class="short-key-extended">
+									<router-link :to="{ name: 'admin-accounts-detail', params: { publicKeyClient: userAccount.accountPublicKeyClient } }">
+										{{ userAccount.accountPublicKeyClient }}
+									</router-link>
+								</span>
+								<span v-else>
+									<i class="fa fa-minus"></i>
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div v-else class="alert alert-warning">
+					<b>{{ $t('adminUserAccountsDetail.noUserFoundTitle') }}</b>
+					{{ $t('adminUserAccountsDetail.noUserFound') }}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -71,6 +75,7 @@
 <script>
 import HttpService from '@/services/HttpService';
 import UtilService from '@/services/UtilService';
+import Spinner from '@/components/Spinner';
 
 export default {
 	name: 'admin-user-accounts-detail',
@@ -79,6 +84,9 @@ export default {
 			isLoading: false,
 			userAccount: {}
 		}
+	},
+	components: {
+		Spinner
 	},
 	props: {
 		email: String

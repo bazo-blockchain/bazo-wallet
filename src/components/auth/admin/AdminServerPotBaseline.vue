@@ -2,6 +2,7 @@
 	<div>
 		<b-modal id="admin-server-pot-baseline" :title="$t('adminServerPotBaseline.title')"
 				:hide-footer="true" size="md" @shown="loadData" @hidden="modalWasClosed">
+			<spinner :is-loading="isLoading"></spinner>
 			<div v-if="!isLoading">
 				<div class="table">
 					<b-table striped hover :items="items" :fields="fields">
@@ -51,6 +52,7 @@
 <script>
 import UtilService from '@/services/UtilService';
 import HttpService from '@/services/HttpService';
+import Spinner from '@/components/Spinner';
 
 export default {
 	name: 'admin-server-pot-baseline',
@@ -64,6 +66,9 @@ export default {
 			newAmountMax: Number.MAX_SAFE_INTEGER,
 			newAmountMin: Number.MIN_SAFE_INTEGER
 		};
+	},
+	components: {
+		Spinner
 	},
 	computed: {
 		dateFormat: function () {

@@ -56,8 +56,8 @@ export default {
 		&.sm {
 			width: 60px;
 			height: 60px;
-			border: 8px solid $border-color-bright;
-			border-top: 8px solid $border-color-dark;
+			border: 6px solid $border-color-bright;
+			border-top: 6px solid $border-color-dark;
 			margin: -30px 0 0 -30px;
 		}
 		

@@ -3,58 +3,62 @@
 		<div class="compact">
 			<h1 class="display-4">{{ $t('adminAccounts.title') }}</h1>
 			<hr>
-			<div v-if="!isLoading">
-				<div v-if="items.length > 0">
-	
-					<div class="justify-content-centermy-1 row">
-						<b-form-fieldset horizontal label="Rows per page" class="col-6" :label-size="6">
-							<b-form-select :options="[{text:10,value:10},{text:20,value:20},{text:50,value:50}]" v-model="perPage">
-							</b-form-select>
-						</b-form-fieldset>
-					</div>
+			<div class="pos-rel">
+				<spinner :is-loading="isLoading"></spinner>
+			
+				<div v-if="!isLoading">
+					<div v-if="items.length > 0">
 		
-					<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage">
-						<template slot="userAccountEmail" scope="item">
-							<span v-if="item.value">
-								<router-link :to="{ name: 'admin-user-accounts-detail', params: { email: item.value } }">{{ item.value }}</router-link>
-							</span>
-							<span v-else>
-								<i class="fa fa-minus"></i>
-							</span>
-						</template>
-						<template slot="timeCreated" scope="item">
-							{{ item.value | moment(dateFormat) }}
-						</template>
-						<template slot="publicKeyClient" scope="item">
-							<span class="short-key">{{ item.value }}</span>
-						</template>
-						<template slot="satoshiBalance" scope="item">
-							{{ item.value }}
-						</template>
-						<template slot="virtualBalance" scope="item">
-							{{ item.value }}
-						</template>
-						<template slot="totalBalance" scope="item">
-							{{ item.value }}
-						</template>
-						<template slot="actions" scope="item">
-							<b-btn size="sm" :to="{ name: 'admin-accounts-detail', params: { publicKeyClient: item.item.publicKeyClient } }">Details</b-btn>
-						</template>
-					</b-table>
+						<div class="justify-content-centermy-1 row">
+							<b-form-fieldset horizontal label="Rows per page" class="col-6" :label-size="6">
+								<b-form-select :options="[{text:10,value:10},{text:20,value:20},{text:50,value:50}]" v-model="perPage">
+								</b-form-select>
+							</b-form-fieldset>
+						</div>
+			
+						<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage">
+							<template slot="userAccountEmail" scope="item">
+								<span v-if="item.value">
+									<router-link :to="{ name: 'admin-user-accounts-detail', params: { email: item.value } }">{{ item.value }}</router-link>
+								</span>
+								<span v-else>
+									<i class="fa fa-minus"></i>
+								</span>
+							</template>
+							<template slot="timeCreated" scope="item">
+								{{ item.value | moment(dateFormat) }}
+							</template>
+							<template slot="publicKeyClient" scope="item">
+								<span class="short-key">{{ item.value }}</span>
+							</template>
+							<template slot="satoshiBalance" scope="item">
+								{{ item.value }}
+							</template>
+							<template slot="virtualBalance" scope="item">
+								{{ item.value }}
+							</template>
+							<template slot="totalBalance" scope="item">
+								{{ item.value }}
+							</template>
+							<template slot="actions" scope="item">
+								<b-btn size="sm" :to="{ name: 'admin-accounts-detail', params: { publicKeyClient: item.item.publicKeyClient } }">Details</b-btn>
+							</template>
+						</b-table>
+			
+						<div class="justify-content-center row my-1">
+							<b-pagination size="md" :total-rows="this.items.length" :per-page="perPage" v-model="currentPage" />
+						</div>
 		
-					<div class="justify-content-center row my-1">
-						<b-pagination size="md" :total-rows="this.items.length" :per-page="perPage" v-model="currentPage" />
 					</div>
-	
-				</div>
-				<div v-else>
-					<div class="alert alert-warning">
-						<b>{{ $t('adminAccounts.noEntryAvailableTitle') }}</b>
-						{{ $t('adminAccounts.noEntryAvailable') }}
+					<div v-else>
+						<div class="alert alert-warning">
+							<b>{{ $t('adminAccounts.noEntryAvailableTitle') }}</b>
+							{{ $t('adminAccounts.noEntryAvailable') }}
+						</div>
 					</div>
 				</div>
+				
 			</div>
-
 		</div>
 	</div>
 </template>
@@ -62,6 +66,7 @@
 <script>
 import HttpService from '@/services/HttpService';
 import UtilService from '@/services/UtilService';
+import Spinner from '@/components/Spinner';
 
 export default {
 	name: 'admin-accounts',
@@ -72,6 +77,9 @@ export default {
 			currentPage: 1,
 			perPage: 10
 		};
+	},
+	components: {
+		Spinner
 	},
 	computed: {
 		fields: function () {

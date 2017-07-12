@@ -3,70 +3,74 @@
 	<div class="compact">
 		<h1 class="display-4">{{ $t('adminServerBalance.title') }}</h1>
 		<hr>
-		<div v-if="!isLoading">
-			<div v-if="balance">
-				<div class="row equation">
-					<div class="col-md-3 equation-box sum-of-all-pending-transactions">
-						<div class="value">{{ formatSatoshi(balance.sumOfAllPendingTransactions) }}</div>
-						<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllPendingTransactions') }}</div>
-					</div>
-					<div class="col-md-3 equation-box sum-of-all-virtual-balances">
-						<div class="value">{{ formatSatoshi(balance.sumOfAllVirtualBalances) }}</div>
-						<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllVirtualBalances') }}</div>
-					</div>
-					<div class="col-md-3 equation-box server-pot-baseline">
-						<div class="value">{{ formatSatoshi(balance.serverPotBaseline) }}</div>
-						<div class="description">{{ $t('adminServerBalance.serverPotBaseline') }}
-							<button class="btn btn-secondary btn-sm" @click="$root.$emit('show::modal','admin-server-pot-baseline')">
-								<i class="fa fa-edit increase-focus"></i>
-							</button>
+		<div class="pos-rel">
+			<spinner :is-loading="isLoading"></spinner>
+
+			<div v-if="!isLoading">
+				<div v-if="balance">
+					<div class="row equation">
+						<div class="col-md-3 equation-box sum-of-all-pending-transactions">
+							<div class="value">{{ formatSatoshi(balance.sumOfAllPendingTransactions) }}</div>
+							<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllPendingTransactions') }}</div>
+						</div>
+						<div class="col-md-3 equation-box sum-of-all-virtual-balances">
+							<div class="value">{{ formatSatoshi(balance.sumOfAllVirtualBalances) }}</div>
+							<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllVirtualBalances') }}</div>
+						</div>
+						<div class="col-md-3 equation-box server-pot-baseline">
+							<div class="value">{{ formatSatoshi(balance.serverPotBaseline) }}</div>
+							<div class="description">{{ $t('adminServerBalance.serverPotBaseline') }}
+								<button class="btn btn-secondary btn-sm" @click="$root.$emit('show::modal','admin-server-pot-baseline')">
+									<i class="fa fa-edit increase-focus"></i>
+								</button>
+							</div>
+						</div>
+						<div class="col-md-3 equation-box server-pot-current ">
+							<div class="value">{{ formatSatoshi(balance.serverPotCurrent) }}</div>
+							<div class="description"> {{ $t('adminServerBalance.serverPotCurrent') }}</div>
 						</div>
 					</div>
-					<div class="col-md-3 equation-box server-pot-current ">
-						<div class="value">{{ formatSatoshi(balance.serverPotCurrent) }}</div>
-						<div class="description"> {{ $t('adminServerBalance.serverPotCurrent') }}</div>
-					</div>
-				</div>
-				<hr>
-				<div class="row equation">
-					<div class="col-md-3 equation-box sum-of-all-pending-transactions">
-						<div class="value">{{ formatSatoshi(balance.sumOfAllPendingTransactions) }}</div>
-						<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllPendingTransactions') }}</div>
-					</div>
-					<div class="col-md-3 equation-box sum-of-all-virtual-balances">
-						<div class="value">{{ formatSatoshi(balance.sumOfAllVirtualBalances) }}</div>
-						<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllVirtualBalances') }}</div>
-					</div>
-					<div class="col-md-3 equation-box server-pot">
-						<div class="value">{{ formatSatoshi(balance.serverPotBaseline - balance.serverPotCurrent) }}</div>
-						<div class="description"> {{ $t('adminServerBalance.serverPot') }}</div>
-					</div>
-				</div>
-				<hr>
-				<div class="row equation">
-					<div class="col-md-3 equation-box sum-of-all-pending-transactions">
-						<div class="value">{{ formatSatoshi(balance.sumOfAllPendingTransactions) }}</div>
-						<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllPendingTransactions') }}</div>
-					</div>
-					<div class="col-md-3 equation-box server">
-						<div class="value">{{ formatSatoshi(balance.sumOfAllVirtualBalances + balance.serverPotBaseline - balance.serverPotCurrent) }}</div>
-						<div class="description">{{ $t('adminServerBalance.server') }}</div>
-					</div>
-					<div class="col-md-3 equation-box equality">
-						<div class="positive" v-if="balance.inSync">
-							<span>
-								<i class="fa fa-check"></i> EQUAL
-							</span>
+					<hr>
+					<div class="row equation">
+						<div class="col-md-3 equation-box sum-of-all-pending-transactions">
+							<div class="value">{{ formatSatoshi(balance.sumOfAllPendingTransactions) }}</div>
+							<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllPendingTransactions') }}</div>
 						</div>
-						<div class="negative" v-else>
-							<span>
-								<i class="fa fa-ban"></i> NOT EQUAL
-							</span>
+						<div class="col-md-3 equation-box sum-of-all-virtual-balances">
+							<div class="value">{{ formatSatoshi(balance.sumOfAllVirtualBalances) }}</div>
+							<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllVirtualBalances') }}</div>
+						</div>
+						<div class="col-md-3 equation-box server-pot">
+							<div class="value">{{ formatSatoshi(balance.serverPotBaseline - balance.serverPotCurrent) }}</div>
+							<div class="description"> {{ $t('adminServerBalance.serverPot') }}</div>
+						</div>
+					</div>
+					<hr>
+					<div class="row equation">
+						<div class="col-md-3 equation-box sum-of-all-pending-transactions">
+							<div class="value">{{ formatSatoshi(balance.sumOfAllPendingTransactions) }}</div>
+							<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllPendingTransactions') }}</div>
+						</div>
+						<div class="col-md-3 equation-box server">
+							<div class="value">{{ formatSatoshi(balance.sumOfAllVirtualBalances + balance.serverPotBaseline - balance.serverPotCurrent) }}</div>
+							<div class="description">{{ $t('adminServerBalance.server') }}</div>
+						</div>
+						<div class="col-md-3 equation-box equality">
+							<div class="positive" v-if="balance.inSync">
+								<span>
+									<i class="fa fa-check"></i> EQUAL
+								</span>
+							</div>
+							<div class="negative" v-else>
+								<span>
+									<i class="fa fa-ban"></i> NOT EQUAL
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>
+				<div class="alert alert-warning" v-else>{{ $t('adminServerBalance.error') }}</div>
 			</div>
-			<div class="alert alert-warning" v-else>{{ $t('adminServerBalance.error') }}</div>
 		</div>
 		
 		<admin-server-pot-baseline @modal-closed="loadData"></admin-server-pot-baseline>
@@ -78,6 +82,7 @@
 import HttpService from '@/services/HttpService';
 import UtilService from '@/services/UtilService';
 import AdminServerPotBaseline from '@/components/auth/admin/AdminServerPotBaseline';
+import Spinner from '@/components/Spinner';
 
 export default {
 	name: 'admin-server-balance',
@@ -86,6 +91,10 @@ export default {
 			isLoading: false,
 			balance: null
 		}
+	},
+	components: {
+		Spinner,
+		AdminServerPotBaseline
 	},
 	methods: {
 		loadData: function () {
@@ -103,8 +112,7 @@ export default {
 	},
 	mounted: function () {
 		this.loadData();
-	},
-	components: { AdminServerPotBaseline }
+	}
 };
 </script>
 
