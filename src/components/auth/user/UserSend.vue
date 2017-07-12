@@ -89,11 +89,13 @@ export default {
 			if (this.isLoading) {
 				return 0;
 			}
+			let value = 0;
 			if (this.selectedCurrency === 'USD') {
-				return Math.round((this.amount / this.forexRate.rate) * UtilService.SATOSHI_PER_BITCOIN) / UtilService.SATOSHI_PER_BITCOIN;
+				value = (this.amount / this.forexRate.rate);
 			} else {
-				return this.amount;
+				value = this.amount;
 			}
+			return Math.round(value * UtilService.SATOSHI_PER_BITCOIN) / UtilService.SATOSHI_PER_BITCOIN;
 		},
 		validAmount: function () {
 			if (this.amount <= 0) {
