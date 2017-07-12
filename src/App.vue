@@ -83,6 +83,8 @@ export default {
 	mounted: function () {
 		this.$store.dispatch('initialize').then(() => {
 			this.initialLoadingComplete = true;
+		}, () => {
+			this.initialLoadingComplete = true;
 		});
 		window.addEventListener('resize', this.resizeHandler);
 	},
