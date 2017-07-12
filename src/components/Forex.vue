@@ -3,46 +3,49 @@
 	<div class="compact">
 		<h1 class="display-4">{{ $t('forex.title') }}</h1>
 		<hr>
-		<div class="selectors">
-			<div class="selector">
-				<label>{{ $t('forex.selectCurrency') }}: </label>
-				<b-form-select v-model="selectedCurrency" :options="optionsCurrency" class="md-3"></b-form-select>
-			</div>
-			<div class="selector">
-				<label>{{ $t('forex.selectVendor') }}: </label>
-				<b-form-select v-model="selectedVendor" :options="optionsVendor" class="md-3"></b-form-select>
-			</div>
-		</div>
-		<h2 class="display-7">{{ $t('forex.subtitleCurrent') }}</h2>
-		<div v-if="!isLoadingCurrent">
-			<div v-if="current && current.rate">
-				<p class="display-3 price">
-					<span class="value">1 BTC = {{ formatCurrency(current.rate) }} {{ current.currencyTo }}</span>
-					<span class="date">
-						<span class="intro">{{ $t('forex.lastUpdated') }}: </span>
-						{{ current.updatedAt | moment(dateFormat) }}
-					</span>
-				</p>
-			</div>
-			<div class="no-data" v-else>
-				<div class="alert alert-warning">{{ $t('forex.errorCurrent') }}</div>
-			</div>
-		</div>
-		<hr>
-		<h2 class="display-7 history-title">{{ $t('forex.subtitleHistory') }}</h2>
-		<div class="history" v-if="!isLoadingHistory">	
-			<div v-if="history && history.length > 0">
-				<div class="last-updated">
-					<span class="intro">{{ $t('forex.lastUpdated') }}:</span>
-					<span class="date">{{ history[history.length - 1].updatedAt | moment(dateOnlyFormat) }}</span>
+		<div class="pos-rel">
+			<spinner :isLoading="isLoadingCurrent || isLoadingHistory"></spinner>
+			<div class="selectors">
+				<div class="selector">
+					<label>{{ $t('forex.selectCurrency') }}: </label>
+					<b-form-select v-model="selectedCurrency" :options="optionsCurrency" class="md-3"></b-form-select>
 				</div>
-				<div class="chart-container" data-tz2u8w97hwptfwl3y57ywguux></div>
+				<div class="selector">
+					<label>{{ $t('forex.selectVendor') }}: </label>
+					<b-form-select v-model="selectedVendor" :options="optionsVendor" class="md-3"></b-form-select>
+				</div>
 			</div>
-			<div class="no-data" v-else>
-				<div class="alert alert-warning">{{ $t('forex.errorHistory') }}</div>
+			<h2 class="display-7">{{ $t('forex.subtitleCurrent') }}</h2>
+			<div v-if="!isLoadingCurrent">
+				<div v-if="current && current.rate">
+					<p class="display-3 price">
+						<span class="value">1 BTC = {{ formatCurrency(current.rate) }} {{ current.currencyTo }}</span>
+						<span class="date">
+							<span class="intro">{{ $t('forex.lastUpdated') }}: </span>
+							{{ current.updatedAt | moment(dateFormat) }}
+						</span>
+					</p>
+				</div>
+				<div class="no-data" v-else>
+					<div class="alert alert-warning">{{ $t('forex.errorCurrent') }}</div>
+				</div>
 			</div>
-			<div class="powered-by">Powered by 
-				<a href="http://www.coindesk.com/price/" target="_blank" rel="noopener">CoinDesk</a>/<a href="https://www.bitstamp.net/" target="_blank" rel="noopener">Bitstamp</a>
+			<hr>
+			<h2 class="display-7 history-title">{{ $t('forex.subtitleHistory') }}</h2>
+			<div class="history" v-if="!isLoadingHistory">	
+				<div v-if="history && history.length > 0">
+					<div class="last-updated">
+						<span class="intro">{{ $t('forex.lastUpdated') }}:</span>
+						<span class="date">{{ history[history.length - 1].updatedAt | moment(dateOnlyFormat) }}</span>
+					</div>
+					<div class="chart-container" data-tz2u8w97hwptfwl3y57ywguux></div>
+				</div>
+				<div class="no-data" v-else>
+					<div class="alert alert-warning">{{ $t('forex.errorHistory') }}</div>
+				</div>
+				<div class="powered-by">Powered by 
+					<a href="http://www.coindesk.com/price/" target="_blank" rel="noopener">CoinDesk</a>/<a href="https://www.bitstamp.net/" target="_blank" rel="noopener">Bitstamp</a>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -55,6 +58,7 @@ import UtilService from '@/services/UtilService';
 import CacheService from '@/services/CacheService';
 import Chartist from '@/config/Chartist';
 import moment from 'moment';
+import Spinner from '@/components/auth/user/Spinner';
 
 export default {
 	name: 'forex',
@@ -72,6 +76,9 @@ export default {
 			history: [],
 			chart: null
 		}
+	},
+	components: {
+		Spinner
 	},
 	computed: {
 		dateFormat: function () {
