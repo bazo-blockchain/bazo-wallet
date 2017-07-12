@@ -183,7 +183,6 @@ $language-picker-height-offline: 8.9em;
 	
 	&.offline-mode {
 		/* create space for the offline message */
-		padding-bottom: 96px;
 		height: calc(100vh - 2em - 2.2em - 2.5em - #{$language-picker-height-offline});
 	}
 	
