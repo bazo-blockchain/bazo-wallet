@@ -66,8 +66,8 @@ export default {
 
 	data: function () {
 		return {
-			isLoadingCurrent: false,
-			isLoadingHistory: false,
+			isLoadingCurrent: true,
+			isLoadingHistory: true,
 			selectedCurrency: 'USD',
 			selectedVendor: 'COINDESK',
 			optionsVendor: [ 'COINDESK', 'BITSTAMP' ],
