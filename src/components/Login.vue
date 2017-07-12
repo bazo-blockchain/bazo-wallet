@@ -53,7 +53,9 @@ export default {
 				const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
 
 				HttpService.login(credentials, true).then((response) => {
-					this.$store.dispatch('updateAuth', response.body.token);
+					this.$store.dispatch('updateAuth', response.body.token).then(() => {
+						this.$store.dispatch('updateUserBalance');
+					});
 					this.$store.dispatch('updateUser').then(() => {
 						this.$toasted.global.successNoIcon('<i class="fa fa-sign-in"></i>' + this.$t('toasts.signedIn'));
 						this.isLoading = false;
