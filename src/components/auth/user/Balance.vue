@@ -3,7 +3,7 @@
 	<i class="fa fa-bitcoin"></i>
 	<span class="value">{{ totalBalanceBTC }}</span>
 	<b-tooltip :content="balanceDateFormatted" :placement="tooltipPlacement" class="info" :offset="offset">
-		<i class="fa fa-info-circle increase-focus" :class="{ 'red': isOffline }"></i>
+		<i class="fa fa-info-circle increase-focus" :class="{ 'red': isOffline || oldBalance }"></i>
 	</b-tooltip>
 </a>
 </template>
@@ -16,7 +16,8 @@ export default {
 	name: 'balance',
 	data: function () {
 		return {
-			userBalanceIsLoading: false
+			userBalanceIsLoading: false,
+			now: moment()
 		}
 	},
 	props: {
@@ -28,6 +29,12 @@ export default {
 	computed: {
 		isOffline: function () {
 			return this.$store.state.offline;
+		},
+		oldBalance: function () {
+			if (!this.userBalance || !this.userBalance.lastUpdate) {
+				return true;
+			}
+			return moment(this.userBalance.lastUpdate).isBefore(this.now.subtract(5, 'minutes'));
 		},
 		userBalance: function () {
 			return this.$store.state.userBalance;
@@ -51,6 +58,17 @@ export default {
 				return '10px 0';
 			}
 		}
+	},
+	methods: {
+		updateNow: function () {
+			this.now = moment();
+		}
+	},
+	mounted: function () {
+		window.setInterval(this.updateNow, 1000)
+	},
+	clearInterval: function () {
+		window.clearInterval(this.updateNow);
 	}
 };
 </script>
