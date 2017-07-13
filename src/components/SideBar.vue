@@ -9,14 +9,17 @@
 				<i class="fa fa-home"></i>
 				<span class="text">{{ $t('sideBar.home') }}</span>
 			</router-link>
+			
+			<div class="separator"></div>
+			<div class="subtitle">{{ $t('sideBar.subtitle.bitcoin').toUpperCase() }}</div>
 			<router-link class="entry" :to="{ name: 'forex' }" :class="dynamicLinkClasses('forex')" @click.native="closeMenu">
-				<i class="fa fa-bitcoin"></i>
+				<i class="fa fa-line-chart"></i>
 				<span class="text">{{ $t('sideBar.forex') }}</span>
 			</router-link>
 			
 			<div v-if="auth.authenticated && auth.role === 'ROLE_ADMIN'">
 				<div class="separator"></div>
-				<div class="subtitle">{{ $t('sideBar.administration').toUpperCase() }}</div>
+				<div class="subtitle">{{ $t('sideBar.subtitle.administration').toUpperCase() }}</div>
 				<router-link class="entry" :to="{ name: 'admin-accounts' }" :class="dynamicLinkClasses('admin-accounts')" @click.native="closeMenu">
 					<i class="fa fa-bars"></i>
 					<span class="text">{{ $t('sideBar.adminAccounts') }}</span>
@@ -36,26 +39,25 @@
 			</div>
 			
 			<div v-if="auth.authenticated && auth.role === 'ROLE_USER'">
-				<div class="separator"></div>
-				<router-link class="entry" :to="{ name: 'authenticated' }" :class="dynamicLinkClasses('authenticated')" @click.native="closeMenu">
-					<i class="fa fa-bitcoin"></i>
-					<span class="text">{{ $t('sideBar.authenticated') }}</span>
-				</router-link>
-				<router-link class="entry" :to="{ name: 'user-authenticated' }" :class="dynamicLinkClasses('user-authenticated')" @click.native="closeMenu">
-					<i class="fa fa-bitcoin"></i>
-					<span class="text">{{ $t('sideBar.userAuthenticated') }}</span>
-				</router-link>
 				<router-link class="entry" :to="{ name: 'user-send' }" :class="dynamicLinkClasses('user-send')" @click.native="closeMenu">
 					<i class="fa fa-bitcoin"></i>
 					<span class="text">{{ $t('sideBar.userSend') }}</span>
 				</router-link>
+				<router-link class="entry" :to="{ name: 'authenticated' }" :class="dynamicLinkClasses('authenticated')" @click.native="closeMenu">
+					<i class="fa fa-times"></i>
+					<span class="text">{{ $t('sideBar.authenticated') }}</span>
+				</router-link>
+				<router-link class="entry" :to="{ name: 'user-authenticated' }" :class="dynamicLinkClasses('user-authenticated')" @click.native="closeMenu">
+					<i class="fa fa-times"></i>
+					<span class="text">{{ $t('sideBar.userAuthenticated') }}</span>
+				</router-link>
 			</div>
 
 			<div class="separator"></div>
-			<div class="subtitle">{{ $t('sideBar.accountManagement').toUpperCase() }}</div>
+			<div class="subtitle">{{ $t('sideBar.subtitle.accountManagement').toUpperCase() }}</div>
 			<div v-if="auth.authenticated">
 				<router-link class="entry" :to="{ name: 'profile' }" :class="dynamicLinkClasses('profile')" @click.native="closeMenu">
-					<i class="fa fa-user-o"></i>
+					<i class="fa fa-user"></i>
 					<span class="text">{{ $t('sideBar.profile') }}</span>
 				</router-link>
 				<a class="entry" @click="logout(); closeMenu();">
@@ -80,7 +82,7 @@
 		</div>
 		<div class="language-picker" :class="{ 'offline-mode': isOffline }">
 			<div class="language" :class="{'selected': currentLanguage === language}" v-for="language in ['en', 'de']" @click="changeLanguage(language)">
-				<span class="text">{{ language.toUpperCase() }}</span>
+				<span class="text" :title="$t('language.' + language)">{{ language.toUpperCase() }}</span>
 			</div>
 			<div class="balance-wrapper" v-if="auth.role === 'ROLE_USER' && userBalance">
 				<balance tooltip-placement="top"></balance>
@@ -193,6 +195,17 @@ $language-picker-height-offline: 8.9em;
 		height: calc(100vh - 2em - 2.2em - 2.5em - #{$language-picker-height-offline});
 	}
 	
+	&::-webkit-scrollbar {
+		width: 10px;
+		background-color: rgba(255,255,255,0.1);
+		margin-right: 2px;
+		border-right: 2px solid #353535;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: rgba(255,255,255,0.2);
+		border-right: 2px solid #353535;
+	}
+	
 	.entry {
 		position: relative;
 		cursor: pointer;
@@ -242,6 +255,12 @@ $language-picker-height-offline: 8.9em;
 			top: 0.8em;
 			left: 1.3em;
 			opacity: 0.6;
+			
+			&.fa-line-chart {
+				/* line chart icon is larger then the others */
+				margin-top: 4px;
+				font-size: 85%;
+			}
 		}
 		.text {
 			display: block;
@@ -324,9 +343,13 @@ $language-picker-height-offline: 8.9em;
 {
 	"en": {
 		"sideBar": {
+			"subtitle": {
+				"bitcoin": "Bitcoin",
+				"administration": "Administration",
+				"accountManagement":"Account Management"
+			},
 			"home": "Home",
 			"forex": "Market trend",
-			"administration": "ADMINISTRATION",
 			"login": "Login",
 			"registration": "Registration",
 			"forex": "Market trend",
@@ -337,7 +360,6 @@ $language-picker-height-offline: 8.9em;
 			"adminAccounts": "Accounts",
 			"adminUserAccounts": "User Accounts",
 			"adminServerBalance": "Server Balance",
-			"accountManagement":"Account Management",
 			"profile": "Profile",
 			"login": "Login",
 			"logout": "Logout",
@@ -347,9 +369,13 @@ $language-picker-height-offline: 8.9em;
 	},
 	"de": {
 		"sideBar": {
+			"subtitle": {
+				"bitcoin": "Bitcoin",
+				"administration": "Administration",
+				"accountManagement": "Kontoverwaltung"
+			},
 			"home": "Start",
 			"forex": "Kursentwicklung",
-			"administration": "ADMINISTRATION",
 			"forex": "Kursentwicklung",
 			"authenticated": "Auth Seite",
 			"userAuthenticated": "User-Auth Seite",
@@ -358,7 +384,6 @@ $language-picker-height-offline: 8.9em;
 			"adminAccounts": "Konten",
 			"adminUserAccounts": "Benutzerkonten",
 			"adminServerBalance": "Server Balance",
-			"accountManagement": "Kontoverwaltung",
 			"profile": "Profil anzeigen",
 			"login": "Anmelden",
 			"logout": "Abmelden",
