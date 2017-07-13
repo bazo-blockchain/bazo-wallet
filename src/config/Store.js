@@ -64,13 +64,16 @@ const store = new Vuex.Store({
 	// should be public:
 	actions: {
 		initialize: function (context) {
-			if (context.state.auth.authenticated) {
-				return context.dispatch('updateUser').then(() => {
-					return context.dispatch('updateUserBalance');
-				});
-			} else {
-				context.commit('clearUser');
-				return Promise.resolve();
+			if (!context.state.offline) {
+				if (context.state.auth.authenticated) {
+					return context.dispatch('updateUser').then(() => {
+						return context.dispatch('updateUserBalance');
+					});
+				} else {
+					context.commit('clearUser');
+					context.commit('clearUserBalance');
+					return Promise.resolve();
+				}
 			}
 		},
 

@@ -54,6 +54,9 @@ export default {
 	computed: {
 		isOffline: function () {
 			return this.$store.state.offline;
+		},
+		auth: function () {
+			return this.$store.state.auth;
 		}
 	},
 	methods: {
@@ -88,7 +91,7 @@ export default {
 			}
 		},
 		updateUserBalance: function () {
-			if (!this.isOffline) {
+			if (!this.isOffline && this.auth.authenticated && this.auth.role === 'ROLE_USER') {
 				return this.$store.dispatch('updateUserBalance');
 			}
 		}
