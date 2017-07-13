@@ -360,8 +360,8 @@ $language-picker-height-offline: 8.9em;
 			"adminServerBalance": "Server Balance",
 			"accountManagement": "Kontoverwaltung",
 			"profile": "Profil anzeigen",
-			"login": "Login",
-			"logout": "Logout",
+			"login": "Anmelden",
+			"logout": "Abmelden",
 			"registration": "Registrierung",
 			"passwordForgotten": "Passwort vergessen?"
 		}
