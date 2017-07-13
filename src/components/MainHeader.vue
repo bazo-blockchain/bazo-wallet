@@ -5,7 +5,7 @@
 			
 			<!-- buttons are hidden on small screens -->
 			<div class="buttons pull-right" v-if="auth.authenticated">
-				<div class="button" v-if="auth.role === 'ROLE_USER'">
+				<div class="button" v-if="auth.role === 'ROLE_USER' && userBalance">
 					<balance></balance>
 				</div>
 				<div class="button">
@@ -56,9 +56,7 @@ import Balance from '@/components/auth/user/Balance';
 export default {
 	name: 'main-header',
 	data: function () {
-		return {
-			userBalanceIsLoading: false
-		};
+		return {};
 	},
 	props: {
 		shown: Boolean,
@@ -80,17 +78,6 @@ export default {
 			return {
 				offline: this.isOffline && this.offlineRoutes.indexOf(routeName) === -1
 			}
-		},
-		loadUserBalance: function () {
-			if (!this.userBalanceIsLoading && !this.isOffline) {
-				this.userBalanceIsLoading = true;
-
-				this.$store.dispatch('updateUserBalance').then(() => {
-					this.userBalanceIsLoading = false;
-				}, () => {
-					this.userBalanceIsLoading = false;
-				});
-			}
 		}
 	},
 	computed: {
@@ -99,6 +86,9 @@ export default {
 		},
 		auth: function () {
 			return this.$store.state.auth;
+		},
+		userBalance: function () {
+			return this.$store.state.userBalance;
 		},
 		currentLanguage: function () {
 			return this.$locale.current();
@@ -109,13 +99,6 @@ export default {
 		isOffline: function () {
 			return this.$store.state.offline;
 		}
-	},
-	mounted: function () {
-		this.loadUserBalance();
-		window.setInterval(this.loadUserBalance, 20000);
-	},
-	beforeDestory: function () {
-		window.clearInterval(this.loadUserBalance);
 	}
 };
 </script>

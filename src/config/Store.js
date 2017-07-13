@@ -11,6 +11,7 @@ const store = new Vuex.Store({
 	state: {
 		language: null,
 		user: null,
+		userBalance: null,
 		auth: {
 			token: null,
 			authenticated: false,
@@ -20,6 +21,7 @@ const store = new Vuex.Store({
 				window.navigator.onLine === null ||
 				window.navigator.onLine)
 	},
+
 	// should be private:
 	mutations: {
 		updateUser: function (state, user) {
@@ -58,11 +60,14 @@ const store = new Vuex.Store({
 			state.offline = offline;
 		}
 	},
+
 	// should be public:
 	actions: {
 		initialize: function (context) {
 			if (context.state.auth.authenticated) {
-				return context.dispatch('updateUser');
+				return context.dispatch('updateUser').then(() => {
+					return context.dispatch('updateUserBalance');
+				});
 			} else {
 				context.commit('clearUser');
 				return Promise.resolve();
@@ -95,14 +100,20 @@ const store = new Vuex.Store({
 
 		updateUserBalance: function (context) {
 			if (context.state.auth.authenticated && context.state.auth.role === 'ROLE_USER') {
-				return HttpService.Auth.User.getUserBalance(false)
+				return HttpService.Auth.User.getUserBalance(true, false)
 					.then((response) => {
 						context.commit('updateUserBalance', response.body);
 					}, response => {
 						if (response.status !== 0) {
-							context.commit('clearUserBalance');
+							context.dispatch('logout');
+							Vue.toasted.global.warnNoIcon('<i class="fa fa-sign-out"></i>' + Translation.t('toasts.sessionExpired'));
+							Router.push({ path: '/login' });
+
+							return Promise.reject();
+						} else {
+							// offline mode -> do not update
+							return Promise.reject();
 						}
-						return Promise.reject();
 					});
 			} else {
 				context.commit('clearUserBalance');

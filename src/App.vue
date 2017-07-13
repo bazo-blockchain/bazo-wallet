@@ -1,6 +1,7 @@
 <template>
 <div id="app">
 	<progress-bar></progress-bar>
+	<spinner :is-loading="!initialLoadingComplete"></spinner>
 	<div id="app-container" v-if="initialLoadingComplete">
 		<div class="side-bar-wrapper" v-show="showSideBar" :class="{ shown: sideBarIsShown }">
 			<side-bar
@@ -29,6 +30,7 @@ import MainHeader from '@/components/MainHeader';
 import SideBar from '@/components/SideBar';
 import ProgressBar from '@/components/ProgressBar';
 import OfflineMessage from '@/components/OfflineMessage';
+import Spinner from '@/components/Spinner';
 
 export default {
 	name: 'app',
@@ -46,7 +48,13 @@ export default {
 		ProgressBar,
 		MainHeader,
 		OfflineMessage,
-		SideBar
+		SideBar,
+		Spinner
+	},
+	computed: {
+		isOffline: function () {
+			return this.$store.state.offline;
+		}
 	},
 	methods: {
 		toggleHeader: function (show) {
@@ -78,6 +86,11 @@ export default {
 			if (this.screenIsLarge()) {
 				this.sideBarIsShown = false;
 			}
+		},
+		updateUserBalance: function () {
+			if (!this.isOffline) {
+				return this.$store.dispatch('updateUserBalance');
+			}
 		}
 	},
 	mounted: function () {
@@ -86,9 +99,11 @@ export default {
 		}, () => {
 			this.initialLoadingComplete = true;
 		});
+		window.setInterval(this.updateUserBalance, 20000);
 		window.addEventListener('resize', this.resizeHandler);
 	},
 	beforeDestory: function () {
+		window.clearInterval(this.updateUserBalance);
 		window.removeEventListener('resize', this.resizeHandler);
 	},
 	watch: {

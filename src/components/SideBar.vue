@@ -78,7 +78,7 @@
 			<div class="language" :class="{'selected': currentLanguage === language}" v-for="language in ['en', 'de']" @click="changeLanguage(language)">
 				<span class="text">{{ language.toUpperCase() }}</span>
 			</div>
-			<div class="balance-wrapper" v-if="auth.role === 'ROLE_USER'">
+			<div class="balance-wrapper" v-if="auth.role === 'ROLE_USER' && userBalance">
 				<balance tooltip-placement="top"></balance>
 			</div>
 		</div>
@@ -111,6 +111,9 @@ export default {
 		},
 		auth: function () {
 			return this.$store.state.auth;
+		},
+		userBalance: function () {
+			return this.$store.state.userBalance;
 		},
 		currentLanguage: function () {
 			return this.$locale.current();
