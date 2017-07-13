@@ -72,6 +72,10 @@
 					<i class="fa fa-user-plus"></i>
 					<span class="text">{{ $t('sideBar.registration') }}</span>
 				</router-link>
+				<router-link class="entry" :to="{ name: 'password-forgotten' }" :class="dynamicLinkClasses('password-forgotten')" @click.native="closeMenu">
+					<i class="fa fa-question-circle"></i>
+					<span class="text">{{ $t('sideBar.passwordForgotten') }}</span>
+				</router-link>
 			</div>
 		</div>
 		<div class="language-picker" :class="{ 'offline-mode': isOffline }">
@@ -337,7 +341,8 @@ $language-picker-height-offline: 8.9em;
 			"profile": "Profile",
 			"login": "Login",
 			"logout": "Logout",
-			"registration": "Registration"
+			"registration": "Registration",
+			"passwordForgotten": "Forgot your password?"
 		}
 	},
 	"de": {
@@ -357,7 +362,8 @@ $language-picker-height-offline: 8.9em;
 			"profile": "Profil anzeigen",
 			"login": "Login",
 			"logout": "Logout",
-			"registration": "Registrierung"
+			"registration": "Registrierung",
+			"passwordForgotten": "Passwort vergessen?"
 		}
 	}
 }
