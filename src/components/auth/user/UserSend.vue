@@ -125,7 +125,9 @@ export default {
 			return true;
 		},
 		validForm: function () {
-			return this.validAmount && this.validAddress;
+			return true;
+			// TODO
+			// return this.validAmount && this.validAddress;
 		}
 	},
 	methods: {
