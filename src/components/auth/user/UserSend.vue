@@ -45,7 +45,7 @@
 								</b-form-fieldset>
 							</div>
 						</div>
-						<div class="description-forex-rate" v-html="$t('userSend.descriptionForexRate', { forex: forexRate.rate })" v-if="selectedCurrency === 'USD'"></div>
+						<div class="description-forex-rate" v-html="$t('userSend.descriptionForexRate', { forex: forexRates[selectedCurrency].rate, currency: selectedCurrency })" v-if="selectedCurrency !== 'BTC'"></div>
 						<b-button class="submit-button" :block="true" variant="primary" @click.prevent="submit" :disabled="formIsTouched && !validForm">{{ $t('userSend.button', { amount: btcAmount }) }}</b-button>
 					</form>
 				</div>
@@ -70,10 +70,14 @@ export default {
 		return {
 			isLoading: true,
 			selectedCurrency: 'BTC',
-			allowedCurrencies: ['BTC', 'USD'],
+			allowedCurrencies: ['BTC', 'USD', 'EUR', 'CHF'],
 			amount: 0,
 			address: '',
-			forexRate: {},
+			forexRates: {
+				USD: {},
+				EUR: {},
+				CHF: {}
+			},
 			encryptedPrivateKey: '',
 			formIsTouched: false
 		}
@@ -95,8 +99,8 @@ export default {
 				return 0;
 			}
 			let value = 0;
-			if (this.selectedCurrency === 'USD') {
-				value = (this.amount / this.forexRate.rate);
+			if (this.selectedCurrency !== 'BTC') {
+				value = (this.amount / this.forexRates[this.selectedCurrency].rate);
 			} else {
 				value = this.amount;
 			}
@@ -134,10 +138,14 @@ export default {
 		loadInitialData: function () {
 			return Promise.all([
 				HttpService.getForexCurrent('BITSTAMP', 'USD'),
+				HttpService.getForexCurrent('BITSTAMP', 'EUR'),
+				HttpService.getForexCurrent('BITSTAMP', 'CHF'),
 				HttpService.Auth.User.getEncryptedPrivateKey()
 			]).then(responses => {
-				this.forexRate = responses[0].body;
-				this.encryptedPrivateKey = responses[1].body.encryptedClientPrivateKey;
+				this.forexRates.USD = responses[0].body;
+				this.forexRates.EUR = responses[1].body;
+				this.forexRates.CHF = responses[2].body;
+				this.encryptedPrivateKey = responses[3].body.encryptedClientPrivateKey;
 				return Promise.resolve();
 			}, () => {
 				return Promise.reject();
@@ -253,7 +261,7 @@ export default {
 			"lookup": "Lookup",
 			"amount": "Amount",
 			"maxAmount": "Maximal amount",
-			"descriptionForexRate": "The current forex rate BTC/USD is <span class='mono'>{forex}</span>.",
+			"descriptionForexRate": "The current forex rate BTC/{currency} is <span class='mono'>{forex}</span>&nbsp;&nbsp;(Source: Bitstamp).",
 			"button": "Send {amount} BTC",
 			"transactionSuccessful": "The transaction was successfully executed."
 		}
@@ -267,7 +275,7 @@ export default {
 			"lookup": "Suchen",
 			"amount": "Betrag",
 			"maxAmount": "Maximalbetrag",
-			"descriptionForexRate": "Der aktuelle Wechselkurs BTC/USD beträgt <span class='mono'>{forex}</span>.",
+			"descriptionForexRate": "Der aktuelle Wechselkurs BTC/{currency} beträgt <span class='mono'>{forex}</span>&nbsp;&nbsp;(Quelle: Bitstamp).",
 			"button": "{amount} BTC versenden",
 			"transactionSuccessful": "Die Transaktion wurde erfolgreich durchgeführt."
 		}
