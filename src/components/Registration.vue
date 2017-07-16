@@ -41,14 +41,14 @@
 				<div class="row private-public-keys">
 					<div class="col-md-6">
 						<label class="col-form-label">{{ $t('registration.privateKey') }}</label>
-						<div class="form-control short-key-extended">
+						<div class="form-control short-key-extended" :title="privateKey">
 							<i class="fa fa-spin fa-cog" v-if="privateKey === ''"></i>
 							<span v-else>{{ privateKey }}</span>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label class="col-form-label">{{ $t('registration.publicKey') }}</label>
-						<div class="form-control short-key-extended">
+						<div class="form-control short-key-extended" :title="publicKey">
 							<i class="fa fa-spin fa-cog" v-if="publicKey === ''"></i>
 							<span v-else>{{ publicKey }}</span>
 						</div>
@@ -69,7 +69,7 @@
 							<div class="text">012345...</div>
 						</div>
 						<div class="bar" :class="passPhraseStrengthClasses.special">
-							<div class="text">$@!</div>
+							<div class="text">$@!&amp;ö</div>
 						</div>
 					</div>
 				</b-form-fieldset>
