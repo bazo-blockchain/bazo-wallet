@@ -8,8 +8,12 @@ const HttpService = {
 		return Vue.http.put(HOST + '/user-account/login', credentials,
 				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 	},
-	register: function (credentials, doNotIntercept) {
-		return Vue.http.post(HOST + '/user-account/create', credentials,
+	register: function (data, doNotIntercept) {
+		return Vue.http.post(HOST + '/user-account/create', data,
+				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
+	},
+	registerWithToken: function (data, doNotIntercept) {
+		return Vue.http.post(HOST + '/user-account/create-with-token', data,
 				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 	},
 	activate: function (data, doNotIntercept) {

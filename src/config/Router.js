@@ -149,7 +149,7 @@ const routes = [
 	{ path: '/hello', name: 'hello', component: Hello, beforeEnter: noAuth },
 	{ path: '/forex', name: 'forex', component: Forex, beforeEnter: noAuth },
 
-	{ path: '/registration', name: 'registration', component: Registration, beforeEnter: noAuth },
+	{ path: '/registration/:emailArg?/:tokenArg?', name: 'registration', component: Registration, beforeEnter: noAuth, props: true },
 	{ path: '/password-forgotten', name: 'password-forgotten', component: PasswordForgotten, beforeEnter: noAuth },
 	{ path: '/password-forgotten-verification/:email?/:token?', name: 'password-forgotten-verification', component: PasswordForgottenVerification, props: true, beforeEnter: noAuth },
 	{ path: '/activation/:email?/:token?', name: 'activation', component: Activation, props: true, beforeEnter: noAuth },

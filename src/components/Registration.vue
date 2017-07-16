@@ -8,7 +8,16 @@
 			<hr>
 			<form v-if="stepNumber === 1">
 				<b-form-fieldset :label="$t('registration.email')">
-					<b-form-input v-model="email" type="email" :class="{ 'form-error': !validEmail && formIsTouched }"></b-form-input>
+					<b-form-input v-model="email" type="email" :class="{ 'form-error': !validEmail && formIsTouched }" :disabled="emailGiven"></b-form-input>
+				</b-form-fieldset>
+				<b-form-fieldset v-if="tokenGiven">
+					<label class="col-form-label" for="registration-token">
+						{{ $t('registration.token') }}
+						<b-popover triggers="hover" :content="$t('registration.tokenDescription')" class="popover-element">
+							<i class="fa fa-info-circle increase-focus"></i>
+						</b-popover>
+					</label>
+					<b-form-input id="registration-token" v-model="token" type="text" :disabled="true"></b-form-input>
 				</b-form-fieldset>
 				<b-form-fieldset :label="$t('registration.password')">
 					<b-form-input v-model="password" type="password" :class="{ 'form-error': !validPassword && formIsTouched }"></b-form-input>
@@ -99,6 +108,9 @@ export default {
 		return {
 			isLoading: false,
 			email: '',
+			token: '',
+			emailGiven: false,
+			tokenGiven: false,
 			password: '',
 			passwordRepeat: '',
 			acceptTerms: false,
@@ -109,6 +121,10 @@ export default {
 			passPhrase: '',
 			passPhraseRepeat: ''
 		}
+	},
+	props: {
+		emailArg: String,
+		tokenArg: String
 	},
 	computed: {
 		validEmail: function () {
@@ -171,6 +187,10 @@ export default {
 		}
 	},
 	mounted: function () {
+		this.emailGiven = !!this.emailArg;
+		this.tokenGiven = !!this.tokenArg;
+		this.email = this.emailArg;
+		this.token = this.tokenArg;
 		this.$emit('toggle-header', false);
 		this.$emit('toggle-side-bar-triangle', false);
 		this.$emit('set-body-background', 'dark');
@@ -179,6 +199,18 @@ export default {
 		this.$emit('toggle-header', true);
 		this.$emit('toggle-side-bar-triangle', true);
 		this.$emit('set-body-background', 'white');
+	},
+	watch: {
+		emailArg: function () {
+			this.stepNumber = 1;
+			this.emailGiven = !!this.emailArg;
+			this.email = this.emailArg;
+		},
+		tokenArg: function () {
+			this.stepNumber = 1;
+			this.tokenGiven = !!this.tokenArg;
+			this.token = this.tokenArg;
+		}
 	},
 	methods: {
 		submitToSecondStep: function () {
@@ -214,24 +246,38 @@ export default {
 					lockTime: Math.floor(new Date() / 1000) + 3600 * 24 * 100
 				};
 
-				HttpService.register(data, true).then((response) => {
-					this.isLoading = false;
-					this.$toasted.global.success(this.$t('registration.success'), { duration: 10000 });
-					Router.push({ name: 'home' });
-				}, (response) => {
-					// user already exists on 403
-					if (response.status === 403) {
-						this.$toasted.global.warn(this.$t('registration.userAlreadyExistsError'));
-						this.stepNumber = 1;
-					// user exists but was deleted on 406
-					} else if (response.status === 406) {
-						this.$toasted.global.error(this.$t('toasts.userIsDeletedError'));
-						this.stepNumber = 1;
-					} else {
+				// if special registration with token
+				if (this.token) {
+					data['unregisteredToken'] = this.token;
+
+					HttpService.registerWithToken(data, true).then((response) => {
+						this.isLoading = false;
+						this.$toasted.global.success(this.$t('registration.successWithToken'), { duration: 6000 });
+						Router.push({ name: 'login' });
+					}, (response) => {
 						this.$toasted.global.warn(this.$t('toasts.validationError'));
-					}
-					this.isLoading = false;
-				});
+						this.isLoading = false;
+					});
+				} else {
+					HttpService.register(data, true).then((response) => {
+						this.isLoading = false;
+						this.$toasted.global.success(this.$t('registration.success'), { duration: 10000 });
+						Router.push({ name: 'home' });
+					}, (response) => {
+						// user already exists on 403
+						if (response.status === 403) {
+							this.$toasted.global.warn(this.$t('registration.userAlreadyExistsError'));
+							this.stepNumber = 1;
+						// user exists but was deleted on 406
+						} else if (response.status === 406) {
+							this.$toasted.global.error(this.$t('toasts.userIsDeletedError'));
+							this.stepNumber = 1;
+						} else {
+							this.$toasted.global.warn(this.$t('toasts.validationError'));
+						}
+						this.isLoading = false;
+					});
+				}
 			} else {
 				this.$toasted.global.warn(this.$t('toasts.validationError'));
 			}
@@ -269,6 +315,14 @@ export default {
 				padding-left: 7px;
 			}
 		}
+	}
+	.fa-info-circle {
+		cursor: help;
+	}
+	.popover-element {
+		display: inline-block;
+		vertical-align: middle;
+		margin-left: 3px;
 	}
 	.passphrase-strength {
 		display: flex;
@@ -327,12 +381,15 @@ export default {
 			"title": "Registration",
 			"titleStep": "Step {step}/2",
 			"email": "E-Mail",
+			"token": "Registration Token",
+			"tokenDescription": "This token, together with your e-mail address, gives you access to your received funds after the registration.",
 			"password": "Password",
 			"passwordRepeat": "Repeat Password",
 			"acceptTerms1": "I accept the",
 			"acceptTerms2": "terms and conditions",
 			"submitToNextStep": "Next Step",
 			"success": "<b>Please check your e-mails for the activation key.</b>",
+			"successWithToken": "You have successfully been registered. Please log in now.",
 			"userAlreadyExistsError": "A user with this e-mail address already exists.",
 			"privateKey": "Private Key",
 			"publicKey": "Public Key",
@@ -349,12 +406,15 @@ export default {
 			"title": "Registrierung",
 			"titleStep": "Schritt {step}/2",
 			"email": "E-Mail Adresse",
+			"token": "Registrierungsschlüssel",
+			"tokenDescription": "Mit der Kombination aus Ihrer E-Mail Adresse und diesem Schlüssel haben Sie Zugriff auf die erhaltenen Geld-Beträge nach der Registrierung.",
 			"password": "Passwort",
 			"passwordRepeat": "Passwort wiederholen",
 			"acceptTerms1": "Ich akzeptiere die",
 			"acceptTerms2": "AGBs",
 			"submitToNextStep": "Weiter zum nächsten Schritt",
 			"success": "<b>Bitte entnehmen Sie den Aktivierungsschlüssel Ihren E-Mails.</b>",
+			"successWithToken": "Sie haben sich erfolgreich registriert. Bitte loggen Sie sich jetzt ein.",
 			"userAlreadyExistsError": "Diese E-Mail-Adresse wird bereits verwendet.",
 			"privateKey": "Privater Schlüssel",
 			"publicKey": "Öffentlicher Schlüssel",
