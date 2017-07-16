@@ -17,7 +17,7 @@
 									<i class="fa fa-info-circle increase-focus"></i>
 								</b-popover>
 							</label>
-							<b-form-input v-model="address" type="text" class="address-input" :placeholder="$t('userSend.receiverPlaceholder')" :class="{ 'form-error': formIsTouched && !validAddress }"></b-form-input>
+							<b-form-input id="send-receiver" v-model="address" type="text" class="address-input" :placeholder="$t('userSend.receiverPlaceholder')" :class="{ 'form-error': formIsTouched && !validAddress }"></b-form-input>
 						</b-form-fieldset>
 						
 						<div class="row">

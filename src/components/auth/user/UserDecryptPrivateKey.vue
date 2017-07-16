@@ -4,7 +4,7 @@
 		size="md" :hide-footer="true" @hidden="modalWasClosed">
 		<div>
 			<b-form-fieldset :label="$t('userDecryptPrivateKey.passPhrase')">
-				<b-form-input type="password" v-model="passPhrase" @input="formIsTouched = false" :class="{ 'form-error': !validPassPhrase && formIsTouched }"></b-form-input>
+				<b-form-input type="password" v-model="passPhrase" @input="formIsTouched = false" @keyup.enter="submit" :class="{ 'form-error': !validPassPhrase && formIsTouched }"></b-form-input>
 			</b-form-fieldset>
 			<div class="error-description" v-if="formIsTouched && !validPassPhrase">
 				<i class="fa fa-warning"></i>
