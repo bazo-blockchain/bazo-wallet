@@ -196,7 +196,7 @@ $language-picker-height-offline: 8.9em;
 	}
 	
 	&::-webkit-scrollbar {
-		width: 10px;
+		width: 12px;
 		background-color: rgba(255,255,255,0.1);
 		margin-right: 2px;
 		border-right: 2px solid #353535;
