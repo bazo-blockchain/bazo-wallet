@@ -54,6 +54,9 @@ const HttpService = {
 					showProgressBar: !(showProgressBar === false)
 				});
 			},
+			getFunds: function () {
+				return Vue.http.get(HOST + '/auth/user/funds');
+			},
 			getEncryptedPrivateKey: function () {
 				return Vue.http.get(HOST + '/auth/user/encrypted-private-key');
 			},

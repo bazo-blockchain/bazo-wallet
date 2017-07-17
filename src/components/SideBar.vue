@@ -40,16 +40,16 @@
 			
 			<div v-if="auth.authenticated && auth.role === 'ROLE_USER'">
 				<router-link class="entry" :to="{ name: 'user-send' }" :class="dynamicLinkClasses('user-send')" @click.native="closeMenu">
-					<i class="fa fa-bitcoin"></i>
+					<i class="fa fa-arrow-circle-right"></i>
 					<span class="text">{{ $t('sideBar.userSend') }}</span>
+				</router-link>
+				<router-link class="entry" :to="{ name: 'user-funds' }" :class="dynamicLinkClasses('user-funds')" @click.native="closeMenu">
+					<i class="fa fa-bitcoin"></i>
+					<span class="text">{{ $t('sideBar.userFunds') }}</span>
 				</router-link>
 				<router-link class="entry" :to="{ name: 'authenticated' }" :class="dynamicLinkClasses('authenticated')" @click.native="closeMenu">
 					<i class="fa fa-times"></i>
 					<span class="text">{{ $t('sideBar.authenticated') }}</span>
-				</router-link>
-				<router-link class="entry" :to="{ name: 'user-authenticated' }" :class="dynamicLinkClasses('user-authenticated')" @click.native="closeMenu">
-					<i class="fa fa-times"></i>
-					<span class="text">{{ $t('sideBar.userAuthenticated') }}</span>
 				</router-link>
 			</div>
 
@@ -354,8 +354,8 @@ $language-picker-height-offline: 8.9em;
 			"registration": "Registration",
 			"forex": "Market trend",
 			"authenticated": "Auth Page",
-			"userAuthenticated": "User Auth Page",
 			"userSend": "Send Bitcoins",
+			"userFunds": "Funds",
 			"adminEvents": "Events",
 			"adminAccounts": "Accounts",
 			"adminUserAccounts": "User Accounts",
@@ -378,8 +378,8 @@ $language-picker-height-offline: 8.9em;
 			"forex": "Kursentwicklung",
 			"forex": "Kursentwicklung",
 			"authenticated": "Auth Seite",
-			"userAuthenticated": "User-Auth Seite",
 			"userSend": "Bitcoins versenden",
+			"userFunds": "Guthaben",
 			"adminEvents": "Events",
 			"adminAccounts": "Konten",
 			"adminUserAccounts": "Benutzerkonten",
