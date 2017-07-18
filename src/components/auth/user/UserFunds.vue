@@ -16,7 +16,7 @@
 							</b-popover>
 						</div>
 						<span v-else>
-							<span class="key-extended">{{ item.value }}</span>&nbsp;
+							<span class="mono">{{ item.value }}</span>&nbsp;
 							<a :href="item.item.adddressUrl" :title="item.item.adddressUrl" target="_blank" rel="noopener" class="increase-focus">
 								<i class="fa fa-external-link"></i>
 							</a>
