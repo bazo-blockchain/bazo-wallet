@@ -5134,6 +5134,10 @@ qjobs@^1.1.4:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/qjobs/-/qjobs-1.1.5.tgz#659de9f2cf8dcc27a1481276f205377272382e73"
 
+qrcode-generator@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/qrcode-generator/-/qrcode-generator-1.3.0.tgz#ea1dfe1f9f2a957422ef7d503eafb5c410037db5"
+
 qs@6.4.0, qs@~6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"

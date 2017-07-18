@@ -8,7 +8,6 @@ import PasswordForgotten from '@/components/PasswordForgotten';
 import PasswordForgottenVerification from '@/components/PasswordForgottenVerification';
 import Registration from '@/components/Registration';
 import Login from '@/components/Login';
-import Authenticated from '@/components/auth/Authenticated';
 import UserSend from '@/components/auth/user/UserSend';
 import UserFunds from '@/components/auth/user/UserFunds';
 import Profile from '@/components/auth/Profile';
@@ -156,7 +155,6 @@ const routes = [
 	{ path: '/login', name: 'login', component: Login, beforeEnter: afterAuth },
 
 	{ path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: requireAuth },
-	{ path: '/auth/authenticated', name: 'authenticated', component: Authenticated, beforeEnter: requireAuth },
 
 	{ path: '/auth/user/send', name: 'user-send', component: UserSend, beforeEnter: requireAuthAndUser },
 	{ path: '/auth/user/funds', name: 'user-funds', component: UserFunds, beforeEnter: requireAuthAndUser },

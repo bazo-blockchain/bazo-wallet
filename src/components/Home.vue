@@ -68,19 +68,3 @@ export default {
 }
 </style>
 
-<i18n>
-{
-	"en": {
-		"home": {
-			"login": "Sign In",
-			"authenticatedPage": "Auth Page"
-		}
-	},
-	"de": {
-		"home": {
-			"login": "Anmelden",
-			"authenticatedPage": "Auth Seite"
-		}
-	}
-}
-</i18n>

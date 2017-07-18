@@ -47,10 +47,6 @@
 					<i class="fa fa-bitcoin"></i>
 					<span class="text">{{ $t('sideBar.userFunds') }}</span>
 				</router-link>
-				<router-link class="entry" :to="{ name: 'authenticated' }" :class="dynamicLinkClasses('authenticated')" @click.native="closeMenu">
-					<i class="fa fa-times"></i>
-					<span class="text">{{ $t('sideBar.authenticated') }}</span>
-				</router-link>
 			</div>
 
 			<div class="separator"></div>
@@ -85,7 +81,7 @@
 				<span class="text" :title="$t('language.' + language)">{{ language.toUpperCase() }}</span>
 			</div>
 			<div class="balance-wrapper" v-if="auth.role === 'ROLE_USER' && userBalance">
-				<balance tooltip-placement="top"></balance>
+				<balance tooltip-placement="top" @link-clicked="closeMenu"></balance>
 			</div>
 		</div>
 	</div>
@@ -353,7 +349,6 @@ $language-picker-height-offline: 8.9em;
 			"login": "Login",
 			"registration": "Registration",
 			"forex": "Market trend",
-			"authenticated": "Auth Page",
 			"userSend": "Send Bitcoins",
 			"userFunds": "Funds",
 			"adminEvents": "Events",
@@ -377,7 +372,6 @@ $language-picker-height-offline: 8.9em;
 			"home": "Start",
 			"forex": "Kursentwicklung",
 			"forex": "Kursentwicklung",
-			"authenticated": "Auth Seite",
 			"userSend": "Bitcoins versenden",
 			"userFunds": "Guthaben",
 			"adminEvents": "Events",

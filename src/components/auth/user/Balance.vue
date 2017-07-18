@@ -1,11 +1,13 @@
 <template>
-<a class="balance">
-	<i class="fa fa-bitcoin"></i>
-	<span class="value">{{ totalBalanceBTC }}</span>
+<div class="balance">
+	<a href @click.prevent="openFundsPage">
+		<i class="fa fa-bitcoin"></i>
+		<span class="value">{{ totalBalanceBTC }}</span>
+	</a>
 	<b-tooltip :content="balanceDateFormatted" :placement="tooltipPlacement" class="info" :offset="offset">
 		<i class="fa fa-info-circle increase-focus" :class="{ 'red': isOffline || oldBalance }"></i>
 	</b-tooltip>
-</a>
+</div>
 </template>
 
 <script>
@@ -62,6 +64,10 @@ export default {
 	methods: {
 		updateNow: function () {
 			this.now = moment();
+		},
+		openFundsPage: function () {
+			this.$emit('link-clicked');
+			this.$router.push({ name: 'user-funds' });
 		}
 	},
 	mounted: function () {
@@ -76,6 +82,14 @@ export default {
 <style lang="scss" scoped>
 .balance {
 	text-decoration: none;
+	
+	a:hover,
+	a:active,
+	a:focus,
+	a:visited {
+		color: inherit;
+		text-decoration: none;
+	}
 
 	.fa, .value, .info {
 		display: inline-block;
