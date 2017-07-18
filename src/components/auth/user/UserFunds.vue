@@ -1,7 +1,12 @@
 <template>
 <div class="user-funds">
 	<div class="compact">
-		<h1 class="display-4">{{ $t('userFunds.title') }}</h1>
+		<h1 class="display-4">{{ $t('userFunds.title') }}
+			<small v-if="totalBalance !== ''" class="pull-right">
+				<i class="fa fa-bitcoin"></i>
+				{{ convertSatoshiToBitcoin(totalBalance) }}
+			</small>
+		</h1>
 		<hr>
 		<div class="pos-rel">
 			<spinner :is-loading="isLoading"></spinner>
@@ -143,6 +148,19 @@ export default {
 					label: this.$t('userFunds.fields.actions'),
 					sortable: false
 				}
+			};
+		},
+		totalBalance: function () {
+			if (this.funds && this.funds.timeLockedAddresses) {
+				let sumOfBalances = 0;
+
+				this.funds.timeLockedAddresses.forEach((item) => {
+					sumOfBalances += item.balance;
+				});
+
+				return this.funds.virtualBalance + sumOfBalances;
+			} else {
+				return '';
 			}
 		},
 		dateFormat: function () {
@@ -237,6 +255,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../../styles/variables';
+
+h1 small {
+	font-size: 80%;
+	font-weight: 300;
+}
 
 .fa.green {
 	color: $green-color;
