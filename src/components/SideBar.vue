@@ -81,7 +81,7 @@
 				<span class="text" :title="$t('language.' + language)">{{ language.toUpperCase() }}</span>
 			</div>
 			<div class="balance-wrapper" v-if="auth.role === 'ROLE_USER' && userBalance">
-				<balance tooltip-placement="top" @link-clicked="closeMenu"></balance>
+				<user-balance tooltip-placement="top" @link-clicked="closeMenu"></user-balance>
 			</div>
 		</div>
 	</div>
@@ -89,7 +89,7 @@
 
 <script>
 import Hammer from 'hammerjs';
-import Balance from '@/components/auth/user/Balance';
+import UserBalance from '@/components/auth/user/UserBalance';
 
 export default {
 	name: 'side-bar',
@@ -102,7 +102,7 @@ export default {
 		showTriangle: Boolean
 	},
 	components: {
-		Balance
+		UserBalance
 	},
 	computed: {
 		isOffline: function () {
@@ -328,7 +328,7 @@ $language-picker-height-offline: 8.9em;
 		border-left: 1px solid #656565;
 		font-weight: 300;
 		
-		/deep/ .balance .fa.fa-info-circle {
+		/deep/ .user-balance .fa.fa-info-circle {
 			margin-right: 0;
 		}
 	}

@@ -6,7 +6,7 @@
 			<!-- buttons are hidden on small screens -->
 			<div class="buttons pull-right" v-if="auth.authenticated">
 				<div class="button" v-if="auth.role === 'ROLE_USER' && userBalance">
-					<balance></balance>
+					<user-balance></user-balance>
 				</div>
 				<div class="button">
 					<router-link class="profile" :to="{ name: 'profile' }" :class="offlineCheck('profile')">
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import Balance from '@/components/auth/user/Balance';
+import UserBalance from '@/components/auth/user/UserBalance';
 
 export default {
 	name: 'main-header',
@@ -63,7 +63,7 @@ export default {
 		transparent: Boolean
 	},
 	components: {
-		Balance
+		UserBalance
 	},
 	methods: {
 		switchLanguage: function (newLanguage) {
@@ -125,6 +125,10 @@ export default {
 				font-size: 120%;
 				color: white;
 			}
+			
+			/deep/ .buttons .button .user-balance a {
+				color: white;
+			}
 		}
 	}
 	
@@ -181,7 +185,7 @@ export default {
 					cursor: pointer;
 				}
 				
-				a, /deep/ .balance {
+				a, /deep/ .user-balance {
 					display: inline-block;
 					position: relative;
 					top: 50%;
@@ -191,7 +195,7 @@ export default {
 					text-decoration: none;
 				}
 				
-				/deep/ .balance {
+				/deep/ .user-balance {
 					font-size: 17px;
 					font-weight: 300;
 					cursor: initial;

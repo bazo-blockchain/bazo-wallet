@@ -1,5 +1,5 @@
 <template>
-<div class="balance">
+<div class="user-balance">
 	<a href @click.prevent="openFundsPage">
 		<i class="fa fa-bitcoin"></i>
 		<span class="value">{{ totalBalanceBTC }}</span>
@@ -15,7 +15,7 @@ import moment from 'moment';
 import UtilService from '@/services/UtilService';
 
 export default {
-	name: 'balance',
+	name: 'user-balance',
 	data: function () {
 		return {
 			userBalanceIsLoading: false,
@@ -49,7 +49,7 @@ export default {
 		},
 		balanceDateFormatted: function () {
 			if (this.userBalance && this.userBalance.lastUpdate) {
-				return this.$t('balance.lastUpdate', { timestamp: moment(this.userBalance.lastUpdate).format(UtilService.DATE_FORMAT) });
+				return this.$t('userBalance.lastUpdate', { timestamp: moment(this.userBalance.lastUpdate).format(UtilService.DATE_FORMAT) });
 			}
 			return '';
 		},
@@ -80,7 +80,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.balance {
+.user-balance {
 	text-decoration: none;
 	
 	a:hover,
@@ -126,12 +126,12 @@ export default {
 <i18n>
 {
 	"en": {
-		"balance": {
+		"userBalance": {
 			"lastUpdate": "Last Update<br>{timestamp}"
 		}
 	},
 	"de": {
-		"balance": {
+		"userBalance": {
 			"lastUpdate": "Letztes Update<br>{timestamp}"
 		}
 	}
