@@ -5,56 +5,61 @@
 		<hr>
 		<div class="pos-rel">
 			<spinner :is-loading="isLoading"></spinner>
-			<div class="box-wrapper" v-if="!isLoading">
-				<div class="box">
-					<div class="main-title display-7">{{ $t('userSend.boxTitle') }}</div>
-					<hr>
-					<form>
-						<b-form-fieldset>
-							<label class="col-form-label" for="send-receiver">
-								{{ $t('userSend.receiver') }}
-								<b-popover triggers="hover" :content="$t('userSend.receiverDescription')" class="popover-element">
-									<i class="fa fa-info-circle increase-focus"></i>
-								</b-popover>
-							</label>
-							<b-form-input id="send-receiver" v-model="address" type="text" class="address-input" :placeholder="$t('userSend.receiverPlaceholder')" :class="{ 'form-error': formIsTouched && !validAddress }"></b-form-input>
-						</b-form-fieldset>
-						
-						<div class="row">
-							<div class="col-md-8">
-								<b-form-fieldset :label="$t('userSend.amount')">
-									<b-input-group>
-										<b-form-input v-model="amount" class="mono amount-input" type="number" min="0" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
-										<b-input-group-button slot="right">
-											<b-dropdown :text="selectedCurrency" variant="default" right>
-												<b-dropdown-item v-for="currency in allowedCurrencies" @click="selectedCurrency = currency" :key="currency">
-												<span class="currency">{{ currency }}</span>
-												<i class="fa fa-check" v-if="currency === selectedCurrency"></i>
-												</b-dropdown-item>
-											</b-dropdown>
-										</b-input-group-button>
-									</b-input-group>
-								</b-form-fieldset>
+			<div v-if="successfulTransaction">
+				<div class="alert alert-success">{{ $t('userSend.transactionSuccessful') }}</div>
+			</div>
+			<div v-else>
+				<div class="box-wrapper" v-if="!isLoading">
+					<div class="box">
+						<div class="main-title display-7">{{ $t('userSend.boxTitle') }}</div>
+						<hr>
+						<form>
+							<b-form-fieldset>
+								<label class="col-form-label" for="send-receiver">
+									{{ $t('userSend.receiver') }}
+									<b-popover triggers="hover" :content="$t('userSend.receiverDescription')" class="popover-element">
+										<i class="fa fa-info-circle increase-focus"></i>
+									</b-popover>
+								</label>
+								<b-form-input id="send-receiver" v-model="address" type="text" class="address-input" :placeholder="$t('userSend.receiverPlaceholder')" :class="{ 'form-error': formIsTouched && !validAddress }"></b-form-input>
+							</b-form-fieldset>
+							
+							<div class="row">
+								<div class="col-md-8">
+									<b-form-fieldset :label="$t('userSend.amount')">
+										<b-input-group>
+											<b-form-input v-model="amount" class="mono amount-input" type="number" min="0" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
+											<b-input-group-button slot="right">
+												<b-dropdown :text="selectedCurrency" variant="default" right>
+													<b-dropdown-item v-for="currency in allowedCurrencies" @click="selectedCurrency = currency" :key="currency">
+													<span class="currency">{{ currency }}</span>
+													<i class="fa fa-check" v-if="currency === selectedCurrency"></i>
+													</b-dropdown-item>
+												</b-dropdown>
+											</b-input-group-button>
+										</b-input-group>
+									</b-form-fieldset>
+								</div>
+								<div class="col-md-4">
+									<b-form-fieldset>
+										<label class="col-form-label">{{ $t('userSend.maxAmount') }}
+											<b-popover triggers="hover" :content="$t('userSend.maxAmountDescription')" class="popover-element">
+												<i class="fa fa-info-circle increase-focus"></i>
+											</b-popover>
+										</label>
+										<div class="form-control disabled mono" :class="{ 'form-error': formIsTouched && maximumAmountExceeded }">
+											{{ convertSatoshiToBitcoin(paymentRequirements.totalLockedAndVirtualBalance) }} BTC
+										</div>
+									</b-form-fieldset>
+								</div>
 							</div>
-							<div class="col-md-4">
-								<b-form-fieldset>
-									<label class="col-form-label">{{ $t('userSend.maxAmount') }}
-										<b-popover triggers="hover" :content="$t('userSend.maxAmountDescription')" class="popover-element">
-											<i class="fa fa-info-circle increase-focus"></i>
-										</b-popover>
-									</label>
-									<div class="form-control disabled mono" :class="{ 'form-error': formIsTouched && maximumAmountExceeded }">
-										{{ convertSatoshiToBitcoin(paymentRequirements.totalLockedAndVirtualBalance) }} BTC
-									</div>
-								</b-form-fieldset>
-							</div>
-						</div>
-						<div class="description-forex-rate" v-html="$t('userSend.descriptionForexRate', { forex: forexRates[selectedCurrency].rate, currency: selectedCurrency })" v-if="selectedCurrency !== 'BTC'"></div>
-						<b-button class="submit-button" :block="true" variant="primary" @click.prevent="submit" :disabled="formIsTouched && !validForm">{{ $t('userSend.button', { amount: btcAmount }) }}</b-button>
-					</form>
-				</div>
+							<div class="description-forex-rate" v-html="$t('userSend.descriptionForexRate', { forex: forexRates[selectedCurrency].rate, currency: selectedCurrency })" v-if="selectedCurrency !== 'BTC'"></div>
+							<b-button class="submit-button" :block="true" variant="primary" @click.prevent="submit" :disabled="formIsTouched && !validForm">{{ $t('userSend.button', { amount: btcAmount }) }}</b-button>
+						</form>
+					</div>
 	
-				<user-transfer @private-key-decrypted="signDTO" :encrypted-private-key="paymentRequirements.encryptedClientPrivateKey" :amount="btcAmount"></user-transfer>
+					<user-transfer @private-key-decrypted="createAndSubmitTransaction" :encrypted-private-key="paymentRequirements.encryptedClientPrivateKey" :amount="btcAmount"></user-transfer>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -83,7 +88,8 @@ export default {
 				CHF: {}
 			},
 			paymentRequirements: {},
-			formIsTouched: false
+			formIsTouched: false,
+			successfulTransaction: false
 		}
 	},
 	components: {
@@ -156,16 +162,36 @@ export default {
 				this.$root.$emit('show::modal', 'user-transfer');
 			}
 		},
-		signDTO: function (privateKeyWif) {
+		createAndSubmitTransaction: function (privateKeyWif) {
 			this.isLoading = true;
-			const dto = { receiver: this.address, amount: this.btcAmount };
-			const signedDto = CryptoService.signDTO(privateKeyWif, dto);
 
-			console.log(signedDto);
-			// TODO create and submit a meaningful signed DTO
+			// TODO
+			const receiverAddress = '15hZo812Lx266Dot6T52krxpnhrNiaqHya';
+			const amountSatoshi = 15000;
+			const inputs = [
+				'40696e606a348cbd9e08085f9f4d92dcaef041672798af129fcda28c8a91b259'
+			];
 
-			this.$toasted.global.success(this.$t('userSend.transactionSuccessful'));
-			this.$router.push({ name: 'home' });
+			const txBuilder = new window.bitcoin.TransactionBuilder();
+			for (let i = 0; i < inputs.length; i++) {
+				txBuilder.addInput(inputs[i], i);
+			}
+			txBuilder.addOutput(receiverAddress, amountSatoshi);
+
+			// signs the first input with the key
+			txBuilder.sign(0, window.bitcoin.ECPair.fromWIF(privateKeyWif));
+
+			const tx = txBuilder.build().toHex();
+			console.log('transaction: ', tx);
+
+			const signedDto = CryptoService.signDTO(privateKeyWif, tx);
+			console.log('signedDTO: ', signedDto);
+
+			// TODO
+			// submit transaction to server
+
+			this.successfulTransaction = true;
+			this.isLoading = false;
 		},
 		convertSatoshiToBitcoin: UtilService.convertSatoshiToBitcoin
 	},
