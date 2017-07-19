@@ -11,81 +11,85 @@
 		<div class="pos-rel">
 			<spinner :is-loading="isLoading"></spinner>
 			
-			<b-table striped hover :items="tableItems" :fields="fields" :current-page="currentPage" :per-page="perPage">
-				<template slot="bitcoinAddress" scope="item">
-					<div class="no-wrap">
+			<div class="table-wrapper">
+				<b-table striped hover :items="tableItems" :fields="fields" :current-page="currentPage" :per-page="perPage">
+					<template slot="bitcoinAddress" scope="item">
+						<div class="no-wrap">
+							<div v-if="item.item.virtualBalance">
+								<i>{{ $t('userFunds.virtualBalance') }}</i>
+								<b-popover :content="$t('userFunds.virtualBalanceDescription')" triggers="hover" class="popover-element">
+									<i class="fa fa-info-circle increase-focus"></i>
+								</b-popover>
+							</div>
+							<span v-else>
+								<span class="mono">{{ item.value }}</span>&nbsp;
+								<a :href="item.item.adddressUrl" :title="item.item.adddressUrl" target="_blank" rel="noopener" class="increase-focus">
+									<i class="fa fa-external-link"></i>
+								</a>
+							</span>
+						</div>
+					</template>
+					<template slot="createdAt" scope="item">
 						<div v-if="item.item.virtualBalance">
-							<i>{{ $t('userFunds.virtualBalance') }}</i>
-							<b-popover :content="$t('userFunds.virtualBalanceDescription')" triggers="hover" class="popover-element">
-								<i class="fa fa-info-circle increase-focus"></i>
-							</b-popover>
+							<i class="fa fa-minus"></i>
 						</div>
-						<span v-else>
-							<span class="mono">{{ item.value }}</span>&nbsp;
-							<a :href="item.item.adddressUrl" :title="item.item.adddressUrl" target="_blank" rel="noopener" class="increase-focus">
-								<i class="fa fa-external-link"></i>
-							</a>
-						</span>
-					</div>
-				</template>
-				<template slot="createdAt" scope="item">
-					<div v-if="item.item.virtualBalance">
-						<i class="fa fa-minus"></i>
-					</div>
-					<div v-else>
-						{{ item.value | moment(dateFormat) }}
-					</div>
-				</template>
-				<template slot="lockedUntil" scope="item">
-					<div v-if="item.item.virtualBalance">
-						<i class="fa fa-minus"></i>
-					</div>
-					<div v-else>
-						{{ item.value | moment(dateFormat) }}
-					</div>
-				</template>
-				<template slot="locked" scope="item">
-					<div v-if="item.item.virtualBalance">
-						<i class="fa fa-minus"></i>
-					</div>
-					<div v-else>
-						<span v-if="item.value">
-							<i class="fa fa-times red"></i> {{ $t('userFunds.locked') }}
-						</span>
-						<span v-else>
-							<i class="fa fa-check green"></i> {{ $t('userFunds.unlocked') }}
-						</span>
-					</div>
-				</template>
-				<template slot="balance" scope="item">
-					<i class="fa fa-bitcoin"></i>
-					{{ convertSatoshiToBitcoin(item.value) }}
-				</template>
-				<template slot="qr" scope="item">
-					<div v-if="item.item.virtualBalance">
-						<i class="fa fa-minus"></i>
-					</div>
-					<div v-else>
-						<qr-code :content="item.item.bitcoinAddress"></qr-code>
-					</div>
-				</template>
-				<template slot="actions" scope="item">
-					<div v-if="item.item.virtualBalance">
-						<div class="no-action-possible">{{ $t('userFunds.noActionsPossible') }}</div>
-					</div>
-					<div v-else>
-						<div v-if="item.item.balance > 0 && !item.item.locked">
-							<b-button variant="secondary" size="sm" @click.prevent="moveFunds(item.item.bitcoinAddress, item.item.balance)">
-								{{ $t('userFunds.moveFunds') }}
-							</b-button>
-							<b-popover triggers="hover" :content="$t('userFunds.moveFundsDescription')" class="popover-element">
-								<i class="fa fa-info-circle"></i>
-							</b-popover>
+						<div v-else>
+							{{ item.value | moment(dateFormat) }}
 						</div>
-						<div v-else class="no-action-possible">{{ $t('userFunds.noActionsPossible') }}</div>
-					</div>
-				</template>
-			</b-table>
+					</template>
+					<template slot="lockedUntil" scope="item">
+						<div v-if="item.item.virtualBalance">
+							<i class="fa fa-minus"></i>
+						</div>
+						<div v-else>
+							{{ item.value | moment(dateFormat) }}
+						</div>
+					</template>
+					<template slot="locked" scope="item">
+						<div v-if="item.item.virtualBalance">
+							<i class="fa fa-minus"></i>
+						</div>
+						<div v-else class="no-wrap">
+							<span v-if="item.value">
+								<i class="fa fa-times red"></i> {{ $t('userFunds.locked') }}
+							</span>
+							<span v-else>
+								<i class="fa fa-check green"></i> {{ $t('userFunds.unlocked') }}
+							</span>
+						</div>
+					</template>
+					<template slot="balance" scope="item">
+						<div class="nowrap">
+							<i class="fa fa-bitcoin"></i>
+							{{ convertSatoshiToBitcoin(item.value) }}
+						</div>
+					</template>
+					<template slot="qr" scope="item">
+						<div v-if="item.item.virtualBalance">
+							<i class="fa fa-minus"></i>
+						</div>
+						<div v-else>
+							<qr-code :content="item.item.bitcoinAddress"></qr-code>
+						</div>
+					</template>
+					<template slot="actions" scope="item">
+						<div v-if="item.item.virtualBalance">
+							<div class="no-action-possible">{{ $t('userFunds.noActionsPossible') }}</div>
+						</div>
+						<div v-else>
+							<div v-if="item.item.balance > 0 && !item.item.locked">
+								<b-button variant="secondary" size="sm" @click.prevent="moveFunds(item.item.bitcoinAddress, item.item.balance)">
+									{{ $t('userFunds.moveFunds') }}
+								</b-button>
+								<b-popover triggers="hover" :content="$t('userFunds.moveFundsDescription')" class="popover-element">
+									<i class="fa fa-info-circle"></i>
+								</b-popover>
+							</div>
+							<div v-else class="no-action-possible">{{ $t('userFunds.noActionsPossible') }}</div>
+						</div>
+					</template>
+				</b-table>
+			</div>
 			
 			<div class="create-new-address-button" v-if="!hasLockedAddress">
 				<b-button @click.prevent="$root.$emit('show::modal', 'user-transfer-unlock')">{{ $t('userFunds.createNewAddress') }}</b-button>
@@ -328,8 +332,40 @@ export default {
 @import '../../../styles/variables';
 
 h1 small {
-	font-size: 80%;
+	margin-top: 6px;
+	font-size: 70%;
 	font-weight: 300;
+}
+@media (max-width: 650px) {
+	h1 small {
+		margin-top: 15px;
+		display: block;
+		float: none;
+	}
+}
+@media (max-width: 1050px) {
+	.table-wrapper {
+		overflow-x: auto;
+		overflow-y: visible;
+		width: 100%;
+		max-width: 100%;
+		
+		/deep/ table {
+			min-width: 1050px;
+		}
+		/deep/ .qr-image {
+			position: fixed;
+			bottom: auto;
+			left: auto;
+			top: 30px;
+			right: 40px;
+			transform: initial;
+			
+			&:after {
+				display: none;
+			}
+		}
+	}
 }
 
 .fa.green {

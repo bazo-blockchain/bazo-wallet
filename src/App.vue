@@ -126,6 +126,8 @@ export default {
 	.main-view {
 		flex-grow: 1;
 		max-width: 100%;
+		width: 100%;
+		overflow: hidden;
 		
 		&:after {
 			content: "";
