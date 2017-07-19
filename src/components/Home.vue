@@ -37,6 +37,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../styles/variables';
+
 .home {
 	margin-top: 0;
 }
@@ -62,6 +64,12 @@ export default {
 		img {
 			height: 70px;
 		}
+	}
+}
+
+@media (max-width: $breakpoint-hide-header) {
+	.main-photo .logos img {
+		height: 60px;
 	}
 }
 </style>
