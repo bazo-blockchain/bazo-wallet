@@ -75,7 +75,7 @@
 					</div>
 					<div v-else>
 						<div v-if="item.item.balance > 0 && !item.item.locked">
-							<b-button variant="secondary" size="sm">
+							<b-button variant="secondary" size="sm" @click.prevent="moveFunds(item.item.bitcoinAddress, item.item.balance)">
 								{{ $t('userFunds.moveFunds') }}
 							</b-button>
 							<b-popover triggers="hover" :content="$t('userFunds.moveFundsDescription')" class="popover-element">
@@ -87,11 +87,20 @@
 				</template>
 			</b-table>
 			
-			<div class="justify-content-center row my-1" v-show="this.items.length > perPage">
-				<b-pagination size="md" :total-rows="tableItems.length" :per-page="perPage" v-model="currentPage" />
+			<div class="create-new-address-button" v-if="!hasLockedAddress">
+				<b-button @click.prevent="$root.$emit('show::modal', 'user-transfer-unlock')">{{ $t('userFunds.createNewAddress') }}</b-button>
+				<b-popover triggers="hover" :content="$t('userFunds.createNewAddressDescription')" class="popover-element">
+					<i class="fa fa-info-circle"></i>
+				</b-popover>
 			</div>
 			
+			<div class="justify-content-center row my-1" v-show="this.tableItems.length > perPage">
+				<b-pagination size="md" :total-rows="tableItems.length" :per-page="perPage" v-model="currentPage" />
+			</div>
 		</div>
+		
+		<user-transfer @private-key-decrypted="actualTransfer" :encrypted-private-key="encryptedPrivateKey" :amount="currentTransfer.amount"></user-transfer>
+		<user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="encryptedPrivateKey" :only-unlock="true"></user-transfer>
 	</div>
 </div>
 </template>
@@ -101,28 +110,35 @@ import Spinner from '@/components/Spinner';
 import HttpService from '@/services/HttpService';
 import UtilService from '@/services/UtilService';
 import QrCode from '@/components/QrCode';
+import UserTransfer from '@/components/auth/user/UserTransfer';
+import CryptoService from '@/services/CryptoService';
 
 export default {
 	name: 'user-funds',
 	data: function () {
 		return {
 			isLoading: true,
-			items: [],
 			currentPage: 1,
 			perPage: 15,
-			funds: {}
+			funds: {},
+			encryptedPrivateKey: null,
+			currentTransfer: {
+				address: null,
+				amount: 0
+			}
 		}
 	},
 	components: {
 		Spinner,
-		QrCode
+		QrCode,
+		UserTransfer
 	},
 	computed: {
 		fields: function () {
 			return {
 				bitcoinAddress: {
 					label: this.$t('userFunds.fields.bitcoinAddress'),
-					sortable: true
+					sortable: false
 				},
 				createdAt: {
 					label: this.$t('userFunds.fields.createdAt'),
@@ -134,7 +150,7 @@ export default {
 				},
 				locked: {
 					label: this.$t('userFunds.fields.locked'),
-					sortable: true
+					sortable: false
 				},
 				balance: {
 					label: this.$t('userFunds.fields.balance'),
@@ -186,17 +202,68 @@ export default {
 			} else {
 				return [];
 			}
+		},
+		hasLockedAddress: function () {
+			if (this.funds && this.funds.timeLockedAddresses) {
+				let lockedItems = false;
+				this.funds.timeLockedAddresses.forEach(item => {
+					if (item.locked) {
+						lockedItems = true;
+					}
+				});
+				return lockedItems;
+			} else {
+				return false;
+			}
 		}
 	},
 	methods: {
 		loadData: function () {
 			this.isLoading = true;
-			return HttpService.Auth.User.getFunds().then((response) => {
-				this.funds = response.body;
+			return Promise.all([
+				HttpService.Auth.User.getFunds(),
+				HttpService.Auth.User.getEncryptedPrivateKey()
+			]).then((responses) => {
+				this.funds = responses[0].body;
+				this.encryptedPrivateKey = responses[1].body.encryptedClientPrivateKey;
 				this.isLoading = false;
 			}, () => {
 				this.isLoading = false;
 			})
+		},
+		moveFunds: function (bitcoinAddress, amountSatoshi) {
+			this.currentTransfer.amount = this.convertSatoshiToBitcoin(amountSatoshi);
+			this.currentTransfer.address = bitcoinAddress;
+			this.$root.$emit('show::modal', 'user-transfer');
+		},
+		actualTransfer: function (decryptedPrivateKey) {
+			this.isLoading = true;
+			const toAddress = this.currentTransfer.address
+
+			// TODO make transfer
+			console.log(toAddress);
+
+			this.currentTransfer.amount = 0;
+			this.currentTransfer.address = null;
+			this.isLoading = false;
+		},
+		createNewAddress: function (decryptedPrivateKey) {
+			this.isLoading = true;
+
+			const innerDTO = {
+				lockTime: Math.floor(new Date() / 1000) + 3600 * 24 * 100,
+				publicKey: window.bitcoin.ECPair.fromWIF(decryptedPrivateKey).getPublicKeyBuffer().toString('hex')
+			};
+			const signedInnerDTO = CryptoService.signDTO(decryptedPrivateKey, innerDTO);
+
+			HttpService.Auth.User.createTimeLockedAddress(signedInnerDTO).then(() => {
+				this.isLoading = false;
+				this.loadData();
+			}, () => {
+				this.isLoading = false;
+			});
+
+			this.isLoading = false;
 		},
 		convertSatoshiToBitcoin: UtilService.convertSatoshiToBitcoin
 	},
@@ -218,6 +285,8 @@ export default {
 			"noActionsPossible": "No action possible.",
 			"virtualBalance": "Virtual Balance",
 			"virtualBalanceDescription": "To provide a fast, reliable service, a certain amount of Bitcoins is kept at the server as a virtual balance for a direct Coinblesk user exchange.",
+			"createNewAddress": "Create new address",
+			"createNewAddressDescription": "Create a new address!",
 			"fields": {
 				"bitcoinAddress": "Bitcoin Address",
 				"createdAt": "Created At",
@@ -238,7 +307,9 @@ export default {
 			"moveFundsDescription": "Sie können die Beträge älterer Bitcoin-Adressen bequem auf Ihre aktuelle, in Coinblesk verwendete Bitcoin-Adresse übertragen.",
 			"noActionsPossible": "Keine Aktion möglich.",
 			"virtualBalance": "Virtuelles Saldo",
-			"virtualBalanceDescription": "Um einen möglichst reibungslosen und schnellen Dienst anbieten zu können, wird eine jeweils eine beschränkte Summe Bitcoins auf dem Server für einen direkten Austausch zwischen Coinblesk Benutzern zurückbehalten.",
+			"virtualBalanceDescription": "Um einen möglichst reibungslosen und schnellen Dienst anbieten zu können, wird jeweils eine beschränkte Summe Bitcoins auf dem Server für einen direkten Austausch zwischen Coinblesk Benutzern zurückbehalten.",
+			"createNewAddress": "Neue Adresse anlegen",
+			"createNewAddressDescription": "Create a new address!",
 			"fields": {
 				"bitcoinAddress": "Bitcoin Adresse",
 				"createdAt": "Erstellt am",
@@ -277,6 +348,13 @@ h1 small {
 	vertical-align: middle;
 	margin-left: 3px;
 	cursor: help;
+}
+
+.create-new-address-button {
+	.popover-element {
+		margin-top: 3px;
+		margin-left: 5px;
+	}
 }
 
 .table /deep/ thead th {

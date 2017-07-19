@@ -62,6 +62,9 @@ const HttpService = {
 			},
 			getPaymentRequirements: function () {
 				return Vue.http.get(HOST + '/auth/user/payment-requirements');
+			},
+			createTimeLockedAddress: function (signedDTO) {
+				return Vue.http.post(HOST + '/payment/createTimeLockedAddress', signedDTO);
 			}
 		},
 

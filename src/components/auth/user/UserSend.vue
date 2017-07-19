@@ -49,7 +49,7 @@
 					</form>
 				</div>
 	
-				<user-decrypt-private-key @private-key-decrypted="signDTO" :encrypted-private-key="paymentRequirements.encryptedClientPrivateKey"></user-decrypt-private-key>
+				<user-transfer @private-key-decrypted="signDTO" :encrypted-private-key="paymentRequirements.encryptedClientPrivateKey" :amount="btcAmount"></user-transfer>
 			</div>
 		</div>
 	</div>
@@ -60,7 +60,7 @@
 import UtilService from '@/services/UtilService';
 import HttpService from '@/services/HttpService';
 import CryptoService from '@/services/CryptoService';
-import UserDecryptPrivateKey from '@/components/auth/user/UserDecryptPrivateKey';
+import UserTransfer from '@/components/auth/user/UserTransfer';
 import Spinner from '@/components/Spinner';
 
 export default {
@@ -83,7 +83,7 @@ export default {
 	},
 	components: {
 		Spinner,
-		UserDecryptPrivateKey
+		UserTransfer
 	},
 	computed: {
 		totalBalance: function () {
@@ -149,14 +149,10 @@ export default {
 				return Promise.reject();
 			});
 		},
-		openSearch: function () {
-			console.log('search');
-			// TODO create a search modal
-		},
 		submit: function () {
 			this.formIsTouched = true;
 			if (this.validForm) {
-				this.$root.$emit('show::modal', 'user-decrypt-private-key');
+				this.$root.$emit('show::modal', 'user-transfer');
 			}
 		},
 		signDTO: function (privateKeyWif) {
