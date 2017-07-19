@@ -14,39 +14,44 @@
 					<span class="badge badge-info" @click="changeUrgence('DEBUG')" :class="{ 'translucent': !badges.DEBUG }">DEBUG</span>
 				</div>
 				<div v-if="items.length > 0">
-					<label class="rows-per-page">
-						Rows per Page
-						<b-form-select :options="[{text:50,value:50},{text:100,value:100},{text:200,value:200}]" v-model="perPage"></b-form-select>
-					</label>
-					<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage">
-						<template slot="id" scope="item">
-							{{ item.value }}
-						</template>
-						<template slot="urgence" scope="item">
-							<span class="badge" :class="{'badge-very-danger': item.value === 'FATAL',
-								'badge-danger': item.value === 'ERROR', 'badge-warning': item.value === 'WARN',
-								'badge-primary': item.value === 'INFO', 'badge-info': item.value === 'DEBUG', }">
-								<i v-if="item.value === 'FATAL'" class="fa fa-exclamation"></i>
+					<div class="table-wrapper">
+						<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage">
+							<template slot="id" scope="item">
 								{{ item.value }}
-							</span>
-						</template>
-						<template slot="date" scope="item">
-							<div class="nowrap">
-								{{ item.value | moment(dateFormat) }}
-							</div>
-						</template>
-						<template slot="type" scope="item">
-							{{ item.value | enumReadable }}
-						</template>
-						<template slot="description" scope="item">
-							<div class="description-column">
-								{{ item.value }}
-							</div>
-						</template>
-					</b-table>
+							</template>
+							<template slot="urgence" scope="item">
+								<span class="badge" :class="{'badge-very-danger': item.value === 'FATAL',
+									'badge-danger': item.value === 'ERROR', 'badge-warning': item.value === 'WARN',
+									'badge-primary': item.value === 'INFO', 'badge-info': item.value === 'DEBUG', }">
+									<i v-if="item.value === 'FATAL'" class="fa fa-exclamation"></i>
+									{{ item.value }}
+								</span>
+							</template>
+							<template slot="date" scope="item">
+								<div class="nowrap">
+									{{ item.value | moment(dateFormat) }}
+								</div>
+							</template>
+							<template slot="type" scope="item">
+								{{ item.value | enumReadable }}
+							</template>
+							<template slot="description" scope="item">
+								<div class="description-column">
+									{{ item.value }}
+								</div>
+							</template>
+						</b-table>
+					</div>
 					
-					<div class="justify-content-center row my-1 pagination-bar">
+					<div class="justify-content-center row pagination-bar" v-show="perPage < this.items.length">
 						<b-pagination size="md" :total-rows="this.items.length" :per-page="perPage" v-model="currentPage"></b-pagination>
+					</div>
+					
+					<div class="rows-per-page">
+						<label>
+							{{ $t('general.rowsPerPage') }}
+							<b-form-select :options="[{text:50,value:50},{text:100,value:100},{text:200,value:200}]" v-model="perPage" size="sm"></b-form-select>
+						</label>
 					</div>
 				</div>
 				<div v-else>
@@ -88,19 +93,19 @@ export default {
 					sortable: false
 				},
 				urgence: {
-					label: 'Urgence',
+					label: this.$t('adminEvents.fields.urgence'),
 					sortable: true
 				},
 				date: {
-					label: 'Date',
+					label: this.$t('adminEvents.fields.date'),
 					sortable: true
 				},
 				type: {
-					label: 'Type',
+					label: this.$t('adminEvents.fields.type'),
 					sortable: true
 				},
 				description: {
-					label: 'Description',
+					label: this.$t('adminEvents.fields.description'),
 					sortable: false
 				}
 			}
@@ -154,10 +159,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../../styles/variables';
+
 .event-urgence-selector {
+	margin-top: -62px;
+	margin-bottom: 35px;
 	font-size: 20px;
-	margin-bottom: 20px;
 	text-align: right;
+	white-space: nowrap;
+	overflow-x: auto;
+	overflow-y: hidden;
+	
 	.badge {
 		cursor: pointer;
 		padding: 0.4em 0.6em;
@@ -166,13 +178,32 @@ export default {
 .description-column {
 	font-size: 85%;
 }
-.rows-per-page {
-	transform: translateY(-100%);
-	position: absolute;
-	margin-top: -15px;
-	select {
-		margin-left: 10px;
+@media (max-width: 850px) {
+	.event-urgence-selector {
+		margin-top: 0;
+		margin-bottom: 20px;
+		font-size: 17px;
+		text-align: center;
 	}
+}
+.table-wrapper {
+	width: 100%;
+	max-width: 100%;
+	margin-bottom: 20px;
+	overflow-x: auto;
+	@include light-scrollbar();
+	
+	/deep/ table {
+		min-width: 900px;
+		margin-bottom: 5px;
+		thead th {
+			border-top: 0;
+		}
+	}
+}
+.rows-per-page {
+	margin-top: 25px;
+	text-align: center;
 }
 </style>
 
@@ -182,14 +213,26 @@ export default {
 		"adminEvents": {
 			"title": "Event overview",
 			"noEntryAvailableTitle": "Attention:",
-			"noEntryAvailable": "There is currently no event available."
+			"noEntryAvailable": "There is currently no event available in this event urgence.",
+			"fields": {
+				"urgence": "Urgence",
+				"date": "Date",
+				"type": "Category",
+				"description": "Description"
+			}
 		}
 	},
 	"de": {
 		"adminEvents": {
 			"title": "Eventübersicht",
 			"noEntryAvailableTitle": "Achtung:",
-			"noEntryAvailable": "Momentan ist kein Event verfügbar."
+			"noEntryAvailable": "Momentan ist kein Event verfügbar in dieser Dringlichkeitsstufe.",
+			"fields": {
+				"urgence": "Dringlichkeit",
+				"date": "Datum",
+				"type": "Kategorie",
+				"description": "Beschreibung"
+			}
 		}
 	}
 }

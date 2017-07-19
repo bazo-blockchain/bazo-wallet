@@ -6,18 +6,18 @@
 		<div class="pos-rel">
 			<spinner :is-loading="isLoading"></spinner>
 
-			<div v-if="!isLoading">
-				<div v-if="balance">
+			<div v-if="!isLoading" class="balance-wrapper">
+				<div v-if="balance" class="balance">
 					<div class="row equation">
-						<div class="col-md-3 equation-box sum-of-all-pending-transactions">
+						<div class="col-3 equation-box sum-of-all-pending-transactions">
 							<div class="value">{{ formatSatoshi(balance.sumOfAllPendingTransactions) }}</div>
 							<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllPendingTransactions') }}</div>
 						</div>
-						<div class="col-md-3 equation-box sum-of-all-virtual-balances">
+						<div class="col-3 equation-box sum-of-all-virtual-balances">
 							<div class="value">{{ formatSatoshi(balance.sumOfAllVirtualBalances) }}</div>
 							<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllVirtualBalances') }}</div>
 						</div>
-						<div class="col-md-3 equation-box server-pot-baseline">
+						<div class="col-3 equation-box server-pot-baseline">
 							<div class="value">{{ formatSatoshi(balance.serverPotBaseline) }}</div>
 							<div class="description">{{ $t('adminServerBalance.serverPotBaseline') }}
 								<button class="btn btn-secondary btn-sm" @click="$root.$emit('show::modal','admin-server-pot-baseline')">
@@ -25,37 +25,37 @@
 								</button>
 							</div>
 						</div>
-						<div class="col-md-3 equation-box server-pot-current ">
+						<div class="col-3 equation-box server-pot-current ">
 							<div class="value">{{ formatSatoshi(balance.serverPotCurrent) }}</div>
 							<div class="description"> {{ $t('adminServerBalance.serverPotCurrent') }}</div>
 						</div>
 					</div>
 					<hr>
 					<div class="row equation">
-						<div class="col-md-3 equation-box sum-of-all-pending-transactions">
+						<div class="col-3 equation-box sum-of-all-pending-transactions">
 							<div class="value">{{ formatSatoshi(balance.sumOfAllPendingTransactions) }}</div>
 							<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllPendingTransactions') }}</div>
 						</div>
-						<div class="col-md-3 equation-box sum-of-all-virtual-balances">
+						<div class="col-3 equation-box sum-of-all-virtual-balances">
 							<div class="value">{{ formatSatoshi(balance.sumOfAllVirtualBalances) }}</div>
 							<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllVirtualBalances') }}</div>
 						</div>
-						<div class="col-md-3 equation-box server-pot">
+						<div class="col-3 equation-box server-pot">
 							<div class="value">{{ formatSatoshi(balance.serverPotBaseline - balance.serverPotCurrent) }}</div>
 							<div class="description"> {{ $t('adminServerBalance.serverPot') }}</div>
 						</div>
 					</div>
 					<hr>
 					<div class="row equation">
-						<div class="col-md-3 equation-box sum-of-all-pending-transactions">
+						<div class="col-3 equation-box sum-of-all-pending-transactions">
 							<div class="value">{{ formatSatoshi(balance.sumOfAllPendingTransactions) }}</div>
 							<div class="description">&#931; {{ $t('adminServerBalance.sumOfAllPendingTransactions') }}</div>
 						</div>
-						<div class="col-md-3 equation-box server">
+						<div class="col-3 equation-box server">
 							<div class="value">{{ formatSatoshi(balance.sumOfAllVirtualBalances + balance.serverPotBaseline - balance.serverPotCurrent) }}</div>
 							<div class="description">{{ $t('adminServerBalance.server') }}</div>
 						</div>
-						<div class="col-md-3 equation-box equality">
+						<div class="col-3 equation-box equality">
 							<div class="positive" v-if="balance.inSync">
 								<span>
 									<i class="fa fa-check"></i> EQUAL
@@ -117,6 +117,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../../styles/variables';
+
+.balance-wrapper {
+	width: 100%;
+	max-width: 100%;
+	overflow-x: auto;
+	@include light-scrollbar();
+	margin-bottom: 20px;
+	
+	.balance {
+		min-width: 750px;
+		max-width: 1300px;
+		margin-bottom: 30px;
+	}
+	.row {
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
+
 .equation-box {
 	position: relative;
 

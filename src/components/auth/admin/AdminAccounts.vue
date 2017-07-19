@@ -8,45 +8,47 @@
 			
 				<div v-if="!isLoading">
 					<div v-if="items.length > 0">
-		
-						<div class="justify-content-centermy-1 row">
-							<b-form-fieldset horizontal label="Rows per page" class="col-6" :label-size="6">
-								<b-form-select :options="[{text:10,value:10},{text:20,value:20},{text:50,value:50}]" v-model="perPage">
-								</b-form-select>
-							</b-form-fieldset>
+						
+						<div class="table-wrapper">
+							<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage">
+								<template slot="userAccountEmail" scope="item">
+									<span v-if="item.value">
+										<router-link :to="{ name: 'admin-user-accounts-detail', params: { email: item.value } }">{{ item.value }}</router-link>
+									</span>
+									<span v-else>
+										<i class="fa fa-minus"></i>
+									</span>
+								</template>
+								<template slot="timeCreated" scope="item">
+									{{ item.value | moment(dateFormat) }}
+								</template>
+								<template slot="publicKeyClient" scope="item">
+									<span class="short-key">{{ item.value }}</span>
+								</template>
+								<template slot="satoshiBalance" scope="item">
+									{{ item.value }}
+								</template>
+								<template slot="virtualBalance" scope="item">
+									{{ item.value }}
+								</template>
+								<template slot="totalBalance" scope="item">
+									{{ item.value }}
+								</template>
+								<template slot="actions" scope="item">
+									<b-btn size="sm" :to="{ name: 'admin-accounts-detail', params: { publicKeyClient: item.item.publicKeyClient } }">Details</b-btn>
+								</template>
+							</b-table>
 						</div>
-			
-						<b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage">
-							<template slot="userAccountEmail" scope="item">
-								<span v-if="item.value">
-									<router-link :to="{ name: 'admin-user-accounts-detail', params: { email: item.value } }">{{ item.value }}</router-link>
-								</span>
-								<span v-else>
-									<i class="fa fa-minus"></i>
-								</span>
-							</template>
-							<template slot="timeCreated" scope="item">
-								{{ item.value | moment(dateFormat) }}
-							</template>
-							<template slot="publicKeyClient" scope="item">
-								<span class="short-key">{{ item.value }}</span>
-							</template>
-							<template slot="satoshiBalance" scope="item">
-								{{ item.value }}
-							</template>
-							<template slot="virtualBalance" scope="item">
-								{{ item.value }}
-							</template>
-							<template slot="totalBalance" scope="item">
-								{{ item.value }}
-							</template>
-							<template slot="actions" scope="item">
-								<b-btn size="sm" :to="{ name: 'admin-accounts-detail', params: { publicKeyClient: item.item.publicKeyClient } }">Details</b-btn>
-							</template>
-						</b-table>
-			
-						<div class="justify-content-center row my-1">
+						
+						<div class="justify-content-center row" v-show="perPage < this.items.length">
 							<b-pagination size="md" :total-rows="this.items.length" :per-page="perPage" v-model="currentPage" />
+						</div>
+
+						<div class="rows-per-page">
+							<b-form-fieldset>
+								<label>{{ $t('general.rowsPerPage') }}</label>&nbsp;
+								<b-form-select size="sm" :options="[{text:10,value:10},{text:20,value:20},{text:50,value:50}]" v-model="perPage"></b-form-select>
+							</b-form-fieldset>
 						</div>
 		
 					</div>
@@ -137,6 +139,30 @@ export default {
 	}
 };
 </script>
+
+<style lang="scss" scoped>
+@import '../../../styles/variables';
+
+.table-wrapper {
+	width: 100%;
+	max-width: 100%;
+	overflow-x: auto;
+	@include light-scrollbar();
+	margin-bottom: 20px;
+	
+	/deep/ table {
+		min-width: 900px;
+		margin-bottom: 5px;
+		thead th {
+			border-top: 0;
+		}
+	}
+}
+.rows-per-page {
+	margin-top: 25px;
+	text-align: center;
+}
+</style>
 
 <i18n>
 {

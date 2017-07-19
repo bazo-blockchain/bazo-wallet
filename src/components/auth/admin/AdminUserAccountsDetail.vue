@@ -9,7 +9,7 @@
 		<div class="pos-rel">
 			<spinner :is-loading="isLoading"></spinner>
 			
-			<div v-if="!isLoading">
+			<div v-if="!isLoading" class="table-wrapper">
 				<table class="table table-striped" v-if="userAccount.email">
 					<tbody>
 						<tr>
@@ -155,8 +155,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.table {
-	width: auto;
+@import '../../../styles/variables';
+
+.table-wrapper {
+	max-width: 100%;
+	overflow-x: auto;
+	@include light-scrollbar();
+	margin-bottom: 20px;
+	
+	.table {
+		min-width: 450px;
+		width: auto;
+		margin-bottom: 5px;
+	}
 }
 .display-4 small {
 	font-size: 70%;

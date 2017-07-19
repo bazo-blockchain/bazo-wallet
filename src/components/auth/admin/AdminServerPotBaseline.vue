@@ -131,6 +131,10 @@ export default {
 	max-height: 50vh;
 	overflow-y: auto;
 	padding-right: 0.15em;
+	
+	/deep/ thead th {
+		border-top: 0;
+	}
 }
 .current-total-wrapper {
 	text-align: center;
@@ -160,6 +164,10 @@ export default {
 			font-size: 30px;
 		}
 	}
+}
+form input,
+form .btn {
+	margin-top: 5px;
 }
 </style>
 

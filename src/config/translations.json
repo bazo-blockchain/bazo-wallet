@@ -21,6 +21,9 @@
 			"userIsDeletedError": "This user account was deleted. Please contact the administrator.",
 			"offlineError": "<i class='fa fa-wifi'></i>&nbsp;Your request was not successful, because you are currently offline.",
 			"offlineModeRedirect": "<i class='fa fa-wifi'></i>&nbsp;You cannot access this page, because you are currently&nbsp;<b>offline</b>."
+		},
+		"general": {
+			"rowsPerPage": "Rows per page"
 		}
 	},
 	"de": {
@@ -45,6 +48,9 @@
 			"userIsDeletedError": "Dieses Benutzerkonto wurde deaktiviert. Bitte kontaktieren Sie den Administrator.",
 			"offlineError": "<i class='fa fa-wifi'></i>&nbsp;Ihre Anfrage war nicht erfolgreich, da Sie&nbsp;<b>offline</b>&nbsp;sind.",
 			"offlineModeRedirect": "<i class='fa fa-wifi'></i>&nbsp;Sie können diese Seite nicht aufrufen, da Sie derzeit&nbsp;<b>offline</b>&nbsp;sind."
+		},
+		"general": {
+			"rowsPerPage": "Zeilen pro Seite"
 		}
 	}
 }

@@ -216,7 +216,7 @@ export default {
 		visibility: visible;
 	}
 	.header-bar-wrapper .header-bar {
-		background: #626262;
+		background: #353535;
 		border-bottom-color: #464646;
 		.buttons {
 			opacity: 0;
