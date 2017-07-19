@@ -37,9 +37,14 @@
 								</b-form-fieldset>
 							</div>
 							<div class="col-md-4">
-								<b-form-fieldset :label="$t('userSend.maxAmount')">
+								<b-form-fieldset>
+									<label class="col-form-label">{{ $t('userSend.maxAmount') }}
+										<b-popover triggers="hover" :content="$t('userSend.maxAmountDescription')" class="popover-element">
+											<i class="fa fa-info-circle increase-focus"></i>
+										</b-popover>
+									</label>
 									<div class="form-control disabled mono" :class="{ 'form-error': formIsTouched && maximumAmountExceeded }">
-										{{ convertSatoshiToBitcoin(totalBalance) }} BTC
+										{{ convertSatoshiToBitcoin(paymentRequirements.totalLockedAndVirtualBalance) }} BTC
 									</div>
 								</b-form-fieldset>
 							</div>
@@ -86,13 +91,6 @@ export default {
 		UserTransfer
 	},
 	computed: {
-		totalBalance: function () {
-			let totalBalance = 0;
-			if (this.$store.state.userBalance && this.$store.state.userBalance.totalBalance) {
-				totalBalance = this.$store.state.userBalance.totalBalance;
-			}
-			return totalBalance;
-		},
 		btcAmount: function () {
 			if (this.isLoading) {
 				return 0;
@@ -114,11 +112,14 @@ export default {
 			}
 			return true;
 		},
-		maximumAmountExceeded: function () {
-			if (!this.$store.state.userBalance) {
-				return true;
+		maximumAmount: function () {
+			if (!this.paymentRequirements.totalLockedAndVirtualBalance) {
+				return 0;
 			}
-			return this.$store.state.userBalance.totalBalance * UtilService.SATOSHI_PER_BITCOIN < this.btcAmount;
+			return this.paymentRequirements.totalLockedAndVirtualBalance;
+		},
+		maximumAmountExceeded: function () {
+			return this.maximumAmount * UtilService.SATOSHI_PER_BITCOIN < this.btcAmount;
 		},
 		validAddress: function () {
 			if (this.address === '') {
@@ -264,6 +265,7 @@ export default {
 			"lookup": "Lookup",
 			"amount": "Amount",
 			"maxAmount": "Maximal amount",
+			"maxAmountDescription": "The maximal amount relates to the sum the locked account and the virtual balance. If you except a higher value here, make sure to have your funds on the current locked Coinblesk address (see Funds).",
 			"descriptionForexRate": "The current forex rate BTC/{currency} is <span class='mono'>{forex}</span>&nbsp;&nbsp;(Source: Bitstamp).",
 			"button": "Send {amount} BTC",
 			"transactionSuccessful": "The transaction was successfully executed."
@@ -279,6 +281,7 @@ export default {
 			"lookup": "Suchen",
 			"amount": "Betrag",
 			"maxAmount": "Maximalbetrag",
+			"maxAmountDescription": "Der Maximalbetrag stellt die Summe aus virtuellem Saldo und dem gesperrten Konto dar. Falls Sie hier einen höheren Wert erwarten, überweisen Sie bitte die Funds der bisherigen Addressen auf die aktuelle, gesperrte Coinblesk Adresse (siehe Guthaben).",
 			"descriptionForexRate": "Der aktuelle Wechselkurs BTC/{currency} beträgt <span class='mono'>{forex}</span>&nbsp;&nbsp;(Quelle: Bitstamp).",
 			"button": "{amount} BTC versenden",
 			"transactionSuccessful": "Die Transaktion wurde erfolgreich durchgeführt."
