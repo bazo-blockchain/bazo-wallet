@@ -4,3 +4,14 @@ $red-color: #ce2e2e;
 $side-bar-black: #353535;
 
 $breakpoint-hide-header: 550px;
+
+@mixin light-scrollbar() {
+	&::-webkit-scrollbar {
+		width: 10px;
+		height: 10px;
+		background-color: rgba(0,0,0,0.1);
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: rgba(0,0,0,0.3);
+	}
+}

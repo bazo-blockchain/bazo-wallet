@@ -350,6 +350,8 @@ h1 small {
 		width: 100%;
 		max-width: 100%;
 		
+		@include light-scrollbar();
+		
 		/deep/ table {
 			min-width: 1050px;
 		}

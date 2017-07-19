@@ -216,7 +216,10 @@ export default {
 }
 .selectors {
 	margin-bottom: 15px;
+	padding-right: 5px;
 	font-size: 0;
+	white-space: nowrap;
+	overflow-x: auto;
 	
 	.selector {
 		display: inline-block;
