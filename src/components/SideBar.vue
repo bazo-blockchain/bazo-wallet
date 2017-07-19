@@ -98,9 +98,6 @@ export default {
 			hammer: null
 		};
 	},
-	props: {
-		showTriangle: Boolean
-	},
 	components: {
 		UserBalance
 	},
@@ -130,8 +127,7 @@ export default {
 		dynamicLinkClasses: function (routeName) {
 			return {
 				offline: this.isOffline && this.offlineRoutes.indexOf(routeName) === -1,
-				selected: routeName === this.$route.name || routeName + '-detail' === this.$route.name,
-				'hide-triangle': !this.showTriangle
+				selected: routeName === this.$route.name || routeName + '-detail' === this.$route.name
 			};
 		},
 		closeMenu: function () {
@@ -214,29 +210,10 @@ $language-picker-height-offline: 8.9em;
 			background-color: #454545;
 		}
 		
-		&:after {
-			content: "";
-			display: block;
-			width: 0;
-			height: 0;
-			border-right: 0.7em solid white;
-			border-top: 0.8em solid transparent;
-			border-bottom: 0.8em solid transparent;
-			position: absolute;
-			right: 0;
-			top: 50%;
-			transform: translateY(-50%);
-			opacity: 0;
-		}
-		
 		&.selected {
 			background: $green-color;
 			&:after {
 				opacity: 1
-			}
-			&.hide-triangle:after {
-				opacity: 0 !important;
-				visibility: hidden !important;
 			}
 			.fa {
 				opacity: 1;

@@ -5,7 +5,6 @@
 	<div id="app-container" v-if="initialLoadingComplete">
 		<div class="side-bar-wrapper" v-show="showSideBar" :class="{ shown: sideBarIsShown }">
 			<side-bar
-				:show-triangle="showSideBarTriangle"
 				@close-menu="sideBarIsShown = false"></side-bar>
 			<div class="hamburger" @click="sideBarIsShown = !sideBarIsShown">
 				<i class="fa fa-bars"></i>
@@ -17,7 +16,6 @@
 				@toggle-header="toggleHeader"
 				@toggle-header-transparent="toggleHeaderTransparent"
 				@toggle-side-bar="toggleSideBar"
-				@toggle-side-bar-triangle="toggleSideBarTriangle"
 				@set-body-background="setBodyBackground"></router-view>
 		</div>
 	</div>
@@ -39,7 +37,6 @@ export default {
 			showHeader: true,
 			showHeaderTransparent: false,
 			showSideBar: true,
-			showSideBarTriangle: true,
 			initialLoadingComplete: false,
 			sideBarIsShown: false
 		};
@@ -68,9 +65,6 @@ export default {
 		},
 		toggleSideBar: function (show) {
 			this.showSideBar = show;
-		},
-		toggleSideBarTriangle: function (show) {
-			this.showSideBarTriangle = show;
 		},
 		setBodyBackground: function (color) {
 			if (color === 'dark') {

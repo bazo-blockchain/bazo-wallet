@@ -29,11 +29,9 @@ export default {
 
 		this.$emit('toggle-header-transparent', true);
 		this.$emit('toggle-side-bar', true);
-		this.$emit('toggle-side-bar-triangle', false);
 	},
 	beforeDestroy: function () {
 		this.$emit('toggle-header-transparent', false);
-		this.$emit('toggle-side-bar-triangle', true);
 	}
 };
 </script>

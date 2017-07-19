@@ -36,12 +36,10 @@ export default {
 	},
 	mounted: function () {
 		this.$emit('toggle-header', false);
-		this.$emit('toggle-side-bar-triangle', false);
 		this.$emit('set-body-background', 'dark');
 	},
 	beforeDestroy: function () {
 		this.$emit('toggle-header', true);
-		this.$emit('toggle-side-bar-triangle', true);
 		this.$emit('set-body-background', 'white');
 	},
 	methods: {
