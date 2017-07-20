@@ -46,6 +46,9 @@ const HttpService = {
 			return Vue.http.get(HOST + '/auth/common/user-account',
 					doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 		},
+		changePassword: function (data) {
+			return Vue.http.put(HOST + '/auth/common/user-account/change-password', data);
+		},
 
 		User: {
 			getUserBalance: function (doNotIntercept, showProgressBar) {
