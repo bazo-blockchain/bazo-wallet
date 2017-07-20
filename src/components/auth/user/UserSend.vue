@@ -48,7 +48,7 @@
 											</b-popover>
 										</label>
 										<div class="form-control disabled mono" :class="{ 'form-error': formIsTouched && maximumAmountExceeded }">
-											{{ convertSatoshiToBitcoin(paymentRequirements.totalLockedAndVirtualBalance) }} BTC
+											{{ convertSatoshiToBitcoin(maximumAmount) }} BTC
 										</div>
 									</b-form-fieldset>
 								</div>
@@ -119,10 +119,10 @@ export default {
 			return true;
 		},
 		maximumAmount: function () {
-			if (!this.paymentRequirements.totalLockedAndVirtualBalance) {
+			if (!this.$store.state.userBalance.totalBalance) {
 				return 0;
 			}
-			return this.paymentRequirements.totalLockedAndVirtualBalance;
+			return this.$store.state.userBalance.totalBalance;
 		},
 		maximumAmountExceeded: function () {
 			return this.maximumAmount * UtilService.SATOSHI_PER_BITCOIN < this.btcAmount;
@@ -144,13 +144,11 @@ export default {
 			return Promise.all([
 				HttpService.getForexCurrent('BITSTAMP', 'USD'),
 				HttpService.getForexCurrent('BITSTAMP', 'EUR'),
-				HttpService.getForexCurrent('BITSTAMP', 'CHF'),
-				HttpService.Auth.User.getPaymentRequirements()
+				HttpService.getForexCurrent('BITSTAMP', 'CHF')
 			]).then(responses => {
 				this.forexRates.USD = responses[0].body;
 				this.forexRates.EUR = responses[1].body;
 				this.forexRates.CHF = responses[2].body;
-				this.paymentRequirements = responses[3].body;
 				return Promise.resolve();
 			}, () => {
 				return Promise.reject();
@@ -159,7 +157,20 @@ export default {
 		submit: function () {
 			this.formIsTouched = true;
 			if (this.validForm) {
-				this.$root.$emit('show::modal', 'user-transfer');
+				this.isLoading = true;
+				const data = {
+					receiver: this.address,
+					amount: this.btcAmount / UtilService.SATOSHI_PER_BITCOIN
+				};
+				HttpService.Auth.User.getPaymentRequirements(data).then((response) => {
+					this.paymentRequirements = response.body;
+					this.isLoading = false;
+					this.$nextTick(() => {
+						this.$root.$emit('show::modal', 'user-transfer');
+					});
+				}, () => {
+					this.isLoading = false;
+				});
 			}
 		},
 		createAndSubmitTransaction: function (privateKeyWif) {

@@ -63,8 +63,8 @@ const HttpService = {
 			getEncryptedPrivateKey: function () {
 				return Vue.http.get(HOST + '/auth/user/encrypted-private-key');
 			},
-			getPaymentRequirements: function () {
-				return Vue.http.get(HOST + '/auth/user/payment-requirements');
+			getPaymentRequirements: function (data) {
+				return Vue.http.post(HOST + '/auth/user/payment-requirements', data);
 			},
 			createTimeLockedAddress: function (signedDTO) {
 				return Vue.http.post(HOST + '/payment/createTimeLockedAddress', signedDTO);

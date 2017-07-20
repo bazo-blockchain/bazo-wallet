@@ -18,7 +18,7 @@
 			"pageNotFound": "404 - The page could not be found. You've been redirected.",
 			"validationError": "Please fill out all fields correctly.",
 			"languageSwitched": "Your language setting has successfully been switched to {language}.",
-			"userIsDeletedError": "This user account was deleted. Please contact the administrator.",
+			"userIsDeletedError": "This user account was deleted or can only be used with a special token. Please contact the administrator.",
 			"offlineError": "<i class='fa fa-wifi'></i>&nbsp;Your request was not successful, because you are currently offline.",
 			"offlineModeRedirect": "<i class='fa fa-wifi'></i>&nbsp;You cannot access this page, because you are currently&nbsp;<b>offline</b>."
 		},
@@ -45,7 +45,7 @@
 			"pageNotFound": "404 - Die Seite wurde nicht gefunden. Sie wurden weitergeleitet.",
 			"validationError": "Bitte füllen Sie alle Felder korrekt aus.",
 			"languageSwitched": "Ihre Spracheinstellung wurde erfolgreich auf {language} geändert.",
-			"userIsDeletedError": "Dieses Benutzerkonto wurde deaktiviert. Bitte kontaktieren Sie den Administrator.",
+			"userIsDeletedError": "Dieses Benutzerkonto wurde deaktiviert oder kann nur mit einem Spezialschlüssel benutzt werden. Bitte kontaktieren Sie den Administrator.",
 			"offlineError": "<i class='fa fa-wifi'></i>&nbsp;Ihre Anfrage war nicht erfolgreich, da Sie&nbsp;<b>offline</b>&nbsp;sind.",
 			"offlineModeRedirect": "<i class='fa fa-wifi'></i>&nbsp;Sie können diese Seite nicht aufrufen, da Sie derzeit&nbsp;<b>offline</b>&nbsp;sind."
 		},
