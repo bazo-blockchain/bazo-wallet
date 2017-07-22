@@ -12,6 +12,9 @@
 			<spinner :is-loading="isLoading"></spinner>
 			
 			<div class="table-wrapper">
+				<div class="alert alert-success" v-if="moveFundsSuccessful">
+					{{ $t('userFunds.moveFundsSuccessful') }}
+				</div>
 				<b-table striped hover :items="tableItems" :fields="fields" :current-page="currentPage" :per-page="perPage">
 					<template slot="bitcoinAddress" scope="item">
 						<div class="no-wrap">
@@ -77,8 +80,8 @@
 							<div class="no-action-possible">{{ $t('userFunds.noActionsPossible') }}</div>
 						</div>
 						<div v-else>
-							<div v-if="item.item.balance > 0 && !item.item.locked">
-								<b-button variant="secondary" size="sm" @click.prevent="moveFunds(item.item.bitcoinAddress, item.item.balance)">
+							<div v-if="item.item.balance > 0 && !item.item.locked && lockedAddress !== null">
+								<b-button variant="secondary" size="sm" @click.prevent="moveFundsPreparation(item.item.bitcoinAddress, item.item.balance)">
 									{{ $t('userFunds.moveFunds') }}
 								</b-button>
 								<b-popover triggers="hover" :content="$t('userFunds.moveFundsDescription')" class="popover-element">
@@ -91,8 +94,8 @@
 				</b-table>
 			</div>
 			
-			<div class="create-new-address-button" v-if="!hasLockedAddress">
-				<b-button @click.prevent="$root.$emit('show::modal', 'user-transfer-unlock')">{{ $t('userFunds.createNewAddress') }}</b-button>
+			<div class="create-new-address-button" v-if="lockedAddress === null">
+				<b-button @click.prevent="createNewAddressPreparation">{{ $t('userFunds.createNewAddress') }}</b-button>
 				<b-popover triggers="hover" :content="$t('userFunds.createNewAddressDescription')" class="popover-element">
 					<i class="fa fa-info-circle"></i>
 				</b-popover>
@@ -103,8 +106,8 @@
 			</div>
 		</div>
 		
-		<user-transfer @private-key-decrypted="actualTransfer" :encrypted-private-key="encryptedPrivateKey" :amount="currentTransfer.amount"></user-transfer>
-		<user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="encryptedPrivateKey" :only-unlock="true"></user-transfer>
+		<user-transfer @private-key-decrypted="moveFunds" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :amount="convertSatoshiToBitcoin(currentTransfer.amountSatoshi)"></user-transfer>
+		<user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true"></user-transfer>
 	</div>
 </div>
 </template>
@@ -116,6 +119,8 @@ import UtilService from '@/services/UtilService';
 import QrCode from '@/components/QrCode';
 import UserTransfer from '@/components/auth/user/UserTransfer';
 import CryptoService from '@/services/CryptoService';
+import TransactionService from '@/services/TransactionService';
+import moment from 'moment';
 
 export default {
 	name: 'user-funds',
@@ -125,11 +130,9 @@ export default {
 			currentPage: 1,
 			perPage: 15,
 			funds: {},
-			encryptedPrivateKey: null,
-			currentTransfer: {
-				address: null,
-				amount: 0
-			}
+			lockedAddress: null,
+			currentTransfer: {},
+			moveFundsSuccessful: false
 		}
 	},
 	components: {
@@ -206,19 +209,6 @@ export default {
 			} else {
 				return [];
 			}
-		},
-		hasLockedAddress: function () {
-			if (this.funds && this.funds.timeLockedAddresses) {
-				let lockedItems = false;
-				this.funds.timeLockedAddresses.forEach(item => {
-					if (item.locked) {
-						lockedItems = true;
-					}
-				});
-				return lockedItems;
-			} else {
-				return false;
-			}
 		}
 	},
 	methods: {
@@ -226,33 +216,88 @@ export default {
 			this.isLoading = true;
 			return Promise.all([
 				HttpService.Auth.User.getFunds(),
-				HttpService.Auth.User.getEncryptedPrivateKey()
-			]).then((responses) => {
+				HttpService.Auth.User.getLockedAddress()
+			]).then(responses => {
 				this.funds = responses[0].body;
-				this.encryptedPrivateKey = responses[1].body.encryptedClientPrivateKey;
+				this.lockedAddress = responses[1].body.bitcoinAddress;
 				this.isLoading = false;
 			}, () => {
 				this.isLoading = false;
 			})
 		},
-		moveFunds: function (bitcoinAddress, amountSatoshi) {
-			this.currentTransfer.amount = this.convertSatoshiToBitcoin(amountSatoshi);
-			this.currentTransfer.address = bitcoinAddress;
-			this.$root.$emit('show::modal', 'user-transfer');
-		},
-		actualTransfer: function (decryptedPrivateKey) {
+		moveFundsPreparation: function (fromAddress, amountSatoshi) {
 			this.isLoading = true;
-			const toAddress = this.currentTransfer.address
+			this.currentTransfer = {};
 
-			// TODO make transfer
-			console.log(toAddress);
+			Promise.all([
+				HttpService.Auth.User.getEncryptedPrivateKey(),
+				HttpService.Auth.User.getFees(),
+				HttpService.Auth.User.getUTXO(fromAddress)
+			]).then(responses => {
+				this.currentTransfer = {
+					amountSatoshi: amountSatoshi,
+					output: this.lockedAddress,
+					encryptedPrivateKey: responses[0].body.encryptedClientPrivateKey,
+					feePerByte: responses[1].body.fee,
+					inputs: responses[2].body
+				};
+				this.isLoading = false;
+				this.$nextTick(() => {
+					this.$root.$emit('show::modal', 'user-transfer');
+				});
+			}, () => {
+				this.$toasted.global.warn(this.$t('userFunds.paymentError'));
+				this.isLoading = false;
+			});
+		},
+		moveFunds: function (decryptedPrivateKey) {
+			this.isLoading = true;
+			this.moveFundsSuccessful = false;
 
-			this.currentTransfer.amount = 0;
-			this.currentTransfer.address = null;
-			this.isLoading = false;
+			try {
+				const transaction = TransactionService.buildTransaction(decryptedPrivateKey, this.currentTransfer.inputs, this.currentTransfer.output, this.currentTransfer.amountSatoshi, this.currentTransfer.feePerByte);
+
+				// toPublicKey: '' && amount: 0 => external payment
+				const dto = {
+					tx: transaction,
+					fromPublicKey: this.funds.clientPublicKey,
+					toPublicKey: '',
+					amount: 0,
+					nonce: moment().format('x')
+				};
+				const signedDTO = CryptoService.signDTO(decryptedPrivateKey, dto);
+
+				HttpService.microPayment(signedDTO).then(() => {
+					this.isLoading = false;
+					this.currentTransfer = {};
+					this.moveFundsSuccessful = true;
+				}, () => {
+					this.isLoading = false;
+					this.currentTransfer = {};
+					this.$toasted.global.error(this.$t('userFunds.paymentError'));
+				});
+			} catch (error) {
+				this.isLoading = false;
+				this.currentTransfer = {};
+				this.$toasted.global.error(this.$t('userFunds.paymentError'));
+			}
+		},
+		createNewAddressPreparation: function () {
+			this.isLoading = true;
+			this.currentTransfer = {};
+			HttpService.Auth.User.getEncryptedPrivateKey().then(response => {
+				this.currentTransfer = {
+					encryptedPrivateKey: response.body.encryptedClientPrivateKey
+				};
+				this.isLoading = false;
+				this.$nextTick(() => {
+					this.$root.$emit('show::modal', 'user-transfer-unlock');
+				});
+			});
 		},
 		createNewAddress: function (decryptedPrivateKey) {
 			this.isLoading = true;
+			this.moveFundsSuccessful = false;
 
 			const innerDTO = {
 				lockTime: Math.floor(new Date() / 1000) + 3600 * 24 * 100,
@@ -262,12 +307,13 @@ export default {
 
 			HttpService.Auth.User.createTimeLockedAddress(signedInnerDTO).then(() => {
 				this.isLoading = false;
+				this.currentTransfer = {};
 				this.loadData();
 			}, () => {
+				this.$toasted.global.error(this.$t('userFunds.paymentError'));
 				this.isLoading = false;
+				this.currentTransfer = {};
 			});
-
-			this.isLoading = false;
 		},
 		convertSatoshiToBitcoin: UtilService.convertSatoshiToBitcoin
 	},
@@ -291,6 +337,8 @@ export default {
 			"virtualBalanceDescription": "To provide a fast, reliable service, a certain amount of Bitcoins is kept at the server as a virtual balance for a direct Coinblesk user exchange.",
 			"createNewAddress": "Create new address",
 			"createNewAddressDescription": "Create a new address!",
+			"paymentError": "An error occurred. Please try it again later on.",
+			"moveFundsSuccessful": "The amount was successfully transferred to the locked account. This transaction may be pending for up to an hour. Refresh this page to see if the transaction was already confirmed.",
 			"fields": {
 				"bitcoinAddress": "Bitcoin Address",
 				"createdAt": "Created At",
@@ -314,6 +362,8 @@ export default {
 			"virtualBalanceDescription": "Um einen möglichst reibungslosen und schnellen Dienst anbieten zu können, wird jeweils eine beschränkte Summe Bitcoins auf dem Server für einen direkten Austausch zwischen Coinblesk Benutzern zurückbehalten.",
 			"createNewAddress": "Neue Adresse anlegen",
 			"createNewAddressDescription": "Create a new address!",
+			"paymentError": "Ein Fehler ist aufgetreten. Versuchen Sie es später noch einmal.",
+			"moveFundsSuccessful": "Der Betrag ist erfolgreich auf das gesperrte Konto überwiesen worden. Die Transaktion kann bis zu einer Stunde dauern. Aktualisieren Sie die Seite, um zu erfahren, ob die Transaktion schon bestätigt ist.",
 			"fields": {
 				"bitcoinAddress": "Bitcoin Adresse",
 				"createdAt": "Erstellt am",

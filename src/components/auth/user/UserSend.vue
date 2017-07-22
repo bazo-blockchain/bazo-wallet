@@ -72,6 +72,7 @@ import HttpService from '@/services/HttpService';
 import CryptoService from '@/services/CryptoService';
 import UserTransfer from '@/components/auth/user/UserTransfer';
 import Spinner from '@/components/Spinner';
+import TransactionService from '@/services/TransactionService';
 
 export default {
 	name: 'user-send',
@@ -177,22 +178,14 @@ export default {
 			this.isLoading = true;
 
 			// TODO
-			const receiverAddress = '15hZo812Lx266Dot6T52krxpnhrNiaqHya';
-			const amountSatoshi = 15000;
 			const inputs = [
 				'40696e606a348cbd9e08085f9f4d92dcaef041672798af129fcda28c8a91b259'
 			];
+			const output = '15hZo812Lx266Dot6T52krxpnhrNiaqHya';
+			const amountSatoshi = 15000;
+			const feePerByte = 260;
 
-			const txBuilder = new window.bitcoin.TransactionBuilder();
-			for (let i = 0; i < inputs.length; i++) {
-				txBuilder.addInput(inputs[i], i);
-			}
-			txBuilder.addOutput(receiverAddress, amountSatoshi);
-
-			// signs the first input with the key
-			txBuilder.sign(0, window.bitcoin.ECPair.fromWIF(privateKeyWif));
-
-			const tx = txBuilder.build().toHex();
+			const tx = TransactionService.buildTransaction(privateKeyWif, inputs, output, amountSatoshi, feePerByte);
 			console.log('transaction: ', tx);
 
 			const signedDto = CryptoService.signDTO(privateKeyWif, tx);

@@ -61,10 +61,19 @@ const HttpService = {
 				return Vue.http.get(HOST + '/auth/user/funds');
 			},
 			getEncryptedPrivateKey: function () {
-				return Vue.http.get(HOST + '/auth/user/encrypted-private-key');
+				return Vue.http.get(HOST + '/auth/user/payment/encrypted-private-key');
+			},
+			getLockedAddress: function () {
+				return Vue.http.get(HOST + '/auth/user/payment/locked-address');
 			},
 			getPaymentRequirements: function (data) {
-				return Vue.http.post(HOST + '/auth/user/payment-requirements', data);
+				return Vue.http.post(HOST + '/auth/user/payment/requirements', data);
+			},
+			getFees: function () {
+				return Vue.http.get(HOST + '/auth/user/payment/fee');
+			},
+			getUTXO: function (address) {
+				return Vue.http.get(HOST + '/auth/user/payment/utxo', { params: { address } });
 			},
 			createTimeLockedAddress: function (signedDTO) {
 				return Vue.http.post(HOST + '/payment/createTimeLockedAddress', signedDTO);
@@ -114,6 +123,10 @@ const HttpService = {
 				return Vue.http.get(HOST + '/auth/admin/server-pot-baseline/total');
 			}
 		}
+	},
+
+	microPayment: function (signedDTO) {
+		return Vue.http.post(HOST + '/payment/micropayment', signedDTO);
 	}
 };
 
