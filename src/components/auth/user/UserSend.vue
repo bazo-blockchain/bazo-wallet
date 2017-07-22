@@ -54,6 +54,7 @@
 								</div>
 							</div>
 							<div class="description-forex-rate" v-html="$t('userSend.descriptionForexRate', { forex: forexRates[selectedCurrency].rate, currency: selectedCurrency })" v-if="selectedCurrency !== 'BTC'"></div>
+							<div class="description-fees alert alert-info">{{ $t('userSend.descriptionFees') }}</div>
 							<b-button class="submit-button" :block="true" variant="primary" @click.prevent="submit" :disabled="formIsTouched && !validForm">{{ $t('userSend.button', { amount: btcAmount }) }}</b-button>
 						</form>
 					</div>
@@ -90,7 +91,8 @@ export default {
 			},
 			paymentRequirements: {},
 			formIsTouched: false,
-			successfulTransaction: false
+			successfulTransaction: false,
+			lockedAddress: ''
 		}
 	},
 	components: {
@@ -120,10 +122,12 @@ export default {
 			return true;
 		},
 		maximumAmount: function () {
-			if (!this.$store.state.userBalance.totalBalance) {
+			if (!this.$store.state.userBalance ||
+					!this.$store.state.userBalance.timeLockedAddresses ||
+					typeof this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress] === undefined) {
 				return 0;
 			}
-			return this.$store.state.userBalance.totalBalance;
+			return this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress] + this.$store.state.userBalance.virtualBalance;
 		},
 		maximumAmountExceeded: function () {
 			return this.maximumAmount * UtilService.SATOSHI_PER_BITCOIN < this.btcAmount;
@@ -145,11 +149,13 @@ export default {
 			return Promise.all([
 				HttpService.getForexCurrent('BITSTAMP', 'USD'),
 				HttpService.getForexCurrent('BITSTAMP', 'EUR'),
-				HttpService.getForexCurrent('BITSTAMP', 'CHF')
+				HttpService.getForexCurrent('BITSTAMP', 'CHF'),
+				HttpService.Auth.User.getLockedAddress()
 			]).then(responses => {
 				this.forexRates.USD = responses[0].body;
 				this.forexRates.EUR = responses[1].body;
 				this.forexRates.CHF = responses[2].body;
+				this.lockedAddress = responses[3].body.bitcoinAddress;
 				return Promise.resolve();
 			}, () => {
 				return Promise.reject();
@@ -256,6 +262,10 @@ export default {
 		padding-top: 3px;
 		font-style: italic;
 	}
+	.description-fees {
+		margin-top: 15px;
+		font-size: 90%;
+	}
 	/deep/ {
 		.dropdown-item {
 			cursor: pointer;
@@ -297,6 +307,7 @@ export default {
 			"maxAmount": "Maximal amount",
 			"maxAmountDescription": "The maximal amount relates to the sum the locked account and the virtual balance. If you except a higher value here, make sure to have your funds on the current locked Coinblesk address (see Funds).",
 			"descriptionForexRate": "The current forex rate BTC/{currency} is <span class='mono'>{forex}</span>&nbsp;&nbsp;(Source: Bitstamp).",
+			"descriptionFees": "The fees of your Bitcoin transfer are not yet included in the amount and are added to the value. Please make sure, that you have enough funds to create this transaction. Otherwise we have to reject it.",
 			"button": "Send {amount} BTC",
 			"transactionSuccessful": "The transaction was successfully executed."
 		}
@@ -311,8 +322,9 @@ export default {
 			"lookup": "Suchen",
 			"amount": "Betrag",
 			"maxAmount": "Maximalbetrag",
-			"maxAmountDescription": "Der Maximalbetrag stellt die Summe aus virtuellem Saldo und dem gesperrten Konto dar. Falls Sie hier einen höheren Wert erwarten, überweisen Sie bitte die Funds der bisherigen Addressen auf die aktuelle, gesperrte Coinblesk Adresse (siehe Guthaben).",
+			"maxAmountDescription": "Der Maximalbetrag stellt die Summe aus virtuellem Saldo und dem gesperrten Konto dar. Falls Sie hier einen höheren Wert erwarten, überweisen Sie bitte die Guthaben der bisherigen Addressen auf die aktuelle, gesperrte Coinblesk Adresse (siehe Guthaben).",
 			"descriptionForexRate": "Der aktuelle Wechselkurs BTC/{currency} beträgt <span class='mono'>{forex}</span>&nbsp;&nbsp;(Quelle: Bitstamp).",
+			"descriptionFees": "Bei Ihrer Zahlung entstehen voraussichtlich Spesen, welche auf den dargestellten Betrag aufaddiert werden. Vergewissern Sie sich, dass Sie über genügend BTC verfügen, um die Zahlung auszuführen. Andernfalls müssen wir die Zahlung ablehnen.",
 			"button": "{amount} BTC versenden",
 			"transactionSuccessful": "Die Transaktion wurde erfolgreich durchgeführt."
 		}
