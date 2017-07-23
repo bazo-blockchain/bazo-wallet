@@ -103,7 +103,7 @@ export default {
 	},
 	computed: {
 		btcAmount: function () {
-			if (this.isLoading) {
+			if (!this.amount) {
 				return 0;
 			}
 			let value = 0;
@@ -220,7 +220,7 @@ export default {
 				this.currentTransaction = {};
 				this.successfulTransaction = true;
 			};
-			const satoshiAmount = this.btcAmount / UtilService.SATOSHI_PER_BITCOIN;
+			const satoshiAmount = this.btcAmount * UtilService.SATOSHI_PER_BITCOIN;
 
 			if (this.addressIsBitcoin) {
 				// address is bitcoin address
@@ -237,7 +237,7 @@ export default {
 					};
 					const signedDTO = CryptoService.signDTO(decryptedPrivateKeyWif, dto);
 
-					HttpService.microPayment(signedDTO).then(() => {
+					HttpService.microPayment(signedDTO, true).then(() => {
 						success();
 					}, () => {
 						errorOccurred();
@@ -251,9 +251,9 @@ export default {
 					// virtual payment
 					const dto = {
 						receiverEmail: this.address,
-						amount: this.satoshiAmount
+						amount: satoshiAmount
 					};
-					HttpService.Auth.User.virtualPaymentViaEmail(dto).then(() => {
+					HttpService.Auth.User.virtualPaymentViaEmail(dto, true).then(() => {
 						success();
 					}, () => {
 						errorOccurred();
@@ -261,7 +261,7 @@ export default {
 				} else {
 					// micro payment
 					try {
-						let totalAmount = this.satoshiAmount;
+						let totalAmount = satoshiAmount;
 						if (this.currentTransaction.channelTransaction !== null) {
 							const channelTransaction = window.bitcoin.Transaction.fromHex(this.currentTransaction.channelTransaction);
 							// TODO evaluate
@@ -274,7 +274,7 @@ export default {
 							amount: satoshiAmount,
 							transaction: transaction
 						};
-						HttpService.Auth.User.microPaymentViaEmail(dto).then(() => {
+						HttpService.Auth.User.microPaymentViaEmail(dto, true).then(() => {
 							success();
 						}, () => {
 							errorOccurred();
@@ -415,7 +415,8 @@ export default {
 			"descriptionForexRate": "The current forex rate BTC/{currency} is <span class='mono'>{forex}</span>&nbsp;&nbsp;(Source: Bitstamp).",
 			"descriptionFees": "The fees of your Bitcoin transfer are not yet included in the amount and are added to the value. Please make sure, that you have enough funds to create this transaction. Otherwise we have to reject it.",
 			"button": "Send {amount} BTC",
-			"transactionSuccessful": "The transaction was successfully executed."
+			"transactionSuccessful": "The transaction was successfully executed.",
+			"paymentError": "An error occurred during the payment process. Please verify the amount (Attention: fees) or try it again later on."
 		}
 	},
 	"de": {
@@ -432,7 +433,8 @@ export default {
 			"descriptionForexRate": "Der aktuelle Wechselkurs BTC/{currency} beträgt <span class='mono'>{forex}</span>&nbsp;&nbsp;(Quelle: Bitstamp).",
 			"descriptionFees": "Bei Ihrer Zahlung entstehen voraussichtlich Spesen, welche auf den dargestellten Betrag aufaddiert werden. Vergewissern Sie sich, dass Sie über genügend BTC verfügen, um die Zahlung auszuführen. Andernfalls müssen wir die Zahlung ablehnen.",
 			"button": "{amount} BTC versenden",
-			"transactionSuccessful": "Die Transaktion wurde erfolgreich durchgeführt."
+			"transactionSuccessful": "Die Transaktion wurde erfolgreich durchgeführt.",
+			"paymentError": "Bei der Zahlung ist ein Fehler aufgetreten. Überprüfen Sie Ihren Betrag (Achtung: Spesen) oder probieren Sie es später erneut."
 		}
 	}
 }

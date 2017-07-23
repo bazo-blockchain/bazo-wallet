@@ -270,7 +270,7 @@ export default {
 				};
 				const signedDTO = CryptoService.signDTO(decryptedPrivateKey, dto);
 
-				HttpService.microPayment(signedDTO).then(() => {
+				HttpService.microPayment(signedDTO, true).then(() => {
 					this.isLoading = false;
 					this.currentTransfer = {};
 					this.moveFundsSuccessful = true;
@@ -308,7 +308,7 @@ export default {
 			};
 			const signedInnerDTO = CryptoService.signDTO(decryptedPrivateKey, innerDTO);
 
-			HttpService.Auth.User.createTimeLockedAddress(signedInnerDTO).then(() => {
+			HttpService.createTimeLockedAddress(signedInnerDTO, true).then(() => {
 				this.isLoading = false;
 				this.currentTransfer = {};
 				this.loadData();

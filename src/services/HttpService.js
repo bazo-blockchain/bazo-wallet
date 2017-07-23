@@ -72,14 +72,16 @@ const HttpService = {
 			getUTXO: function (address) {
 				return Vue.http.get(HOST + '/auth/user/payment/utxo', { params: { address } });
 			},
-			createTimeLockedAddress: function (signedDTO) {
-				return Vue.http.post(HOST + '/payment/createTimeLockedAddress', signedDTO);
+			getChannelTransaction: function () {
+				return Vue.http.get(HOST + '/auth/user/payment/channel-transaction');
 			},
-			virtualPaymentViaEmail: function (dto) {
-				return Vue.http.post(HOST + '/payment/virtual-payment-email', dto);
+			virtualPaymentViaEmail: function (dto, doNotIntercept) {
+				return Vue.http.post(HOST + '/auth/user/payment/virtual-payment-email', dto,
+						doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 			},
-			microPaymentViaEmail: function (dto) {
-				return Vue.http.post(HOST + '/payment/micro-payment-email', dto);
+			microPaymentViaEmail: function (dto, doNotIntercept) {
+				return Vue.http.post(HOST + '/auth/user/payment/micro-payment-email', dto,
+						doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 			}
 		},
 
@@ -128,8 +130,13 @@ const HttpService = {
 		}
 	},
 
-	microPayment: function (signedDTO) {
-		return Vue.http.post(HOST + '/payment/micropayment', signedDTO);
+	microPayment: function (signedDTO, doNotIntercept) {
+		return Vue.http.post(HOST + '/payment/micropayment', signedDTO,
+				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
+	},
+	createTimeLockedAddress: function (signedDTO, doNotIntercept) {
+		return Vue.http.post(HOST + '/payment/createTimeLockedAddress', signedDTO,
+				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 	}
 };
 
