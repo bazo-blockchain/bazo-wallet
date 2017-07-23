@@ -1,6 +1,5 @@
 const UtilService = {
 	EMAIL_REGEX: /^[_A-Za-z0-9-+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$/,
-	BTC_ADDRESS_REGEX: /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/,
 	TOKEN_LENGTH: 36,
 	PASSWORD_MIN_LENGTH: 6,
 	DATE_FORMAT: 'YYYY-MM-DD, HH:mm:ss',

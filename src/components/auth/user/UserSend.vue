@@ -3,13 +3,13 @@
 	<div class="compact">
 		<h1 class="display-4">{{ $t('userSend.title') }}</h1>
 		<hr>
-		<div class="pos-rel">
+		<div class="pos-rel user-send-content">
 			<spinner :is-loading="isLoading"></spinner>
 			<div v-if="successfulTransaction">
 				<div class="alert alert-success">{{ $t('userSend.transactionSuccessful') }}</div>
 			</div>
 			<div v-else>
-				<div class="box-wrapper" v-if="!isLoading">
+				<div class="box-wrapper" v-if="!isLoading && !loadingError">
 					<div class="box">
 						<div class="main-title display-7">{{ $t('userSend.boxTitle') }}</div>
 						<hr>
@@ -55,11 +55,11 @@
 							</div>
 							<div class="description-forex-rate" v-html="$t('userSend.descriptionForexRate', { forex: forexRates[selectedCurrency].rate, currency: selectedCurrency })" v-if="selectedCurrency !== 'BTC'"></div>
 							<div class="description-fees alert alert-info">{{ $t('userSend.descriptionFees') }}</div>
-							<b-button class="submit-button" :block="true" variant="primary" @click.prevent="submit" :disabled="formIsTouched && !validForm">{{ $t('userSend.button', { amount: btcAmount }) }}</b-button>
+							<b-button class="submit-button" :block="true" variant="primary" @click.prevent="submitPreparation" :disabled="formIsTouched && !validForm">{{ $t('userSend.button', { amount: btcAmount }) }}</b-button>
 						</form>
 					</div>
 	
-					<user-transfer @private-key-decrypted="createAndSubmitTransaction" :encrypted-private-key="paymentRequirements.encryptedClientPrivateKey" :amount="btcAmount"></user-transfer>
+					<user-transfer @private-key-decrypted="submit" :encrypted-private-key="currentTransaction.encryptedPrivateKey" :amount="btcAmount"></user-transfer>
 				</div>
 			</div>
 		</div>
@@ -74,12 +74,14 @@ import CryptoService from '@/services/CryptoService';
 import UserTransfer from '@/components/auth/user/UserTransfer';
 import Spinner from '@/components/Spinner';
 import TransactionService from '@/services/TransactionService';
+import moment from 'moment';
 
 export default {
 	name: 'user-send',
 	data: function () {
 		return {
 			isLoading: true,
+			loadingError: false,
 			selectedCurrency: 'BTC',
 			allowedCurrencies: ['BTC', 'USD', 'EUR', 'CHF'],
 			amount: 0,
@@ -89,10 +91,10 @@ export default {
 				EUR: {},
 				CHF: {}
 			},
-			paymentRequirements: {},
 			formIsTouched: false,
 			successfulTransaction: false,
-			lockedAddress: ''
+			lockedAddress: '',
+			currentTransaction: {}
 		}
 	},
 	components: {
@@ -124,7 +126,7 @@ export default {
 		maximumAmount: function () {
 			if (!this.$store.state.userBalance ||
 					!this.$store.state.userBalance.timeLockedAddresses ||
-					typeof this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress] === undefined) {
+					typeof this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress] === 'undefined') {
 				return 0;
 			}
 			return this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress] + this.$store.state.userBalance.virtualBalance;
@@ -132,11 +134,27 @@ export default {
 		maximumAmountExceeded: function () {
 			return this.maximumAmount * UtilService.SATOSHI_PER_BITCOIN < this.btcAmount;
 		},
-		validAddress: function () {
+		addressIsEmail: function () {
 			if (this.address === '') {
 				return false;
 			}
-			return UtilService.EMAIL_REGEX.test(this.address) || UtilService.BTC_ADDRESS_REGEX.test(this.address);
+			return UtilService.EMAIL_REGEX.test(this.address);
+		},
+		addressIsBitcoin: function () {
+			if (this.address === '') {
+				return false;
+			}
+			let result = false;
+			try {
+				window.bitcoin.address.fromBase58Check(this.address);
+				result = true;
+			} catch (e) {
+				result = false;
+			}
+			return result;
+		},
+		validAddress: function () {
+			return this.addressIsEmail || this.addressIsBitcoin;
 		},
 		validForm: function () {
 			return true;
@@ -156,28 +174,115 @@ export default {
 				this.forexRates.EUR = responses[1].body;
 				this.forexRates.CHF = responses[2].body;
 				this.lockedAddress = responses[3].body.bitcoinAddress;
-				return Promise.resolve();
+				this.loadingError = false;
+				this.isLoading = false;
 			}, () => {
-				return Promise.reject();
+				this.loadingError = true;
+				this.isLoading = false;
 			});
 		},
-		submit: function () {
+		submitPreparation: function () {
 			this.formIsTouched = true;
 			if (this.validForm) {
 				this.isLoading = true;
-				const data = {
-					receiver: this.address,
-					amount: this.btcAmount / UtilService.SATOSHI_PER_BITCOIN
-				};
-				HttpService.Auth.User.getPaymentRequirements(data).then((response) => {
-					this.paymentRequirements = response.body;
+
+				Promise.all([
+					HttpService.Auth.User.getEncryptedPrivateKey(),
+					HttpService.Auth.User.getFees(),
+					HttpService.Auth.User.getUTXO(this.lockedAddress),
+					HttpService.Auth.User.getChannelTransaction()
+				]).then((responses) => {
+					this.currentTransaction = {
+						encryptedPrivateKey: responses[0].body.encryptedClientPrivateKey,
+						feePerByte: responses[1].body.fee,
+						inputs: responses[2].body,
+						channelTransaction: responses[3].channelTransaction
+					}
 					this.isLoading = false;
 					this.$nextTick(() => {
 						this.$root.$emit('show::modal', 'user-transfer');
 					});
 				}, () => {
 					this.isLoading = false;
+					this.$toasted.global.warn(this.$t('userSend.paymentError'));
 				});
+			}
+		},
+		submit: function (decryptedPrivateKeyWif) {
+			this.isLoading = true;
+			const errorOccurred = () => {
+				this.isLoading = false;
+				this.currentTransaction = {};
+				this.$toasted.global.warn(this.$t('userSend.paymentError'));
+			};
+			const success = () => {
+				this.isLoading = false;
+				this.currentTransaction = {};
+				this.successfulTransaction = true;
+			};
+			const satoshiAmount = this.btcAmount / UtilService.SATOSHI_PER_BITCOIN;
+
+			if (this.addressIsBitcoin) {
+				// address is bitcoin address
+				try {
+					const transaction = TransactionService.buildTransaction(decryptedPrivateKeyWif, this.currentTransaction.inputs, this.address, satoshiAmount, this.currentTransaction.feePerByte);
+
+					// toPublicKey: '' && amount: 0 => external payment
+					const dto = {
+						tx: transaction,
+						fromPublicKey: CryptoService.convertPrivateKeyWifToPublicKeyHex(decryptedPrivateKeyWif),
+						toPublicKey: '',
+						amount: 0,
+						nonce: moment().format('x')
+					};
+					const signedDTO = CryptoService.signDTO(decryptedPrivateKeyWif, dto);
+
+					HttpService.microPayment(signedDTO).then(() => {
+						success();
+					}, () => {
+						errorOccurred();
+					});
+				} catch (e) {
+					errorOccurred();
+				}
+			} else {
+				// address is e-mail address
+				if (this.$store.state.userBalance.virtualBalance >= satoshiAmount) {
+					// virtual payment
+					const dto = {
+						receiverEmail: this.address,
+						amount: this.satoshiAmount
+					};
+					HttpService.Auth.User.virtualPaymentViaEmail(dto).then(() => {
+						success();
+					}, () => {
+						errorOccurred();
+					});
+				} else {
+					// micro payment
+					try {
+						let totalAmount = this.satoshiAmount;
+						if (this.currentTransaction.channelTransaction !== null) {
+							const channelTransaction = window.bitcoin.Transaction.fromHex(this.currentTransaction.channelTransaction);
+							// TODO evaluate
+							let channelTransactionAmount = channelTransaction.outs[0].value;
+							totalAmount += channelTransactionAmount;
+						}
+						const transaction = TransactionService.buildTransaction(decryptedPrivateKeyWif, this.currentTransaction.inputs, this.address, totalAmount, this.currentTransaction.feePerByte);
+						const dto = {
+							receiverEmail: this.address,
+							amount: satoshiAmount,
+							transaction: transaction
+						};
+						HttpService.Auth.User.microPaymentViaEmail(dto).then(() => {
+							success();
+						}, () => {
+							errorOccurred();
+						})
+					} catch (e) {
+						errorOccurred();
+					}
+				}
 			}
 		},
 		createAndSubmitTransaction: function (privateKeyWif) {
@@ -207,15 +312,16 @@ export default {
 	},
 	mounted: function () {
 		this.isLoading = true;
-		this.loadInitialData().then(() => {
-			this.isLoading = false;
-		});
+		this.loadInitialData();
 	}
 };
 </script>
 
 <style lang="scss" scoped>
 .user-send {
+	.user-send-content {
+		min-height: 300px;
+	}
 	.box-wrapper {
 		max-width: 650px;
 		padding-top: 20px;
@@ -253,7 +359,7 @@ export default {
 		z-index: 10;
 	}
 	.description-forex-rate {
-		margin-top: 10px;
+		margin-top: 6px;
 		margin-left: 5px;
 		padding-left: 10px;
 		border-left: 2px solid #888;
