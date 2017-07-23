@@ -54,6 +54,10 @@ const Crypto = {
 				size: password.length >= 16
 			}
 		};
+	},
+
+	convertPrivateKeyWifToPublicKeyHex: function (privateKeyWif) {
+		return window.bitcoin.ECPair.fromWIF(privateKeyWif).getPublicKeyBuffer().toString('hex');
 	}
 
 };
