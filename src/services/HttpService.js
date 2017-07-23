@@ -66,9 +66,6 @@ const HttpService = {
 			getLockedAddress: function () {
 				return Vue.http.get(HOST + '/auth/user/payment/locked-address');
 			},
-			getPaymentRequirements: function (data) {
-				return Vue.http.post(HOST + '/auth/user/payment/requirements', data);
-			},
 			getFees: function () {
 				return Vue.http.get(HOST + '/auth/user/payment/fee');
 			},
@@ -77,6 +74,12 @@ const HttpService = {
 			},
 			createTimeLockedAddress: function (signedDTO) {
 				return Vue.http.post(HOST + '/payment/createTimeLockedAddress', signedDTO);
+			},
+			virtualPaymentViaEmail: function (dto) {
+				return Vue.http.post(HOST + '/payment/virtual-payment-email', dto);
+			},
+			microPaymentViaEmail: function (dto) {
+				return Vue.http.post(HOST + '/payment/micro-payment-email', dto);
 			}
 		},
 
