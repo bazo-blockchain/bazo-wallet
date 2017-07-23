@@ -8,10 +8,10 @@
 			</small>
 		</h1>
 		<hr>
-		<div class="pos-rel">
+		<div class="pos-rel user-funds-content">
 			<spinner :is-loading="isLoading"></spinner>
 			
-			<div class="table-wrapper">
+			<div class="table-wrapper" v-if="!isLoading && !loadingError">
 				<div class="alert alert-success" v-if="moveFundsSuccessful">
 					{{ $t('userFunds.moveFundsSuccessful') }}
 				</div>
@@ -92,17 +92,17 @@
 						</div>
 					</template>
 				</b-table>
-			</div>
 			
-			<div class="create-new-address-button" v-if="lockedAddress === null">
-				<b-button @click.prevent="createNewAddressPreparation">{{ $t('userFunds.createNewAddress') }}</b-button>
-				<b-popover triggers="hover" :content="$t('userFunds.createNewAddressDescription')" class="popover-element">
-					<i class="fa fa-info-circle"></i>
-				</b-popover>
-			</div>
-			
-			<div class="justify-content-center row my-1" v-show="this.tableItems.length > perPage">
-				<b-pagination size="md" :total-rows="tableItems.length" :per-page="perPage" v-model="currentPage" />
+				<div class="create-new-address-button" v-if="lockedAddress === null">
+					<b-button @click.prevent="createNewAddressPreparation">{{ $t('userFunds.createNewAddress') }}</b-button>
+					<b-popover triggers="hover" :content="$t('userFunds.createNewAddressDescription')" class="popover-element">
+						<i class="fa fa-info-circle"></i>
+					</b-popover>
+				</div>
+				
+				<div class="justify-content-center row my-1" v-show="this.tableItems.length > perPage">
+					<b-pagination size="md" :total-rows="tableItems.length" :per-page="perPage" v-model="currentPage" />
+				</div>
 			</div>
 		</div>
 		
@@ -127,6 +127,7 @@ export default {
 	data: function () {
 		return {
 			isLoading: true,
+			loadingError: false,
 			currentPage: 1,
 			perPage: 15,
 			funds: {},
@@ -220,9 +221,11 @@ export default {
 			]).then(responses => {
 				this.funds = responses[0].body;
 				this.lockedAddress = responses[1].body.bitcoinAddress;
+				this.loadingError = false;
 				this.isLoading = false;
 			}, () => {
 				this.isLoading = false;
+				this.loadingError = true;
 			})
 		},
 		moveFundsPreparation: function (fromAddress, amountSatoshi) {
@@ -260,7 +263,7 @@ export default {
 				// toPublicKey: '' && amount: 0 => external payment
 				const dto = {
 					tx: transaction,
-					fromPublicKey: this.funds.clientPublicKey,
+					fromPublicKey: CryptoService.convertPrivateKeyWifToPublicKeyHex(decryptedPrivateKey),
 					toPublicKey: '',
 					amount: 0,
 					nonce: moment().format('x')
@@ -381,6 +384,9 @@ export default {
 <style lang="scss" scoped>
 @import '../../../styles/variables';
 
+.user-funds-content {
+	min-height: 300px;
+}
 h1 small {
 	margin-top: 6px;
 	font-size: 70%;
