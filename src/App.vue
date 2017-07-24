@@ -132,7 +132,7 @@ export default {
 		&:after {
 			content: "";
 			display: block;
-			position: absolute;
+			position: fixed;
 			top: 0;
 			left: 0;
 			right: 0;
@@ -248,10 +248,6 @@ export default {
 				display: none;
 			}
 		}
-		/*.main-view.grayed-out:after {
-			opacity: 0;
-			visibility: hidden;
-		}*/
 	}
 }
 @media (min-width: 1400px) {

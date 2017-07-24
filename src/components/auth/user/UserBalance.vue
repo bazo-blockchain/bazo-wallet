@@ -4,7 +4,7 @@
 		<i class="fa fa-bitcoin"></i>
 		<span class="value">{{ totalBalanceBTC }}</span>
 	</a>
-	<b-tooltip :content="balanceDateFormatted" :placement="tooltipPlacement" class="info" :offset="offset">
+	<b-tooltip :content="balanceDateFormatted" :triggers="['click', 'hover']" :placement="tooltipPlacement" class="info " :offset="offset">
 		<i class="fa fa-info-circle increase-focus" :class="{ 'red': isOffline || oldBalance }"></i>
 	</b-tooltip>
 </div>

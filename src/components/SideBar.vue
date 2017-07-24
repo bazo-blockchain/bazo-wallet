@@ -95,7 +95,7 @@ export default {
 	name: 'side-bar',
 	data: function () {
 		return {
-			hammer: null
+			hammer: []
 		};
 	},
 	components: {
@@ -143,13 +143,20 @@ export default {
 		}
 	},
 	mounted: function () {
-		this.hammer = new Hammer(this.$el);
-		this.hammer.on('swipe', this.hammerSwipeHandler);
+		// hammer did not work with ".entries" on a parent element
+		const elements = this.$el.querySelectorAll('.logo-container, .entries, .language-picker');
+		for (let i = 0; i < elements.length; i++) {
+			const instance = new Hammer(elements[i]);
+			instance.on('swipe', this.hammerSwipeHandler);
+			this.hammer.push(instance);
+		}
 	},
 	beforeDestroy: function () {
-		this.hammer.off('swipe', this.hammerSwipeHandler);
-		this.hammer.destroy();
-		this.hammer = null;
+		for (let i = 0; i < this.hammer.length; i++) {
+			this.hammer[i].off('swipe', this.hammerSwipeHandler);
+			this.hammer[i].destroy();
+		}
+		this.hammer = [];
 	}
 }
 </script>
