@@ -39,14 +39,14 @@
 			<form v-if="stepNumber === 2" @submit.prevent>
 				<div class="alert alert-info" v-html="$t('registration.accountCreationInfo')"></div>
 				<div class="row private-public-keys">
-					<div class="col-md-6">
+					<div class="col-6">
 						<label class="col-form-label">{{ $t('registration.privateKey') }}</label>
 						<div class="form-control short-key-extended" :title="privateKey">
 							<i class="fa fa-spin fa-cog" v-if="privateKey === ''"></i>
 							<span v-else>{{ privateKey }}</span>
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-6">
 						<label class="col-form-label">{{ $t('registration.publicKey') }}</label>
 						<div class="form-control short-key-extended" :title="publicKey">
 							<i class="fa fa-spin fa-cog" v-if="publicKey === ''"></i>
@@ -297,6 +297,7 @@ export default {
 	}
 	.short-key-extended {
 		width: 100%;
+		max-width: calc(100vw - 75px);
 		cursor: not-allowed;
 		background-color: #eceeef;
 		text-align: center;
@@ -307,9 +308,9 @@ export default {
 	}
 	.private-public-keys,
 	.buttons {
-		.col-md-6:first-child {
+		.col-6:first-child {
 			padding-right: 7px;
-			& + .col-md-6 {
+			& + .col-6 {
 				padding-left: 7px;
 			}
 		}
