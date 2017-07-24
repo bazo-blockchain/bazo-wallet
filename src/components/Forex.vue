@@ -198,6 +198,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../styles/variables';
 .price {
 	display: inline-block;
 	padding: 0.3em 0.7em;
@@ -220,6 +221,7 @@ export default {
 	font-size: 0;
 	white-space: nowrap;
 	overflow-x: auto;
+	@include light-scrollbar();
 	
 	.selector {
 		display: inline-block;

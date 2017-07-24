@@ -58,7 +58,7 @@ export default {
 	}
 	
 	.logos {
-		position: absolute;
+		position: fixed;
 		bottom: 10px;
 		right: 10px;
 		img {

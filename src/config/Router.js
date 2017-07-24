@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '@/components/Home';
-import Hello from '@/components/Hello';
 import Forex from '@/components/Forex';
 import Activation from '@/components/Activation';
 import PasswordForgotten from '@/components/PasswordForgotten';
@@ -145,7 +144,6 @@ const hideProgressBar = () => {
 // flag is not set.
 const routes = [
 	{ path: '/', name: 'home', component: Home, beforeEnter: noAuth },
-	{ path: '/hello', name: 'hello', component: Hello, beforeEnter: noAuth },
 	{ path: '/forex', name: 'forex', component: Forex, beforeEnter: noAuth },
 
 	{ path: '/registration/:emailArg?/:tokenArg?', name: 'registration', component: Registration, beforeEnter: noAuth, props: true },
