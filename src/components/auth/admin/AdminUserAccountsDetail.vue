@@ -34,9 +34,20 @@
 							<td>{{ userAccount.balance }}</td>
 						</tr>
 						<tr>
+							<th scope="row">{{ $t('adminUserAccountsDetail.fields.activated') }}</th>
+							<td>
+								<span v-if="userAccount.unregistered">
+									<i class="fa fa-minus"></i>
+								</span>
+								<span v-else>
+									<span v-html="userAccount.activated ? $t('adminUserAccountsDetail.yes') : $t('adminUserAccountsDetail.no')"></span>
+								</span>
+							</td>
+						</tr>
+						<tr>
 							<th scope="row">{{ $t('adminUserAccountsDetail.fields.deleted') }}</th>
 							<td>
-								<span v-html="userAccount.deleted ? $t('adminUserAccountsDetail.deletedYes') : $t('adminUserAccountsDetail.deletedNo')"></span>
+								<span v-html="userAccount.deleted ? $t('adminUserAccountsDetail.yes') : $t('adminUserAccountsDetail.no')"></span>
 								<button v-if="!userAccount.deleted && !userIsViewingHimself" class="btn btn-danger btn-sm" @click="deleteUser">
 									<i class="fa fa-times"></i>
 									{{ $t('adminUserAccountsDetail.deleteButton') }}
@@ -45,6 +56,12 @@
 									<i class="fa fa-undo"></i>
 									{{ $t('adminUserAccountsDetail.undeleteButton') }}
 								</button>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">{{ $t('adminUserAccountsDetail.fields.unregistered') }}</th>
+							<td>
+								<span v-html="userAccount.unregistered ? $t('adminUserAccountsDetail.yes') : $t('adminUserAccountsDetail.no')"></span>
 							</td>
 						</tr>
 						<tr>
@@ -185,8 +202,8 @@ export default {
 			"title": "User Account",
 			"deleteButton": "Delete!",
 			"undeleteButton": "Undo",
-			"deletedYes": "Yes",
-			"deletedNo": "No",
+			"yes": "Yes",
+			"no": "No",
 			"noUserFoundTitle": "Attention:",
 			"noUserFound": "No user with this e-mail address was found.",
 			"error": "An error occurred. Please try it again later.",
@@ -199,6 +216,8 @@ export default {
 				"creationDate": "Creation Date",
 				"balance": "Balance",
 				"deleted": "Deleted?",
+				"activated": "Activated?",
+				"unregistered": "Nicht registriert?",
 				"account": "Account"
 			}
 		}
@@ -208,8 +227,8 @@ export default {
 			"title": "Benutzerkonto",
 			"deleteButton": "Löschen!",
 			"undeleteButton": "Rückgängig machen",
-			"deletedYes": "Ja",
-			"deletedNo": "Nein",
+			"yes": "Ja",
+			"no": "Nein",
 			"noUserFoundTitle": "Achtung:",
 			"noUserFound": "Es wurde kein Benutzer mit dieser E-Mail Adresse gefunden.",
 			"error": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
@@ -222,6 +241,8 @@ export default {
 				"creationDate": "Erstelldatum",
 				"balance": "Saldo",
 				"deleted": "Gelöscht?",
+				"activated": "Aktiviert?",
+				"unregistered": "Nicht registriert?",
 				"account": "Konto"
 			}
 		}

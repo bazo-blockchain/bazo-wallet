@@ -17,8 +17,17 @@
 								<template slot="creationDate" scope="item">
 									{{ item.value | moment(dateFormat) }}
 								</template>
+								<template slot="activated" scope="item">
+									<span v-if="item.item.unregistered">
+										<i class="fa fa-minus"></i>
+									</span>
+									<span v-else v-html="item.value ? $t('adminUserAccounts.yes') : $t('adminUserAccounts.no')"></span>
+								</template>
 								<template slot="deleted" scope="item">
-									<span v-html="item.value ? $t('adminUserAccounts.deletedYes') : $t('adminUserAccounts.deletedNo')"></span>
+									<span v-html="item.value ? $t('adminUserAccounts.yes') : $t('adminUserAccounts.no')"></span>
+								</template>
+								<template slot="unregistered" scope="item">
+									<span v-html="item.value ? $t('adminUserAccounts.yes') : $t('adminUserAccounts.no')"></span>
 								</template>
 								<template slot="userRole" scope="item">
 									<span class="badge badge-primary">{{ item.value ? item.value.replace(/^ROLE_/, '') : null }}</span>
@@ -87,6 +96,14 @@ export default {
 					label: this.$t('adminUserAccounts.field.deleted'),
 					sortable: true
 				},
+				unregistered: {
+					label: this.$t('adminUserAccounts.field.unregistered'),
+					sortable: true
+				},
+				activated: {
+					label: this.$t('adminUserAccounts.field.activated'),
+					sortable: true
+				},
 				userRole: {
 					label: this.$t('adminUserAccounts.field.userRole'),
 					sortable: true
@@ -138,7 +155,7 @@ export default {
 	margin-bottom: 20px;
 	
 	/deep/ table {
-		min-width: 900px;
+		min-width: 1150px;
 		margin-bottom: 5px;
 		thead th {
 			border-top: 0;
@@ -157,12 +174,14 @@ export default {
 		"adminUserAccounts": {
 			"title": "User accounts",
 			"detailsButton": "Details",
-			"deletedYes": "Yes",
-			"deletedNo": "No",
+			"yes": "Yes",
+			"no": "No",
 			"field": {
 				"email": "E-Mail",
 				"creationDate": "Creation Date",
 				"deleted": "Deleted?",
+				"unregistered": "Unregistered?",
+				"activated": "Activated?",
 				"userRole": "User Role",
 				"balance": "Balance",
 				"details": "Details"
@@ -173,12 +192,14 @@ export default {
 		"adminUserAccounts": {
 			"title": "Benutzerkonten",
 			"detailsButton": "Details",
-			"deletedYes": "Ja",
-			"deletedNo": "Nein",
+			"yes": "Ja",
+			"no": "Nein",
 			"field": {
 				"email": "E-Mail",
 				"creationDate": "Erstelldatum",
 				"deleted": "Gelöscht?",
+				"unregistered": "Nicht registriert?",
+				"activated": "Aktiviert?",
 				"userRole": "Benutzerrolle",
 				"balance": "Saldo",
 				"details": "Details"
