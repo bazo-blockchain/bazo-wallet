@@ -80,8 +80,8 @@
 							<div class="no-action-possible">{{ $t('userFunds.noActionsPossible') }}</div>
 						</div>
 						<div v-else>
-							<div v-if="item.item.balance > 0 && !item.item.locked && lockedAddress !== null">
-								<b-button variant="secondary" size="sm" @click.prevent="moveFundsPreparation(item.item.bitcoinAddress, item.item.balance)">
+							<div v-if="item.item.balance > 0 && !item.item.locked && lockedAddress.bitcoinAddress !== null">
+								<b-button variant="secondary" size="sm" @click.prevent="moveFundsPreparation(item.item.bitcoinAddress, item.item.redeemScript, item.item.balance)">
 									{{ $t('userFunds.moveFunds') }}
 								</b-button>
 								<b-popover triggers="hover" :content="$t('userFunds.moveFundsDescription')" class="popover-element">
@@ -93,7 +93,7 @@
 					</template>
 				</b-table>
 			
-				<div class="create-new-address-button" v-if="lockedAddress === null">
+				<div class="create-new-address-button" v-if="lockedAddress.bitcoinAddress === null">
 					<b-button @click.prevent="createNewAddressPreparation">{{ $t('userFunds.createNewAddress') }}</b-button>
 					<b-popover triggers="hover" :content="$t('userFunds.createNewAddressDescription')" class="popover-element">
 						<i class="fa fa-info-circle"></i>
@@ -131,7 +131,7 @@ export default {
 			currentPage: 1,
 			perPage: 15,
 			funds: {},
-			lockedAddress: null,
+			lockedAddress: {},
 			currentTransfer: {},
 			moveFundsSuccessful: false
 		}
@@ -220,7 +220,7 @@ export default {
 				HttpService.Auth.User.getLockedAddress()
 			]).then(responses => {
 				this.funds = responses[0].body;
-				this.lockedAddress = responses[1].body.bitcoinAddress;
+				this.lockedAddress = responses[1].body;
 				this.loadingError = false;
 				this.isLoading = false;
 			}, () => {
@@ -228,7 +228,7 @@ export default {
 				this.loadingError = true;
 			})
 		},
-		moveFundsPreparation: function (fromAddress, amountSatoshi) {
+		moveFundsPreparation: function (fromAddress, redeemScript, amountSatoshi) {
 			this.isLoading = true;
 			this.currentTransfer = {};
 
@@ -238,8 +238,9 @@ export default {
 				HttpService.Auth.User.getUTXO(fromAddress)
 			]).then(responses => {
 				this.currentTransfer = {
+					redeemScript: redeemScript,
 					amountSatoshi: amountSatoshi,
-					output: this.lockedAddress,
+					output: this.lockedAddress.bitcoinAddress,
 					encryptedPrivateKey: responses[0].body.encryptedClientPrivateKey,
 					feePerByte: responses[1].body.fee,
 					inputs: responses[2].body
@@ -258,7 +259,17 @@ export default {
 			this.moveFundsSuccessful = false;
 
 			try {
-				const transaction = TransactionService.buildTransaction(decryptedPrivateKey, this.currentTransfer.inputs, this.currentTransfer.output, this.currentTransfer.amountSatoshi, this.currentTransfer.feePerByte);
+				const transaction = TransactionService.buildTransaction({
+					privateKeyWif: decryptedPrivateKey,
+					inputs: this.currentTransfer.inputs.list,
+					totalInputAmount: this.currentTransfer.inputs.sum,
+					output: this.currentTransfer.output,
+					changeOutput: null,
+					amount: this.currentTransfer.amountSatoshi,
+					feePerByte: this.currentTransfer.feePerByte,
+					feesIncluded: true,
+					redeemScript: this.currentTransfer.redeemScript
+				});
 
 				// toPublicKey: '' && amount: 0 => external payment
 				const dto = {
