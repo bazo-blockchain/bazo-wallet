@@ -31,6 +31,12 @@
 								<template slot="virtualBalance" scope="item">
 									{{ item.value }}
 								</template>
+								<template slot="channelTransactionAmount" scope="item">
+									<span :class="{ 'red': item.value > 0 }">
+										<span v-if="item.value > 0">-</span>
+										{{ item.value }}
+									</span>
+								</template>
 								<template slot="totalBalance" scope="item">
 									{{ item.value }}
 								</template>
@@ -106,6 +112,10 @@ export default {
 					label: this.$t('adminAccounts.fields.virtualBalance'),
 					sortable: true
 				},
+				channelTransactionAmount: {
+					label: this.$t('adminAccounts.fields.channelTransactionAmount'),
+					sortable: true
+				},
 				totalBalance: {
 					label: this.$t('adminAccounts.fields.totalBalance')
 				},
@@ -177,6 +187,7 @@ export default {
 				"publicKeyClient": "Public Key Client",
 				"satoshiBalance": "Satoshi Balance",
 				"virtualBalance": "Virtual Balance",
+				"channelTransactionAmount": "Channel Balance",
 				"totalBalance": "Total Balance",
 				"actions": "Actions"
 			}
@@ -192,6 +203,7 @@ export default {
 				"timeCreated": "Erstellt am",
 				"publicKeyClient": "Public Key Client",
 				"satoshiBalance": "Satoshi Saldo",
+				"channelTransactionAmount": "Channel Saldo",
 				"virtualBalance": "Virtuelles Saldo",
 				"totalBalance": "Gesamtsaldo",
 				"actions": "Aktionen"

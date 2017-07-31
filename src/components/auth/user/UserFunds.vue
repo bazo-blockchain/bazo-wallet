@@ -2,9 +2,10 @@
 <div class="user-funds">
 	<div class="compact">
 		<h1 class="display-4">{{ $t('userFunds.title') }}
-			<small v-if="totalBalance !== ''" class="pull-right">
+			<small v-if="!isLoading && !loadingError" class="pull-right">
+				<span class="total-funds-small">{{ $t('userFunds.totalFunds') }}</span>
 				<i class="fa fa-bitcoin"></i>
-				{{ convertSatoshiToBitcoin(totalBalance) }}
+				{{ convertSatoshiToBitcoin(funds.totalBalance) }}
 			</small>
 		</h1>
 		<hr>
@@ -18,11 +19,19 @@
 				<b-table striped hover :items="tableItems" :fields="fields" :current-page="currentPage" :per-page="perPage">
 					<template slot="bitcoinAddress" scope="item">
 						<div class="no-wrap">
-							<div v-if="item.item.virtualBalance">
-								<i>{{ $t('userFunds.virtualBalance') }}</i>
-								<b-popover :content="$t('userFunds.virtualBalanceDescription')" triggers="hover" class="popover-element">
-									<i class="fa fa-info-circle increase-focus"></i>
-								</b-popover>
+							<div v-if="item.item.virtualBalance || item.item.channelTransactionAmount">
+								<div v-if="item.item.virtualBalance">
+									<i>{{ $t('userFunds.virtualBalance') }}</i>
+									<b-popover :content="$t('userFunds.virtualBalanceDescription')" triggers="hover" class="popover-element">
+										<i class="fa fa-info-circle increase-focus"></i>
+									</b-popover>
+								</div>
+								<div v-if="item.item.channelTransactionAmount">
+									<i>{{ $t('userFunds.channelTransactionAmount') }}</i>
+									<b-popover :content="$t('userFunds.channelTransactionAmountDescription')" triggers="hover" class="popover-element">
+										<i class="fa fa-info-circle increase-focus"></i>
+									</b-popover>
+								</div>
 							</div>
 							<span v-else>
 								<span class="mono">{{ item.value }}</span>&nbsp;
@@ -33,7 +42,7 @@
 						</div>
 					</template>
 					<template slot="createdAt" scope="item">
-						<div v-if="item.item.virtualBalance">
+						<div v-if="item.item.virtualBalance || item.item.channelTransactionAmount">
 							<i class="fa fa-minus"></i>
 						</div>
 						<div v-else>
@@ -41,7 +50,7 @@
 						</div>
 					</template>
 					<template slot="lockedUntil" scope="item">
-						<div v-if="item.item.virtualBalance">
+						<div v-if="item.item.virtualBalance || item.item.channelTransactionAmount">
 							<i class="fa fa-minus"></i>
 						</div>
 						<div v-else>
@@ -49,7 +58,7 @@
 						</div>
 					</template>
 					<template slot="locked" scope="item">
-						<div v-if="item.item.virtualBalance">
+						<div v-if="item.item.virtualBalance || item.item.channelTransactionAmount">
 							<i class="fa fa-minus"></i>
 						</div>
 						<div v-else class="no-wrap">
@@ -62,13 +71,14 @@
 						</div>
 					</template>
 					<template slot="balance" scope="item">
-						<div class="nowrap">
+						<div class="nowrap" :class="{'red': item.item.channelTransactionAmount && item.value > 0}">
 							<i class="fa fa-bitcoin"></i>
+							<span v-if="item.item.channelTransactionAmount && item.value > 0">-</span>
 							{{ convertSatoshiToBitcoin(item.value) }}
 						</div>
 					</template>
 					<template slot="qr" scope="item">
-						<div v-if="item.item.virtualBalance">
+						<div v-if="item.item.virtualBalance || item.item.channelTransactionAmount">
 							<i class="fa fa-minus"></i>
 						</div>
 						<div v-else>
@@ -76,7 +86,7 @@
 						</div>
 					</template>
 					<template slot="actions" scope="item">
-						<div v-if="item.item.virtualBalance">
+						<div v-if="item.item.virtualBalance || item.item.channelTransactionAmount">
 							<div class="no-action-possible">{{ $t('userFunds.noActionsPossible') }}</div>
 						</div>
 						<div v-else>
@@ -174,19 +184,6 @@ export default {
 				}
 			};
 		},
-		totalBalance: function () {
-			if (this.funds && this.funds.timeLockedAddresses) {
-				let sumOfBalances = 0;
-
-				this.funds.timeLockedAddresses.forEach((item) => {
-					sumOfBalances += item.balance;
-				});
-
-				return this.funds.virtualBalance + sumOfBalances;
-			} else {
-				return '';
-			}
-		},
 		dateFormat: function () {
 			return UtilService.DATE_FORMAT
 		},
@@ -204,6 +201,11 @@ export default {
 				table.push({
 					virtualBalance: true,
 					balance: this.funds.virtualBalance
+				});
+
+				table.push({
+					channelTransactionAmount: true,
+					balance: this.funds.channelTransactionAmount
 				});
 
 				return table;
@@ -341,6 +343,7 @@ export default {
 	"en": {
 		"userFunds": {
 			"title": "Funds",
+			"totalFunds": "Total",
 			"locked": "Locked",
 			"unlocked": "Unlocked",
 			"moveFunds": "Move Funds",
@@ -348,6 +351,8 @@ export default {
 			"noActionsPossible": "No action possible.",
 			"virtualBalance": "Virtual Balance",
 			"virtualBalanceDescription": "To provide a fast, reliable service, a certain amount of Bitcoins is kept at the server as a virtual balance for a direct Coinblesk user exchange.",
+			"channelTransactionAmount": "Open payment",
+			"channelTransactionAmountDescription": "To save transaction fees, there is the open payment. This means, that pending transaction are not directly sent out into the Bitcoin network, but kept back to summarize all the payments (up to a certain amount). The recepient immediately receives the payment in form of a virtual balance.",
 			"createNewAddress": "Create new address",
 			"createNewAddressDescription": "Create a new address!",
 			"paymentError": "An error occurred. Please try it again later on.",
@@ -366,6 +371,7 @@ export default {
 	"de": {
 		"userFunds": {
 			"title": "Guthaben",
+			"totalFunds": "Total",
 			"locked": "Gesperrt",
 			"unlocked": "Nicht gesperrt",
 			"moveFunds": "Betrag verschieben",
@@ -373,6 +379,8 @@ export default {
 			"noActionsPossible": "Keine Aktion möglich.",
 			"virtualBalance": "Virtuelles Saldo",
 			"virtualBalanceDescription": "Um einen möglichst reibungslosen und schnellen Dienst anbieten zu können, wird jeweils eine beschränkte Summe Bitcoins auf dem Server für einen direkten Austausch zwischen Coinblesk Benutzern zurückbehalten.",
+			"channelTransactionAmount": "Offene Transaktion",
+			"channelTransactionAmountDescription": "Um Transaktionskosten zu sparen, gibt es die offene Zahlung. Das bedeutet, alle Transaktionen bis zu einem Schwellenwert werden zurückgehalten. Der Empfänger erhält den Betrag jedoch sofort in Form eines virtuellen Saldos.",
 			"createNewAddress": "Neue Adresse anlegen",
 			"createNewAddressDescription": "Create a new address!",
 			"paymentError": "Ein Fehler ist aufgetreten. Versuchen Sie es später noch einmal.",
@@ -463,6 +471,10 @@ h1 small {
 
 .table /deep/ thead th {
 	border-top: 0;
+}
+.total-funds-small {
+	font-size: 60%;
+	text-transform: uppercase;
 }
 
 /* default is added to uninteresting rows */

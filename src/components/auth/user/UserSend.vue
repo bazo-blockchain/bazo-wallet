@@ -146,7 +146,7 @@ export default {
 					typeof this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress.bitcoinAddress] === 'undefined') {
 				return 0;
 			}
-			return this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress.bitcoinAddress] + this.$store.state.userBalance.virtualBalance;
+			return this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress.bitcoinAddress] + this.$store.state.userBalance.virtualBalance - this.$store.state.userBalance.channelTransactionAmount;
 		},
 		btcMaximumAmount: function () {
 			return this.maximumAmount * UtilService.SATOSHI_PER_BITCOIN;
