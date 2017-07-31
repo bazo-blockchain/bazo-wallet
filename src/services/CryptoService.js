@@ -45,13 +45,13 @@ const Crypto = {
 				letters: /[A-Z]/.test(password) || /[a-z]/.test(password),
 				numbers: true,
 				special: true,
-				size: password.length >= 10
+				size: password.length >= 16
 			},
 			good: {
 				letters: /[A-Z]/.test(password) && /[a-z]/.test(password),
 				numbers: /\d/.test(password),
 				special: /[^0-9a-zA-Z]/.test(password),
-				size: password.length >= 16
+				size: password.length >= 20
 			}
 		};
 	},
