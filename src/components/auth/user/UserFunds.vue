@@ -261,8 +261,7 @@ export default {
 			try {
 				const transaction = TransactionService.buildTransaction({
 					privateKeyWif: decryptedPrivateKey,
-					inputs: this.currentTransfer.inputs.list,
-					totalInputAmount: this.currentTransfer.inputs.sum,
+					inputs: this.currentTransfer.inputs,
 					output: this.currentTransfer.output,
 					changeOutput: null,
 					amount: this.currentTransfer.amountSatoshi,

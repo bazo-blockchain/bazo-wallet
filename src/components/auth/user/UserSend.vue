@@ -247,8 +247,7 @@ export default {
 				try {
 					const transaction = TransactionService.buildTransaction({
 						privateKeyWif: decryptedPrivateKeyWif,
-						inputs: this.currentTransaction.inputs.list,
-						totalInputAmount: this.currentTransaction.inputs.sum,
+						inputs: this.currentTransaction.inputs,
 						output: this.address,
 						amount: satoshiAmount,
 						changeOutput: this.lockedAddress.bitcoinAddress,
@@ -300,8 +299,7 @@ export default {
 						}
 						const transaction = TransactionService.buildTransaction({
 							privateKeyWif: decryptedPrivateKeyWif,
-							inputs: this.currentTransaction.inputs.list,
-							totalInputAmount: this.currentTransaction.inputs.sum,
+							inputs: this.currentTransaction.inputs,
 							output: this.address,
 							changeOutput: this.lockedAddress.bitcoinAddress,
 							amount: totalAmount,
@@ -427,8 +425,8 @@ export default {
 {
 	"en": {
 		"userSend": {
-			"title": "Send Bitcoins",
-			"boxTitle": "Send to an E-Mail or Bitcoin address",
+			"title": "Transfer Bitcoins",
+			"boxTitle": "Transfer to an E-Mail or Bitcoin address",
 			"receiver": "Receiver (Bitcoin/E-Mail address)",
 			"receiverPlaceholder": "Enter a bitcoin or e-mail address",
 			"receiverDescription": "If you enter an e-mail address, the recepient obtains a message with a unique token. This token can then be used to claim the funds.",
@@ -448,8 +446,8 @@ export default {
 	},
 	"de": {
 		"userSend": {
-			"title": "Bitcoins versenden",
-			"boxTitle": "An eine E-Mail oder Bitcoin Adresse versenden",
+			"title": "Bitcoins überweisen",
+			"boxTitle": "An eine E-Mail oder Bitcoin Adresse überweisen",
 			"receiver": "Empfänger (Bitcoin/E-Mail Adresse)",
 			"receiverPlaceholder": "Bitcoin oder E-Mail Adresse eingeben",
 			"receiverDescription": "Falls Sie eine E-Mail Adresse eingeben wird der Empfänger eine Nachricht mit einem Schlüssel erhalten. Mit diesem Schlüssel hat er Zugriff auf die erhaltenen Beträge.",

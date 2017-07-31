@@ -333,7 +333,7 @@ $language-picker-height-offline: 8.9em;
 			"login": "Login",
 			"registration": "Registration",
 			"forex": "Market trend",
-			"userSend": "Send Bitcoins",
+			"userSend": "Transfer Bitcoins",
 			"userFunds": "Funds",
 			"adminEvents": "Events",
 			"adminAccounts": "Accounts",

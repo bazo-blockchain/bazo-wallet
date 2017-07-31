@@ -7,11 +7,10 @@
 			console.info('Assemble transaction with the following information', deepCopyDTO);
 		})();
 
-		// dto params:
+		// dto params
 		const privateKeyWif = dto.privateKeyWif;
 		const keyPair = window.bitcoin.ECPair.fromWIF(privateKeyWif);
 		const inputs = dto.inputs;
-		const totalInputAmount = dto.totalInputAmount;
 		const output = dto.output;
 		const changeOutput = dto.changeOutput;
 		const amount = dto.amount;
@@ -20,15 +19,31 @@
 		const redeemScript = redeemScript;
 
 		// validation
-		if (!privateKeyWif || !inputs || inputs.length < 1 || totalInputAmount <= 0 || !output || amount <= 0 || feePerByte < 0 || !redeemScript) {
-			throw new Error('Validation: Invalid parameters');
-		}
+		(() => {
+			let invalidInputs = false;
+			for (let i = 0; i < inputs.length; i++) {
+				if (inputs[i].value < 0 || inputs[i].index < 0 || typeof inputs[i].transactionHash === 'undefined' || inputs[i] === null) {
+					invalidInputs = true;
+				}
+			}
+			if (!privateKeyWif || !inputs || inputs.length < 1 || invalidInputs || !output || amount <= 0 || feePerByte < 0 || !redeemScript) {
+				throw new Error('Validation: Invalid parameters');
+			}
+		})();
+
+		const totalInputAmount = () => {
+			let sum = 0;
+			for (let i = 0; i < inputs.length; i++) {
+				sum += inputs[i].value;
+			}
+			return sum;
+		};
 
 		const calculateBytes = () => {
 			const randomKey = window.bitcoin.ECPair.makeRandom();
 			const tempTx = new window.bitcoin.TransactionBuilder();
 			for (let i = 0; i < inputs.length; i++) {
-				tempTx.addInput(inputs[i], i);
+				tempTx.addInput(inputs[i].transactionHash, inputs[i].index);
 			}
 			tempTx.addOutput(output, amount);
 			if (changeOutput) {
