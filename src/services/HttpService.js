@@ -75,6 +75,9 @@ const HttpService = {
 			getChannelTransaction: function () {
 				return Vue.http.get(HOST + '/auth/user/payment/channel-transaction');
 			},
+			getServerPotAddress: function () {
+				return Vue.http.get(HOST + '/auth/user/payment/server-pot-address');
+			},
 			virtualPaymentViaEmail: function (dto, doNotIntercept) {
 				return Vue.http.post(HOST + '/auth/user/payment/virtual-payment-email', dto,
 						doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);

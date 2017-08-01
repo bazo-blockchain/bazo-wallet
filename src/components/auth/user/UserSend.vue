@@ -43,12 +43,17 @@
 								<div class="col-md-4">
 									<b-form-fieldset>
 										<label class="col-form-label">{{ $t('userSend.maxAmount') }}
-											<b-popover triggers="hover" :content="$t('userSend.maxAmountDescription')" class="popover-element">
+											<b-popover triggers="hover" :content="(addressIsBitcoin || addressIsEmail) ? $t('userSend.maxAmountDescription') : '<b>'+$t('userSend.maxAmountDescriptionIntro')+'</b><hr>' + $t('userSend.maxAmountDescription')" class="popover-element">
 												<i class="fa fa-info-circle increase-focus"></i>
 											</b-popover>
 										</label>
 										<div class="form-control disabled mono" :class="{ 'form-error': formIsTouched && maximumAmountExceeded }">
-											{{ convertSatoshiToBitcoin(maximumAmount) }} BTC
+											<span v-if="addressIsBitcoin || addressIsEmail">
+												{{ convertSatoshiToBitcoin(maximumAmount) }} BTC
+											</span>
+											<span v-else>
+												<i class="fa fa-minus"></i>
+											</span>
 										</div>
 									</b-form-fieldset>
 								</div>
@@ -146,7 +151,17 @@ export default {
 					typeof this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress.bitcoinAddress] === 'undefined') {
 				return 0;
 			}
-			return this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress.bitcoinAddress] + this.$store.state.userBalance.virtualBalance - this.$store.state.userBalance.channelTransactionAmount;
+			if (this.addressIsEmail) {
+				// if the receiver is an e-mail address, either the virtual amount or the actual amount is transferable
+				const fundsOnLockedAddress = this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress.bitcoinAddress] - this.$store.state.userBalance.channelTransactionAmount;
+				const fundsOnVirtualAddress = this.$store.state.userBalance.virtualBalance;
+				return Math.max(fundsOnLockedAddress, fundsOnVirtualAddress);
+			} else if(this.addressIsBitcoin) {
+				// if the receiver is a bitcoin address, the amount transferable only includes funds from the locked address minus the channel transaction amount
+				return this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress.bitcoinAddress] - this.$store.state.userBalance.channelTransactionAmount;
+			} else {
+				return 0;
+			}
 		},
 		btcMaximumAmount: function () {
 			return this.maximumAmount * UtilService.SATOSHI_PER_BITCOIN;
@@ -177,9 +192,7 @@ export default {
 			return this.addressIsEmail || this.addressIsBitcoin;
 		},
 		validForm: function () {
-			return true;
-			// TODO
-			// return this.validAmount && this.validAddress;
+			return this.validAmount && this.validAddress;
 		}
 	},
 	methods: {
@@ -210,14 +223,16 @@ export default {
 					HttpService.Auth.User.getEncryptedPrivateKey(),
 					HttpService.Auth.User.getFees(),
 					HttpService.Auth.User.getUTXO(this.lockedAddress.bitcoinAddress),
-					HttpService.Auth.User.getChannelTransaction()
+					HttpService.Auth.User.getChannelTransaction(),
+					HttpService.Auth.User.getServerPotAddress()
 				]).then((responses) => {
 					this.currentTransaction = {
 						encryptedPrivateKey: responses[0].body.encryptedClientPrivateKey,
 						feePerByte: responses[1].body.fee,
 						inputs: responses[2].body,
-						channelTransaction: responses[3].channelTransaction
-					}
+						channelTransaction: responses[3].body.channelTransaction,
+						serverPotAddress: responses[4].body.serverPotAddress
+					};
 					this.isLoading = false;
 					this.$nextTick(() => {
 						this.$root.$emit('show::modal', 'user-transfer');
@@ -230,10 +245,11 @@ export default {
 		},
 		submit: function (decryptedPrivateKeyWif) {
 			this.isLoading = true;
-			const errorOccurred = () => {
+			const errorOccurred = (e) => {
 				this.isLoading = false;
 				this.currentTransaction = {};
 				this.$toasted.global.warn(this.$t('userSend.paymentError'));
+				console.warn(e);
 			};
 			const success = () => {
 				this.isLoading = false;
@@ -269,10 +285,10 @@ export default {
 					HttpService.microPayment(signedDTO, true).then(() => {
 						success();
 					}, () => {
-						errorOccurred();
+						errorOccurred('server denied');
 					});
 				} catch (e) {
-					errorOccurred();
+					errorOccurred(e);
 				}
 			} else {
 				// address is e-mail address
@@ -285,7 +301,7 @@ export default {
 					HttpService.Auth.User.virtualPaymentViaEmail(dto, true).then(() => {
 						success();
 					}, () => {
-						errorOccurred();
+						errorOccurred('server denied');
 					});
 				} else {
 					// micro payment
@@ -293,14 +309,13 @@ export default {
 						let totalAmount = satoshiAmount;
 						if (this.currentTransaction.channelTransaction !== null) {
 							const channelTransaction = window.bitcoin.Transaction.fromHex(this.currentTransaction.channelTransaction);
-							// TODO evaluate
 							let channelTransactionAmount = channelTransaction.outs[0].value;
 							totalAmount += channelTransactionAmount;
 						}
 						const transaction = TransactionService.buildTransaction({
 							privateKeyWif: decryptedPrivateKeyWif,
 							inputs: this.currentTransaction.inputs,
-							output: this.address,
+							output: this.currentTransaction.serverPotAddress,
 							changeOutput: this.lockedAddress.bitcoinAddress,
 							amount: totalAmount,
 							feePerByte: this.currentTransaction.feePerByte,
@@ -315,10 +330,10 @@ export default {
 						HttpService.Auth.User.microPaymentViaEmail(dto, true).then(() => {
 							success();
 						}, () => {
-							errorOccurred();
+							errorOccurred('server denied');
 						})
 					} catch (e) {
-						errorOccurred();
+						errorOccurred(e);
 					}
 				}
 			}
@@ -435,7 +450,8 @@ export default {
 			"feesIncluded": "Fees are included in the amount",
 			"feesIncludedDescription": "If the checkbox is checked the fees are subtracted from the transfer amount. The recepient receives an amount which is reduced by the extend of the fees. Alternatively, you are charged by the amount plus fees, the recepient, however, receives the exact amount.",
 			"maxAmount": "Maximal amount",
-			"maxAmountDescription": "The maximal amount relates to the sum the locked account and the virtual balance. If you except a higher value here, make sure to have your funds on the current locked Coinblesk address (see Funds).",
+			"maxAmountDescription": "The maximal amount relates to the currently maximal amount which can be transferred to another account. If you have a virtual balance (see <i>Funds</i>), you can pay out these funds to transfer it to another Bitcoin address. E-mail addresses as recipients can either receive funds from virtual balances or from time locked address, which are currently locked.",
+			"maxAmountDescriptionIntro": "Please enter an address first, before you can see the maximal amount.",
 			"descriptionForexRate": "The current forex rate BTC/{currency} is <span class='mono'>{forex}</span>&nbsp;&nbsp;(Source: Bitstamp).",
 			"descriptionFees": "The fees of your Bitcoin transfer are not yet included in the amount and are added to the value. Please make sure, that you have enough funds to create this transaction. Otherwise we have to reject it.",
 			"lowAmountFeeDescription": "The amount you are trying to transfer is very small and needs to contain possible transaction fees. It is possible, that the transaction is rejected because the fees might be higher than the remaining transfer amount.",
@@ -456,7 +472,8 @@ export default {
 			"feesIncluded": "Spesen in Betrag einschliessen",
 			"feesIncludedDescription": "Wenn die Auswahlbox ausgewählt ist, werden die Spesen vom Betrag abgezogen. Der Empfänger erhält einen um die Spesen verminderten Betrag. Andernfalls wird Ihnen der Betrag plus Spesen berechnet, der Empfänger erhält jedoch den genauen Betrag.",
 			"maxAmount": "Maximalbetrag",
-			"maxAmountDescription": "Der Maximalbetrag stellt die Summe aus virtuellem Saldo und dem gesperrten Konto dar. Falls Sie hier einen höheren Wert erwarten, überweisen Sie bitte die Guthaben der bisherigen Addressen auf die aktuelle, gesperrte Coinblesk Adresse (siehe Guthaben).",
+			"maxAmountDescription": "Der Maximalbetrag stellt den aktuell höchst möglichen Zahlungsbetrag dar. Falls Sie virtuelles Guthaben haben (siehe <i>Guthaben</i>) können Sie sich dieses Guthaben zunächst auzahlen lassen um an eine Bitcoin-Adresse zu zahlen. E-Mail Adressen können entweder Guthaben aus virtuellem Guthaben oder aber Guthaben auf zeitlich gesperrten Adressen beinhalten.",
+			"maxAmountDescriptionIntro": "Geben Sie zunächst eine Adresse ein, um den Maximalbetrag zu sehen.",
 			"descriptionForexRate": "Der aktuelle Wechselkurs BTC/{currency} beträgt <span class='mono'>{forex}</span>&nbsp;&nbsp;(Quelle: Bitstamp).",
 			"descriptionFees": "Bei Ihrer Zahlung entstehen voraussichtlich Spesen, welche auf den dargestellten Betrag aufaddiert werden. Vergewissern Sie sich, dass Sie über genügend BTC verfügen, um die Zahlung auszuführen. Andernfalls müssen wir die Zahlung ablehnen.",
 			"lowAmountFeeDescription": "Der Betrag, den Sie überweisen möchten ist klein und beinhaltet bereits allfällige Spesen. Womöglich wird diese Transaktion abgelehnt, da die Spesen höher sein könnten als der verbleibende Überweisungsbetrag.",

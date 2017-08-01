@@ -26,7 +26,7 @@
 					invalidInputs = true;
 				}
 			}
-			if (!privateKeyWif || !inputs || inputs.length < 1 || invalidInputs || !output || amount <= 0 || feePerByte < 0 || !redeemScript) {
+			if (!privateKeyWif || !inputs || inputs.length < 1 || invalidInputs || !output || amount <= 0 || feePerByte < 0 || !!redeemScript) {
 				throw new Error('Validation: Invalid parameters');
 			}
 		})();
