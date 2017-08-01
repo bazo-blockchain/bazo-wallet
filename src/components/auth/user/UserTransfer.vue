@@ -1,6 +1,6 @@
 <template>
 <div>
-	<b-modal :id="'user-transfer' + (onlyUnlock ? '-unlock' : '')" :title="!onlyUnlock ? $t('userTransfer.title') : $t('userTransfer.titleUnlock')"
+	<b-modal :id="'user-transfer' + (onlyUnlock ? '-unlock' : '') + (separate ? '-' + separate : '')" :title="!onlyUnlock ? $t('userTransfer.title') : $t('userTransfer.titleUnlock')"
 		size="md" :hide-footer="true" @hidden="modalWasClosed">
 		<div>
 			<div class="alert alert-info" v-html="$t('userTransfer.description', { amount })" v-if="!onlyUnlock"></div>
@@ -33,7 +33,8 @@ export default {
 	props: {
 		encryptedPrivateKey: String,
 		amount: Number,
-		onlyUnlock: Boolean
+		onlyUnlock: Boolean,
+		separate: String
 	},
 	methods: {
 		submit: function () {
@@ -48,7 +49,7 @@ export default {
 			}
 		},
 		hideModal: function () {
-			this.$root.$emit('hide::modal', 'user-transfer' + (this.onlyUnlock ? '-unlock' : ''));
+			this.$root.$emit('hide::modal', 'user-transfer' + (this.onlyUnlock ? '-unlock' : '') + (this.separate ? '-' + this.separate : ''));
 		},
 		modalWasClosed: function () {
 			this.passPhrase = '';

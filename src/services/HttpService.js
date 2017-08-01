@@ -140,6 +140,10 @@ const HttpService = {
 	createTimeLockedAddress: function (signedDTO, doNotIntercept) {
 		return Vue.http.post(HOST + '/payment/createTimeLockedAddress', signedDTO,
 				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
+	},
+	payout: function (signedDTO, doNotIntercept) {
+		return Vue.http.post(HOST + '/payment/payout', signedDTO,
+				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 	}
 };
 

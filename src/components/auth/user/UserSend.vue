@@ -156,7 +156,7 @@ export default {
 				const fundsOnLockedAddress = this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress.bitcoinAddress] - this.$store.state.userBalance.channelTransactionAmount;
 				const fundsOnVirtualAddress = this.$store.state.userBalance.virtualBalance;
 				return Math.max(fundsOnLockedAddress, fundsOnVirtualAddress);
-			} else if(this.addressIsBitcoin) {
+			} else if (this.addressIsBitcoin) {
 				// if the receiver is a bitcoin address, the amount transferable only includes funds from the locked address minus the channel transaction amount
 				return this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress.bitcoinAddress] - this.$store.state.userBalance.channelTransactionAmount;
 			} else {

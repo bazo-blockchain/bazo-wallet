@@ -87,7 +87,17 @@
 					</template>
 					<template slot="actions" scope="item">
 						<div v-if="item.item.virtualBalance || item.item.channelTransactionAmount">
-							<div class="no-action-possible">{{ $t('userFunds.noActionsPossible') }}</div>
+							<div v-if="item.item.virtualBalance && item.item.balance > 0 && lockedAddress.bitcoinAddress !== null">
+								<b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
+									{{ $t('userFunds.payoutButton') }}
+								</b-button>
+								<b-popover triggers="hover" :content="$t('userFunds.payoutDescription')" class="popover-element">
+									<i class="fa fa-info-circle increase-focus"></i>
+								</b-popover>
+							</div>
+							<div v-else>
+								<div class="no-action-possible nowrap">{{ $t('userFunds.noActionsPossible') }}</div>
+							</div>
 						</div>
 						<div v-else>
 							<div v-if="item.item.balance > 0 && !item.item.locked && lockedAddress.bitcoinAddress !== null">
@@ -95,10 +105,10 @@
 									{{ $t('userFunds.moveFunds') }}
 								</b-button>
 								<b-popover triggers="hover" :content="$t('userFunds.moveFundsDescription')" class="popover-element">
-									<i class="fa fa-info-circle"></i>
+									<i class="fa fa-info-circle increase-focus"></i>
 								</b-popover>
 							</div>
-							<div v-else class="no-action-possible">{{ $t('userFunds.noActionsPossible') }}</div>
+							<div v-else class="no-action-possible nowrap">{{ $t('userFunds.noActionsPossible') }}</div>
 						</div>
 					</template>
 				</b-table>
@@ -118,6 +128,7 @@
 		
 		<user-transfer @private-key-decrypted="moveFunds" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :amount="convertSatoshiToBitcoin(currentTransfer.amountSatoshi)"></user-transfer>
 		<user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true"></user-transfer>
+		<user-transfer @private-key-decrypted="payout" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true" separate="payout"></user-transfer>
 	</div>
 </div>
 </template>
@@ -330,6 +341,39 @@ export default {
 				this.currentTransfer = {};
 			});
 		},
+		payoutPreparation: function () {
+			this.isLoading = true;
+			this.currentTransfer = {};
+			HttpService.Auth.User.getEncryptedPrivateKey().then(response => {
+				this.currentTransfer = {
+					encryptedPrivateKey: response.body.encryptedClientPrivateKey
+				};
+				this.isLoading = false;
+				this.$nextTick(() => {
+					this.$root.$emit('show::modal', 'user-transfer-unlock-payout');
+				});
+			});
+		},
+		payout: function (decryptedPrivateKey) {
+			this.isLoading = true;
+			this.moveFundsSuccessful = false;
+
+			const innerDTO = {
+				publicKey: CryptoService.convertPrivateKeyWifToPublicKeyHex(decryptedPrivateKey),
+				ToAddress: this.lockedAddress.bitcoinAddress
+			};
+			const signedInnerDTO = CryptoService.signDTO(decryptedPrivateKey, innerDTO);
+
+			HttpService.payout(signedInnerDTO, true).then(() => {
+				this.isLoading = false;
+				this.currentTransfer = {};
+				this.loadData();
+			}, () => {
+				this.$toasted.global.error(this.$t('userFunds.paymentError'));
+				this.isLoading = false;
+				this.currentTransfer = {};
+			});
+		},
 		convertSatoshiToBitcoin: UtilService.convertSatoshiToBitcoin
 	},
 	mounted: function () {
@@ -357,6 +401,8 @@ export default {
 			"createNewAddressDescription": "Create a new address!",
 			"paymentError": "An error occurred. Please try it again later on.",
 			"moveFundsSuccessful": "The amount was successfully transferred to the locked account. This transaction may be pending for up to an hour. Refresh this page to see if the transaction was already confirmed.",
+			"payoutButton": "Pay Out",
+			"payoutDescription": "The virtual balance can only be used for payment within Coinblesk. If you want to make payments to any Bitcoin address, you need to pay out the virtual balance to your locked address.",
 			"fields": {
 				"bitcoinAddress": "Bitcoin Address",
 				"createdAt": "Created At",
@@ -379,12 +425,14 @@ export default {
 			"noActionsPossible": "Keine Aktion möglich.",
 			"virtualBalance": "Virtuelles Saldo",
 			"virtualBalanceDescription": "Um einen möglichst reibungslosen und schnellen Dienst anbieten zu können, wird jeweils eine beschränkte Summe Bitcoins auf dem Server für einen direkten Austausch zwischen Coinblesk Benutzern zurückbehalten.",
-			"channelTransactionAmount": "Offene Transaktion",
+			"channelTransactionAmount": "Offene Zahlung",
 			"channelTransactionAmountDescription": "Um Transaktionskosten zu sparen, gibt es die offene Zahlung. Das bedeutet, alle Transaktionen bis zu einem Schwellenwert werden zurückgehalten. Der Empfänger erhält den Betrag jedoch sofort in Form eines virtuellen Saldos.",
 			"createNewAddress": "Neue Adresse anlegen",
 			"createNewAddressDescription": "Create a new address!",
 			"paymentError": "Ein Fehler ist aufgetreten. Versuchen Sie es später noch einmal.",
 			"moveFundsSuccessful": "Der Betrag ist erfolgreich auf das gesperrte Konto überwiesen worden. Die Transaktion kann bis zu einer Stunde dauern. Aktualisieren Sie die Seite, um zu erfahren, ob die Transaktion schon bestätigt ist.",
+			"payoutButton": "Auszahlen",
+			"payoutDescription": "Das virtuelle Saldo kann nur für Zahlungen innerhalb von Coinblesk verwendet werden. Möchten Sie Zahlungen nach ausserhalb machen, müssen Sie sich das virtuelle Saldo auf Ihre gesperrte Adresse auszahlen lassen.",
 			"fields": {
 				"bitcoinAddress": "Bitcoin Adresse",
 				"createdAt": "Erstellt am",
