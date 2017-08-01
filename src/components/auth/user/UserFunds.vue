@@ -366,7 +366,7 @@ export default {
 
 			const innerDTO = {
 				lockTime: Math.floor(new Date() / 1000) + 3600 * 24 * 100,
-				publicKey: window.bitcoin.ECPair.fromWIF(decryptedPrivateKey).getPublicKeyBuffer().toString('hex')
+				publicKey: CryptoService.convertPrivateKeyWifToPublicKeyHex(decryptedPrivateKey)
 			};
 			const signedInnerDTO = CryptoService.signDTO(decryptedPrivateKey, innerDTO);
 

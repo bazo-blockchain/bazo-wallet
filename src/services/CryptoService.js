@@ -1,4 +1,5 @@
 import sjcl from 'sjcl';
+import properties from '@/properties';
 
 const Crypto = {
 
@@ -17,7 +18,9 @@ const Crypto = {
 	},
 
 	createKey: function () {
-		const newECKey = window.bitcoin.ECPair.makeRandom();
+		const newECKey = window.bitcoin.ECPair.makeRandom({
+			network: properties.BITCOIN_NETWORK
+		});
 		return {
 			eckey: newECKey,
 			privateKey: newECKey.toWIF(),
@@ -28,7 +31,7 @@ const Crypto = {
 	signDTO: function (privateKeyWif, dto) {
 		const sha256 = window.bitcoin.crypto.sha256;
 		const base64String = window.btoa(JSON.stringify(dto));
-		const ecKey = window.bitcoin.ECPair.fromWIF(privateKeyWif);
+		const ecKey = window.bitcoin.ECPair.fromWIF(privateKeyWif, properties.BITCOIN_NETWORK);
 		const signature = ecKey.sign(sha256(base64String));
 		return {
 			payload: base64String,
@@ -57,7 +60,7 @@ const Crypto = {
 	},
 
 	convertPrivateKeyWifToPublicKeyHex: function (privateKeyWif) {
-		return window.bitcoin.ECPair.fromWIF(privateKeyWif).getPublicKeyBuffer().toString('hex');
+		return window.bitcoin.ECPair.fromWIF(privateKeyWif, properties.BITCOIN_NETWORK).getPublicKeyBuffer().toString('hex');
 	}
 
 };
