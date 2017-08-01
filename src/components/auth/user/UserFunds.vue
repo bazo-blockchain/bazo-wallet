@@ -13,9 +13,13 @@
 			<spinner :is-loading="isLoading"></spinner>
 			
 			<div class="table-wrapper" v-if="!isLoading && !loadingError">
-				<div class="alert alert-success" v-if="moveFundsSuccessful">
-					{{ $t('userFunds.moveFundsSuccessful') }}
-				</div>
+				<div class="alert alert-success" v-if="alerts.success.moveFunds">{{ $t('userFunds.alerts.success.moveFunds') }}</div>
+				<div class="alert alert-success" v-if="alerts.success.createNewAddress">{{ $t('userFunds.alerts.success.createNewAddress') }}</div>
+				<div class="alert alert-success" v-if="alerts.success.payout">{{ $t('userFunds.alerts.success.payout') }}</div>
+				<div class="alert alert-warning" v-if="alerts.error.moveFunds">{{ $t('userFunds.alerts.error.moveFunds') }}</div>
+				<div class="alert alert-warning" v-if="alerts.error.createNewAddress">{{ $('userFunds.alerts.error.createNewAddress') }}</div>
+				<div class="alert alert-warning" v-if="alerts.error.payout">{{ $t('userFunds.alerts.error.moveFunds') }}</div>
+				
 				<b-table striped hover :items="tableItems" :fields="fields" :current-page="currentPage" :per-page="perPage">
 					<template slot="bitcoinAddress" scope="item">
 						<div class="no-wrap">
@@ -154,7 +158,18 @@ export default {
 			funds: {},
 			lockedAddress: {},
 			currentTransfer: {},
-			moveFundsSuccessful: false
+			alerts: {
+				success: {
+					moveFunds: false,
+					createNewAddress: false,
+					payout: false
+				},
+				error: {
+					moveFunds: false,
+					createNewAddress: false,
+					payout: false
+				}
+			}
 		}
 	},
 	components: {
@@ -241,8 +256,20 @@ export default {
 				this.loadingError = true;
 			})
 		},
+		hideAlerts: function () {
+			const successKeys = Object.keys(this.alerts.success);
+			const errorKeys = Object.keys(this.alerts.error);
+
+			successKeys.forEach((item) => {
+				this.alerts.success[item] = false;
+			});
+			errorKeys.forEach((item) => {
+				this.alerts.error[item] = false;
+			});
+		},
 		moveFundsPreparation: function (fromAddress, redeemScript, amountSatoshi) {
 			this.isLoading = true;
+			this.hideAlerts();
 			this.currentTransfer = {};
 
 			Promise.all([
@@ -269,7 +296,7 @@ export default {
 		},
 		moveFunds: function (decryptedPrivateKey) {
 			this.isLoading = true;
-			this.moveFundsSuccessful = false;
+			this.hideAlerts();
 
 			try {
 				const transaction = TransactionService.buildTransaction({
@@ -296,21 +323,23 @@ export default {
 				HttpService.microPayment(signedDTO, true).then(() => {
 					this.isLoading = false;
 					this.currentTransfer = {};
-					this.moveFundsSuccessful = true;
+					this.alerts.success.moveFunds = true;
 				}, () => {
 					this.isLoading = false;
 					this.currentTransfer = {};
-					this.$toasted.global.error(this.$t('userFunds.paymentError'));
+					this.alerts.error.moveFunds = true;
 				});
 			} catch (error) {
 				this.isLoading = false;
 				this.currentTransfer = {};
-				this.$toasted.global.error(this.$t('userFunds.paymentError'));
+				this.alerts.error.moveFunds = true;
 			}
 		},
 		createNewAddressPreparation: function () {
 			this.isLoading = true;
 			this.currentTransfer = {};
+			this.hideAlerts();
+
 			HttpService.Auth.User.getEncryptedPrivateKey().then(response => {
 				this.currentTransfer = {
 					encryptedPrivateKey: response.body.encryptedClientPrivateKey
@@ -323,7 +352,7 @@ export default {
 		},
 		createNewAddress: function (decryptedPrivateKey) {
 			this.isLoading = true;
-			this.moveFundsSuccessful = false;
+			this.hideAlerts();
 
 			const innerDTO = {
 				lockTime: Math.floor(new Date() / 1000) + 3600 * 24 * 100,
@@ -335,15 +364,18 @@ export default {
 				this.isLoading = false;
 				this.currentTransfer = {};
 				this.loadData();
+				this.alerts.success.createNewAddress = true;
 			}, () => {
-				this.$toasted.global.error(this.$t('userFunds.paymentError'));
 				this.isLoading = false;
 				this.currentTransfer = {};
+				this.alerts.error.createNewAddress = true;
 			});
 		},
 		payoutPreparation: function () {
 			this.isLoading = true;
 			this.currentTransfer = {};
+			this.hideAlerts();
+
 			HttpService.Auth.User.getEncryptedPrivateKey().then(response => {
 				this.currentTransfer = {
 					encryptedPrivateKey: response.body.encryptedClientPrivateKey
@@ -356,7 +388,7 @@ export default {
 		},
 		payout: function (decryptedPrivateKey) {
 			this.isLoading = true;
-			this.moveFundsSuccessful = false;
+			this.hideAlerts();
 
 			const innerDTO = {
 				publicKey: CryptoService.convertPrivateKeyWifToPublicKeyHex(decryptedPrivateKey),
@@ -368,10 +400,11 @@ export default {
 				this.isLoading = false;
 				this.currentTransfer = {};
 				this.loadData();
+				this.alerts.success.payout = true;
 			}, () => {
-				this.$toasted.global.error(this.$t('userFunds.paymentError'));
 				this.isLoading = false;
 				this.currentTransfer = {};
+				this.alerts.error.payout = true;
 			});
 		},
 		convertSatoshiToBitcoin: UtilService.convertSatoshiToBitcoin
@@ -400,7 +433,6 @@ export default {
 			"createNewAddress": "Create new address",
 			"createNewAddressDescription": "Create a new address!",
 			"paymentError": "An error occurred. Please try it again later on.",
-			"moveFundsSuccessful": "The amount was successfully transferred to the locked account. This transaction may be pending for up to an hour. Refresh this page to see if the transaction was already confirmed.",
 			"payoutButton": "Pay Out",
 			"payoutDescription": "The virtual balance can only be used for payment within Coinblesk. If you want to make payments to any Bitcoin address, you need to pay out the virtual balance to your locked address.",
 			"fields": {
@@ -411,6 +443,18 @@ export default {
 				"balance": "Balance",
 				"qr": "QR Code",
 				"actions": "Actions"
+			},
+			"alerts": {
+				"success": {
+					"moveFunds": "The amount was successfully transferred to the locked account. This transaction may be pending for up to an hour. Refresh this page to see if the transaction was already confirmed.",
+					"createNewAddress": "Your new address was successfully created. Transfer your funds to this address to make payments in Coinblesk. You can directly move your funds from previous addresses to your new address on this page.",
+					"payout": "Your virtual balance was transferred successfully to your locked address. The transaction may be pending for up to an hour. Refresh this page to see if the transaction was already confiremed."
+				},
+				"error": {
+					"moveFunds": "An error occurred during the transaction of the funds. Please try it again later.",
+					"createNewAddress": "An error occurred during the creation of a new address. Please try it again later.",
+					"payout": "An error occurred during the pay out. Please try it again later."
+				}
 			}
 		}
 	},
@@ -430,7 +474,6 @@ export default {
 			"createNewAddress": "Neue Adresse anlegen",
 			"createNewAddressDescription": "Create a new address!",
 			"paymentError": "Ein Fehler ist aufgetreten. Versuchen Sie es später noch einmal.",
-			"moveFundsSuccessful": "Der Betrag ist erfolgreich auf das gesperrte Konto überwiesen worden. Die Transaktion kann bis zu einer Stunde dauern. Aktualisieren Sie die Seite, um zu erfahren, ob die Transaktion schon bestätigt ist.",
 			"payoutButton": "Auszahlen",
 			"payoutDescription": "Das virtuelle Saldo kann nur für Zahlungen innerhalb von Coinblesk verwendet werden. Möchten Sie Zahlungen nach ausserhalb machen, müssen Sie sich das virtuelle Saldo auf Ihre gesperrte Adresse auszahlen lassen.",
 			"fields": {
@@ -441,6 +484,18 @@ export default {
 				"balance": "Betrag",
 				"qr": "QR Code",
 				"actions": "Aktionen"
+			},
+			"alerts": {
+				"success": {
+					"moveFunds": "Der Betrag ist erfolgreich auf das gesperrte Konto überwiesen worden. Die Transaktion kann bis zu einer Stunde dauern. Aktualisieren Sie die Seite, um zu erfahren, ob die Transaktion schon bestätigt ist.",
+					"createNewAddress": "Ihre neue Adresse wurde erfolgreich erstellt. Überweisen Sie Guthaben auf diese Adresse, um Zahlungen zu tätigen. Sie können das Guthaben von vorherigen Adressen hier direkt auf Ihre neue Adresse überweisen.",
+					"payout": "Ihr virtuelles Saldo wurde erfolgreich auf Ihre gesperrte Adresse überwiesen. Die Transaktion kann bis zu einer Stunde dauern. Aktualisieren Sie die Seite, um zu erfahren, ob die Transaktion scho bestätigt ist."
+				},
+				"error": {
+					"moveFunds": "Es ist ein Fehler beim Überweisen aufgetreten. Bitte versuchen Sie es später erneut.",
+					"createNewAddress": "Es ist ein Fehler beim Erstellen einer neuen Adresse aufgetreten. Bitte versuchen Sie es später erneut.",
+					"payout": "Es ist ein Fehler beim Auszahlen aufgetreten. Bitte versuchen Sie es später erneut."
+				}
 			}
 		}
 	}

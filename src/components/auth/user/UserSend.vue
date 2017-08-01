@@ -331,7 +331,7 @@ export default {
 							success();
 						}, () => {
 							errorOccurred('server denied');
-						})
+						});
 					} catch (e) {
 						errorOccurred(e);
 					}
