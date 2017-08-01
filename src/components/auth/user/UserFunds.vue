@@ -127,6 +127,15 @@
 				<div class="justify-content-center row my-1" v-show="this.tableItems.length > perPage">
 					<b-pagination size="md" :total-rows="tableItems.length" :per-page="perPage" v-model="currentPage" />
 				</div>
+				
+				<hr>
+				
+				<div class="reload-page">
+					<span class="btn btn-secondary" @click.prevent="loadData">
+						<i class="fa fa-refresh"></i>
+						{{ $t('userFunds.reload') }}
+					</span>
+				</div>
 			</div>
 		</div>
 		
@@ -151,6 +160,7 @@ export default {
 	name: 'user-funds',
 	data: function () {
 		return {
+			blubb: false,
 			isLoading: true,
 			loadingError: false,
 			currentPage: 1,
@@ -435,6 +445,7 @@ export default {
 			"paymentError": "An error occurred. Please try it again later on.",
 			"payoutButton": "Pay Out",
 			"payoutDescription": "The virtual balance can only be used for payment within Coinblesk. If you want to make payments to any Bitcoin address, you need to pay out the virtual balance to your locked address.",
+			"reload": "Reload",
 			"fields": {
 				"bitcoinAddress": "Bitcoin Address",
 				"createdAt": "Created At",
@@ -476,6 +487,7 @@ export default {
 			"paymentError": "Ein Fehler ist aufgetreten. Versuchen Sie es später noch einmal.",
 			"payoutButton": "Auszahlen",
 			"payoutDescription": "Das virtuelle Saldo kann nur für Zahlungen innerhalb von Coinblesk verwendet werden. Möchten Sie Zahlungen nach ausserhalb machen, müssen Sie sich das virtuelle Saldo auf Ihre gesperrte Adresse auszahlen lassen.",
+			"reload": "Aktualisieren",
 			"fields": {
 				"bitcoinAddress": "Bitcoin Adresse",
 				"createdAt": "Erstellt am",
@@ -589,5 +601,10 @@ h1 small {
 .no-action-possible {
 	font-style: italic;
 	font-size: 90%;
+}
+
+.reload-page {
+	margin-top: 20px;
+	text-align: center;
 }
 </style>
