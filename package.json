@@ -21,6 +21,7 @@
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
     "idb-keyval": "^2.3.0",
+    "instascan": "^1.0.0",
     "qrcode-generator": "^1.3.0",
     "sjcl": "^1.0.6",
     "vue": "^2.3.3",

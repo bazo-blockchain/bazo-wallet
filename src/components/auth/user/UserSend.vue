@@ -17,11 +17,23 @@
 							<b-form-fieldset>
 								<label class="col-form-label" for="send-receiver">
 									{{ $t('userSend.receiver') }}
-									<b-popover triggers="hover" :content="$t('userSend.receiverDescription')" class="popover-element">
+									<b-popover :triggers="['click', 'hover']" :content="$t('userSend.receiverDescription')" class="popover-element">
 										<i class="fa fa-info-circle increase-focus"></i>
 									</b-popover>
 								</label>
-								<b-form-input id="send-receiver" v-model="address" type="text" class="address-input" :placeholder="$t('userSend.receiverPlaceholder')" :class="{ 'form-error': formIsTouched && !validAddress }"></b-form-input>
+								<div class="pos-rel">
+									<b-form-input id="send-receiver" v-model="address" type="text" class="address-input" :placeholder="$t('userSend.receiverPlaceholder')" :class="{ 'form-error': formIsTouched && !validAddress }"></b-form-input>
+									<span class="camera" @click="openCamera" :title="$t('userSend.openCameraTitle')">
+										<i class="fa fa-camera"></i>
+									</span>
+									<div class="camera-screen" :class="{'shown':cameraShown}" @click="closeCamera">
+										<div class="close" @click="closeCamera">&times;</div>
+										<div class="camera-notice">{{ $t('userSend.cameraNotice') }}</div>
+										<div class="video-wrapper" @click.stop>
+											<video></video>
+										</div>
+									</div>
+								</div>
 							</b-form-fieldset>
 							
 							<div class="row">
@@ -43,7 +55,7 @@
 								<div class="col-md-4">
 									<b-form-fieldset>
 										<label class="col-form-label">{{ $t('userSend.maxAmount') }}
-											<b-popover triggers="hover" :content="(addressIsBitcoin || addressIsEmail) ? $t('userSend.maxAmountDescription') : '<b>'+$t('userSend.maxAmountDescriptionIntro')+'</b><hr>' + $t('userSend.maxAmountDescription')" class="popover-element">
+											<b-popover :triggers="['click', 'hover']" :content="(addressIsBitcoin || addressIsEmail) ? $t('userSend.maxAmountDescription') : '<b>'+$t('userSend.maxAmountDescriptionIntro')+'</b><hr>' + $t('userSend.maxAmountDescription')" class="popover-element">
 												<i class="fa fa-info-circle increase-focus"></i>
 											</b-popover>
 										</label>
@@ -64,7 +76,7 @@
 								<div class="fees-included">
 									<label>
 										<b-form-checkbox v-model="feesIncluded">{{ $t('userSend.feesIncluded') }}
-											<b-popover triggers="hover" :content="$t('userSend.feesIncludedDescription')" class="popover-element">
+											<b-popover :triggers="['click', 'hover']" :content="$t('userSend.feesIncludedDescription')" class="popover-element">
 												<i class="fa fa-info-circle increase-focus"></i>
 											</b-popover>
 										</b-form-checkbox>
@@ -96,6 +108,7 @@ import UserTransfer from '@/components/auth/user/UserTransfer';
 import Spinner from '@/components/Spinner';
 import TransactionService from '@/services/TransactionService';
 import moment from 'moment';
+import Instascan from 'instascan';
 
 export default {
 	name: 'user-send',
@@ -103,6 +116,8 @@ export default {
 		return {
 			isLoading: true,
 			loadingError: false,
+			qrScanner: null,
+			cameraShown: false,
 			selectedCurrency: 'BTC',
 			allowedCurrencies: ['BTC', 'USD', 'EUR', 'CHF'],
 			amount: 0,
@@ -213,6 +228,43 @@ export default {
 				this.loadingError = true;
 				this.isLoading = false;
 			});
+		},
+		openCamera: function () {
+			this.qrScanner = new Instascan.Scanner({
+				video: this.$el.querySelector('.camera-screen video')
+			});
+			this.qrScanner.addListener('scan', (content) => {
+				this.address = content;
+				this.closeCamera();
+			});
+			Instascan.Camera.getCameras().then((cameras) => {
+				if (cameras.length > 0) {
+					if (cameras.length > 1) {
+						// back camera is often index 1
+						this.qrScanner.start(cameras[1]);
+						this.cameraShown = true;
+					} else {
+						// only one camera
+						this.qrScanner.start(cameras[0]);
+						this.cameraShown = true;
+					}
+				} else {
+					this.$toasted.global.warn(this.$t('userSend.cameraError'));
+					this.closeCamera();
+					console.warn('no cameras found');
+				}
+			}, (error) => {
+				this.$toasted.global.warn(this.$t('userSend.cameraError'));
+				this.closeCamera();
+				console.warn('error occurred:', error);
+			});
+		},
+		closeCamera: function () {
+			if (this.qrScanner !== null) {
+				this.qrScanner.stop();
+				this.qrScanner = null;
+			}
+			this.cameraShown = false;
 		},
 		submitPreparation: function () {
 			this.formIsTouched = true;
@@ -373,12 +425,77 @@ export default {
 		display: inline-block;
 		vertical-align: middle;
 		margin-left: 5px;
+		.fa-info-circle {
+			color: #999;
+		}
+	}
+	.camera {
+		font-size: 16px;
+		position: absolute;
+		right: 0;
+		z-index: 99;
+		top: 50%;
+		transform: translateY(-50%);
+		cursor: pointer;
+		padding: 7px 10px;
+	}
+	.camera-screen {
+		position: fixed;
+		padding: 20px;
+		background: rgba(0,0,0,0.9);
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		z-index: 999999;
+		opacity: 0;
+		visibility: hidden;
+		transition: 0.25s ease all;
+		&.shown {
+			opacity: 1;
+			visibility: visible;
+		}
+		
+		.camera-notice {
+			color: white;
+			font-size: 18px;
+			font-weight: 300;
+			text-align: center;
+			display: block;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 70vmin;
+			max-height: calc(100vh - 40px);
+			overflow: hidden;
+		}
+		.close {
+			color: rgba(255, 255, 255, 0.91);
+			font-size: 70px;
+			z-index: 9999999;
+			position: absolute;
+			font-weight: 400;
+			top: 10px;
+			right: 15px;
+			text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.63);
+			opacity: 1;
+		}
+		
+		.video-wrapper {
+			transform: translate(-50%, -50%);
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			padding: 25px;
+			video {
+				width: calc(100vw - 50px);
+				height: calc(100vh - 50px);
+			}
+		}
 	}
 	.form-control.mono {
 		font-size: 15px;
-	}
-	.submit-button {
-		
 	}
 	.form-group {
 		margin-bottom: 10px;
@@ -387,6 +504,9 @@ export default {
 	.amount-input {
 		position: relative;
 		z-index: 10;
+	}
+	.address-input {
+		padding-right: 35px;
 	}
 	.description-forex-rate {
 		margin-top: 6px;
@@ -457,7 +577,10 @@ export default {
 			"lowAmountFeeDescription": "The amount you are trying to transfer is very small and needs to contain possible transaction fees. It is possible, that the transaction is rejected because the fees might be higher than the remaining transfer amount.",
 			"button": "Send {amount} BTC",
 			"transactionSuccessful": "The transaction was successfully executed.",
-			"paymentError": "An error occurred during the payment process. Please verify the amount (Attention: fees) or try it again later on."
+			"paymentError": "An error occurred during the payment process. Please verify the amount (Attention: fees) or try it again later on.",
+			"openCameraTitle": "Scan a QR Code of a Bitcoin or e-mail address",
+			"cameraError": "The camera could not be accessed.",
+			"cameraNotice": "If the camera does not show up here within 5s, you probably did not grant the camera the required permission."
 		}
 	},
 	"de": {
@@ -479,7 +602,10 @@ export default {
 			"lowAmountFeeDescription": "Der Betrag, den Sie überweisen möchten ist klein und beinhaltet bereits allfällige Spesen. Womöglich wird diese Transaktion abgelehnt, da die Spesen höher sein könnten als der verbleibende Überweisungsbetrag.",
 			"button": "{amount} BTC versenden",
 			"transactionSuccessful": "Die Transaktion wurde erfolgreich durchgeführt.",
-			"paymentError": "Bei der Zahlung ist ein Fehler aufgetreten. Überprüfen Sie Ihren Betrag (Achtung: Spesen) oder probieren Sie es später erneut."
+			"paymentError": "Bei der Zahlung ist ein Fehler aufgetreten. Überprüfen Sie Ihren Betrag (Achtung: Spesen) oder probieren Sie es später erneut.",
+			"openCameraTitle": "QR Code einer Bitcoin oder E-Mail Adresse scannen",
+			"cameraError": "Die Kamera kann nicht angezeigt werden.",
+			"camereNotice": "Falls die Kamera nicht in 5s angezeigt wird, haben Sie vermutlich keine Berechtigung für die Kamera vergeben."
 		}
 	}
 }
