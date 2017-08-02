@@ -499,9 +499,9 @@ export default {
 			},
 			"alerts": {
 				"success": {
-					"moveFunds": "Der Betrag ist erfolgreich auf das gesperrte Konto überwiesen worden. Die Transaktion kann bis zu einer Stunde dauern. Aktualisieren Sie die Seite, um zu erfahren, ob die Transaktion schon bestätigt ist.",
+					"moveFunds": "Der Betrag ist erfolgreich auf das gesperrte Konto überwiesen worden. Die Transaktion kann bis zu einer Stunde dauern. Aktualisieren Sie diese Seite, um zu erfahren, ob die Transaktion schon bestätigt ist.",
 					"createNewAddress": "Ihre neue Adresse wurde erfolgreich erstellt. Überweisen Sie Guthaben auf diese Adresse, um Zahlungen zu tätigen. Sie können das Guthaben von vorherigen Adressen hier direkt auf Ihre neue Adresse überweisen.",
-					"payout": "Ihr virtuelles Saldo wurde erfolgreich auf Ihre gesperrte Adresse überwiesen. Die Transaktion kann bis zu einer Stunde dauern. Aktualisieren Sie die Seite, um zu erfahren, ob die Transaktion scho bestätigt ist."
+					"payout": "Ihr virtuelles Saldo wurde erfolgreich auf Ihre gesperrte Adresse überwiesen. Die Transaktion kann bis zu einer Stunde dauern. Aktualisieren Sie diese Seite, um zu erfahren, ob die Transaktion schon bestätigt ist."
 				},
 				"error": {
 					"moveFunds": "Es ist ein Fehler beim Überweisen aufgetreten. Bitte versuchen Sie es später erneut.",

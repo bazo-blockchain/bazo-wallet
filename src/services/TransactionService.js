@@ -1,4 +1,5 @@
 ﻿import properties from '@/properties';
+import buffer from 'buffer';
 
 const TransactionService = {
 	buildTransaction: function (dto) {
@@ -18,7 +19,7 @@ const TransactionService = {
 		const amount = dto.amount;
 		const feePerByte = dto.feePerByte;
 		const feesIncluded = !!dto.feesIncluded;
-		const redeemScript = redeemScript;
+		const redeemScript = dto.redeemScript;
 
 		// validation
 		(() => {
@@ -28,10 +29,12 @@ const TransactionService = {
 					invalidInputs = true;
 				}
 			}
-			if (!privateKeyWif || !inputs || inputs.length < 1 || invalidInputs || !output || amount <= 0 || feePerByte < 0 || !!redeemScript) {
+			if (!privateKeyWif || !inputs || inputs.length < 1 || invalidInputs || !output || amount <= 0 || feePerByte < 0 || !redeemScript) {
 				throw new Error('Validation: Invalid parameters');
 			}
 		})();
+
+		const redeemScriptObject = buffer.Buffer.from(redeemScript, 'hex');
 
 		const totalInputAmount = () => {
 			let sum = 0;
@@ -54,8 +57,8 @@ const TransactionService = {
 				tempTx.addOutput(changeOutput, 0);
 			}
 			for (let i = 0; i < inputs.length; i++) {
-				tempTx.sign(i, keyPair, window.bitcoin.script.fromASM(redeemScript));
-				tempTx.sign(i, randomKey, window.bitcoin.script.fromASM(redeemScript));
+				tempTx.sign(i, keyPair, redeemScriptObject);
+				tempTx.sign(i, randomKey, redeemScriptObject);
 			}
 			return tempTx.build().byteLength();
 		};
@@ -87,7 +90,7 @@ const TransactionService = {
 			tx.addOutput(changeOutput, changeAmount);
 		}
 		for (let i = 0; i < inputs.length; i++) {
-			tx.sign(i, keyPair, window.bitcoin.script.fromASM(redeemScript));
+			tx.sign(i, keyPair, redeemScriptObject);
 		}
 
 		return tx.build().toHex();
