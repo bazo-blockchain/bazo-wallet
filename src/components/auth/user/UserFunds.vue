@@ -83,7 +83,12 @@
 					</template>
 					<template slot="qr" scope="item">
 						<div v-if="item.item.virtualBalance || item.item.channelTransactionAmount">
-							<i class="fa fa-minus"></i>
+							<div v-if="item.item.virtualBalance">
+								<qr-code :content="user.email"></qr-code>
+							</div>
+							<div v-else>
+								<i class="fa fa-minus"></i>
+							</div>
 						</div>
 						<div v-else>
 							<qr-code :content="item.item.bitcoinAddress"></qr-code>
@@ -248,6 +253,9 @@ export default {
 			} else {
 				return [];
 			}
+		},
+		user: function () {
+			return this.$store.state.user;
 		}
 	},
 	methods: {
