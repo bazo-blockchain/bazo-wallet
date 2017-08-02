@@ -28,6 +28,10 @@
 									</span>
 									<div class="camera-screen" :class="{'shown':cameraShown}" @click="closeCamera">
 										<div class="close" @click="closeCamera">&times;</div>
+										<div class="camera-title" @click.stop>
+											<i class="fa fa-qrcode"></i>
+											{{ $t('userSend.cameraTitle') }}
+										</div>
 										<div class="camera-notice">{{ $t('userSend.cameraNotice') }}</div>
 										<div class="video-wrapper" @click.stop>
 											<video></video>
@@ -400,6 +404,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../../styles/variables';
+
 .user-send {
 	.user-send-content {
 		min-height: 300px;
@@ -469,6 +475,19 @@ export default {
 			width: 70vmin;
 			max-height: calc(100vh - 40px);
 			overflow: hidden;
+		}
+		.camera-title {
+			position: absolute;
+			bottom: 40px;
+			left: 50%;
+			transform: translateX(-50%);
+			font-size: 30px;
+			color: white;
+			font-weight: 300;
+			text-shadow: 1px 1px 6px rgba(0,0,0,0.8);
+			text-align: center;
+			width: 90vw;
+			z-index: 9999998;
 		}
 		.close {
 			color: rgba(255, 255, 255, 0.91);
@@ -554,6 +573,11 @@ export default {
 		}
 	}
 }
+@media (max-width: $breakpoint-hide-header) {
+	.user-send .camera-screen .camera-title {
+		font-size: 24px;
+	}
+}
 </style>
 
 <i18n>
@@ -579,6 +603,7 @@ export default {
 			"transactionSuccessful": "The transaction was successfully executed.",
 			"paymentError": "An error occurred during the payment process. Please verify the amount (Attention: fees) or try it again later on.",
 			"openCameraTitle": "Scan a QR Code of a Bitcoin or e-mail address",
+			"cameraTitle": "Scan a QR code with a Bitcoin or e-mail address",
 			"cameraError": "The camera could not be accessed.",
 			"cameraNotice": "If the camera does not show up here within 5s, you probably did not grant the camera the required permission."
 		}
@@ -604,6 +629,7 @@ export default {
 			"transactionSuccessful": "Die Transaktion wurde erfolgreich durchgeführt.",
 			"paymentError": "Bei der Zahlung ist ein Fehler aufgetreten. Überprüfen Sie Ihren Betrag (Achtung: Spesen) oder probieren Sie es später erneut.",
 			"openCameraTitle": "QR Code einer Bitcoin oder E-Mail Adresse scannen",
+			"cameraTitle": "Scannen Sie einen QR Code mit einer Bitcoin oder E-Mail Adresse",
 			"cameraError": "Die Kamera kann nicht angezeigt werden.",
 			"camereNotice": "Falls die Kamera nicht in 5s angezeigt wird, haben Sie vermutlich keine Berechtigung für die Kamera vergeben."
 		}
