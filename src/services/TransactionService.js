@@ -83,7 +83,7 @@ const TransactionService = {
 
 		const tx = new window.bitcoin.TransactionBuilder(properties.BITCOIN_NETWORK);
 		for (let i = 0; i < inputs.length; i++) {
-			tx.addInput(window.bitcoin.Transaction.fromHex(inputs[i]), i);
+			tx.addInput(window.bitcoin.Transaction.fromHex(inputs[i].transaction), inputs[i].index);
 		}
 		tx.addOutput(output, finalAmount);
 		if (changeOutput) {
