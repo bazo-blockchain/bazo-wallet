@@ -243,15 +243,8 @@ export default {
 			});
 			Instascan.Camera.getCameras().then((cameras) => {
 				if (cameras.length > 0) {
-					if (cameras.length > 1) {
-						// back camera is often index 1
-						this.qrScanner.start(cameras[1]);
-						this.cameraShown = true;
-					} else {
-						// only one camera
-						this.qrScanner.start(cameras[0]);
-						this.cameraShown = true;
-					}
+					this.qrScanner.start(cameras[0]);
+					this.cameraShown = true;
 				} else {
 					this.$toasted.global.warn(this.$t('userSend.cameraError'));
 					this.closeCamera();
