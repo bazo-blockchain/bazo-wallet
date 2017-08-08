@@ -26,7 +26,6 @@ module.exports = {
     }
   },
   module: {
-    noParse: /coinblesk-frontend-instascan/,
     rules: [
       {
         test: /\.(js|vue)$/,
