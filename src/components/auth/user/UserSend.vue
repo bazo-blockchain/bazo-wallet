@@ -361,7 +361,7 @@ export default {
 							let channelTransactionAmount = channelTransaction.outs[0].value;
 							totalAmount += channelTransactionAmount;
 						}
-						const transaction = TransactionService.buildTransaction({
+						const transactionBuildingData = {
 							privateKeyWif: decryptedPrivateKeyWif,
 							inputs: this.currentTransaction.inputs,
 							output: this.currentTransaction.serverPotAddress,
@@ -370,10 +370,13 @@ export default {
 							feePerByte: this.currentTransaction.feePerByte,
 							feesIncluded: this.feesIncluded,
 							redeemScript: this.lockedAddress.redeemScript
-						});
+						};
+						const fees = TransactionService.calculateFees(transactionBuildingData);
+						const transaction = TransactionService.buildTransaction(transactionBuildingData);
+
 						const dto = {
 							receiverEmail: this.address,
-							amount: satoshiAmount,
+							amount: satoshiAmount - (this.feesIncluded ? fees : 0),
 							transaction: transaction
 						};
 						HttpService.Auth.User.microPaymentViaEmail(dto, true).then(() => {

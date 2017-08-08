@@ -2,99 +2,99 @@
 import properties from '@/properties';
 import buffer from 'buffer';
 
-const TransactionService = {
-	buildTransaction: function (dto) {
-		// logging
-		(() => {
-			const deepCopyDTO = JSON.parse(JSON.stringify(dto));
-			deepCopyDTO.privateKeyWif = deepCopyDTO.privateKeyWif ? '[privatekey]' : deepCopyDTO.privateKeyWif;
-			console.info('Assemble transaction with the following information', deepCopyDTO);
-		})();
+const TransactionService = {};
 
-		// dto params
-		const privateKeyWif = dto.privateKeyWif;
-		const keyPair = Bitcoin.ECPair.fromWIF(privateKeyWif, properties.BITCOIN_NETWORK);
-		const inputs = dto.inputs;
-		const output = dto.output;
-		const changeOutput = dto.changeOutput;
-		const amount = dto.amount;
-		const feePerByte = dto.feePerByte;
-		const feesIncluded = !!dto.feesIncluded;
-		const redeemScript = dto.redeemScript;
+TransactionService.calculateFees = function (dto) {
+	validateDTO(dto);
 
-		// validation
-		(() => {
-			let invalidInputs = false;
-			for (let i = 0; i < inputs.length; i++) {
-				if (inputs[i].value < 0 || inputs[i].index < 0 || typeof inputs[i].transaction === 'undefined' || inputs[i] === null) {
-					invalidInputs = true;
-				}
-			}
-			if (!privateKeyWif || !inputs || inputs.length < 1 || invalidInputs || !output || amount <= 0 || feePerByte < 0 || !redeemScript) {
-				throw new Error('Validation: Invalid parameters');
-			}
-		})();
+	const keyPair = getKeyPairFromWif(dto.privateKeyWif);
+	const redeemScriptObject = getRedeemScriptObject(dto.redeemScript);
 
-		const redeemScriptObject = buffer.Buffer.from(redeemScript, 'hex');
-
-		const totalInputAmount = (() => {
-			let sum = 0;
-			for (let i = 0; i < inputs.length; i++) {
-				sum += inputs[i].value;
-			}
-			return sum;
-		})();
-
-		const calculatedBytes = (() => {
-			const tempTx = new Bitcoin.TransactionBuilder(properties.BITCOIN_NETWORK);
-			for (let i = 0; i < inputs.length; i++) {
-				tempTx.addInput(Bitcoin.Transaction.fromHex(inputs[i].transaction), inputs[i].index);
-			}
-			tempTx.addOutput(output, amount);
-			if (changeOutput) {
-				tempTx.addOutput(changeOutput, 1);
-			}
-			for (let i = 0; i < inputs.length; i++) {
-				tempTx.sign(i, keyPair, redeemScriptObject);
-			}
-			return tempTx.buildIncomplete().byteLength();
-		})();
-
-		const assumedBytesForSecondSignature = 4;
-		const finalBytes = calculatedBytes + assumedBytesForSecondSignature;
-
-		const totalFees = finalBytes * feePerByte;
-		const finalAmount = feesIncluded ? (amount - totalFees) : amount;
-		if (finalAmount <= 0) {
-			throw new Error('Invalid Amount');
+	const calculatedBytes = (() => {
+		const tempTx = new Bitcoin.TransactionBuilder(properties.BITCOIN_NETWORK);
+		for (let i = 0; i < dto.inputs.length; i++) {
+			tempTx.addInput(Bitcoin.Transaction.fromHex(dto.inputs[i].transaction), dto.inputs[i].index);
 		}
-
-		const changeAmount = (() => {
-			if (changeOutput) {
-				return totalInputAmount - finalAmount;
-			} else {
-				return 0;
-			}
-		})();
-
-		if (changeAmount < 0) {
-			throw new Error('Not enough funds available');
+		tempTx.addOutput(dto.output, dto.amount);
+		if (dto.changeOutput) {
+			tempTx.addOutput(dto.changeOutput, 1);
 		}
+		for (let i = 0; i < dto.inputs.length; i++) {
+			tempTx.sign(i, keyPair, redeemScriptObject);
+		}
+		return tempTx.buildIncomplete().byteLength();
+	})();
 
-		const tx = new Bitcoin.TransactionBuilder(properties.BITCOIN_NETWORK);
-		for (let i = 0; i < inputs.length; i++) {
-			tx.addInput(Bitcoin.Transaction.fromHex(inputs[i].transaction), inputs[i].index);
-		}
-		tx.addOutput(output, finalAmount);
-		if (changeOutput) {
-			tx.addOutput(changeOutput, changeAmount);
-		}
-		for (let i = 0; i < inputs.length; i++) {
-			tx.sign(i, keyPair, redeemScriptObject);
-		}
+	const assumedBytesForSecondSignature = 4;
+	const finalBytes = calculatedBytes + assumedBytesForSecondSignature;
+	const totalFees = finalBytes * dto.feePerByte;
 
-		return tx.build().toHex();
-	}
+	return totalFees;
 };
+
+TransactionService.buildTransaction = function (dto) {
+	validateDTO(dto);
+
+	const keyPair = getKeyPairFromWif(dto.privateKeyWif);
+	const redeemScriptObject = getRedeemScriptObject(dto.redeemScript);
+	const totalFees = TransactionService.calculateFees(dto);
+
+	const totalInputAmount = (() => {
+		let sum = 0;
+		for (let i = 0; i < dto.inputs.length; i++) {
+			sum += dto.inputs[i].value;
+		}
+		return sum;
+	})();
+
+	const finalAmount = dto.feesIncluded ? (dto.amount - totalFees) : dto.amount;
+	if (finalAmount <= 0) {
+		throw new Error('Invalid Amount');
+	}
+
+	const changeAmount = (() => {
+		if (dto.changeOutput) {
+			return totalInputAmount - (dto.feesIncluded ? 0 : totalFees) - dto.amount;
+		} else {
+			return 0;
+		}
+	})();
+
+	if (changeAmount < 0) {
+		throw new Error('Not enough funds available');
+	}
+
+	const tx = new Bitcoin.TransactionBuilder(properties.BITCOIN_NETWORK);
+	for (let i = 0; i < dto.inputs.length; i++) {
+		tx.addInput(Bitcoin.Transaction.fromHex(dto.inputs[i].transaction), dto.inputs[i].index);
+	}
+	tx.addOutput(dto.output, finalAmount);
+	if (dto.changeOutput) {
+		tx.addOutput(dto.changeOutput, changeAmount);
+	}
+	for (let i = 0; i < dto.inputs.length; i++) {
+		tx.sign(i, keyPair, redeemScriptObject);
+	}
+
+	return tx.build().toHex();
+};
+
+function getKeyPairFromWif (privateKeyWif) {
+	return Bitcoin.ECPair.fromWIF(privateKeyWif, properties.BITCOIN_NETWORK);
+}
+function getRedeemScriptObject (redeemScript) {
+	return buffer.Buffer.from(redeemScript, 'hex');
+}
+function validateDTO (dto) {
+	let invalidInputs = false;
+	for (let i = 0; i < dto.inputs.length; i++) {
+		if (dto.inputs[i].value < 0 || dto.inputs[i].index < 0 || typeof dto.inputs[i].transaction === 'undefined' || dto.inputs[i] === null) {
+			invalidInputs = true;
+		}
+	}
+	if (!dto.privateKeyWif || !dto.inputs || dto.inputs.length < 1 || invalidInputs || !dto.output || dto.amount <= 0 || dto.feePerByte < 0 || !dto.redeemScript) {
+		throw new Error('Validation: Invalid parameters');
+	}
+}
 
 export default TransactionService;
