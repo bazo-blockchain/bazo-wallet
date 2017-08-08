@@ -1,6 +1,8 @@
-﻿const Properties = {
-	// possible values: window.bitcoin.networks.bitcoin, window.bitcoin.networks.testnet
-	BITCOIN_NETWORK: window.bitcoin.networks.testnet,
+﻿import Bitcoin from 'coinblesk-frontend-bitcoinjs';
+
+const Properties = {
+	// possible values: Bitcoin.networks.bitcoin, Bitcoin.networks.testnet
+	BITCOIN_NETWORK: Bitcoin.networks.testnet,
 
 	// server address
 	HOST: getCurrentHost() + ':8080'

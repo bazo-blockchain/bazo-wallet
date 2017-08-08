@@ -1,4 +1,5 @@
-﻿import properties from '@/properties';
+﻿import Bitcoin from 'coinblesk-frontend-bitcoinjs';
+import properties from '@/properties';
 import buffer from 'buffer';
 
 const TransactionService = {
@@ -12,7 +13,7 @@ const TransactionService = {
 
 		// dto params
 		const privateKeyWif = dto.privateKeyWif;
-		const keyPair = window.bitcoin.ECPair.fromWIF(privateKeyWif, properties.BITCOIN_NETWORK);
+		const keyPair = Bitcoin.ECPair.fromWIF(privateKeyWif, properties.BITCOIN_NETWORK);
 		const inputs = dto.inputs;
 		const output = dto.output;
 		const changeOutput = dto.changeOutput;
@@ -45,12 +46,12 @@ const TransactionService = {
 		};
 
 		const calculateBytes = () => {
-			const randomKey = window.bitcoin.ECPair.makeRandom({
+			const randomKey = Bitcoin.ECPair.makeRandom({
 				network: properties.BITCOIN_NETWORK
 			});
-			const tempTx = new window.bitcoin.TransactionBuilder(properties.BITCOIN_NETWORK);
+			const tempTx = new Bitcoin.TransactionBuilder(properties.BITCOIN_NETWORK);
 			for (let i = 0; i < inputs.length; i++) {
-				tempTx.addInput(window.bitcoin.Transaction.fromHex(inputs[i].transaction), inputs[i].index);
+				tempTx.addInput(Bitcoin.Transaction.fromHex(inputs[i].transaction), inputs[i].index);
 			}
 			tempTx.addOutput(output, amount);
 			if (changeOutput) {
@@ -81,9 +82,9 @@ const TransactionService = {
 			throw new Error('Not enough funds available');
 		}
 
-		const tx = new window.bitcoin.TransactionBuilder(properties.BITCOIN_NETWORK);
+		const tx = new Bitcoin.TransactionBuilder(properties.BITCOIN_NETWORK);
 		for (let i = 0; i < inputs.length; i++) {
-			tx.addInput(window.bitcoin.Transaction.fromHex(inputs[i].transaction), inputs[i].index);
+			tx.addInput(Bitcoin.Transaction.fromHex(inputs[i].transaction), inputs[i].index);
 		}
 		tx.addOutput(output, finalAmount);
 		if (changeOutput) {

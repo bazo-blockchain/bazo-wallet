@@ -111,6 +111,7 @@ import CryptoService from '@/services/CryptoService';
 import UserTransfer from '@/components/auth/user/UserTransfer';
 import Spinner from '@/components/Spinner';
 import TransactionService from '@/services/TransactionService';
+import Bitcoin from 'coinblesk-frontend-bitcoinjs';
 import moment from 'moment';
 
 export default {
@@ -199,7 +200,7 @@ export default {
 			}
 			let result = false;
 			try {
-				window.bitcoin.address.fromBase58Check(this.address);
+				Bitcoin.address.fromBase58Check(this.address);
 				result = true;
 			} catch (e) {
 				result = false;
@@ -356,7 +357,7 @@ export default {
 					try {
 						let totalAmount = satoshiAmount;
 						if (this.currentTransaction.channelTransaction !== null) {
-							const channelTransaction = window.bitcoin.Transaction.fromHex(this.currentTransaction.channelTransaction);
+							const channelTransaction = Bitcoin.Transaction.fromHex(this.currentTransaction.channelTransaction);
 							let channelTransactionAmount = channelTransaction.outs[0].value;
 							totalAmount += channelTransactionAmount;
 						}

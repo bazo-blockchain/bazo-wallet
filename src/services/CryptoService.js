@@ -1,4 +1,5 @@
 import sjcl from 'sjcl';
+import Bitcoin from 'coinblesk-frontend-bitcoinjs';
 import properties from '@/properties';
 
 const Crypto = {
@@ -18,7 +19,7 @@ const Crypto = {
 	},
 
 	createKey: function () {
-		const newECKey = window.bitcoin.ECPair.makeRandom({
+		const newECKey = Bitcoin.ECPair.makeRandom({
 			network: properties.BITCOIN_NETWORK
 		});
 		return {
@@ -29,9 +30,9 @@ const Crypto = {
 	},
 
 	signDTO: function (privateKeyWif, dto) {
-		const sha256 = window.bitcoin.crypto.sha256;
+		const sha256 = Bitcoin.crypto.sha256;
 		const base64String = window.btoa(JSON.stringify(dto));
-		const ecKey = window.bitcoin.ECPair.fromWIF(privateKeyWif, properties.BITCOIN_NETWORK);
+		const ecKey = Bitcoin.ECPair.fromWIF(privateKeyWif, properties.BITCOIN_NETWORK);
 		const signature = ecKey.sign(sha256(base64String));
 		return {
 			payload: base64String,
@@ -60,7 +61,7 @@ const Crypto = {
 	},
 
 	convertPrivateKeyWifToPublicKeyHex: function (privateKeyWif) {
-		return window.bitcoin.ECPair.fromWIF(privateKeyWif, properties.BITCOIN_NETWORK).getPublicKeyBuffer().toString('hex');
+		return Bitcoin.ECPair.fromWIF(privateKeyWif, properties.BITCOIN_NETWORK).getPublicKeyBuffer().toString('hex');
 	}
 
 };

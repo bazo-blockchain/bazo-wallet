@@ -167,6 +167,7 @@
 import HttpService from '@/services/HttpService';
 import UtilService from '@/services/UtilService';
 import Spinner from '@/components/Spinner';
+import Bitcoin from 'coinblesk-frontend-bitcoinjs';
 
 export default {
 	name: 'admin-accounts-detail',
@@ -184,8 +185,8 @@ export default {
 	},
 	computed: {
 		channelTransaction: function () {
-			if (window.bitcoin && this.accountDetail && this.accountDetail.account && this.accountDetail.account.channelTransaction) {
-				var tx = window.bitcoin.Transaction.fromHex(this.accountDetail.account.channelTransaction);
+			if (this.accountDetail && this.accountDetail.account && this.accountDetail.account.channelTransaction) {
+				var tx = Bitcoin.Transaction.fromHex(this.accountDetail.account.channelTransaction);
 				if (tx) {
 					return {
 						version: tx.version,
