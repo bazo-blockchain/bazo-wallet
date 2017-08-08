@@ -17,7 +17,7 @@
 							<b-form-fieldset>
 								<label class="col-form-label" for="send-receiver">
 									{{ $t('userSend.receiver') }}
-									<b-popover :triggers="['click', 'hover']" :content="$t('userSend.receiverDescription')" class="popover-element">
+									<b-popover :triggers="['hover']" :content="$t('userSend.receiverDescription')" class="popover-element">
 										<i class="fa fa-info-circle increase-focus"></i>
 									</b-popover>
 								</label>
@@ -59,7 +59,7 @@
 								<div class="col-md-4">
 									<b-form-fieldset>
 										<label class="col-form-label">{{ $t('userSend.maxAmount') }}
-											<b-popover :triggers="['click', 'hover']" :content="(addressIsBitcoin || addressIsEmail) ? $t('userSend.maxAmountDescription') : '<b>'+$t('userSend.maxAmountDescriptionIntro')+'</b><hr>' + $t('userSend.maxAmountDescription')" class="popover-element">
+											<b-popover :triggers="['hover']" :content="(addressIsBitcoin || addressIsEmail) ? $t('userSend.maxAmountDescription') : '<b>'+$t('userSend.maxAmountDescriptionIntro')+'</b><hr>' + $t('userSend.maxAmountDescription')" class="popover-element">
 												<i class="fa fa-info-circle increase-focus"></i>
 											</b-popover>
 										</label>
@@ -80,7 +80,7 @@
 								<div class="fees-included">
 									<label>
 										<b-form-checkbox v-model="feesIncluded">{{ $t('userSend.feesIncluded') }}
-											<b-popover :triggers="['click', 'hover']" :content="$t('userSend.feesIncludedDescription')" class="popover-element">
+											<b-popover :triggers="['hover']" :content="$t('userSend.feesIncludedDescription')" class="popover-element">
 												<i class="fa fa-info-circle increase-focus"></i>
 											</b-popover>
 										</b-form-checkbox>
