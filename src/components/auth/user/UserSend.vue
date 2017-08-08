@@ -112,7 +112,6 @@ import UserTransfer from '@/components/auth/user/UserTransfer';
 import Spinner from '@/components/Spinner';
 import TransactionService from '@/services/TransactionService';
 import moment from 'moment';
-import Instascan from 'coinblesk-frontend-instascan';
 
 export default {
 	name: 'user-send',
@@ -234,14 +233,14 @@ export default {
 			});
 		},
 		openCamera: function () {
-			this.qrScanner = new Instascan.Scanner({
+			this.qrScanner = new window.Instascan.Scanner({
 				video: this.$el.querySelector('.camera-screen video')
 			});
 			this.qrScanner.addListener('scan', (content) => {
 				this.address = content;
 				this.closeCamera();
 			});
-			Instascan.Camera.getCameras().then((cameras) => {
+			window.Instascan.Camera.getCameras().then((cameras) => {
 				if (cameras.length > 0) {
 					this.qrScanner.start(cameras[0]);
 					this.cameraShown = true;
