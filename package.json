@@ -10,8 +10,7 @@
     "build": "node build/build.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "test": "npm run unit",
-    "lint": "eslint --ext .js,.vue src test/unit/specs",
-    "compile-bitcoinjs": "bash compile-bitcoinjs.sh"
+    "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "dependencies": {
     "bootstrap": "4.0.0-alpha.6",
