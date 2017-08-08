@@ -112,7 +112,7 @@ import UserTransfer from '@/components/auth/user/UserTransfer';
 import Spinner from '@/components/Spinner';
 import TransactionService from '@/services/TransactionService';
 import moment from 'moment';
-import Instascan from 'instascan';
+import Instascan from 'coinblesk-frontend-instascan';
 
 export default {
 	name: 'user-send',
