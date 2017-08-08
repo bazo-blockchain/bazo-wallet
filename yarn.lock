@@ -1284,7 +1284,7 @@ code-point-at@^1.0.0:
 
 coinblesk-frontend-bitcoinjs@coinblesk/coinblesk-frontend-bitcoinjs:
   version "3.1.1"
-  resolved "https://codeload.github.com/coinblesk/coinblesk-frontend-bitcoinjs/tar.gz/62263a63c8242354e096c1553a4e02380aea2eed"
+  resolved "https://codeload.github.com/coinblesk/coinblesk-frontend-bitcoinjs/tar.gz/c9616826844c2aa5561382f3f57f20edc6819a10"
 
 coinblesk-frontend-instascan@coinblesk/coinblesk-frontend-instascan:
   version "1.0.0"

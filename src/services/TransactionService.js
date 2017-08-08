@@ -37,34 +37,33 @@ const TransactionService = {
 
 		const redeemScriptObject = buffer.Buffer.from(redeemScript, 'hex');
 
-		const totalInputAmount = () => {
+		const totalInputAmount = (() => {
 			let sum = 0;
 			for (let i = 0; i < inputs.length; i++) {
 				sum += inputs[i].value;
 			}
 			return sum;
-		};
+		})();
 
-		const calculateBytes = () => {
-			const randomKey = Bitcoin.ECPair.makeRandom({
-				network: properties.BITCOIN_NETWORK
-			});
+		const calculatedBytes = (() => {
 			const tempTx = new Bitcoin.TransactionBuilder(properties.BITCOIN_NETWORK);
 			for (let i = 0; i < inputs.length; i++) {
 				tempTx.addInput(Bitcoin.Transaction.fromHex(inputs[i].transaction), inputs[i].index);
 			}
 			tempTx.addOutput(output, amount);
 			if (changeOutput) {
-				tempTx.addOutput(changeOutput, 0);
+				tempTx.addOutput(changeOutput, 1);
 			}
 			for (let i = 0; i < inputs.length; i++) {
 				tempTx.sign(i, keyPair, redeemScriptObject);
-				tempTx.sign(i, randomKey, redeemScriptObject);
 			}
-			return tempTx.build().byteLength();
-		};
+			return tempTx.buildIncomplete().byteLength();
+		})();
 
-		const totalFees = calculateBytes() * feePerByte;
+		const assumedBytesForSecondSignature = 4;
+		const finalBytes = calculatedBytes + assumedBytesForSecondSignature;
+
+		const totalFees = finalBytes * feePerByte;
 		const finalAmount = feesIncluded ? (amount - totalFees) : amount;
 		if (finalAmount <= 0) {
 			throw new Error('Invalid Amount');
