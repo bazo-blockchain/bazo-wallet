@@ -1,6 +1,6 @@
 # coinblesk-frontend
 
-> The frontend for Coinblesk
+> The web frontend for Coinblesk
 
 The front-end cannot be run without the [`coinblesk-server`](https://github.com/coinblesk/coinblesk-server). First, start the server, then the frontend.
 
