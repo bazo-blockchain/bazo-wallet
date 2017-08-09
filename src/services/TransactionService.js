@@ -25,7 +25,7 @@ TransactionService.calculateFees = function (dto) {
 		return tempTx.buildIncomplete().byteLength();
 	})();
 
-	const assumedBytesForSecondSignature = 4;
+	const assumedBytesForSecondSignature = 75; // inkl. 4 bytes to spare
 	const finalBytes = calculatedBytes + assumedBytesForSecondSignature;
 	const totalFees = finalBytes * dto.feePerByte;
 

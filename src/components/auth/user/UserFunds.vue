@@ -159,7 +159,6 @@ import QrCode from '@/components/QrCode';
 import UserTransfer from '@/components/auth/user/UserTransfer';
 import CryptoService from '@/services/CryptoService';
 import TransactionService from '@/services/TransactionService';
-import moment from 'moment';
 
 export default {
 	name: 'user-funds',
@@ -328,17 +327,7 @@ export default {
 					redeemScript: this.currentTransfer.redeemScript
 				});
 
-				// toPublicKey: '' && amount: 0 => external payment
-				const dto = {
-					tx: transaction,
-					fromPublicKey: CryptoService.convertPrivateKeyWifToPublicKeyHex(decryptedPrivateKey),
-					toPublicKey: '',
-					amount: 0,
-					nonce: moment().format('x')
-				};
-				const signedDTO = CryptoService.signDTO(decryptedPrivateKey, dto);
-
-				HttpService.microPayment(signedDTO, true).then(() => {
+				HttpService.Auth.User.externalPayment(transaction, true).then(() => {
 					this.isLoading = false;
 					this.currentTransfer = {};
 					this.alerts.success.moveFunds = true;

@@ -107,12 +107,10 @@
 <script>
 import UtilService from '@/services/UtilService';
 import HttpService from '@/services/HttpService';
-import CryptoService from '@/services/CryptoService';
 import UserTransfer from '@/components/auth/user/UserTransfer';
 import Spinner from '@/components/Spinner';
 import TransactionService from '@/services/TransactionService';
 import Bitcoin from 'coinblesk-frontend-bitcoinjs';
-import moment from 'moment';
 
 export default {
 	name: 'user-send',
@@ -274,14 +272,16 @@ export default {
 					HttpService.Auth.User.getFees(),
 					HttpService.Auth.User.getUTXO(this.lockedAddress.bitcoinAddress),
 					HttpService.Auth.User.getChannelTransaction(),
-					HttpService.Auth.User.getServerPotAddress()
+					HttpService.Auth.User.getServerPotAddress(),
+					HttpService.Auth.User.getMaximalAvailableChannelAmount()
 				]).then((responses) => {
 					this.currentTransaction = {
 						encryptedPrivateKey: responses[0].body.encryptedClientPrivateKey,
 						feePerByte: responses[1].body.fee,
 						inputs: responses[2].body,
-						channelTransaction: responses[3].body.channelTransaction,
-						serverPotAddress: responses[4].body.serverPotAddress
+						channelTransaction: responses[3].body,
+						serverPotAddress: responses[4].body.serverPotAddress,
+						maximalAvailableChannelAmount: responses[5].body.amount
 					};
 					this.isLoading = false;
 					this.$nextTick(() => {
@@ -306,7 +306,7 @@ export default {
 				this.currentTransaction = {};
 				this.successfulTransaction = true;
 			};
-			const satoshiAmount = this.btcAmount * UtilService.SATOSHI_PER_BITCOIN;
+			const satoshiAmount = Math.round(this.btcAmount * UtilService.SATOSHI_PER_BITCOIN);
 
 			if (this.addressIsBitcoin) {
 				// address is bitcoin address
@@ -322,17 +322,7 @@ export default {
 						redeemScript: this.lockedAddress.redeemScript
 					});
 
-					// toPublicKey: '' && amount: 0 => external payment
-					const dto = {
-						tx: transaction,
-						fromPublicKey: CryptoService.convertPrivateKeyWifToPublicKeyHex(decryptedPrivateKeyWif),
-						toPublicKey: '',
-						amount: 0,
-						nonce: moment().format('x')
-					};
-					const signedDTO = CryptoService.signDTO(decryptedPrivateKeyWif, dto);
-
-					HttpService.microPayment(signedDTO, true).then(() => {
+					HttpService.Auth.User.externalPayment(transaction, true).then(() => {
 						success();
 					}, () => {
 						errorOccurred('server denied');
@@ -355,38 +345,81 @@ export default {
 					});
 				} else {
 					// micro payment
-					try {
-						let totalAmount = satoshiAmount;
-						if (this.currentTransaction.channelTransaction !== null) {
-							const channelTransaction = Bitcoin.Transaction.fromHex(this.currentTransaction.channelTransaction);
-							let channelTransactionAmount = channelTransaction.outs[0].value;
-							totalAmount += channelTransactionAmount;
-						}
-						const transactionBuildingData = {
-							privateKeyWif: decryptedPrivateKeyWif,
-							inputs: this.currentTransaction.inputs,
-							output: this.currentTransaction.serverPotAddress,
-							changeOutput: this.lockedAddress.bitcoinAddress,
-							amount: totalAmount,
-							feePerByte: this.currentTransaction.feePerByte,
-							feesIncluded: this.feesIncluded,
-							redeemScript: this.lockedAddress.redeemScript
-						};
-						const fees = TransactionService.calculateFees(transactionBuildingData);
-						const transaction = TransactionService.buildTransaction(transactionBuildingData);
 
-						const dto = {
-							receiverEmail: this.address,
-							amount: satoshiAmount - (this.feesIncluded ? fees : 0),
-							transaction: transaction
-						};
-						HttpService.Auth.User.microPaymentViaEmail(dto, true).then(() => {
-							success();
-						}, () => {
-							errorOccurred('server denied');
+					let microPaymentTotalAmount = satoshiAmount;
+					if (this.currentTransaction.channelTransaction.amount > 0) {
+						microPaymentTotalAmount += this.currentTransaction.channelTransaction.amount;
+					}
+					const microPaymentFees = TransactionService.calculateFees({
+						privateKeyWif: decryptedPrivateKeyWif,
+						inputs: this.currentTransaction.inputs,
+						output: this.currentTransaction.serverPotAddress,
+						changeOutput: this.lockedAddress.bitcoinAddress,
+						amount: microPaymentTotalAmount,
+						feePerByte: this.currentTransaction.feePerByte,
+						feesIncluded: this.feesIncluded,
+						redeemScript: this.lockedAddress.redeemScript
+					});
+
+					// check if the micro payment limit is exceeded
+					if (this.currentTransaction.maximalAvailableChannelAmount >= satoshiAmount + microPaymentFees) {
+						try {
+							const transactionBuildingData = {
+								privateKeyWif: decryptedPrivateKeyWif,
+								inputs: this.currentTransaction.inputs,
+								output: this.currentTransaction.serverPotAddress,
+								changeOutput: this.lockedAddress.bitcoinAddress,
+								amount: microPaymentTotalAmount,
+								feePerByte: this.currentTransaction.feePerByte,
+								feesIncluded: this.feesIncluded,
+								redeemScript: this.lockedAddress.redeemScript
+							};
+							const transaction = TransactionService.buildTransaction(transactionBuildingData);
+
+							const dto = {
+								receiverEmail: this.address,
+								amount: satoshiAmount - (this.feesIncluded ? microPaymentFees : 0),
+								transaction: transaction
+							};
+							HttpService.Auth.User.microPaymentViaEmail(dto, true).then(() => {
+								success();
+							}, () => {
+								errorOccurred('server denied');
+							});
+						} catch (e) {
+							errorOccurred(e);
+						}
+					} else {
+						// make a regular non-micropayment transaction
+						HttpService.Auth.User.getLockedAddressOfEmail(this.address).then((response) => {
+							const bitcoinAddress = response.body.bitcoinAddress;
+
+							if (bitcoinAddress) {
+								try {
+									const transaction = TransactionService.buildTransaction({
+										privateKeyWif: decryptedPrivateKeyWif,
+										inputs: this.currentTransaction.inputs,
+										output: bitcoinAddress,
+										amount: satoshiAmount,
+										changeOutput: this.lockedAddress.bitcoinAddress,
+										feePerByte: this.currentTransaction.feePerByte,
+										feesIncluded: this.feesIncluded,
+										redeemScript: this.lockedAddress.redeemScript
+									});
+									HttpService.Auth.User.externalPayment(transaction, true).then(() => {
+										success();
+									}, () => {
+										errorOccurred('server denied');
+									});
+								} catch (e) {
+									errorOccurred(e);
+								}
+							} else {
+								this.$toasted.global.warn(this.$t('userSend.errorRecipientAddress'));
+								this.isLoading = false;
+								this.currentTransaction = {};
+							}
 						});
-					} catch (e) {
-						errorOccurred(e);
 					}
 				}
 			}
@@ -602,7 +635,8 @@ export default {
 			"openCameraTitle": "Scan a QR Code of a Bitcoin or e-mail address",
 			"cameraTitle": "Scan a QR code with a Bitcoin or e-mail address",
 			"cameraError": "The camera could not be accessed.",
-			"cameraNotice": "If the camera does not show up here within 5s, you probably did not grant the camera the required permission."
+			"cameraNotice": "If the camera does not show up here within 5s, you probably did not grant the camera the required permission.",
+			"errorRecipientAddress": "This address can currently not receive funds in the specified amount."
 		}
 	},
 	"de": {
@@ -628,7 +662,8 @@ export default {
 			"openCameraTitle": "QR Code einer Bitcoin oder E-Mail Adresse scannen",
 			"cameraTitle": "Scannen Sie einen QR Code mit einer Bitcoin oder E-Mail Adresse",
 			"cameraError": "Die Kamera kann nicht angezeigt werden.",
-			"camereNotice": "Falls die Kamera nicht in 5s angezeigt wird, haben Sie vermutlich keine Berechtigung für die Kamera vergeben."
+			"cameraNotice": "Falls die Kamera nicht in 5s angezeigt wird, haben Sie vermutlich keine Berechtigung für die Kamera vergeben.",
+			"errorRecipientAddress": "An diese Adresse kann derzeit kein Guthaben in dieser Höhe überwiesen werden."
 		}
 	}
 }
