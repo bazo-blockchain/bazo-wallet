@@ -5,17 +5,19 @@ const Properties = {
 	BITCOIN_NETWORK: Bitcoin.networks.testnet,
 
 	// server address
-	HOST: getCurrentHost() + ':8080'
+	// HOST: getCurrentHost() + ':8080'
+	HOST: getCurrentHost()
 };
 
 export default Properties;
 
 function getCurrentHost () {
-	let protocol = window.location.protocol;
+	/* let protocol = window.location.protocol;
 	if (/[^:]$/.test(protocol)) {
 		protocol += ':';
 	}
 	let hostname = window.location.hostname;
 
-	return protocol + '//' + hostname;
+	return protocol + '//' + hostname; */
+	return 'https://bitcoin2-test.csg.uzh.ch/coinblesk-server'
 }
