@@ -8,7 +8,7 @@ function getProperties (env) {
 	if (env === 'DEV') {
 		return {
 			ENVIRONMENT: env,
-			// Bitcoin.networks.testnet works also for pregtest
+			// Bitcoin.networks.testnet works also for regtest
 			BITCOIN_NETWORK: Bitcoin.networks.testnet,
 			HOST: getCurrentHost() + ':8080'
 		};
