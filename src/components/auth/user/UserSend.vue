@@ -301,6 +301,11 @@ export default {
 				this.$toasted.global.warn(this.$t('userSend.paymentError'));
 				console.warn(e);
 			};
+			const errorOccurredNotYetConfirmed = () => {
+				this.isLoading = false;
+				this.currentTransaction = {};
+				this.$toasted.global.warn(this.$t('userSend.paymentErrorNotYetConfirmed'));
+			};
 			const success = () => {
 				this.isLoading = false;
 				this.currentTransaction = {};
@@ -324,8 +329,12 @@ export default {
 
 					HttpService.Auth.User.externalPayment(transaction, true).then(() => {
 						success();
-					}, () => {
-						errorOccurred('server denied');
+					}, (response) => {
+						if (response.status === 405) {
+							errorOccurredNotYetConfirmed();
+						} else {
+							errorOccurred('server denied');
+						}
 					});
 				} catch (e) {
 					errorOccurred(e);
@@ -383,8 +392,12 @@ export default {
 							};
 							HttpService.Auth.User.microPaymentViaEmail(dto, true).then(() => {
 								success();
-							}, () => {
-								errorOccurred('server denied');
+							}, (response) => {
+								if (response.status === 405) {
+									errorOccurredNotYetConfirmed();
+								} else {
+									errorOccurred('server denied');
+								}
 							});
 						} catch (e) {
 							errorOccurred(e);
@@ -408,8 +421,12 @@ export default {
 									});
 									HttpService.Auth.User.externalPayment(transaction, true).then(() => {
 										success();
-									}, () => {
-										errorOccurred('server denied');
+									}, (response) => {
+										if (response.status === 405) {
+											errorOccurredNotYetConfirmed();
+										} else {
+											errorOccurred('server denied');
+										}
 									});
 								} catch (e) {
 									errorOccurred(e);
@@ -636,7 +653,8 @@ export default {
 			"cameraTitle": "Scan a QR code with a Bitcoin or e-mail address",
 			"cameraError": "The camera could not be accessed.",
 			"cameraNotice": "If the camera does not show up here within 5s, you probably did not grant the camera the required permission.",
-			"errorRecipientAddress": "This address can currently not receive funds in the specified amount."
+			"errorRecipientAddress": "This address can currently not receive funds in the specified amount.",
+			"paymentErrorNotYetConfirmed": "Your funds have not been confirmed in enough blocks and can therefore not been spent yet."
 		}
 	},
 	"de": {
@@ -663,7 +681,8 @@ export default {
 			"cameraTitle": "Scannen Sie einen QR Code mit einer Bitcoin oder E-Mail Adresse",
 			"cameraError": "Die Kamera kann nicht angezeigt werden.",
 			"cameraNotice": "Falls die Kamera nicht in 5s angezeigt wird, haben Sie vermutlich keine Berechtigung für die Kamera vergeben.",
-			"errorRecipientAddress": "An diese Adresse kann derzeit kein Guthaben in dieser Höhe überwiesen werden."
+			"errorRecipientAddress": "An diese Adresse kann derzeit kein Guthaben in dieser Höhe überwiesen werden.",
+			"paymentErrorNotYetConfirmed": "Ihr Guthaben ist noch nicht in genügend Blöcken bestätigt und kann deshalb noch nicht ausgegeben werden."
 		}
 	}
 }
