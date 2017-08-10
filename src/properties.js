@@ -4,11 +4,11 @@
 const Properties = getProperties('DEV2');
 export default Properties;
 
-// testnet works also for pregtest
 function getProperties (env) {
 	if (env === 'DEV') {
 		return {
 			ENVIRONMENT: env,
+			// Bitcoin.networks.testnet works also for pregtest
 			BITCOIN_NETWORK: Bitcoin.networks.testnet,
 			HOST: getCurrentHost() + ':8080'
 		};
