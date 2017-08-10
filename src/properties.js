@@ -1,7 +1,7 @@
 ﻿import Bitcoin from 'coinblesk-frontend-bitcoinjs';
 
 // possible entries are 'DEV', 'TEST' and 'PROD'
-const Properties = getProperties('DEV2');
+const Properties = getProperties('DEV');
 export default Properties;
 
 function getProperties (env) {
