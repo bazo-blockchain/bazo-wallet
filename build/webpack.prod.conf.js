@@ -37,6 +37,18 @@ var webpackConfig = merge(baseWebpackConfig, {
       compress: {
         warnings: false
       },
+      mangle: {
+        // necessary for Bitcoin.JS
+        except: [
+          'Array',
+          'BigInteger',
+          'Boolean',
+          'ECPair',
+          'Function',
+          'Number',
+          'Point'
+        ]
+      },
       sourceMap: true
     }),
     // extract css into its own file
