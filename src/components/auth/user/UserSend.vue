@@ -236,8 +236,20 @@ export default {
 				video: this.$el.querySelector('.camera-screen video')
 			});
 			this.qrScanner.addListener('scan', (content) => {
-				const finalContent = /@/.test(content) ? content : content.replace(/^bitcoin:/, '');
-				this.address = finalContent;
+				if (/^bitcoin:/.test(content) && /^[^@]*$/.test(content)) {
+					// bitcoin address according to BIP 0021
+					const address = content.replace(/^bitcoin:/, '').replace(/\?.*$/, '');
+					this.address = address;
+
+					if (/amount=/.test(content)) {
+						let amount = content.match(/amount=([^?]+)(?:\?|$)/);
+						if (amount && amount[1]) {
+							this.amount = amount[1];
+						}
+					}
+				} else {
+					this.address = content;
+				}
 				this.closeCamera();
 			});
 			window.Instascan.Camera.getCameras().then((cameras) => {
