@@ -13,6 +13,7 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "dependencies": {
+    "bip21": "^2.0.1",
     "bootstrap": "4.0.0-alpha.6",
     "bootstrap-vue": "^0.16.1",
     "buffer": "^5.0.6",

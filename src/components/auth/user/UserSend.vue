@@ -111,6 +111,7 @@ import UserTransfer from '@/components/auth/user/UserTransfer';
 import Spinner from '@/components/Spinner';
 import TransactionService from '@/services/TransactionService';
 import Bitcoin from 'coinblesk-frontend-bitcoinjs';
+import BitcoinBip21 from 'bip21';
 
 export default {
 	name: 'user-send',
@@ -238,14 +239,14 @@ export default {
 			this.qrScanner.addListener('scan', (content) => {
 				if (/^bitcoin:/.test(content) && /^[^@]*$/.test(content)) {
 					// bitcoin address according to BIP 0021
-					const address = content.replace(/^bitcoin:/, '').replace(/\?.*$/, '');
-					this.address = address;
-
-					if (/amount=/.test(content)) {
-						let amount = content.match(/amount=([^?]+)(?:\?|$)/);
-						if (amount && amount[1]) {
-							this.amount = amount[1];
+					try {
+						const decodedContent = BitcoinBip21.decode(content);
+						this.address = decodedContent.address;
+						if (decodedContent.options.amount && decodedContent.options.amount > 0 && /amount=/.test(content)) {
+							this.amount = decodedContent.options.amount;
 						}
+					} catch (e) {
+						this.address = content;
 					}
 				} else {
 					this.address = content;

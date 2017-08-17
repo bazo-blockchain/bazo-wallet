@@ -91,7 +91,7 @@
 							</div>
 						</div>
 						<div v-else>
-							<qr-code :content="item.item.bitcoinAddress"></qr-code>
+							<qr-code :content="encodeBIP21(item.item.bitcoinAddress)"></qr-code>
 						</div>
 					</template>
 					<template slot="actions" scope="item">
@@ -159,6 +159,7 @@ import QrCode from '@/components/QrCode';
 import UserTransfer from '@/components/auth/user/UserTransfer';
 import CryptoService from '@/services/CryptoService';
 import TransactionService from '@/services/TransactionService';
+import BitcoinBIP21 from 'bip21';
 
 export default {
 	name: 'user-funds',
@@ -413,6 +414,9 @@ export default {
 				this.currentTransfer = {};
 				this.alerts.error.payout = true;
 			});
+		},
+		encodeBIP21: function (address) {
+			return BitcoinBIP21.encode(address);
 		},
 		convertSatoshiToBitcoin: UtilService.convertSatoshiToBitcoin
 	},
