@@ -15,7 +15,9 @@ TransactionService.calculateFees = function (dto) {
 		for (let i = 0; i < dto.inputs.length; i++) {
 			tempTx.addInput(Bitcoin.Transaction.fromHex(dto.inputs[i].transaction), dto.inputs[i].index);
 		}
-		tempTx.addOutput(dto.output, dto.amount);
+		for (let i = 0; i < dto.outputs.length; i++) {
+			tempTx.addOutput(dto.outputs[i].address, 1);
+		}
 		if (dto.changeOutput) {
 			tempTx.addOutput(dto.changeOutput, 1);
 		}
@@ -47,14 +49,17 @@ TransactionService.buildTransaction = function (dto) {
 		return sum;
 	})();
 
-	const finalAmount = dto.feesIncluded ? (dto.amount - totalFees) : dto.amount;
-	if (finalAmount <= 0) {
-		throw new Error('Invalid Amount');
-	}
+	const totalOutputAmountWithoutChange = (() => {
+		let sum = 0;
+		for (let i = 0; i < dto.outputs.length; i++) {
+			sum += dto.outputs[i].amount;
+		}
+		return sum;
+	})();
 
 	const changeAmount = (() => {
 		if (dto.changeOutput) {
-			return totalInputAmount - (dto.feesIncluded ? 0 : totalFees) - dto.amount;
+			return totalInputAmount - (dto.feesIncluded ? 0 : totalFees) - totalOutputAmountWithoutChange;
 		} else {
 			return 0;
 		}
@@ -68,7 +73,18 @@ TransactionService.buildTransaction = function (dto) {
 	for (let i = 0; i < dto.inputs.length; i++) {
 		tx.addInput(Bitcoin.Transaction.fromHex(dto.inputs[i].transaction), dto.inputs[i].index);
 	}
-	tx.addOutput(dto.output, finalAmount);
+	for (let i = 0; i < dto.outputs.length; i++) {
+		// the first output is decreased by the fees, if they are included
+		// the second output is usually an old channel transaction with an external payment which should go through as it is
+		if (i === 0 && dto.feesIncluded) {
+			if (dto.outputs[i].amount - totalFees < 0) {
+				throw new Error('Invalid Amount');
+			}
+			tx.addOutput(dto.outputs[i].address, dto.outputs[i].amount - totalFees);
+		} else {
+			tx.addOutput(dto.outputs[i].address, dto.outputs[i].amount);
+		}
+	}
 	if (dto.changeOutput) {
 		tx.addOutput(dto.changeOutput, changeAmount);
 	}
@@ -87,12 +103,18 @@ function getRedeemScriptObject (redeemScript) {
 }
 function validateDTO (dto) {
 	let invalidInputs = false;
+	let invalidOutputs = false;
 	for (let i = 0; i < dto.inputs.length; i++) {
 		if (dto.inputs[i].value < 0 || dto.inputs[i].index < 0 || typeof dto.inputs[i].transaction === 'undefined' || dto.inputs[i] === null) {
 			invalidInputs = true;
 		}
 	}
-	if (!dto.privateKeyWif || !dto.inputs || dto.inputs.length < 1 || invalidInputs || !dto.output || dto.amount <= 0 || dto.feePerByte < 0 || !dto.redeemScript) {
+	for (let i = 0; i < dto.outputs.length; i++) {
+		if (typeof dto.outputs[i].address === 'undefined' || !dto.outputs[i].amount || dto.outputs[i].amount < 0) {
+			invalidOutputs = true;
+		}
+	}
+	if (!dto.privateKeyWif || !dto.inputs || dto.inputs.length < 1 || invalidInputs || invalidOutputs || dto.feePerByte < 0 || !dto.redeemScript) {
 		throw new Error('Validation: Invalid parameters');
 	}
 }

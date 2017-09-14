@@ -458,9 +458,9 @@ export default {
 			},
 			"alerts": {
 				"success": {
-					"moveFunds": "The amount was successfully transferred to the locked account. This transaction may be pending for up to an hour. Refresh this page to see if the transaction was already confirmed.",
+					"moveFunds": "The amount was successfully transferred to the locked account. This transaction may be pending for up to an hour.",
 					"createNewAddress": "Your new address was successfully created. Transfer your funds to this address to make payments in Coinblesk. You can directly move your funds from previous addresses to your new address on this page.",
-					"payout": "Your virtual balance was transferred successfully to your locked address. The transaction may be pending for up to an hour. Refresh this page to see if the transaction was already confiremed."
+					"payout": "Your virtual balance was transferred successfully to your locked address. The transaction may be pending for up to an hour."
 				},
 				"error": {
 					"moveFunds": "An error occurred during the transaction of the funds. Please try it again later.",
@@ -500,9 +500,9 @@ export default {
 			},
 			"alerts": {
 				"success": {
-					"moveFunds": "Der Betrag ist erfolgreich auf das gesperrte Konto überwiesen worden. Die Transaktion kann bis zu einer Stunde dauern. Aktualisieren Sie diese Seite, um zu erfahren, ob die Transaktion schon bestätigt ist.",
+					"moveFunds": "Der Betrag ist erfolgreich auf das gesperrte Konto überwiesen worden. Die Transaktion kann bis zu einer Stunde dauern.",
 					"createNewAddress": "Ihre neue Adresse wurde erfolgreich erstellt. Überweisen Sie Guthaben auf diese Adresse, um Zahlungen zu tätigen. Sie können das Guthaben von vorherigen Adressen hier direkt auf Ihre neue Adresse überweisen.",
-					"payout": "Ihr virtuelles Saldo wurde erfolgreich auf Ihre gesperrte Adresse überwiesen. Die Transaktion kann bis zu einer Stunde dauern. Aktualisieren Sie diese Seite, um zu erfahren, ob die Transaktion schon bestätigt ist."
+					"payout": "Ihr virtuelles Saldo wurde erfolgreich auf Ihre gesperrte Adresse überwiesen. Die Transaktion kann bis zu einer Stunde dauern."
 				},
 				"error": {
 					"moveFunds": "Es ist ein Fehler beim Überweisen aufgetreten. Bitte versuchen Sie es später erneut.",

@@ -329,26 +329,41 @@ export default {
 			if (this.addressIsBitcoin) {
 				// address is bitcoin address
 				try {
-					const transaction = TransactionService.buildTransaction({
-						privateKeyWif: decryptedPrivateKeyWif,
-						inputs: this.currentTransaction.inputs,
-						output: this.address,
-						amount: satoshiAmount,
-						changeOutput: this.lockedAddress.bitcoinAddress,
-						feePerByte: this.currentTransaction.feePerByte,
-						feesIncluded: this.feesIncluded,
-						redeemScript: this.lockedAddress.redeemScript
-					});
+					if (this.address === this.currentTransaction.serverPotAddress) {
+						errorOccurred('recipient is the server-pot');
+					} else {
+						const transactionOutputs = [{
+							address: this.address,
+							amount: satoshiAmount
+						}];
 
-					HttpService.Auth.User.externalPayment(transaction, true).then(() => {
-						success();
-					}, (response) => {
-						if (response.status === 405) {
-							errorOccurredNotYetConfirmed();
-						} else {
-							errorOccurred('server denied');
+						// if channel is open, it needs to be added to the transaction
+						if (this.currentTransaction.channelTransaction.amount > 0) {
+							transactionOutputs.push({
+								address: this.currentTransaction.serverPotAddress,
+								amount: this.currentTransaction.channelTransaction.amount
+							});
 						}
-					});
+						const transaction = TransactionService.buildTransaction({
+							privateKeyWif: decryptedPrivateKeyWif,
+							inputs: this.currentTransaction.inputs,
+							outputs: transactionOutputs,
+							changeOutput: this.lockedAddress.bitcoinAddress,
+							feePerByte: this.currentTransaction.feePerByte,
+							feesIncluded: this.feesIncluded,
+							redeemScript: this.lockedAddress.redeemScript
+						});
+
+						HttpService.Auth.User.externalPayment(transaction, true).then(() => {
+							success();
+						}, (response) => {
+							if (response.status === 405) {
+								errorOccurredNotYetConfirmed();
+							} else {
+								errorOccurred('server denied');
+							}
+						});
+					}
 				} catch (e) {
 					errorOccurred(e);
 				}
@@ -375,9 +390,11 @@ export default {
 					const microPaymentFees = TransactionService.calculateFees({
 						privateKeyWif: decryptedPrivateKeyWif,
 						inputs: this.currentTransaction.inputs,
-						output: this.currentTransaction.serverPotAddress,
+						outputs: [{
+							address: this.currentTransaction.serverPotAddress,
+							amount: microPaymentTotalAmount
+						}],
 						changeOutput: this.lockedAddress.bitcoinAddress,
-						amount: microPaymentTotalAmount,
 						feePerByte: this.currentTransaction.feePerByte,
 						feesIncluded: this.feesIncluded,
 						redeemScript: this.lockedAddress.redeemScript
@@ -389,9 +406,11 @@ export default {
 							const transactionBuildingData = {
 								privateKeyWif: decryptedPrivateKeyWif,
 								inputs: this.currentTransaction.inputs,
-								output: this.currentTransaction.serverPotAddress,
+								outputs: [{
+									address: this.currentTransaction.serverPotAddress,
+									amount: microPaymentTotalAmount
+								}],
 								changeOutput: this.lockedAddress.bitcoinAddress,
-								amount: microPaymentTotalAmount,
 								feePerByte: this.currentTransaction.feePerByte,
 								feesIncluded: this.feesIncluded,
 								redeemScript: this.lockedAddress.redeemScript
@@ -422,11 +441,21 @@ export default {
 
 							if (bitcoinAddress) {
 								try {
+									const transactionOutputs = [{
+										address: bitcoinAddress,
+										amount: satoshiAmount
+									}];
+									// if channel is open, it needs to be added to the transaction
+									if (this.currentTransaction.channelTransaction.amount > 0) {
+										transactionOutputs.push({
+											address: this.currentTransaction.serverPotAddress,
+											amount: this.currentTransaction.channelTransaction.amount
+										});
+									}
 									const transaction = TransactionService.buildTransaction({
 										privateKeyWif: decryptedPrivateKeyWif,
 										inputs: this.currentTransaction.inputs,
-										output: bitcoinAddress,
-										amount: satoshiAmount,
+										outputs: transactionOutputs,
 										changeOutput: this.lockedAddress.bitcoinAddress,
 										feePerByte: this.currentTransaction.feePerByte,
 										feesIncluded: this.feesIncluded,
