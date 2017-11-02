@@ -65,7 +65,7 @@
 										</label>
 										<div class="form-control disabled mono" :class="{ 'form-error': formIsTouched && maximumAmountExceeded }">
 											<span v-if="addressIsBitcoin || addressIsEmail">
-												{{ convertSatoshiToBitcoin(maximumAmount) }} BTC
+												{{ convertSatoshiToBitcoin(maximumAmount) }} Bazo
 											</span>
 											<span v-else>
 												<i class="fa fa-minus"></i>
@@ -95,7 +95,7 @@
 							</div>
 						</form>
 					</div>
-	
+
 					<user-transfer @private-key-decrypted="submit" :encrypted-private-key="currentTransaction.encryptedPrivateKey" :amount="btcAmount"></user-transfer>
 				</div>
 			</div>
@@ -673,26 +673,27 @@ export default {
 {
 	"en": {
 		"userSend": {
-			"title": "Transfer Bitcoins",
-			"boxTitle": "Transfer to an E-Mail or Bitcoin address",
-			"receiver": "Receiver (Bitcoin/E-Mail address)",
-			"receiverPlaceholder": "Enter a bitcoin or e-mail address",
-			"receiverDescription": "If you enter an e-mail address, the recepient obtains a message with a unique token. This token can then be used to claim the funds.",
+			"title": "Transfer Bazo coins",
+			"boxTitle": "Transfer to a Bazo address",
+			"receiver": "Receiver (Bazo address)",
+			"receiverPlaceholder": "Enter a valid bazo address",
+			"receiverDescription": "This should be the fully qualified Bazo address whom you're trying to send Bazo coins.",
 			"lookup": "Lookup",
 			"amount": "Amount",
 			"feesIncluded": "Fees are included in the amount",
 			"feesIncludedDescription": "If the checkbox is checked the fees are subtracted from the transfer amount. The recepient receives an amount which is reduced by the extend of the fees. Alternatively, you are charged by the amount plus fees, the recepient, however, receives the exact amount.",
 			"maxAmount": "Maximal amount",
-			"maxAmountDescription": "The maximal amount relates to the currently maximal amount which can be transferred to another account. If you have a virtual balance (see <i>Funds</i>), you can pay out these funds to transfer it to another Bitcoin address. E-mail addresses as recipients can either receive funds from virtual balances or from time locked address, which are currently locked.",
+			"maxAmountDescription": "The maximal amount relates to the currently maximal amount which can be transferred to another account. If you have a virtual balance (see <i>Funds</i>), you can pay out these funds to transfer it to another Bazo address. E-mail addresses as recipients can either receive funds from virtual balances or from time locked address, which are currently locked.",
 			"maxAmountDescriptionIntro": "Please enter an address first, before you can see the maximal amount.",
-			"descriptionForexRate": "The current forex rate BTC/{currency} is <span class='mono'>{forex}</span>&nbsp;&nbsp;(Source: Bitstamp).",
-			"descriptionFees": "The fees of your Bitcoin transfer are not yet included in the amount and are added to the value. Please make sure, that you have enough funds to create this transaction. Otherwise we have to reject it.",
+			"descriptionForexRate": "The current forex rate Bazo/{currency} is <span class='mono'>{forex}</span>&nbsp;&nbsp;().",
+			"descriptionFees": "The fees of your Bazo transfer are not yet included in the amount and are added to the value. Please make sure, that you have enough funds to create this transaction. Otherwise we have to reject it.",
 			"lowAmountFeeDescription": "The amount you are trying to transfer is very small and needs to contain possible transaction fees. It is possible, that the transaction is rejected because the fees might be higher than the remaining transfer amount.",
-			"button": "Send {amount} BTC",
+			"button": "Send {amount} Bazo coins",
 			"transactionSuccessful": "The transaction was successfully executed.",
 			"paymentError": "An error occurred during the payment process. Please verify the amount (Attention: fees) or try it again later on.",
-			"openCameraTitle": "Scan a QR Code of a Bitcoin or e-mail address",
-			"cameraTitle": "Scan a QR code with a Bitcoin or e-mail address",
+      "openNFCTitle": "Watch for a Bazo adress over NFC",
+      "openCameraTitle": "Scan a QR Code of a Bazo address",
+			"cameraTitle": "Scan a QR code with a Bazo address",
 			"cameraError": "The camera could not be accessed.",
 			"cameraNotice": "If the camera does not show up here within 5s, you probably did not grant the camera the required permission.",
 			"errorRecipientAddress": "This address can currently not receive funds in the specified amount.",
@@ -701,10 +702,10 @@ export default {
 	},
 	"de": {
 		"userSend": {
-			"title": "Bitcoins überweisen",
-			"boxTitle": "An eine E-Mail oder Bitcoin Adresse überweisen",
-			"receiver": "Empfänger (Bitcoin/E-Mail Adresse)",
-			"receiverPlaceholder": "Bitcoin oder E-Mail Adresse eingeben",
+			"title": "Bazo coins überweisen",
+			"boxTitle": "An eine Bazo Adresse überweisen",
+			"receiver": "Empfänger (Bazo Adresse)",
+			"receiverPlaceholder": "Bazo Adresse eingeben",
 			"receiverDescription": "Falls Sie eine E-Mail Adresse eingeben wird der Empfänger eine Nachricht mit einem Schlüssel erhalten. Mit diesem Schlüssel hat er Zugriff auf die erhaltenen Beträge.",
 			"lookup": "Suchen",
 			"amount": "Betrag",
@@ -713,14 +714,14 @@ export default {
 			"maxAmount": "Maximalbetrag",
 			"maxAmountDescription": "Der Maximalbetrag stellt den aktuell höchst möglichen Zahlungsbetrag dar. Falls Sie virtuelles Guthaben haben (siehe <i>Guthaben</i>) können Sie sich dieses Guthaben zunächst auzahlen lassen um an eine Bitcoin-Adresse zu zahlen. E-Mail Adressen können entweder Guthaben aus virtuellem Guthaben oder aber Guthaben auf zeitlich gesperrten Adressen beinhalten.",
 			"maxAmountDescriptionIntro": "Geben Sie zunächst eine Adresse ein, um den Maximalbetrag zu sehen.",
-			"descriptionForexRate": "Der aktuelle Wechselkurs BTC/{currency} beträgt <span class='mono'>{forex}</span>&nbsp;&nbsp;(Quelle: Bitstamp).",
-			"descriptionFees": "Bei Ihrer Zahlung entstehen voraussichtlich Spesen, welche auf den dargestellten Betrag aufaddiert werden. Vergewissern Sie sich, dass Sie über genügend BTC verfügen, um die Zahlung auszuführen. Andernfalls müssen wir die Zahlung ablehnen.",
+			"descriptionForexRate": "Der aktuelle Wechselkurs Bazo/{currency} beträgt <span class='mono'>{forex}</span>&nbsp;&nbsp;(Quelle: Bitstamp).",
+			"descriptionFees": "Bei Ihrer Zahlung entstehen voraussichtlich Spesen, welche auf den dargestellten Betrag aufaddiert werden. Vergewissern Sie sich, dass Sie über genügend Bazo coins verfügen, um die Zahlung auszuführen. Andernfalls müssen wir die Zahlung ablehnen.",
 			"lowAmountFeeDescription": "Der Betrag, den Sie überweisen möchten ist klein und beinhaltet bereits allfällige Spesen. Womöglich wird diese Transaktion abgelehnt, da die Spesen höher sein könnten als der verbleibende Überweisungsbetrag.",
-			"button": "{amount} BTC versenden",
+			"button": "{amount} Bazo versenden",
 			"transactionSuccessful": "Die Transaktion wurde erfolgreich durchgeführt.",
 			"paymentError": "Bei der Zahlung ist ein Fehler aufgetreten. Überprüfen Sie Ihren Betrag (Achtung: Spesen) oder probieren Sie es später erneut.",
-			"openCameraTitle": "QR Code einer Bitcoin oder E-Mail Adresse scannen",
-			"cameraTitle": "Scannen Sie einen QR Code mit einer Bitcoin oder E-Mail Adresse",
+			"openCameraTitle": "QR Code einer Bazo Adresse scannen",
+			"cameraTitle": "Scannen Sie einen QR Code mit einer Bitcoin Adresse",
 			"cameraError": "Die Kamera kann nicht angezeigt werden.",
 			"cameraNotice": "Falls die Kamera nicht in 5s angezeigt wird, haben Sie vermutlich keine Berechtigung für die Kamera vergeben.",
 			"errorRecipientAddress": "An diese Adresse kann derzeit kein Guthaben in dieser Höhe überwiesen werden.",
