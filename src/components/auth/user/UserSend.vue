@@ -23,9 +23,16 @@
 								</label>
 								<div class="pos-rel">
 									<b-form-input id="send-receiver" v-model="address" type="text" class="address-input" :placeholder="$t('userSend.receiverPlaceholder')" :class="{ 'form-error': formIsTouched && !validAddress }"></b-form-input>
-									<span class="camera" @click="openCamera" :title="$t('userSend.openCameraTitle')">
+                  <span  class="nfc" @click="openCamera" :title="$t('userSend.openNFCTitle')">
+                    <i class="fa fa-rss"></i>
+                  </span>
+                  <span class="bt" @click="openCamera" :title="$t('userSend.openCameraTitle')">
+                    <i class="fa fa-bluetooth-b"></i>
+                  </span>
+                  <span class="camera" @click="openCamera" :title="$t('userSend.openCameraTitle')">
 										<i class="fa fa-camera"></i>
 									</span>
+
 									<div class="camera-screen" :class="{'shown':cameraShown}" @click="closeCamera">
 										<div class="close" @click="closeCamera">&times;</div>
 										<div class="camera-title" @click.stop>
@@ -39,7 +46,7 @@
 									</div>
 								</div>
 							</b-form-fieldset>
-							
+
 							<div class="row">
 								<div class="col-md-8">
 									<b-form-fieldset :label="$t('userSend.amount')">
@@ -524,7 +531,7 @@ export default {
 			color: #999;
 		}
 	}
-	.camera {
+	.camera, .nfc, .bt {
 		font-size: 16px;
 		position: absolute;
 		right: 0;
@@ -532,8 +539,14 @@ export default {
 		top: 50%;
 		transform: translateY(-50%);
 		cursor: pointer;
-		padding: 7px 10px;
+		padding: 7px 6px;
 	}
+  .nfc {
+    right: 50px;
+  }
+  .bt {
+    right: 30px;
+  }
 	.camera-screen {
 		position: fixed;
 		padding: 20px;
@@ -550,7 +563,7 @@ export default {
 			opacity: 1;
 			visibility: visible;
 		}
-		
+
 		.camera-notice {
 			color: white;
 			font-size: 18px;
@@ -589,7 +602,7 @@ export default {
 			text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.63);
 			opacity: 1;
 		}
-		
+
 		.video-wrapper {
 			transform: translate(-50%, -50%);
 			position: absolute;
@@ -614,7 +627,7 @@ export default {
 		z-index: 10;
 	}
 	.address-input {
-		padding-right: 35px;
+		padding-right: 70px;
 	}
 	.description-forex-rate {
 		margin-top: 6px;
@@ -640,7 +653,7 @@ export default {
 	/deep/ {
 		.dropdown-item {
 			cursor: pointer;
-			
+
 			.currency + .fa-check {
 				font-size: 60%;
 				display: inline-block;
@@ -654,7 +667,7 @@ export default {
 			border: 1px solid rgba(0,0,0,0.15);
 			color: inherit;
 			font-size: 15px;
-			
+
 			.fa {
 				font-size: 85%;
 				margin-top: -1px;
