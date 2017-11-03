@@ -17,6 +17,9 @@ const store = new Vuex.Store({
 			authenticated: false,
 			role: null
 		},
+    config: {
+      configured: false
+    },
 		offline: !(typeof window.navigator.onLine === 'undefined' ||
 				window.navigator.onLine === null ||
 				window.navigator.onLine)

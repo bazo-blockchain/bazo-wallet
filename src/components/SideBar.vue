@@ -4,19 +4,19 @@
 			<img class="logo" src="../assets/about_cb_2.png" alt="Coinblesk" :to="{ 'name': 'home' }">
 		</div>
 		<div class="entries" :class="{ 'offline-mode': isOffline }">
-			
+
 			<router-link class="entry" :to="{ name: 'home' }" :class="dynamicLinkClasses('home')" @click.native="closeMenu">
 				<i class="fa fa-home"></i>
 				<span class="text">{{ $t('sideBar.home') }}</span>
 			</router-link>
-			
+
 			<div class="separator"></div>
 			<div class="subtitle">{{ $t('sideBar.subtitle.bitcoin').toUpperCase() }}</div>
 			<router-link class="entry" :to="{ name: 'forex' }" :class="dynamicLinkClasses('forex')" @click.native="closeMenu">
 				<i class="fa fa-line-chart"></i>
 				<span class="text">{{ $t('sideBar.forex') }}</span>
 			</router-link>
-			
+
 			<div v-if="auth.authenticated && auth.role === 'ROLE_ADMIN'">
 				<div class="separator"></div>
 				<div class="subtitle">{{ $t('sideBar.subtitle.administration').toUpperCase() }}</div>

@@ -12,6 +12,7 @@
 			"signedOff": "You have successfully been signed off.",
 			"wrongPassword": "The combination of your e-mail/password is incorrect.",
 			"unauthorized": "You are trying to access a protected resource. Please authenticate yourself first.",
+      "accountrequired": "You are trying to access a page without having a Bazo account. Please add an account first.",
 			"forbidden": "You do not have the permission to access this site.",
 			"internalError": "An internal error occured. The page will be reloaded.",
 			"sessionExpired": "Your session has expired. Please sign in again.",

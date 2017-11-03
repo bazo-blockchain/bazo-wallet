@@ -101,6 +101,13 @@ const requireAuthAndRole = (role, to, _from, next) => {
 		}
 	}
 };
+const requireBazoAccount = (to, _from, next) => {
+  if (!Store.state.config.configured) {
+    requireAuth(to, _from, next);
+  } else {
+    next();
+  }
+};
 const requireAuthAndAdmin = (to, _from, next) => {
 	return requireAuthAndRole('ROLE_ADMIN', to, _from, next);
 };
@@ -154,7 +161,7 @@ const routes = [
 
 	{ path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: requireAuth },
 
-	{ path: '/auth/user/send', name: 'user-send', component: UserSend, beforeEnter: requireAuthAndUser },
+	{ path: '/auth/user/send', name: 'user-send', component: UserSend, beforeEnter: requireBazoAccount },
 	{ path: '/auth/user/funds', name: 'user-funds', component: UserFunds, beforeEnter: requireAuthAndUser },
 
 	{ path: '/auth/admin/events', name: 'admin-events', component: AdminEvents, beforeEnter: requireAuthAndAdmin },
