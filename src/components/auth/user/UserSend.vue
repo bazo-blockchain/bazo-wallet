@@ -23,7 +23,7 @@
 								</label>
 								<div class="pos-rel">
 									<b-form-input id="send-receiver" v-model="address" type="text" class="address-input" :placeholder="Translation.t('userSend.receiverPlaceholder')" :class="{ 'form-error': formIsTouched && !validAddress }"></b-form-input>
-                  <span  class="nfc" @click="openCamera" :title="Translation.t('userSend.openNFCTitle')">
+                  <span  class="nfc" @click="openNFC" :title="Translation.t('userSend.openNFCTitle')">
                     <i class="fa fa-rss"></i>
                   </span>
                   <span class="bt" @click="openCamera" :title="Translation.t('userSend.openCameraTitle')">
@@ -32,6 +32,29 @@
                   <span class="camera" @click="openCamera" :title="Translation.t('userSend.openCameraTitle')">
 										<i class="fa fa-camera"></i>
 									</span>
+
+                  <div class="nfc-screen" :class="{'shown':NFCShown}" @click="closeNFC">
+										<div class="close" @click="closeNFC">&times;</div>
+										<div class="nfc-title" @click.stop>
+											<i class="fa fa-rss"></i>
+											{{ Translation.t('userSend.NFCTitle') }}
+										</div>
+
+										<div class="nfc-notice">{{ Translation.t('userSend.NFCNotice') }}
+                      <div class="nfc-status-wrapper" @click="startWatching">
+                        <img src="https://www.materialui.co/materialIcons/device/nfc_grey_192x192.png"
+                             alt=""
+                             :class="{'nfc-watch-active': NFCWatching}">
+                      </div>
+                      <div class="nfc-status">
+                        {{ NFCStatus }}
+                      </div>
+                    </div>
+										<div class="video-wrapper" @click.stop>
+											<video></video>
+										</div>
+									</div>
+
 
 									<div class="camera-screen" :class="{'shown':cameraShown}" @click="closeCamera">
 										<div class="close" @click="closeCamera">&times;</div>
@@ -129,6 +152,11 @@ export default {
 			loadingError: false,
 			qrScanner: null,
 			cameraShown: false,
+      NFCStatus: 'not watching..',
+      NFCWatching: false,
+      NFCShown: false,
+      // TODO: detect NFC browser support and set this programmatically
+      NFCSupported: true,
 			selectedCurrency: 'Bazo',
 			allowedCurrencies: ['Bazo', 'USD', 'EUR', 'CHF'],
 			amount: 0,
@@ -224,23 +252,36 @@ export default {
 	},
 	methods: {
 		loadInitialData: function () {
-			return Promise.all([
-				HttpService.getForexCurrent('BITSTAMP', 'USD'),
-				HttpService.getForexCurrent('BITSTAMP', 'EUR'),
-				HttpService.getForexCurrent('BITSTAMP', 'CHF'),
-				HttpService.Auth.User.getLockedAddress()
-			]).then(responses => {
-				this.forexRates.USD = responses[0].body;
-				this.forexRates.EUR = responses[1].body;
-				this.forexRates.CHF = responses[2].body;
-				this.lockedAddress = responses[3].body;
-				this.loadingError = false;
-				this.isLoading = false;
-			}, () => {
-				this.loadingError = true;
-				this.isLoading = false;
-			});
+      this.isLoading = false
+			// return Promise.all([
+			// 	HttpService.getForexCurrent('BITSTAMP', 'USD'),
+			// 	HttpService.getForexCurrent('BITSTAMP', 'EUR'),
+			// 	HttpService.getForexCurrent('BITSTAMP', 'CHF'),
+			// 	HttpService.Auth.User.getLockedAddress()
+			// ]).then(responses => {
+			// 	this.forexRates.USD = responses[0].body;
+			// 	this.forexRates.EUR = responses[1].body;
+			// 	this.forexRates.CHF = responses[2].body;
+			// 	this.lockedAddress = responses[3].body;
+			// 	this.loadingError = false;
+			// 	this.isLoading = false;
+			// }, () => {
+			// 	this.loadingError = false;
+			// 	this.isLoading = false;
+			// });
 		},
+    openNFC: function () {
+      this.NFCShown = true;
+      console.log('start watching');
+      this.startWatching();
+    },
+    closeNFC: function () {
+      this.NFCShown = false;
+    },
+    startWatching: function () {
+      console.log('start watching...');
+      this.NFCWatching = true;
+    },
 		openCamera: function () {
 			this.qrScanner = new window.Instascan.Scanner({
 				video: this.$el.querySelector('.camera-screen video')
@@ -549,7 +590,18 @@ export default {
   .bt {
     right: 30px;
   }
-	.camera-screen {
+  .nfc-status-wrapper {
+    img {
+      margin: 20px;
+      height: 100px;
+    }
+    .nfc-watch-active {
+      animation: roll 3s infinite;
+      transform: rotate(30deg);
+    }
+
+  }
+	.camera-screen, .nfc-screen {
 		position: fixed;
 		padding: 20px;
 		background: rgba(0,0,0,0.9);
@@ -566,7 +618,7 @@ export default {
 			visibility: visible;
 		}
 
-		.camera-notice {
+		.camera-notice, .nfc-notice {
 			color: white;
 			font-size: 18px;
 			font-weight: 300;
@@ -580,7 +632,7 @@ export default {
 			max-height: calc(100vh - 40px);
 			overflow: hidden;
 		}
-		.camera-title {
+		.camera-title, .nfc-title {
 			position: absolute;
 			bottom: 40px;
 			left: 50%;
@@ -675,11 +727,19 @@ export default {
 				margin-top: -1px;
 			}
 		}
-	}
+  }
 }
 @media (max-width: $breakpoint-hide-header) {
-	.user-send .camera-screen .camera-title {
-		font-size: 24px;
-	}
+  .user-send .camera-screen .camera-title {
+    font-size: 24px;
+  }
+}
+@keyframes roll {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

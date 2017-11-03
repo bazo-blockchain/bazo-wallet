@@ -43,6 +43,8 @@
 			"transactionSuccessful": "The transaction was successfully executed.",
 			"paymentError": "An error occurred during the payment process. Please verify the amount (Attention: fees) or try it again later on.",
       "openNFCTitle": "Watch for a Bazo adress over NFC",
+      "NFCTitle": "Read payment info from an NFC tag",
+      "NFCNotice": "If the NFC was not detected, your phone or Browser might not support NFC.",
       "openCameraTitle": "Scan a QR Code of a Bazo address",
 			"cameraTitle": "Scan a QR code with a Bazo address",
 			"cameraError": "The camera could not be accessed.",
