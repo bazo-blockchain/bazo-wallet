@@ -1,35 +1,35 @@
 <template>
 <div class="user-send">
 	<div class="compact">
-		<h1 class="display-4">{{ $t('userSend.title') }}</h1>
+		<h1 class="display-4">{{ Translation.t('userSend.title') }}</h1>
 		<hr>
 		<div class="pos-rel user-send-content">
 			<spinner :is-loading="isLoading"></spinner>
 			<div v-if="successfulTransaction">
-				<div class="alert alert-success">{{ $t('userSend.transactionSuccessful') }}</div>
+				<div class="alert alert-success">{{ Translation.t('userSend.transactionSuccessful') }}</div>
 			</div>
 			<div v-else>
 				<div class="box-wrapper" v-if="!isLoading && !loadingError">
 					<div class="box">
-						<div class="main-title display-7">{{ $t('userSend.boxTitle') }}</div>
+						<div class="main-title display-7">{{ Translation.t('userSend.boxTitle') }}</div>
 						<hr>
 						<form>
 							<b-form-fieldset>
 								<label class="col-form-label" for="send-receiver">
-									{{ $t('userSend.receiver') }}
-									<b-popover :triggers="['hover']" :content="$t('userSend.receiverDescription')" class="popover-element">
+									{{ Translation.t('userSend.receiver') }}
+									<b-popover :triggers="['hover']" :content="Translation.t('userSend.receiverDescription')" class="popover-element">
 										<i class="fa fa-info-circle increase-focus"></i>
 									</b-popover>
 								</label>
 								<div class="pos-rel">
-									<b-form-input id="send-receiver" v-model="address" type="text" class="address-input" :placeholder="$t('userSend.receiverPlaceholder')" :class="{ 'form-error': formIsTouched && !validAddress }"></b-form-input>
-                  <span  class="nfc" @click="openCamera" :title="$t('userSend.openNFCTitle')">
+									<b-form-input id="send-receiver" v-model="address" type="text" class="address-input" :placeholder="Translation.t('userSend.receiverPlaceholder')" :class="{ 'form-error': formIsTouched && !validAddress }"></b-form-input>
+                  <span  class="nfc" @click="openCamera" :title="Translation.t('userSend.openNFCTitle')">
                     <i class="fa fa-rss"></i>
                   </span>
-                  <span class="bt" @click="openCamera" :title="$t('userSend.openCameraTitle')">
+                  <span class="bt" @click="openCamera" :title="Translation.t('userSend.openCameraTitle')">
                     <i class="fa fa-bluetooth-b"></i>
                   </span>
-                  <span class="camera" @click="openCamera" :title="$t('userSend.openCameraTitle')">
+                  <span class="camera" @click="openCamera" :title="Translation.t('userSend.openCameraTitle')">
 										<i class="fa fa-camera"></i>
 									</span>
 
@@ -37,9 +37,9 @@
 										<div class="close" @click="closeCamera">&times;</div>
 										<div class="camera-title" @click.stop>
 											<i class="fa fa-qrcode"></i>
-											{{ $t('userSend.cameraTitle') }}
+											{{ Translation.t('userSend.cameraTitle') }}
 										</div>
-										<div class="camera-notice">{{ $t('userSend.cameraNotice') }}</div>
+										<div class="camera-notice">{{ Translation.t('userSend.cameraNotice') }}</div>
 										<div class="video-wrapper" @click.stop>
 											<video></video>
 										</div>
@@ -49,7 +49,7 @@
 
 							<div class="row">
 								<div class="col-md-8">
-									<b-form-fieldset :label="$t('userSend.amount')">
+									<b-form-fieldset :label="Translation.t('userSend.amount')">
 										<b-input-group>
 											<b-form-input v-model="amount" class="mono amount-input" type="number" min="0" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
 											<b-input-group-button slot="right">
@@ -65,8 +65,8 @@
 								</div>
 								<div class="col-md-4">
 									<b-form-fieldset>
-										<label class="col-form-label">{{ $t('userSend.maxAmount') }}
-											<b-popover :triggers="['hover']" :content="(addressIsBitcoin || addressIsEmail) ? $t('userSend.maxAmountDescription') : '<b>'+$t('userSend.maxAmountDescriptionIntro')+'</b><hr>' + $t('userSend.maxAmountDescription')" class="popover-element">
+										<label class="col-form-label">{{ Translation.t('userSend.maxAmount') }}
+											<b-popover :triggers="['hover']" :content="(addressIsBitcoin || addressIsEmail) ? Translation.t('userSend.maxAmountDescription') : '<b>'+Translation.t('userSend.maxAmountDescriptionIntro')+'</b><hr>' + Translation.t('userSend.maxAmountDescription')" class="popover-element">
 												<i class="fa fa-info-circle increase-focus"></i>
 											</b-popover>
 										</label>
@@ -81,13 +81,13 @@
 									</b-form-fieldset>
 								</div>
 								<div class="col-12">
-									<div class="description-forex-rate" v-html="$t('userSend.descriptionForexRate', { forex: forexRates[selectedCurrency].rate, currency: selectedCurrency })" v-if="selectedCurrency !== 'BTC'"></div>
+									<div class="description-forex-rate" v-html="Translation.t('userSend.descriptionForexRate', { forex: forexRates[selectedCurrency].rate, currency: selectedCurrency })" v-if="selectedCurrency !== 'Bazo'"></div>
 									<hr>
 								</div>
 								<div class="fees-included">
 									<label>
-										<b-form-checkbox v-model="feesIncluded">{{ $t('userSend.feesIncluded') }}
-											<b-popover :triggers="['hover']" :content="$t('userSend.feesIncludedDescription')" class="popover-element">
+										<b-form-checkbox v-model="feesIncluded">{{ Translation.t('userSend.feesIncluded') }}
+											<b-popover :triggers="['hover']" :content="Translation.t('userSend.feesIncludedDescription')" class="popover-element">
 												<i class="fa fa-info-circle increase-focus"></i>
 											</b-popover>
 										</b-form-checkbox>
@@ -95,9 +95,9 @@
 								</div>
 								<div class="col-12">
 									<!-- warning threshold is 0.01 BTC fees per transaction, if above: crazy world -->
-									<div class="description-fees alert alert-info" v-if="feesIncluded && btcAmount != 0 && btcAmount < 0.01">{{ $t('userSend.lowAmountFeeDescription') }}</div>
-									<div class="description-fees alert alert-info" v-if="!feesIncluded && btcAmount != 0 && btcMaximumAmount - btcAmount - 0.01 < 0">{{ $t('userSend.descriptionFees') }}</div>
-									<b-button class="submit-button" :block="true" variant="primary" @click.prevent="submitPreparation" :disabled="formIsTouched && !validForm">{{ $t('userSend.button', { amount: btcAmount }) }}</b-button>
+									<div class="description-fees alert alert-info" v-if="feesIncluded && btcAmount != 0 && btcAmount < 0.01">{{ Translation.t('userSend.lowAmountFeeDescription') }}</div>
+									<div class="description-fees alert alert-info" v-if="!feesIncluded && btcAmount != 0 && btcMaximumAmount - btcAmount - 0.01 < 0">{{ Translation.t('userSend.descriptionFees') }}</div>
+									<b-button class="submit-button" :block="true" variant="primary" @click.prevent="submitPreparation" :disabled="formIsTouched && !validForm">{{ Translation.t('userSend.button', { amount: btcAmount }) }}</b-button>
 								</div>
 							</div>
 						</form>
@@ -119,6 +119,7 @@ import Spinner from '@/components/Spinner';
 import TransactionService from '@/services/TransactionService';
 import Bitcoin from 'coinblesk-frontend-bitcoinjs';
 import BitcoinBip21 from 'bip21';
+import Translation from '@/config/Translation';
 
 export default {
 	name: 'user-send',
@@ -128,8 +129,8 @@ export default {
 			loadingError: false,
 			qrScanner: null,
 			cameraShown: false,
-			selectedCurrency: 'BTC',
-			allowedCurrencies: ['BTC', 'USD', 'EUR', 'CHF'],
+			selectedCurrency: 'Bazo',
+			allowedCurrencies: ['Bazo', 'USD', 'EUR', 'CHF'],
 			amount: 0,
 			feesIncluded: true,
 			address: '',
@@ -141,7 +142,8 @@ export default {
 			formIsTouched: false,
 			successfulTransaction: false,
 			lockedAddress: {},
-			currentTransaction: {}
+			currentTransaction: {},
+      Translation: Translation
 		}
 	},
 	components: {
@@ -154,7 +156,7 @@ export default {
 				return 0;
 			}
 			let value = 0;
-			if (this.selectedCurrency !== 'BTC') {
+			if (this.selectedCurrency !== 'Bazo') {
 				value = (this.amount / this.forexRates[this.selectedCurrency].rate);
 			} else {
 				value = this.amount;
@@ -265,12 +267,12 @@ export default {
 					this.qrScanner.start(cameras[0]);
 					this.cameraShown = true;
 				} else {
-					this.$toasted.global.warn(this.$t('userSend.cameraError'));
+					this.$toasted.global.warn(Translation.t('userSend.cameraError'));
 					this.closeCamera();
 					console.warn('no cameras found');
 				}
 			}, (error) => {
-				this.$toasted.global.warn(this.$t('userSend.cameraError'));
+				this.$toasted.global.warn(Translation.t('userSend.cameraError'));
 				this.closeCamera();
 				console.warn('error occurred:', error);
 			});
@@ -309,7 +311,7 @@ export default {
 					});
 				}, () => {
 					this.isLoading = false;
-					this.$toasted.global.warn(this.$t('userSend.paymentError'));
+					this.$toasted.global.warn(Translation.t('userSend.paymentError'));
 				});
 			}
 		},
@@ -318,13 +320,13 @@ export default {
 			const errorOccurred = (e) => {
 				this.isLoading = false;
 				this.currentTransaction = {};
-				this.$toasted.global.warn(this.$t('userSend.paymentError'));
+				this.$toasted.global.warn(Translation.t('userSend.paymentError'));
 				console.warn(e);
 			};
 			const errorOccurredNotYetConfirmed = () => {
 				this.isLoading = false;
 				this.currentTransaction = {};
-				this.$toasted.global.warn(this.$t('userSend.paymentErrorNotYetConfirmed'));
+				this.$toasted.global.warn(Translation.t('userSend.paymentErrorNotYetConfirmed'));
 			};
 			const success = () => {
 				this.isLoading = false;
@@ -481,7 +483,7 @@ export default {
 									errorOccurred(e);
 								}
 							} else {
-								this.$toasted.global.warn(this.$t('userSend.errorRecipientAddress'));
+								this.$toasted.global.warn(Translation.t('userSend.errorRecipientAddress'));
 								this.isLoading = false;
 								this.currentTransaction = {};
 							}
@@ -645,7 +647,7 @@ export default {
 	.fees-included {
 		text-align: center;
 		width: 100%;
-		
+
 		label {
 			display: inline-block;
 		}
@@ -681,65 +683,3 @@ export default {
 	}
 }
 </style>
-
-<i18n>
-{
-	"en": {
-		"userSend": {
-			"title": "Transfer Bazo coins",
-			"boxTitle": "Transfer to a Bazo address",
-			"receiver": "Receiver (Bazo address)",
-			"receiverPlaceholder": "Enter a valid bazo address",
-			"receiverDescription": "This should be the fully qualified Bazo address whom you're trying to send Bazo coins.",
-			"lookup": "Lookup",
-			"amount": "Amount",
-			"feesIncluded": "Fees are included in the amount",
-			"feesIncludedDescription": "If the checkbox is checked the fees are subtracted from the transfer amount. The recepient receives an amount which is reduced by the extend of the fees. Alternatively, you are charged by the amount plus fees, the recepient, however, receives the exact amount.",
-			"maxAmount": "Maximal amount",
-			"maxAmountDescription": "The maximal amount relates to the currently maximal amount which can be transferred to another account. If you have a virtual balance (see <i>Funds</i>), you can pay out these funds to transfer it to another Bazo address. E-mail addresses as recipients can either receive funds from virtual balances or from time locked address, which are currently locked.",
-			"maxAmountDescriptionIntro": "Please enter an address first, before you can see the maximal amount.",
-			"descriptionForexRate": "The current forex rate Bazo/{currency} is <span class='mono'>{forex}</span>&nbsp;&nbsp;().",
-			"descriptionFees": "The fees of your Bazo transfer are not yet included in the amount and are added to the value. Please make sure, that you have enough funds to create this transaction. Otherwise we have to reject it.",
-			"lowAmountFeeDescription": "The amount you are trying to transfer is very small and needs to contain possible transaction fees. It is possible, that the transaction is rejected because the fees might be higher than the remaining transfer amount.",
-			"button": "Send {amount} Bazo coins",
-			"transactionSuccessful": "The transaction was successfully executed.",
-			"paymentError": "An error occurred during the payment process. Please verify the amount (Attention: fees) or try it again later on.",
-      "openNFCTitle": "Watch for a Bazo adress over NFC",
-      "openCameraTitle": "Scan a QR Code of a Bazo address",
-			"cameraTitle": "Scan a QR code with a Bazo address",
-			"cameraError": "The camera could not be accessed.",
-			"cameraNotice": "If the camera does not show up here within 5s, you probably did not grant the camera the required permission.",
-			"errorRecipientAddress": "This address can currently not receive funds in the specified amount.",
-			"paymentErrorNotYetConfirmed": "Your funds have not been confirmed in enough blocks and can therefore not been spent yet."
-		}
-	},
-	"de": {
-		"userSend": {
-			"title": "Bazo coins überweisen",
-			"boxTitle": "An eine Bazo Adresse überweisen",
-			"receiver": "Empfänger (Bazo Adresse)",
-			"receiverPlaceholder": "Bazo Adresse eingeben",
-			"receiverDescription": "Falls Sie eine E-Mail Adresse eingeben wird der Empfänger eine Nachricht mit einem Schlüssel erhalten. Mit diesem Schlüssel hat er Zugriff auf die erhaltenen Beträge.",
-			"lookup": "Suchen",
-			"amount": "Betrag",
-			"feesIncluded": "Spesen in Betrag einschliessen",
-			"feesIncludedDescription": "Wenn die Auswahlbox ausgewählt ist, werden die Spesen vom Betrag abgezogen. Der Empfänger erhält einen um die Spesen verminderten Betrag. Andernfalls wird Ihnen der Betrag plus Spesen berechnet, der Empfänger erhält jedoch den genauen Betrag.",
-			"maxAmount": "Maximalbetrag",
-			"maxAmountDescription": "Der Maximalbetrag stellt den aktuell höchst möglichen Zahlungsbetrag dar. Falls Sie virtuelles Guthaben haben (siehe <i>Guthaben</i>) können Sie sich dieses Guthaben zunächst auzahlen lassen um an eine Bitcoin-Adresse zu zahlen. E-Mail Adressen können entweder Guthaben aus virtuellem Guthaben oder aber Guthaben auf zeitlich gesperrten Adressen beinhalten.",
-			"maxAmountDescriptionIntro": "Geben Sie zunächst eine Adresse ein, um den Maximalbetrag zu sehen.",
-			"descriptionForexRate": "Der aktuelle Wechselkurs Bazo/{currency} beträgt <span class='mono'>{forex}</span>&nbsp;&nbsp;(Quelle: Bitstamp).",
-			"descriptionFees": "Bei Ihrer Zahlung entstehen voraussichtlich Spesen, welche auf den dargestellten Betrag aufaddiert werden. Vergewissern Sie sich, dass Sie über genügend Bazo coins verfügen, um die Zahlung auszuführen. Andernfalls müssen wir die Zahlung ablehnen.",
-			"lowAmountFeeDescription": "Der Betrag, den Sie überweisen möchten ist klein und beinhaltet bereits allfällige Spesen. Womöglich wird diese Transaktion abgelehnt, da die Spesen höher sein könnten als der verbleibende Überweisungsbetrag.",
-			"button": "{amount} Bazo versenden",
-			"transactionSuccessful": "Die Transaktion wurde erfolgreich durchgeführt.",
-			"paymentError": "Bei der Zahlung ist ein Fehler aufgetreten. Überprüfen Sie Ihren Betrag (Achtung: Spesen) oder probieren Sie es später erneut.",
-			"openCameraTitle": "QR Code einer Bazo Adresse scannen",
-			"cameraTitle": "Scannen Sie einen QR Code mit einer Bitcoin Adresse",
-			"cameraError": "Die Kamera kann nicht angezeigt werden.",
-			"cameraNotice": "Falls die Kamera nicht in 5s angezeigt wird, haben Sie vermutlich keine Berechtigung für die Kamera vergeben.",
-			"errorRecipientAddress": "An diese Adresse kann derzeit kein Guthaben in dieser Höhe überwiesen werden.",
-			"paymentErrorNotYetConfirmed": "Ihr Guthaben ist noch nicht in genügend Blöcken bestätigt und kann deshalb noch nicht ausgegeben werden."
-		}
-	}
-}
-</i18n>

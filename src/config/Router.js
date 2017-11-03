@@ -73,7 +73,7 @@ const requireAuth = (to, _from, next) => {
 		redirectBecauseUnavailable(_from, next);
 	} else {
 		if (!Store.state.auth.authenticated) {
-			Vue.toasted.global.warn(Translation.t('toasts.unauthorized'), { duration: 6000 });
+			Vue.toasted.global.warn(Translation.t('toasts.accountrequired'), { duration: 6000 });
 			next({
 				path: '/login',
 				query: { redirect: to.fullPath }
