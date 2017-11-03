@@ -1,8 +1,7 @@
-# coinblesk-frontend
+# Bazo Wallet
 
-> The web frontend for Coinblesk
+> The web-based wallet for Bazo
 
-The front-end cannot be run without the [`coinblesk-server`](https://github.com/coinblesk/coinblesk-server). First, start the server, then the frontend.
 
 ## Setup
 
