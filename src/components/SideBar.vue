@@ -11,7 +11,7 @@
 			</router-link>
 
 			<div class="separator"></div>
-			<div class="subtitle">{{ $t('sideBar.subtitle.bitcoin').toUpperCase() }}</div>
+			<div class="subtitle">{{ $t('sideBar.subtitle.bazo').toUpperCase() }}</div>
 			<router-link class="entry" :to="{ name: 'forex' }" :class="dynamicLinkClasses('forex')" @click.native="closeMenu">
 				<i class="fa fa-line-chart"></i>
 				<span class="text">{{ $t('sideBar.forex') }}</span>
@@ -188,12 +188,12 @@ $language-picker-height-offline: 8.9em;
 	overflow-y: auto;
 	height: calc(100vh - 2em - 2.2em - 2.5em - #{$language-picker-height});
 	padding-bottom: 10px;
-	
+
 	&.offline-mode {
 		/* create space for the offline message */
 		height: calc(100vh - 2em - 2.2em - 2.5em - #{$language-picker-height-offline});
 	}
-	
+
 	&::-webkit-scrollbar {
 		width: 12px;
 		background-color: rgba(255,255,255,0.1);
@@ -204,7 +204,7 @@ $language-picker-height-offline: 8.9em;
 		background-color: rgba(255,255,255,0.2);
 		border-right: 2px solid #353535;
 	}
-	
+
 	.entry {
 		position: relative;
 		cursor: pointer;
@@ -216,7 +216,7 @@ $language-picker-height-offline: 8.9em;
 		&:hover {
 			background-color: #454545;
 		}
-		
+
 		&.selected {
 			background: $green-color;
 			&:after {
@@ -229,13 +229,13 @@ $language-picker-height-offline: 8.9em;
 				font-weight: 500;
 			}
 		}
-		
+
 		.fa {
 			position: absolute;
 			top: 0.8em;
 			left: 1.3em;
 			opacity: 0.6;
-			
+
 			&.fa-line-chart {
 				/* line chart icon is larger then the others */
 				margin-top: 4px;
@@ -247,7 +247,7 @@ $language-picker-height-offline: 8.9em;
 			font-weight: 300;
 			padding: 0.6em 0.65em 0.6em 3.2em;
 		}
-		
+
 	}
 	.separator {
 		height: 0.7em;
@@ -266,11 +266,11 @@ $language-picker-height-offline: 8.9em;
 	text-align: center;
 	padding-top: 0.8em;
 	height: $language-picker-height;
-	
+
 	&.offline-mode {
 		height: $language-picker-height-offline;
 	}
-	
+
 	.language {
 		display: inline-block;
 		width: 2.3em;
@@ -279,7 +279,7 @@ $language-picker-height-offline: 8.9em;
 		position: relative;
 		cursor: pointer;
 		transition: 0.2s ease all;
-		
+
 		&.selected {
 			&, &:hover {
 				background: #626262;
@@ -291,7 +291,7 @@ $language-picker-height-offline: 8.9em;
 		& + .language {
 			margin-left: 0.2em;
 		}
-		
+
 		.text {
 			display: block;
 			position: absolute;
@@ -311,7 +311,7 @@ $language-picker-height-offline: 8.9em;
 		padding-left: 0.75em;
 		border-left: 1px solid #656565;
 		font-weight: 300;
-		
+
 		/deep/ .user-balance .fa.fa-info-circle {
 			margin-right: 0;
 		}
@@ -324,7 +324,7 @@ $language-picker-height-offline: 8.9em;
 	"en": {
 		"sideBar": {
 			"subtitle": {
-				"bitcoin": "Bitcoin",
+				"bazo": "Bazo",
 				"administration": "Administration",
 				"accountManagement":"Account Management"
 			},
@@ -333,7 +333,7 @@ $language-picker-height-offline: 8.9em;
 			"login": "Login",
 			"registration": "Registration",
 			"forex": "Market trend",
-			"userSend": "Transfer Bitcoins",
+			"userSend": "Transfer Bazo coins",
 			"userFunds": "Funds",
 			"adminEvents": "Events",
 			"adminAccounts": "Accounts",
@@ -349,14 +349,14 @@ $language-picker-height-offline: 8.9em;
 	"de": {
 		"sideBar": {
 			"subtitle": {
-				"bitcoin": "Bitcoin",
+				"bazo": "Bazo",
 				"administration": "Administration",
 				"accountManagement": "Kontoverwaltung"
 			},
 			"home": "Start",
 			"forex": "Kursentwicklung",
 			"forex": "Kursentwicklung",
-			"userSend": "Bitcoins versenden",
+			"userSend": "Bazo coins versenden",
 			"userFunds": "Guthaben",
 			"adminEvents": "Events",
 			"adminAccounts": "Konten",

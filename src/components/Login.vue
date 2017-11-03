@@ -1,25 +1,25 @@
 <template>
-<div class="login login-registration">
-	<div class="compact">
-		<div class="form-box bordered-box">
-			<div class="main-title display-7">{{ $t('login.title') }}</div>
-			<hr>
-			<form>
-				<b-form-fieldset :label="$t('login.email')">
-					<b-form-input v-model="email" type="text"></b-form-input>
-				</b-form-fieldset>
-				<b-form-fieldset :label="$t('login.password')">
-					<b-form-input v-model="password" type="password"></b-form-input>
-				</b-form-fieldset>
-				<b-button @click.prevent="login" :block="true" variant="primary" :disabled="isLoading">{{ $t('login.submit') }}</b-button>
-			</form>
-			<div class="links-below">
-				<router-link :to="{ name: 'password-forgotten' }" class="password-forgotten">{{ $t('login.forgotPassword') }}</router-link>
-				<router-link :to="{ name: 'registration' }" class="sign-up">{{ $t('login.signUp') }}</router-link>
-			</div>
-		</div>
-	</div>
-</div>
+  <div class="login login-registration">
+    <div class="compact">
+      <div class="form-box bordered-box">
+        <div class="main-title display-7">{{ $t('login.title') }}</div>
+        <hr>
+        <form>
+          <b-form-fieldset :label="$t('login.email')">
+            <b-form-input v-model="email" type="text"></b-form-input>
+          </b-form-fieldset>
+          <b-form-fieldset :label="$t('login.password')">
+            <b-form-input v-model="password" type="password"></b-form-input>
+          </b-form-fieldset>
+          <b-button @click.prevent="login" :block="true" variant="primary" :disabled="isLoading">{{ $t('login.submit') }}</b-button>
+        </form>
+        <div class="links-below">
+          <router-link :to="{ name: 'password-forgotten' }" class="password-forgotten">{{ $t('login.forgotPassword') }}</router-link>
+          <router-link :to="{ name: 'registration' }" class="sign-up">{{ $t('login.signUp') }}</router-link>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
