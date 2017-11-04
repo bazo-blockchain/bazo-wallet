@@ -291,7 +291,7 @@ export default {
         this.NFCSuccess = true;
         this.address = message.records[0].data.targetaddress;
         this.amount = message.records[0].data.value;
-        closeNFC();
+        this.closeNFC();
       }).then(() => {
         this.NFCWatching = true;
         this.NFCStatus = 'Started watching NFC tags..'
