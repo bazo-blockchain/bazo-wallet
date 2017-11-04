@@ -42,9 +42,9 @@
 
 										<div class="nfc-notice">{{ Translation.t('userSend.NFCNotice') }}
                       <div class="nfc-status-wrapper" @click="startWatching">
-                        <img src="https://www.materialui.co/materialIcons/device/nfc_grey_192x192.png"
-                             alt=""
-                             :class="{'nfc-watch-active': NFCWatching}">
+                        <svg :class="{'nfc-watch-active': NFCWatching, 'nfc-watch-success': NFCSuccess}" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM18 6h-5c-1.1 0-2 .9-2 2v2.28c-.6.35-1 .98-1 1.72 0 1.1.9 2 2 2s2-.9 2-2c0-.74-.4-1.38-1-1.72V8h3v8H8V8h2V6H6v12h12V6z"/></svg>
+
+
                       </div>
                       <div class="nfc-status">
                         {{ NFCStatus }}
@@ -154,6 +154,7 @@ export default {
 			cameraShown: false,
       NFCStatus: 'not watching..',
       NFCWatching: false,
+      NFCSuccess: false,
       NFCShown: false,
       // TODO: detect NFC browser support and set this programmatically
       NFCSupported: true,
@@ -277,10 +278,28 @@ export default {
     },
     closeNFC: function () {
       this.NFCShown = false;
+      try {
+        navigator.nfc.cancelWatch();
+      } catch (e) {
+
+      }
     },
     startWatching: function () {
-      console.log('start watching...');
-      this.NFCWatching = true;
+      navigator.nfc.watch((message) => {
+        console.log(this);
+        this.NFCWatching = false;
+        this.NFCSuccess = true;
+        this.address = message.records[0].data.targetaddress;
+        this.amount = message.records[0].data.value;
+        closeNFC();
+      }).then(() => {
+        this.NFCWatching = true;
+        this.NFCStatus = 'Started watching NFC tags..'
+      }).catch((error) => {
+        this.NFCWatching = false;
+        this.NFCSuccess = false;
+        this.NFCStatus = 'Error encountered: ' + error.toString();
+      });
     },
 		openCamera: function () {
 			this.qrScanner = new window.Instascan.Scanner({
@@ -591,13 +610,17 @@ export default {
     right: 30px;
   }
   .nfc-status-wrapper {
-    img {
+    svg {
+      fill: #FAA916;
       margin: 20px;
       height: 100px;
     }
     .nfc-watch-active {
-      animation: roll 3s infinite;
+      animation: roll 3s infinite forwards;
       transform: rotate(30deg);
+    }
+    .nfc-watch-success {
+      fill: green;
     }
 
   }
