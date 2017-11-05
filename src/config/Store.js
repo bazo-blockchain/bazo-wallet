@@ -18,13 +18,24 @@ const store = new Vuex.Store({
 			role: null
 		},
     config: {
-      configured: false
+      configured: false,
+      accounts: []
     },
 		offline: !(typeof window.navigator.onLine === 'undefined' ||
 				window.navigator.onLine === null ||
 				window.navigator.onLine)
 	},
-
+  getters: {
+    bazoAccounts: function (state) {
+      return state.config.accounts;
+    },
+    accountConfigured: function (state) {
+      if (state.config.accounts.length > 0) {
+        return true;
+      }
+      return false;
+    }
+  },
 	// should be private:
 	mutations: {
 		updateUser: function (state, user) {
@@ -41,10 +52,17 @@ const store = new Vuex.Store({
 		clearUserBalance: function (state) {
 			state.userBalance = null;
 		},
-
 		updateLanguage: function (state, language) {
 			state.language = language;
 		},
+    updateConfig: function (state, account) {
+      if (account.bazoaddress && account.bazoname) {
+        state.config.accounts.push(account);
+        state.config.configured = true;
+      } else {
+        console.log('invalid config');
+      }
+    },
 		updateAuth: function (state, token) {
 			state.auth.authenticated = true;
 			state.auth.token = token;
@@ -137,6 +155,9 @@ const store = new Vuex.Store({
 				return context.commit('clearAuth');
 			}
 		},
+    updateConfig: function (context, config) {
+      return context.commit('updateConfig', config);
+    },
 		setOffline: function (context, offline) {
 			context.commit('setOffline', !!offline);
 		},
@@ -150,7 +171,7 @@ const store = new Vuex.Store({
 		// persists vuex state to localstorage (only the given paths)
 		PersistedState({
 			key: 'coinblesk_vuex_store',
-			paths: [ 'auth', 'user', 'language', 'userBalance' ]
+			paths: [ 'auth', 'user', 'language', 'userBalance', 'config' ]
 		})
 	]
 });
