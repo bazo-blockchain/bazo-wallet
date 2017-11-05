@@ -5,35 +5,61 @@
         <div class="main-title display-7">{{ $t('login.title') }}</div>
         <hr>
         <form>
-          <b-form-fieldset :label="$t('login.email')">
-            <b-form-input v-model="email" type="text"></b-form-input>
+          <b-form-fieldset :label="$t('login.bazoaddress')">
+            <b-form-input v-model="bazoaddress" type="text"></b-form-input>
           </b-form-fieldset>
-          <b-form-fieldset :label="$t('login.password')">
-            <b-form-input v-model="password" type="password"></b-form-input>
+          <b-form-fieldset :label="$t('login.bazoname')">
+            <b-form-input v-model="bazoname" ></b-form-input>
           </b-form-fieldset>
-          <b-button @click.prevent="login" :block="true" variant="primary" :disabled="isLoading">{{ $t('login.submit') }}</b-button>
+          <div v-if="configured"
+               class="table-responsive">
+               <label>{{$t('login.bazoaccounts')}}</label>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Bazo Address</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="account in allAccounts">
+                  <td>{{account.bazoname}}</td>
+                  <td>{{account.bazoaddress}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <b-button @click.prevent="login" :block="true" variant="primary" :disabled="isLoading">{{ $t('login.save') }}</b-button>
         </form>
-        <div class="links-below">
+        <!-- <div class="links-below">
           <router-link :to="{ name: 'password-forgotten' }" class="password-forgotten">{{ $t('login.forgotPassword') }}</router-link>
           <router-link :to="{ name: 'registration' }" class="sign-up">{{ $t('login.signUp') }}</router-link>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import HttpService from '@/services/HttpService';
+// import HttpService from '@/services/HttpService';
 
 export default {
 	name: 'login',
 	data: function () {
 		return {
-			email: '',
-			password: '',
+			bazoaddress: '',
+			bazoname: '',
 			isLoading: false
 		}
 	},
+  computed: {
+    allAccounts () {
+      return this.$store.getters.bazoAccounts;
+    },
+    configured () {
+      return this.$store.getters.accountConfigured;
+    }
+  },
 	mounted: function () {
 		this.$emit('toggle-header', false);
 		this.$emit('set-body-background', 'dark');
@@ -83,6 +109,11 @@ export default {
 @import '../styles/variables';
 
 .login {
+  .table-responsive{
+    min-height: 130px !important;
+    max-height: 200px !important;
+    overflow: scroll;
+  }
 	.sign-up {
 		float: left;
 	}
@@ -97,21 +128,19 @@ export default {
 	"en": {
 		"login": {
 			"title": "Sign In",
-			"email": "E-Mail",
-			"password": "Password",
-			"submit": "Sign in",
-			"signUp": "Sign up now!",
-			"forgotPassword": "Forgot your password?"
+			"bazoaddress": "Bazo address",
+			"bazoname": "Name this account",
+			"save": "Add a Bazo address",
+      "bazoaccounts": "You have the following Bazo accounts:"
 		}
 	},
 	"de": {
 		"login": {
 			"title": "Anmelden",
-			"email": "E-Mail Adresse",
-			"password": "Passwort",
-			"submit": "Anmelden",
-			"signUp": "Jetzt registrieren!",
-			"forgotPassword": "Passwort vergessen?"
+			"bazoaddress": "E-Mail Adresse",
+			"bazoname": "Name für diesen Account",
+			"save": "Bazo Adresse hinzufügen",
+      "bazoaccounts": "Folgende Bazo accounts sind gespeichert:"
 		}
 	}
 }
