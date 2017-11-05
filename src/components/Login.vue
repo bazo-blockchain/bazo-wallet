@@ -17,8 +17,8 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Bazo Address</th>
+                  <th scope="col">{{$t('login.bazoaccountName')}}</th>
+                  <th scope="col">{{$t('login.bazoaccountAddress')}}</th>
                 </tr>
               </thead>
               <tbody>
@@ -131,7 +131,9 @@ export default {
 			"bazoaddress": "Bazo address",
 			"bazoname": "Name this account",
 			"save": "Add a Bazo address",
-      "bazoaccounts": "You have the following Bazo accounts:"
+      "bazoaccounts": "You have the following Bazo accounts:",
+      "bazoaccountName": "Name",
+      "bazoaccountAddress": "Address"
 		}
 	},
 	"de": {
@@ -140,7 +142,9 @@ export default {
 			"bazoaddress": "E-Mail Adresse",
 			"bazoname": "Name für diesen Account",
 			"save": "Bazo Adresse hinzufügen",
-      "bazoaccounts": "Folgende Bazo accounts sind gespeichert:"
+      "bazoaccounts": "Folgende Bazo accounts sind gespeichert:",
+      "bazoaccountName": "Name",
+      "bazoaccountAddress": "Adresse"
 		}
 	}
 }
