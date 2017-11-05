@@ -23,17 +23,25 @@
 								</label>
 								<div class="pos-rel">
 									<b-form-input id="send-receiver" v-model="address" type="text" class="address-input" :placeholder="Translation.t('userSend.receiverPlaceholder')" :class="{ 'form-error': formIsTouched && !validAddress }"></b-form-input>
-                  <span  class="nfc" @click="openNFC" :title="Translation.t('userSend.openNFCTitle')">
-                    <i class="fa fa-rss"></i>
+                  <span
+                    class="nfc "
+                    :class="{ unsupported: !NFCSupported  }"
+                    @click="openNFC"
+                    :title="Translation.t('userSend.openNFCTitle')">
+                      <i class="fa fa-rss"></i>
                   </span>
-                  <span class="bt" @click="openCamera" :title="Translation.t('userSend.openCameraTitle')">
-                    <i class="fa fa-bluetooth-b"></i>
+                  <span
+                    class="bt"
+                    :class="{ unsupported: !bluetooth.BTSupported}"
+                    @click="openBT"
+                    :title="Translation.t('userSend.openBTTitle')">
+                      <i class="fa fa-bluetooth-b"></i>
                   </span>
                   <span class="camera" @click="openCamera" :title="Translation.t('userSend.openCameraTitle')">
 										<i class="fa fa-camera"></i>
 									</span>
 
-                  <div class="nfc-screen" :class="{'shown':NFCShown}" @click="closeNFC">
+                  <div class="nfc-screen" :class="{'shown': NFCShown}" @click="closeNFC">
 										<div class="close" @click="closeNFC">&times;</div>
 										<div class="nfc-title" @click.stop>
 											<i class="fa fa-rss"></i>
@@ -41,9 +49,8 @@
 										</div>
 
 										<div class="nfc-notice">{{ Translation.t('userSend.NFCNotice') }}
-                      <div class="nfc-status-wrapper" @click="startWatching">
+                      <div class="nfc-status-wrapper">
                         <svg :class="{'nfc-watch-active': NFCWatching, 'nfc-watch-success': NFCSuccess}" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM18 6h-5c-1.1 0-2 .9-2 2v2.28c-.6.35-1 .98-1 1.72 0 1.1.9 2 2 2s2-.9 2-2c0-.74-.4-1.38-1-1.72V8h3v8H8V8h2V6H6v12h12V6z"/></svg>
-
 
                       </div>
                       <div class="nfc-status">
@@ -55,6 +62,26 @@
 										</div>
 									</div>
 
+                  <div class="bt-screen" :class="{'shown': bluetooth.BTShown}"
+                    @click="closeBT">
+										<div class="close" @click="closeBT">&times;</div>
+										<div class="bt-title" @click.stop>
+											<i class="fa fa-bluetooth-b"></i>
+											{{ Translation.t('userSend.BTTitle') }}
+										</div>
+
+										<div class="bt-notice">{{ Translation.t('userSend.BTNotice') }}
+                      <div class="bt-status-wrapper">
+
+                      </div>
+                      <div class="bt-status">
+                        {{ bluetooth.BTStatus }}
+                      </div>
+                    </div>
+										<div class="video-wrapper" @click.stop>
+											<video></video>
+										</div>
+									</div>
 
 									<div class="camera-screen" :class="{'shown':cameraShown}" @click="closeCamera">
 										<div class="close" @click="closeCamera">&times;</div>
@@ -158,6 +185,12 @@ export default {
       NFCShown: false,
       // TODO: detect NFC browser support and set this programmatically
       NFCSupported: true,
+      bluetooth: {
+        BTStatus: 'not watching..',
+        BTSupported: false,
+        BTShown: false,
+        BTSuccess: false
+      },
 			selectedCurrency: 'Bazo',
 			allowedCurrencies: ['Bazo', 'USD', 'EUR', 'CHF'],
 			amount: 0,
@@ -271,10 +304,43 @@ export default {
 			// 	this.isLoading = false;
 			// });
 		},
+    checkBTSupport: function () {
+      if ('bluetooth' in navigator) {
+        this.bluetooth.BTSupported = true;
+      } else {
+        this.bluetooth.BTSupported = false;
+      }
+    },
+    openBT: function () {
+      if (this.bluetooth.BTSupported) {
+        this.bluetooth.BTShown = true;
+        this.startWatchingBT();
+      } else {
+        this.bluetooth.BTShown = false;
+        this.$toasted.global.warn(Translation.t('userSend.BTNotSupported'));
+      }
+    },
+    closeBT: function () {
+      this.bluetooth.BTShown = false;
+    },
+    startWatchingBT: function () {
+
+    },
+    checkNFCSupport: function () {
+      if ('nfc' in navigator) {
+        this.NFCSupported = true;
+      } else {
+        this.NFCSupported = false;
+      }
+    },
     openNFC: function () {
-      this.NFCShown = true;
-      console.log('start watching');
-      this.startWatching();
+      if (this.NFCSupported) {
+        this.NFCShown = true;
+        this.startWatchingNFC();
+      } else {
+        this.NFCShown = false;
+        this.$toasted.global.warn(Translation.t('userSend.NFCNotSupported'));
+      }
     },
     closeNFC: function () {
       this.NFCShown = false;
@@ -284,22 +350,24 @@ export default {
 
       }
     },
-    startWatching: function () {
-      navigator.nfc.watch((message) => {
-        console.log(this);
-        this.NFCWatching = false;
-        this.NFCSuccess = true;
-        this.address = message.records[0].data.targetaddress;
-        this.amount = message.records[0].data.value;
-        this.closeNFC();
-      }).then(() => {
-        this.NFCWatching = true;
-        this.NFCStatus = 'Started watching NFC tags..'
-      }).catch((error) => {
-        this.NFCWatching = false;
-        this.NFCSuccess = false;
-        this.NFCStatus = 'Error encountered: ' + error.toString();
-      });
+    startWatchingNFC: function () {
+      if (this.NFCSupported) {
+        navigator.nfc.watch((message) => {
+          console.log(this);
+          this.NFCWatching = false;
+          this.NFCSuccess = true;
+          this.address = message.records[0].data.targetaddress;
+          this.amount = message.records[0].data.value;
+          this.closeNFC();
+        }).then(() => {
+          this.NFCWatching = true;
+          this.NFCStatus = 'Started watching NFC tags..'
+        }).catch((error) => {
+          this.NFCWatching = false;
+          this.NFCSuccess = false;
+          this.NFCStatus = 'Error encountered: ' + error.toString();
+        });
+      }
     },
 		openCamera: function () {
 			this.qrScanner = new window.Instascan.Scanner({
@@ -557,6 +625,8 @@ export default {
 	mounted: function () {
 		this.isLoading = true;
 		this.loadInitialData();
+    this.checkNFCSupport();
+    this.checkBTSupport();
 	}
 };
 </script>
@@ -622,9 +692,12 @@ export default {
     .nfc-watch-success {
       fill: green;
     }
-
   }
-	.camera-screen, .nfc-screen {
+  .unsupported{
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+	.camera-screen, .nfc-screen, .bt-screen {
 		position: fixed;
 		padding: 20px;
 		background: rgba(0,0,0,0.9);
@@ -641,7 +714,7 @@ export default {
 			visibility: visible;
 		}
 
-		.camera-notice, .nfc-notice {
+		.camera-notice, .nfc-notice, .bt-notice {
 			color: white;
 			font-size: 18px;
 			font-weight: 300;
@@ -655,7 +728,7 @@ export default {
 			max-height: calc(100vh - 40px);
 			overflow: hidden;
 		}
-		.camera-title, .nfc-title {
+		.camera-title, .nfc-title, .bt-title {
 			position: absolute;
 			bottom: 40px;
 			left: 50%;
