@@ -70,35 +70,41 @@ export default {
 	},
 	methods: {
 		login: function () {
+      const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
 			if (!this.isLoading) {
 				this.isLoading = true;
+        this.$store.dispatch('updateConfig', {
+          bazoaddress: this.bazoaddress,
+          bazoname: this.bazoname
+        }).then(() => {
+          this.$router.push({ path: redirect });
+        });
+				// const credentials = { email: this.email, password: this.password };
+				// const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
 
-				const credentials = { email: this.email, password: this.password };
-				const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
-
-				HttpService.login(credentials, true).then((response) => {
-					this.$store.dispatch('updateAuth', response.body.token).then(() => {
-						this.$store.dispatch('updateUserBalance');
-					});
-					this.$store.dispatch('updateUser').then(() => {
-						this.$toasted.global.successNoIcon('<i class="fa fa-sign-in"></i>' + this.$t('toasts.signedIn'));
-						this.isLoading = false;
-						if (redirect) {
-							this.$router.push({ path: redirect });
-						}
-					}, () => {
-						this.isLoading = false;
-						this.$toasted.global.error(this.$t('toasts.internalError'));
-						this.$store.dispatch('logout');
-					});
-				}, (response) => {
-					if (response.status === 406) {
-						this.$toasted.global.error(this.$t('toasts.userIsDeletedError'));
-					} else if (/^4/.test(response.status.toString())) {
-						this.$toasted.global.warn(this.$t('toasts.wrongPassword'));
-					}
-					this.isLoading = false;
-				});
+				// HttpService.login(credentials, true).then((response) => {
+				// 	this.$store.dispatch('updateAuth', response.body.token).then(() => {
+				// 		this.$store.dispatch('updateUserBalance');
+				// 	});
+				// 	this.$store.dispatch('updateUser').then(() => {
+				// 		this.$toasted.global.successNoIcon('<i class="fa fa-sign-in"></i>' + this.$t('toasts.signedIn'));
+				// 		this.isLoading = false;
+				// 		if (redirect) {
+				// 			this.$router.push({ path: redirect });
+				// 		}
+				// 	}, () => {
+				// 		this.isLoading = false;
+				// 		this.$toasted.global.error(this.$t('toasts.internalError'));
+				// 		this.$store.dispatch('logout');
+				// 	});
+				// }, (response) => {
+				// 	if (response.status === 406) {
+				// 		this.$toasted.global.error(this.$t('toasts.userIsDeletedError'));
+				// 	} else if (/^4/.test(response.status.toString())) {
+				// 		this.$toasted.global.warn(this.$t('toasts.wrongPassword'));
+				// 	}
+				// 	this.isLoading = false;
+				// });
 			}
 		}
 	}

@@ -130,6 +130,26 @@
 										</div>
 									</b-form-fieldset>
 								</div>
+                <div class="col-12">
+                  <b-form-fieldset>
+										<label class="col-form-label" for="selection">{{ Translation.t('userSend.accountUsed') }}
+											<b-popover :triggers="['hover']" :content="Translation.t('userSend.accountUsedDesccription')" class="popover-element">
+												<i class="fa fa-info-circle increase-focus"></i>
+											</b-popover>
+										</label>
+                    <div class="pos-rel">
+                      <b-input-group-button class="accountSelectionWrap">
+                        <b-dropdown :disabled="!multipleAccountsConfigured" id="account-selection" :text="formatBazoAccount(selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default">
+                          <b-dropdown-item v-for="bazoAccount in bazoAccounts" @click="selectedAccount = bazoAccount" :key="bazoAccount">
+                          <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
+                          <i class="fa fa-check" v-if="bazoAccount === selectedAccount"></i>
+                          </b-dropdown-item>
+                        </b-dropdown>
+                    </b-input-group-button slot="right">
+                    </div>
+
+									</b-form-fieldset>
+                </div>
 								<div class="col-12">
 									<div class="description-forex-rate" v-html="Translation.t('userSend.descriptionForexRate', { forex: forexRates[selectedCurrency].rate, currency: selectedCurrency })" v-if="selectedCurrency !== 'Bazo'"></div>
 									<hr>
@@ -193,6 +213,7 @@ export default {
       },
 			selectedCurrency: 'Bazo',
 			allowedCurrencies: ['Bazo', 'USD', 'EUR', 'CHF'],
+      selectedAccount: '',
 			amount: 0,
 			feesIncluded: true,
 			address: '',
@@ -213,6 +234,19 @@ export default {
 		UserTransfer
 	},
 	computed: {
+    bazoAccounts: function () {
+      // let formattedAccounts = this.$store.getters.bazoAccounts.map((account) => {
+      //   return this.formatBazoAccount(account);
+      // });
+      // return formattedAccounts;
+      return this.$store.getters.bazoAccounts;
+    },
+    defaultBazoAccount: function () {
+      return this.$store.getters.bazoAccounts[0];
+    },
+    multipleAccountsConfigured: function () {
+      return this.bazoAccounts.length > 1;
+    },
 		btcAmount: function () {
 			if (!this.amount) {
 				return 0;
@@ -347,7 +381,7 @@ export default {
       try {
         navigator.nfc.cancelWatch();
       } catch (e) {
-
+        console.log(e);
       }
     },
     startWatchingNFC: function () {
@@ -412,6 +446,12 @@ export default {
 			}
 			this.cameraShown = false;
 		},
+    formatBazoAccount: function (account) {
+      if (account) {
+        return `${account.bazoname} (${account.bazoaddress.slice(0, 10)}..)`
+      }
+      return false;
+    },
 		submitPreparation: function () {
 			this.formIsTouched = true;
 			if (this.validForm) {
@@ -652,6 +692,7 @@ export default {
 			}
 		}
 	}
+
 	.fa.fa-info-circle {
 		cursor: help;
 	}
