@@ -25,7 +25,7 @@
 									<b-form-input id="send-receiver" v-model="address" type="text" class="address-input" :placeholder="Translation.t('userSend.receiverPlaceholder')" :class="{ 'form-error': formIsTouched && !validAddress }"></b-form-input>
                   <span
                     class="nfc "
-                    :class="{ unsupported: !NFCSupported  }"
+                    :class="{ unsupported: !nfc.NFCSupported  }"
                     @click="openNFC"
                     :title="Translation.t('userSend.openNFCTitle')">
                       <i class="fa fa-rss"></i>
@@ -41,7 +41,7 @@
 										<i class="fa fa-camera"></i>
 									</span>
 
-                  <div class="nfc-screen" :class="{'shown': NFCShown}" @click="closeNFC">
+                  <div class="nfc-screen" :class="{'shown': nfc.NFCShown}" @click="closeNFC">
 										<div class="close" @click="closeNFC">&times;</div>
 										<div class="nfc-title" @click.stop>
 											<i class="fa fa-rss"></i>
@@ -50,11 +50,11 @@
 
 										<div class="nfc-notice">{{ Translation.t('userSend.NFCNotice') }}
                       <div class="nfc-status-wrapper">
-                        <svg :class="{'nfc-watch-active': NFCWatching, 'nfc-watch-success': NFCSuccess}" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM18 6h-5c-1.1 0-2 .9-2 2v2.28c-.6.35-1 .98-1 1.72 0 1.1.9 2 2 2s2-.9 2-2c0-.74-.4-1.38-1-1.72V8h3v8H8V8h2V6H6v12h12V6z"/></svg>
+                        <svg :class="{'nfc-watch-active': nfc.NFCWatching, 'nfc-watch-success': nfc.NFCSuccess}" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM18 6h-5c-1.1 0-2 .9-2 2v2.28c-.6.35-1 .98-1 1.72 0 1.1.9 2 2 2s2-.9 2-2c0-.74-.4-1.38-1-1.72V8h3v8H8V8h2V6H6v12h12V6z"/></svg>
 
                       </div>
                       <div class="nfc-status">
-                        {{ NFCStatus }}
+                        {{ nfc.NFCStatus }}
                       </div>
                     </div>
 										<div class="video-wrapper" @click.stop>
@@ -199,12 +199,14 @@ export default {
 			loadingError: false,
 			qrScanner: null,
 			cameraShown: false,
-      NFCStatus: 'not watching..',
-      NFCWatching: false,
-      NFCSuccess: false,
-      NFCShown: false,
-      // TODO: detect NFC browser support and set this programmatically
-      NFCSupported: true,
+      nfc: {
+        NFCStatus: 'not watching..',
+        NFCWatching: false,
+        NFCSuccess: false,
+        NFCShown: false,
+        // TODO: detect NFC browser support and set this programmatically
+        NFCSupported: true
+      },
       bluetooth: {
         BTStatus: 'not watching..',
         BTSupported: false,
@@ -235,10 +237,6 @@ export default {
 	},
 	computed: {
     bazoAccounts: function () {
-      // let formattedAccounts = this.$store.getters.bazoAccounts.map((account) => {
-      //   return this.formatBazoAccount(account);
-      // });
-      // return formattedAccounts;
       return this.$store.getters.bazoAccounts;
     },
     defaultBazoAccount: function () {
@@ -362,22 +360,22 @@ export default {
     },
     checkNFCSupport: function () {
       if ('nfc' in navigator) {
-        this.NFCSupported = true;
+        this.nfc.NFCSupported = true;
       } else {
-        this.NFCSupported = false;
+        this.nfc.NFCSupported = false;
       }
     },
     openNFC: function () {
-      if (this.NFCSupported) {
-        this.NFCShown = true;
+      if (this.nfc.NFCSupported) {
+        this.nfc.NFCShown = true;
         this.startWatchingNFC();
       } else {
-        this.NFCShown = false;
+        this.nfc.NFCShown = false;
         this.$toasted.global.warn(Translation.t('userSend.NFCNotSupported'));
       }
     },
     closeNFC: function () {
-      this.NFCShown = false;
+      this.nfc.NFCShown = false;
       try {
         navigator.nfc.cancelWatch();
       } catch (e) {
@@ -385,21 +383,21 @@ export default {
       }
     },
     startWatchingNFC: function () {
-      if (this.NFCSupported) {
+      if (this.nfc.NFCSupported) {
         navigator.nfc.watch((message) => {
           console.log(this);
-          this.NFCWatching = false;
-          this.NFCSuccess = true;
+          this.nfc.NFCWatching = false;
+          this.nfc.NFCSuccess = true;
           this.address = message.records[0].data.targetaddress;
           this.amount = message.records[0].data.value;
           this.closeNFC();
         }).then(() => {
-          this.NFCWatching = true;
-          this.NFCStatus = 'Started watching NFC tags..'
+          this.nfc.NFCWatching = true;
+          this.nfc.NFCStatus = 'Started watching NFC tags..'
         }).catch((error) => {
-          this.NFCWatching = false;
-          this.NFCSuccess = false;
-          this.NFCStatus = 'Error encountered: ' + error.toString();
+          this.nfc.NFCWatching = false;
+          this.nfc.NFCSuccess = false;
+          this.nfc.NFCStatus = 'Error encountered: ' + error.toString();
         });
       }
     },
