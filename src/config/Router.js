@@ -8,6 +8,7 @@ import PasswordForgottenVerification from '@/components/PasswordForgottenVerific
 import Registration from '@/components/Registration';
 import Login from '@/components/Login';
 import UserSend from '@/components/auth/user/UserSend';
+import UserRequest from '@/components/auth/user/UserRequest';
 import UserFunds from '@/components/auth/user/UserFunds';
 import Profile from '@/components/auth/Profile';
 import AdminServerBalance from '@/components/auth/admin/AdminServerBalance';
@@ -159,17 +160,18 @@ const routes = [
 	{ path: '/activation/:email?/:token?', name: 'activation', component: Activation, props: true, beforeEnter: noAuth },
 	{ path: '/login', name: 'login', component: Login, beforeEnter: afterAuth },
 
-	{ path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: requireAuth },
+	{ path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: noAuth },
 
 	{ path: '/auth/user/send', name: 'user-send', component: UserSend, beforeEnter: requireBazoAccount },
-	{ path: '/auth/user/funds', name: 'user-funds', component: UserFunds, beforeEnter: requireAuthAndUser },
+  { path: '/auth/user/request', name: 'user-request', component: UserRequest, beforeEnter: requireBazoAccount },
+  { path: '/auth/user/funds', name: 'user-funds', component: UserFunds, beforeEnter: noAuth },
 
-	{ path: '/auth/admin/events', name: 'admin-events', component: AdminEvents, beforeEnter: requireAuthAndAdmin },
-	{ path: '/auth/admin/server-balance', name: 'admin-server-balance', component: AdminServerBalance, beforeEnter: requireAuthAndAdmin },
-	{ path: '/auth/admin/accounts', name: 'admin-accounts', component: AdminAccounts, beforeEnter: requireAuthAndAdmin },
-	{ path: '/auth/admin/accounts-detail/:publicKeyClient', name: 'admin-accounts-detail', component: AdminAccountsDetail, props: true, beforeEnter: requireAuthAndAdmin },
-	{ path: '/auth/admin/user-accounts', name: 'admin-user-accounts', component: AdminUserAccounts, beforeEnter: requireAuthAndAdmin },
-	{ path: '/auth/admin/user-accounts-detail/:email', name: 'admin-user-accounts-detail', component: AdminUserAccountsDetail, props: true, beforeEnter: requireAuthAndAdmin },
+	{ path: '/auth/admin/events', name: 'admin-events', component: AdminEvents, beforeEnter: requireBazoAccount },
+	{ path: '/auth/admin/server-balance', name: 'admin-server-balance', component: AdminServerBalance, beforeEnter: noAuth },
+	{ path: '/auth/admin/accounts', name: 'admin-accounts', component: AdminAccounts, beforeEnter: noAuth },
+	{ path: '/auth/admin/accounts-detail/:publicKeyClient', name: 'admin-accounts-detail', component: AdminAccountsDetail, props: true, beforeEnter: noAuth },
+	{ path: '/auth/admin/user-accounts', name: 'admin-user-accounts', component: AdminUserAccounts, beforeEnter: noAuth },
+	{ path: '/auth/admin/user-accounts-detail/:email', name: 'admin-user-accounts-detail', component: AdminUserAccountsDetail, props: true, beforeEnter: noAuth },
 
 	{ path: '*', name: 'everyOtherPage', component: Home, beforeEnter: error404 }
 ]
