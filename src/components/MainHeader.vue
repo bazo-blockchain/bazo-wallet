@@ -2,17 +2,17 @@
 	<div class="header-bar-wrapper" v-if="shown" :class="{ 'transparent': transparent }">
 		<div class="header-bar">
 			<img class="logo" src="../assets/about_cb_2.png" alt="Coinblesk">
-			
+
 			<!-- buttons are hidden on small screens -->
-			<div class="buttons pull-right" v-if="auth.authenticated">
+			<div class="buttons pull-right" v-if="configured">
 				<div class="button" v-if="auth.role === 'ROLE_USER' && userBalance">
 					<user-balance></user-balance>
 				</div>
 				<div class="button">
 					<router-link class="profile" :to="{ name: 'profile' }" :class="offlineCheck('profile')">
-						<img class="user-image" :alt="user.email" src="../assets/user.svg">
+						<img class="user-image" :alt="defaultBazoAccount.bazoname" src="../assets/user.svg">
 						<span class="email">
-							{{ user.email }}
+							{{ `${defaultBazoAccount.bazoname} (${defaultBazoAccount.bazoaddress.slice(0,15)}..)`}}
 						</span>
 					</router-link>
 				</div>
@@ -22,7 +22,7 @@
 					</a>
 				</div>
 			</div>
-			
+
 			<!-- buttons are hidden on small screens -->
 			<div class="buttons pull-right" v-else>
 				<div class="button">
@@ -87,6 +87,19 @@ export default {
 		auth: function () {
 			return this.$store.state.auth;
 		},
+    configured: function () {
+      return this.$store.getters.configured;
+    },
+    bazoAccounts: function () {
+      // let formattedAccounts = this.$store.getters.bazoAccounts.map((account) => {
+      //   return this.formatBazoAccount(account);
+      // });
+      // return formattedAccounts;
+      return this.$store.getters.bazoAccounts;
+    },
+    defaultBazoAccount: function () {
+      return this.$store.getters.bazoAccounts[0];
+    },
 		userBalance: function () {
 			return this.$store.state.userBalance;
 		},
@@ -110,7 +123,7 @@ export default {
 	position: relative;
 	height: 40px;
 	width: 100%;
-	
+
 	&.transparent {
 		height: 0;
 		.header-bar {
@@ -120,18 +133,18 @@ export default {
 			padding-right: 10px;
 			background-color: transparent;
 			border-bottom-color: transparent;
-			
+
 			.buttons .button a {
 				font-size: 120%;
 				color: white;
 			}
-			
+
 			/deep/ .buttons .button .user-balance a {
 				color: white;
 			}
 		}
 	}
-	
+
 	.header-bar {
 		background: #f1f1f1;
 		position: fixed;
@@ -141,7 +154,7 @@ export default {
 		z-index: 100;
 		left: 0;
 		top: 0;
-		
+
 		.logo {
 			max-width: 70%;
 			max-height: 40px;
@@ -150,7 +163,7 @@ export default {
 			top: 50%;
 			left: 50%;
 		}
-		
+
 		.buttons {
 			transition: 0.3s ease all;
 			height: 100%;
@@ -159,14 +172,14 @@ export default {
 				height: 100%;
 				padding-left: 10px;
 				padding-right: 10px;
-				
+
 				&:last-child {
 					padding-right: 20px;
 				}
-				
+
 				.profile {
 					text-decoration: none;
-					
+
 					.user-image {
 						width: 1.4em;
 						height: 1.4em;
@@ -180,11 +193,11 @@ export default {
 						margin-right: -0.2em;
 					}
 				}
-				
+
 				.logout {
 					cursor: pointer;
 				}
-				
+
 				a, /deep/ .user-balance {
 					display: inline-block;
 					position: relative;
@@ -194,7 +207,7 @@ export default {
 					cursor: pointer;
 					text-decoration: none;
 				}
-				
+
 				/deep/ .user-balance {
 					font-size: 17px;
 					font-weight: 300;

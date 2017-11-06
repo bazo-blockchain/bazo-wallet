@@ -34,6 +34,9 @@ const store = new Vuex.Store({
         return true;
       }
       return false;
+    },
+    configured: function (state) {
+      return state.config.configured;
     }
   },
 	// should be private:

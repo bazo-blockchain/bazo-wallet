@@ -37,12 +37,16 @@
 					<span class="text">{{ $t('sideBar.adminServerBalance') }}</span>
 				</router-link>
 			</div>
-			
-			<div v-if="auth.authenticated && auth.role === 'ROLE_USER'">
+
+			<div v-if="configured">
 				<router-link class="entry" :to="{ name: 'user-send' }" :class="dynamicLinkClasses('user-send')" @click.native="closeMenu">
 					<i class="fa fa-arrow-circle-right"></i>
 					<span class="text">{{ $t('sideBar.userSend') }}</span>
 				</router-link>
+        <router-link class="entry" :to="{ name: 'user-request' }" :class="dynamicLinkClasses('user-request')" @click.native="closeMenu">
+          <i class="fa fa-arrow-circle-left"></i>
+          <span class="text">{{ $t('sideBar.userRequest') }}</span>
+        </router-link>
 				<router-link class="entry" :to="{ name: 'user-funds' }" :class="dynamicLinkClasses('user-funds')" @click.native="closeMenu">
 					<i class="fa fa-bitcoin"></i>
 					<span class="text">{{ $t('sideBar.userFunds') }}</span>
@@ -111,6 +115,9 @@ export default {
 		auth: function () {
 			return this.$store.state.auth;
 		},
+    configured: function () {
+      return this.$store.getters.configured;
+    },
 		userBalance: function () {
 			return this.$store.state.userBalance;
 		},
@@ -178,7 +185,7 @@ $language-picker-height-offline: 8.9em;
 	margin-top: 2em;
 	margin-bottom: 2.2em;
 	text-align: center;
-	
+
 	.logo {
 		max-width: 90%;
 		height: 2.5em;
