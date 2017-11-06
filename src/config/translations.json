@@ -59,6 +59,16 @@
 			"errorRecipientAddress": "This address can currently not receive funds in the specified amount.",
 			"paymentErrorNotYetConfirmed": "Your funds have not been confirmed in enough blocks and can therefore not been spent yet."
 		},
+    "userRequest": {
+      "title": "Request Bazo Coins",
+      "boxTitle": "Transfer Payment information",
+      "amount": "Amount",
+      "accountUsed": "Target Account",
+      "accountUsedDescription": "Please choose the account that you want the sending party to send Bazo coins to.",
+      "button": "Send payment information",
+      "BTNotSupported": "Your browser or device does not support Bluetooth.",
+      "NFCNotSupported": "Your browser or device does not support NFC."
+    },
 		"general": {
 			"rowsPerPage": "Rows per page"
 		}
@@ -107,6 +117,16 @@
 			"errorRecipientAddress": "An diese Adresse kann derzeit kein Guthaben in dieser Höhe überwiesen werden.",
 			"paymentErrorNotYetConfirmed": "Ihr Guthaben ist noch nicht in genügend Blöcken bestätigt und kann deshalb noch nicht ausgegeben werden."
 		},
+    "userRequest": {
+      "title": "Bazo Coins anfordern",
+      "boxTitle": "Zahlungsinformationen",
+      "amount": "Betrag",
+      "accountUsed": "Zielaccount",
+      "accountUsedDescription": "Wählen Sie den Account den Sie der Zahlenden Partei als Ziel nennen wollen.",
+      "button": "Zahlungsinformationen übertragen",
+      "BTNotSupported": "Ihr Gerät oder Browser unterstützt kein Bluetooth.",
+      "NFCNotSupported": "Ihr Gerät oder Browser unterstützt kein NFC."
+    },
 		"toasts": {
 			"signedIn": "Sie haben sich erfolgreich eingeloggt.",
 			"signedOff": "Sie wurden erfolgreich ausgeloggt.",
