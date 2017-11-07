@@ -108,7 +108,7 @@
 
                   <div class="camera-screen" :class="{'shown':cameraShown}" @click="hideQr">
                     <div class="close" @click="hideQr">&times;</div>
-                    <qr-code :content="this.selectedAccount"></qr-code>
+                    <qr-code :content="this.encodedPaymentInformation"></qr-code>
 
                     <div class="camera-title" @click.stop>
                       <i class="fa fa-qrcode"></i>
@@ -258,7 +258,6 @@ export default {
     startWatchingNFC: function () {
       if (this.nfc.NFCSupported) {
         navigator.nfc.watch((message) => {
-          console.log(this);
           this.nfc.NFCWatching = false;
           this.nfc.NFCSuccess = true;
           this.address = message.records[0].data.targetaddress;
