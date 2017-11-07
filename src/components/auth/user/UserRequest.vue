@@ -136,6 +136,7 @@
 import Spinner from '@/components/Spinner';
 import Translation from '@/config/Translation';
 import QrCode from '@/components/QrCode';
+import URIScheme from '@/services/URISCheme'
 
 export default {
 	name: 'user-send',
@@ -181,6 +182,12 @@ export default {
     },
     multipleAccountsConfigured: function () {
       return this.bazoAccounts.length > 1;
+    },
+    encodedPaymentInformation: function () {
+      let target = this.selectedAccount || this.defaultBazoAccount;
+      return URIScheme.encode(target.bazoaddress, {
+        amount: this.amount
+      })
     }
 	},
 	methods: {
@@ -235,7 +242,6 @@ export default {
     openNFC: function () {
       if (this.nfc.NFCSupported) {
         this.nfc.NFCShown = true;
-        this.startWatchingNFC();
       } else {
         this.nfc.NFCShown = false;
         this.$toasted.global.warn(Translation.t('userRequest.NFCNotSupported'));
