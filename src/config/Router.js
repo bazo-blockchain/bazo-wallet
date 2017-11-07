@@ -11,12 +11,6 @@ import UserSend from '@/components/auth/user/UserSend';
 import UserRequest from '@/components/auth/user/UserRequest';
 import UserFunds from '@/components/auth/user/UserFunds';
 import Profile from '@/components/auth/Profile';
-import AdminServerBalance from '@/components/auth/admin/AdminServerBalance';
-import AdminAccountsDetail from '@/components/auth/admin/AdminAccountsDetail';
-import AdminAccounts from '@/components/auth/admin/AdminAccounts';
-import AdminUserAccounts from '@/components/auth/admin/AdminUserAccounts';
-import AdminUserAccountsDetail from '@/components/auth/admin/AdminUserAccountsDetail';
-import AdminEvents from '@/components/auth/admin/AdminEvents';
 import Translation from '@/config/Translation';
 import ProgressBar from '@/config/ProgressBar.js';
 import Store from '@/config/Store';
@@ -85,35 +79,12 @@ const requireAuth = (to, _from, next) => {
 	}
 };
 
-const requireAuthAndRole = (role, to, _from, next) => {
-	if (isUnavailableBecauseOffline(to)) {
-		redirectBecauseUnavailable(_from, next);
-	} else {
-		if (!Store.state.auth.authenticated) {
-			requireAuth(to, _from, next);
-		} else if (Store.state.auth.role !== role) {
-			Vue.toasted.global.warn(Translation.t('toasts.forbidden'), { duration: 6000 });
-			next({
-				path: '/'
-			});
-			hideProgressBar();
-		} else {
-			next();
-		}
-	}
-};
 const requireBazoAccount = (to, _from, next) => {
   if (!Store.state.config.configured) {
     requireAuth(to, _from, next);
   } else {
     next();
   }
-};
-const requireAuthAndAdmin = (to, _from, next) => {
-	return requireAuthAndRole('ROLE_ADMIN', to, _from, next);
-};
-const requireAuthAndUser = (to, _from, next) => {
-	return requireAuthAndRole('ROLE_USER', to, _from, next);
 };
 
 const afterAuth = (_to, from, next) => {
@@ -165,13 +136,6 @@ const routes = [
 	{ path: '/auth/user/send', name: 'user-send', component: UserSend, beforeEnter: requireBazoAccount },
   { path: '/auth/user/request', name: 'user-request', component: UserRequest, beforeEnter: requireBazoAccount },
   { path: '/auth/user/funds', name: 'user-funds', component: UserFunds, beforeEnter: noAuth },
-
-	{ path: '/auth/admin/events', name: 'admin-events', component: AdminEvents, beforeEnter: requireBazoAccount },
-	{ path: '/auth/admin/server-balance', name: 'admin-server-balance', component: AdminServerBalance, beforeEnter: noAuth },
-	{ path: '/auth/admin/accounts', name: 'admin-accounts', component: AdminAccounts, beforeEnter: noAuth },
-	{ path: '/auth/admin/accounts-detail/:publicKeyClient', name: 'admin-accounts-detail', component: AdminAccountsDetail, props: true, beforeEnter: noAuth },
-	{ path: '/auth/admin/user-accounts', name: 'admin-user-accounts', component: AdminUserAccounts, beforeEnter: noAuth },
-	{ path: '/auth/admin/user-accounts-detail/:email', name: 'admin-user-accounts-detail', component: AdminUserAccountsDetail, props: true, beforeEnter: noAuth },
 
 	{ path: '*', name: 'everyOtherPage', component: Home, beforeEnter: error404 }
 ]

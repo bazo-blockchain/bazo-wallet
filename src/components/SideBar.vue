@@ -17,27 +17,6 @@
 				<span class="text">{{ $t('sideBar.forex') }}</span>
 			</router-link>
 
-			<div v-if="auth.authenticated && auth.role === 'ROLE_ADMIN'">
-				<div class="separator"></div>
-				<div class="subtitle">{{ $t('sideBar.subtitle.administration').toUpperCase() }}</div>
-				<router-link class="entry" :to="{ name: 'admin-accounts' }" :class="dynamicLinkClasses('admin-accounts')" @click.native="closeMenu">
-					<i class="fa fa-bars"></i>
-					<span class="text">{{ $t('sideBar.adminAccounts') }}</span>
-				</router-link>
-				<router-link class="entry" :to="{ name: 'admin-events' }" :class="dynamicLinkClasses('admin-events')" @click.native="closeMenu">
-					<i class="fa fa-calendar-times-o"></i>
-					<span class="text">{{ $t('sideBar.adminEvents') }}</span>
-				</router-link>
-				<router-link class="entry" :to="{ name: 'admin-user-accounts' }" :class="dynamicLinkClasses('admin-user-accounts')" @click.native="closeMenu">
-					<i class="fa fa-users"></i>
-					<span class="text">{{ $t('sideBar.adminUserAccounts') }}</span>
-				</router-link>
-				<router-link class="entry" :to="{ name: 'admin-server-balance' }" :class="dynamicLinkClasses('admin-server-balance')" @click.native="closeMenu">
-					<i class="fa fa-balance-scale"></i>
-					<span class="text">{{ $t('sideBar.adminServerBalance') }}</span>
-				</router-link>
-			</div>
-
 			<div v-if="configured">
 				<router-link class="entry" :to="{ name: 'user-send' }" :class="dynamicLinkClasses('user-send')" @click.native="closeMenu">
 					<i class="fa fa-arrow-circle-right"></i>
@@ -55,7 +34,7 @@
 
 			<div class="separator"></div>
 			<div class="subtitle">{{ $t('sideBar.subtitle.accountManagement').toUpperCase() }}</div>
-			<div v-if="auth.authenticated">
+			<div v-if="configured">
 				<router-link class="entry" :to="{ name: 'profile' }" :class="dynamicLinkClasses('profile')" @click.native="closeMenu">
 					<i class="fa fa-user"></i>
 					<span class="text">{{ $t('sideBar.profile') }}</span>
@@ -65,7 +44,7 @@
 					<span class="text">{{ $t('sideBar.logout') }}</span>
 				</a>
 			</div>
-			<div v-else>
+			<div>
 				<router-link class="entry" :to="{ name: 'login' }" :class="dynamicLinkClasses('login')" @click.native="closeMenu">
 					<i class="fa fa-sign-in"></i>
 					<span class="text">{{ $t('sideBar.login') }}</span>
@@ -81,10 +60,12 @@
 			</div>
 		</div>
 		<div class="language-picker" :class="{ 'offline-mode': isOffline }">
-			<div class="language" :class="{'selected': currentLanguage === language}" v-for="language in ['en', 'de']" @click="changeLanguage(language)">
+			<div class="language" :class="{'selected': currentLanguage === language}"
+           v-for="language in ['en', 'de']"
+           @click="changeLanguage(language)">
 				<span class="text" :title="$t('language.' + language)">{{ language.toUpperCase() }}</span>
 			</div>
-			<div class="balance-wrapper" v-if="auth.role === 'ROLE_USER' && userBalance">
+			<div class="balance-wrapper" v-if="configured">
 				<user-balance tooltip-placement="top" @link-clicked="closeMenu"></user-balance>
 			</div>
 		</div>
