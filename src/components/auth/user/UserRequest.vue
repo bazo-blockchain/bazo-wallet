@@ -282,6 +282,7 @@ export default {
           this.nfc.NFCWatching = false;
           this.nfc.NFCStatus = 'The payment info was transferred successfully!';
           this.nfc.NFCSuccess = true;
+          let that = this;
           setTimeout(() => {
             that.closeNFC()
           }, 3000)

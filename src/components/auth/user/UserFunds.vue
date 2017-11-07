@@ -11,7 +11,7 @@
 		<hr>
 		<div class="pos-rel user-funds-content">
 			<spinner :is-loading="isLoading"></spinner>
-			
+
 			<div class="table-wrapper" v-if="!isLoading && !loadingError">
 				<div class="alert alert-success" v-if="alerts.success.moveFunds">{{ $t('userFunds.alerts.success.moveFunds') }}</div>
 				<div class="alert alert-success" v-if="alerts.success.createNewAddress">{{ $t('userFunds.alerts.success.createNewAddress') }}</div>
@@ -19,7 +19,7 @@
 				<div class="alert alert-warning" v-if="alerts.error.moveFunds">{{ $t('userFunds.alerts.error.moveFunds') }}</div>
 				<div class="alert alert-warning" v-if="alerts.error.createNewAddress">{{ $('userFunds.alerts.error.createNewAddress') }}</div>
 				<div class="alert alert-warning" v-if="alerts.error.payout">{{ $t('userFunds.alerts.error.moveFunds') }}</div>
-				
+
 				<b-table striped hover :items="tableItems" :fields="fields" :current-page="currentPage" :per-page="perPage">
 					<template slot="bitcoinAddress" scope="item">
 						<div class="no-wrap">
@@ -121,20 +121,20 @@
 						</div>
 					</template>
 				</b-table>
-			
+
 				<div class="create-new-address-button" v-if="lockedAddress.bitcoinAddress === null">
 					<b-button @click.prevent="createNewAddressPreparation">{{ $t('userFunds.createNewAddress') }}</b-button>
 					<b-popover triggers="hover" :content="$t('userFunds.createNewAddressDescription')" class="popover-element">
 						<i class="fa fa-info-circle"></i>
 					</b-popover>
 				</div>
-				
+
 				<div class="justify-content-center row my-1" v-show="this.tableItems.length > perPage">
 					<b-pagination size="md" :total-rows="tableItems.length" :per-page="perPage" v-model="currentPage" />
 				</div>
-				
+
 				<hr>
-				
+
 				<div class="reload-page">
 					<span class="btn btn-secondary" @click.prevent="loadData">
 						<i class="fa fa-refresh"></i>
@@ -143,7 +143,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<user-transfer @private-key-decrypted="moveFunds" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :amount="convertSatoshiToBitcoin(currentTransfer.amountSatoshi)"></user-transfer>
 		<user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true"></user-transfer>
 		<user-transfer @private-key-decrypted="payout" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true" separate="payout"></user-transfer>

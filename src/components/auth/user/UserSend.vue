@@ -187,8 +187,7 @@ import HttpService from '@/services/HttpService';
 import UserTransfer from '@/components/auth/user/UserTransfer';
 import Spinner from '@/components/Spinner';
 import TransactionService from '@/services/TransactionService';
-import Bitcoin from 'coinblesk-frontend-bitcoinjs';
-import BitcoinBip21 from 'bip21';
+import URIScheme from '@/services/URISCheme'
 import Translation from '@/config/Translation';
 
 export default {
@@ -302,7 +301,6 @@ export default {
 			}
 			let result = false;
 			try {
-				Bitcoin.address.fromBase58Check(this.address);
 				result = true;
 			} catch (e) {
 				result = false;
@@ -406,12 +404,12 @@ export default {
 				video: this.$el.querySelector('.camera-screen video')
 			});
 			this.qrScanner.addListener('scan', (content) => {
-				if (/^bitcoin:/.test(content) && /^[^@]*$/.test(content)) {
+				if (content.length > 0) {
 					// bitcoin address according to BIP 0021
 					try {
-						const decodedContent = BitcoinBip21.decode(content);
+						const decodedContent = URIScheme.decode(content);
 						this.address = decodedContent.address;
-						if (decodedContent.options.amount && decodedContent.options.amount > 0 && /amount=/.test(content)) {
+						if (decodedContent.options.amount) {
 							this.amount = decodedContent.options.amount;
 						}
 					} catch (e) {
