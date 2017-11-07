@@ -383,12 +383,29 @@ export default {
     startWatchingNFC: function () {
       if (this.nfc.NFCSupported) {
         navigator.nfc.watch((message) => {
-          console.log(this);
           this.nfc.NFCWatching = false;
           this.nfc.NFCSuccess = true;
-          this.address = message.records[0].data.targetaddress;
-          this.amount = message.records[0].data.value;
-          this.closeNFC();
+          var paymentinfo = '';
+          try {
+            paymentinfo = message.records[0].data.data;
+          } catch (e) {
+            paymentinfo = message.records[0].data
+          }
+          if (paymentinfo.length > 0) {
+            try {
+              const decodedContent = URIScheme.decode(paymentinfo);
+              this.address = decodedContent.address;
+              if (decodedContent.options.amount) {
+                this.amount = decodedContent.options.amount;
+              }
+            } catch (e) {
+              this.address = paymentinfo;
+            }
+          } else {
+            this.address = paymentinfo;
+          }
+
+          // this.closeNFC();
         }).then(() => {
           this.nfc.NFCWatching = true;
           this.nfc.NFCStatus = 'Started watching NFC tags..'
