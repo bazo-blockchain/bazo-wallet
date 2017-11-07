@@ -22,10 +22,10 @@
                     </label>
                     <div class="pos-rel">
                       <b-input-group-button class="accountSelectionWrap" block>
-                        <b-dropdown :disabled="!multipleAccountsConfigured" id="account-selection" :text="formatBazoAccount(selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default" block>
-                          <b-dropdown-item v-for="bazoAccount in bazoAccounts" @click="selectedAccount = bazoAccount" :key="bazoAccount">
+                        <b-dropdown :disabled="!multipleAccountsConfigured" id="account-selection" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default" block>
+                          <b-dropdown-item v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
                           <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
-                          <i class="fa fa-check" v-if="bazoAccount === selectedAccount"></i>
+                          <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount"></i>
                           </b-dropdown-item>
                         </b-dropdown>
                     </b-input-group-button slot="right">
@@ -35,12 +35,12 @@
 								<div class="col-md-12">
 									<b-form-fieldset :label="Translation.t('userRequest.amount')">
 										<b-input-group>
-											<b-form-input v-model="amount" class="mono amount-input" type="number" min="0" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
+											<b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
 											<b-input-group-button slot="right">
-												<b-dropdown :text="selectedCurrency" variant="default" right>
-													<b-dropdown-item v-for="currency in allowedCurrencies" @click="selectedCurrency = currency" :key="currency">
+												<b-dropdown :text="paymentInfo.selectedCurrency" variant="default" right>
+													<b-dropdown-item v-for="currency in allowedCurrencies" @click="paymentInfo.selectedCurrency = currency" :key="currency">
 													<span class="currency">{{ currency }}</span>
-													<i class="fa fa-check" v-if="currency === selectedCurrency"></i>
+													<i class="fa fa-check" v-if="currency === paymentInfo.selectedCurrency"></i>
 													</b-dropdown-item>
 												</b-dropdown>
 											</b-input-group-button>
@@ -51,18 +51,21 @@
 								<div class="col-12">
 									<!-- warning threshold is 0.01 BTC fees per transaction, if above: crazy world -->
 									<!-- <b-button class="submit-button" :block="true" variant="primary" @click.prevent="submitPreparation" :disabled="formIsTouched && !validForm">{{ Translation.t('userRequest.button', { amount: amount }) }}</b-button> -->
-
+                  <hr>
+                  <div>
+                    <label for="">{{ Translation.t('userRequest.transfertype') }}</label>
+                  </div>
                   <b-button class="payment-variant-btn" variant="primary" @click="showQR">
                     <i class="fa fa-qrcode"></i>
                     <span>QR Code</span>
                   </b-button>
                   <b-button class="payment-variant-btn" variant="primary" @click="openBT">
                     <i class="fa fa-bluetooth-b"></i>
-                    <span>Send with BT</span>
+                    <span>Bluetooth</span>
                   </b-button>
                   <b-button class="payment-variant-btn" variant="primary" @click="openNFC">
                     <i class="fa fa-rss"></i>
-                    <span>Send with NFC</span>
+                    <span>NFC</span>
                   </b-button>
 
                   <div class="nfc-screen" :class="{'shown': nfc.NFCShown}" @click="closeNFC">
@@ -73,6 +76,9 @@
                     </div>
 
                     <div class="nfc-notice">{{ Translation.t('userSend.NFCNotice') }}
+
+                    </div>
+                    <div class="nfc-display-wrapper" @click.stop>
                       <div class="nfc-status-wrapper">
                         <svg :class="{'nfc-watch-active': nfc.NFCWatching, 'nfc-watch-success': nfc.NFCSuccess}" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM18 6h-5c-1.1 0-2 .9-2 2v2.28c-.6.35-1 .98-1 1.72 0 1.1.9 2 2 2s2-.9 2-2c0-.74-.4-1.38-1-1.72V8h3v8H8V8h2V6H6v12h12V6z"/></svg>
 
@@ -80,9 +86,6 @@
                       <div class="nfc-status">
                         {{ nfc.NFCStatus }}
                       </div>
-                    </div>
-                    <div class="video-wrapper" @click.stop>
-                      <video></video>
                     </div>
                   </div>
                   <div class="bt-screen" :class="{'shown': bluetooth.BTShown}"
@@ -101,21 +104,20 @@
                         {{ bluetooth.BTStatus }}
                       </div>
                     </div>
-                    <div class="video-wrapper" @click.stop>
-                      <video></video>
+                    <div class="bt-display" @click.stop>
                     </div>
                   </div>
 
                   <div class="camera-screen" :class="{'shown':cameraShown}" @click="hideQr">
                     <div class="close" @click="hideQr">&times;</div>
-                    <qr-code :content="this.encodedPaymentInformation"></qr-code>
+                    <qr-code class="qr-display" :content="this.encodedPaymentInformation"></qr-code>
 
                     <div class="camera-title" @click.stop>
                       <i class="fa fa-qrcode"></i>
 
-                      {{ Translation.t('userSend.cameraTitle') }}
+                      {{ Translation.t('userRequest.QRTitle') }}
                     </div>
-                    <div class="camera-notice">{{ Translation.t('userSend.cameraNotice') }}</div>
+                    <div class="camera-notice">{{ Translation.t('userRequest.QRNotice') }}</div>
 
                   </div>
 
@@ -146,7 +148,7 @@ export default {
 			loadingError: false,
       cameraShown: false,
       nfc: {
-        NFCStatus: 'not watching..',
+        NFCStatus: 'not sending..',
         NFCWatching: false,
         NFCSuccess: false,
         NFCShown: false,
@@ -158,12 +160,12 @@ export default {
         BTShown: false,
         BTSuccess: false
       },
-
-			selectedCurrency: 'Bazo',
+      paymentInfo: {
+        selectedCurrency: 'Bazo',
+        selectedAccount: '',
+        amount: 0
+      },
 			allowedCurrencies: ['Bazo', 'USD', 'EUR', 'CHF'],
-      selectedAccount: '',
-			amount: 0,
-			address: '',
 			formIsTouched: false,
 			successfulTransaction: false,
       Translation: Translation
@@ -184,10 +186,16 @@ export default {
       return this.bazoAccounts.length > 1;
     },
     encodedPaymentInformation: function () {
-      let target = this.selectedAccount || this.defaultBazoAccount;
+      let target = this.paymentInfo.selectedAccount || this.defaultBazoAccount;
       return URIScheme.encode(target.bazoaddress, {
-        amount: this.amount
+        amount: this.paymentInfo.amount
       })
+    },
+    validAmount: function () {
+      if (this.paymentInfo.amount > 0) {
+        return true;
+      }
+      return false;
     }
 	},
 	methods: {
@@ -242,6 +250,7 @@ export default {
     openNFC: function () {
       if (this.nfc.NFCSupported) {
         this.nfc.NFCShown = true;
+        this.sendPaymentInfoNFC();
       } else {
         this.nfc.NFCShown = false;
         this.$toasted.global.warn(Translation.t('userRequest.NFCNotSupported'));
@@ -255,22 +264,41 @@ export default {
         console.log(e);
       }
     },
-    startWatchingNFC: function () {
+    sendPaymentInfoNFC: function () {
       if (this.nfc.NFCSupported) {
-        navigator.nfc.watch((message) => {
-          this.nfc.NFCWatching = false;
-          this.nfc.NFCSuccess = true;
-          this.address = message.records[0].data.targetaddress;
-          this.amount = message.records[0].data.value;
-          this.closeNFC();
+        this.nfc.NFCWatching = true;
+        this.nfc.NFCStatus = 'trying to send to nearby NFC devices..';
+        navigator.nfc.push({
+          records: [
+            {
+              recordType: 'json',
+              mediaType: 'application/json',
+              data: {
+                data: this.encodedPaymentInformation
+              }
+            }
+          ]
         }).then(() => {
-          this.nfc.NFCWatching = true;
-          this.nfc.NFCStatus = 'Started watching NFC tags..'
+          this.nfc.NFCWatching = false;
+          this.nfc.NFCStatus = 'The payment info was transferred successfully!';
+          this.nfc.NFCSuccess = true;
+          setTimeout(() => {
+            that.closeNFC()
+          }, 3000)
         }).catch((error) => {
           this.nfc.NFCWatching = false;
           this.nfc.NFCSuccess = false;
-          this.nfc.NFCStatus = 'Error encountered: ' + error.toString();
-        });
+          if (error.code === 9) {
+            this.nfc.NFCSupported = false;
+            this.nfc.NFCStatus = 'WebNFC can not be used on this device.'
+            let that = this;
+            setTimeout(() => {
+              that.closeNFC()
+            }, 3000)
+          } else {
+            this.nfc.NFCStatus = 'Error trying to send to NFC devices:' + error.toString();
+          }
+        })
       }
     },
 		showQR: function () {
@@ -284,6 +312,14 @@ export default {
         return `${account.bazoname} (${account.bazoaddress.slice(0, 10)}..)`
       }
       return false;
+    }
+  },
+  watch: {
+    paymentInfo: {
+      handler () {
+        this.formIsTouched = true;
+      },
+      deep: true
     }
   },
 	mounted: function () {
@@ -348,6 +384,7 @@ export default {
     right: 30px;
   }
   .nfc-status-wrapper {
+    text-align: center;
     svg {
       fill: #FAA916;
       margin: 20px;
@@ -383,19 +420,21 @@ export default {
 		}
 
 		.camera-notice, .nfc-notice, .bt-notice {
-			color: white;
-			font-size: 18px;
-			font-weight: 300;
-			text-align: center;
 			display: block;
 			position: absolute;
-			top: 50%;
+			top: 30%;
 			left: 50%;
 			transform: translate(-50%, -50%);
 			width: 70vmin;
 			max-height: calc(100vh - 40px);
 			overflow: hidden;
 		}
+    .camera-notice, .nfc-notice, .bt-notice, .nfc-status {
+      color: white;
+      font-size: 18px;
+      font-weight: 300;
+      text-align: center;
+    }
 		.camera-title, .nfc-title, .bt-title {
 			position: absolute;
 			bottom: 40px;
@@ -421,16 +460,12 @@ export default {
 			opacity: 1;
 		}
 
-		.video-wrapper {
+		.nfc-display-wrapper, .qr-display, .bt-display {
 			transform: translate(-50%, -50%);
 			position: absolute;
 			top: 50%;
 			left: 50%;
 			padding: 25px;
-			video {
-				width: calc(100vw - 50px);
-				height: calc(100vh - 50px);
-			}
 		}
 	}
 	.form-control.mono {

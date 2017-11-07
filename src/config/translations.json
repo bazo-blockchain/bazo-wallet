@@ -65,9 +65,11 @@
       "amount": "Amount",
       "accountUsed": "Target Account",
       "accountUsedDescription": "Please choose the account that you want the sending party to send Bazo coins to.",
-      "button": "Send payment information",
+      "transfertype": "Send payment information",
       "BTNotSupported": "Your browser or device does not support Bluetooth.",
-      "NFCNotSupported": "Your browser or device does not support NFC."
+      "NFCNotSupported": "Your browser or device does not support NFC.",
+      "QRNotice": "Show this QR Code to the sending party of the payment.",
+      "QRTitle": "Transfer via QR Code"
     },
 		"general": {
 			"rowsPerPage": "Rows per page"
@@ -123,9 +125,11 @@
       "amount": "Betrag",
       "accountUsed": "Zielaccount",
       "accountUsedDescription": "Wählen Sie den Account den Sie der Zahlenden Partei als Ziel nennen wollen.",
-      "button": "Zahlungsinformationen übertragen",
+      "transfertype": "Zahlungsinformationen übertragen:",
       "BTNotSupported": "Ihr Gerät oder Browser unterstützt kein Bluetooth.",
-      "NFCNotSupported": "Ihr Gerät oder Browser unterstützt kein NFC."
+      "NFCNotSupported": "Ihr Gerät oder Browser unterstützt kein NFC.",
+      "QRNotice": "Lassen Sie den erzeugten QR Code scannen.",
+      "QRTitle": "Zahlungsinformationen als QR Code"
     },
 		"toasts": {
 			"signedIn": "Sie haben sich erfolgreich eingeloggt.",
