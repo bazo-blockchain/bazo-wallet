@@ -96,232 +96,63 @@ export default {
 		UserTransfer
 	},
 	computed: {
-		fields: function () {
-			return {
-				bitcoinAddress: {
-					label: this.$t('userFunds.fields.bitcoinAddress'),
-					sortable: false
-				},
-				createdAt: {
-					label: this.$t('userFunds.fields.createdAt'),
-					sortable: true
-				},
-				lockedUntil: {
-					label: this.$t('userFunds.fields.lockedUntil'),
-					sortable: true
-				},
-				locked: {
-					label: this.$t('userFunds.fields.locked'),
-					sortable: false
-				},
-				balance: {
-					label: this.$t('userFunds.fields.balance'),
-					sortable: true
-				},
-				qr: {
-					label: this.$t('userFunds.fields.qr'),
-					sortable: false
-				},
-				actions: {
-					label: this.$t('userFunds.fields.actions'),
-					sortable: false
-				}
-			};
-		},
-		dateFormat: function () {
-			return UtilService.DATE_FORMAT
-		},
-		tableItems: function () {
-			if (this.funds && this.funds.timeLockedAddresses) {
-				// creates a deep copy
-				const table = JSON.parse(JSON.stringify(this.funds.timeLockedAddresses));
-
-				table.forEach((item) => {
-					if (!item.locked && item.balance === 0) {
-						item.state = 'default';
-					}
-				});
-
-				table.push({
-					virtualBalance: true,
-					balance: this.funds.virtualBalance
-				});
-
-				table.push({
-					channelTransactionAmount: true,
-					balance: this.funds.channelTransactionAmount
-				});
-
-				return table;
-			} else {
-				return [];
-			}
-		},
-		user: function () {
-			return this.$store.state.user;
-		}
+    fields () {
+      return {
+        bazoname: {
+          label: this.$t('userAccounts.fields.bazoname'),
+          sortable: true
+        },
+        bazoaddress: {
+          label: this.$t('userAccounts.fields.bazoaddress'),
+          sortable: false
+        },
+        isPrime: {
+          label: 'Prime?',
+          sortable: false
+        }
+      }
+    },
+    allAccounts () {
+      return this.$store.getters.bazoAccounts;
+    },
+    tableRows () {
+      return JSON.parse(JSON.stringify(this.allAccounts));
+    },
+    configured () {
+      return this.$store.getters.accountConfigured;
+    }
 	},
 	methods: {
 		loadData: function () {
 			this.isLoading = true;
 			return Promise.all([
-				HttpService.Auth.User.getFunds(),
-				HttpService.Auth.User.getLockedAddress()
 			]).then(responses => {
-				this.funds = responses[0].body;
-				this.lockedAddress = responses[1].body;
 				this.loadingError = false;
 				this.isLoading = false;
 			}, () => {
 				this.isLoading = false;
-				this.loadingError = true;
+				this.loadingError = false;
 			})
 		},
-		hideAlerts: function () {
-			const successKeys = Object.keys(this.alerts.success);
-			const errorKeys = Object.keys(this.alerts.error);
-
-			successKeys.forEach((item) => {
-				this.alerts.success[item] = false;
-			});
-			errorKeys.forEach((item) => {
-				this.alerts.error[item] = false;
-			});
-		},
-		moveFundsPreparation: function (fromAddress, redeemScript, amountSatoshi) {
-			this.isLoading = true;
-			this.hideAlerts();
-			this.currentTransfer = {};
-
-			Promise.all([
-				HttpService.Auth.User.getEncryptedPrivateKey(),
-				HttpService.Auth.User.getFees(),
-				HttpService.Auth.User.getUTXO(fromAddress)
-			]).then(responses => {
-				this.currentTransfer = {
-					redeemScript: redeemScript,
-					amountSatoshi: amountSatoshi,
-					output: this.lockedAddress.bitcoinAddress,
-					encryptedPrivateKey: responses[0].body.encryptedClientPrivateKey,
-					feePerByte: responses[1].body.fee,
-					inputs: responses[2].body
-				};
-				this.isLoading = false;
-				this.$nextTick(() => {
-					this.$root.$emit('show::modal', 'user-transfer');
-				});
-			}, () => {
-				this.$toasted.global.warn(this.$t('userFunds.paymentError'));
-				this.isLoading = false;
-			});
-		},
-		moveFunds: function (decryptedPrivateKey) {
-			this.isLoading = true;
-			this.hideAlerts();
-
-			try {
-				const transaction = TransactionService.buildTransaction({
-					privateKeyWif: decryptedPrivateKey,
-					inputs: this.currentTransfer.inputs,
-					output: this.currentTransfer.output,
-					changeOutput: null,
-					amount: this.currentTransfer.amountSatoshi,
-					feePerByte: this.currentTransfer.feePerByte,
-					feesIncluded: true,
-					redeemScript: this.currentTransfer.redeemScript
-				});
-
-				HttpService.Auth.User.externalPayment(transaction, true).then(() => {
-					this.isLoading = false;
-					this.currentTransfer = {};
-					this.alerts.success.moveFunds = true;
-				}, () => {
-					this.isLoading = false;
-					this.currentTransfer = {};
-					this.alerts.error.moveFunds = true;
-				});
-			} catch (error) {
-				this.isLoading = false;
-				this.currentTransfer = {};
-				this.alerts.error.moveFunds = true;
+    saveAccount: function () {
+      const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
+			if (!this.isLoading) {
+				this.isLoading = true;
+        this.$store.dispatch('updateConfig', {
+          isPrime: 'yes',
+          bazoaddress: this.bazoaddress,
+          bazoname: this.bazoname
+        }).then(() => {
+          if (this.$route.query.redirect) {
+            this.$router.push({ path: redirect });
+          } else {
+            this.bazoaddress = '';
+            this.bazoname = '';
+            this.isLoading = false;
+          }
+        });
 			}
-		},
-		createNewAddressPreparation: function () {
-			this.isLoading = true;
-			this.currentTransfer = {};
-			this.hideAlerts();
-
-			HttpService.Auth.User.getEncryptedPrivateKey().then(response => {
-				this.currentTransfer = {
-					encryptedPrivateKey: response.body.encryptedClientPrivateKey
-				};
-				this.isLoading = false;
-				this.$nextTick(() => {
-					this.$root.$emit('show::modal', 'user-transfer-unlock');
-				});
-			});
-		},
-		createNewAddress: function (decryptedPrivateKey) {
-			this.isLoading = true;
-			this.hideAlerts();
-
-			const innerDTO = {
-				lockTime: Math.floor(new Date() / 1000) + 3600 * 24 * 100,
-				publicKey: CryptoService.convertPrivateKeyWifToPublicKeyHex(decryptedPrivateKey)
-			};
-			const signedInnerDTO = CryptoService.signDTO(decryptedPrivateKey, innerDTO);
-
-			HttpService.createTimeLockedAddress(signedInnerDTO, true).then(() => {
-				this.isLoading = false;
-				this.currentTransfer = {};
-				this.loadData();
-				this.alerts.success.createNewAddress = true;
-			}, () => {
-				this.isLoading = false;
-				this.currentTransfer = {};
-				this.alerts.error.createNewAddress = true;
-			});
-		},
-		payoutPreparation: function () {
-			this.isLoading = true;
-			this.currentTransfer = {};
-			this.hideAlerts();
-
-			HttpService.Auth.User.getEncryptedPrivateKey().then(response => {
-				this.currentTransfer = {
-					encryptedPrivateKey: response.body.encryptedClientPrivateKey
-				};
-				this.isLoading = false;
-				this.$nextTick(() => {
-					this.$root.$emit('show::modal', 'user-transfer-unlock-payout');
-				});
-			});
-		},
-		payout: function (decryptedPrivateKey) {
-			this.isLoading = true;
-			this.hideAlerts();
-
-			const innerDTO = {
-				publicKey: CryptoService.convertPrivateKeyWifToPublicKeyHex(decryptedPrivateKey),
-				ToAddress: this.lockedAddress.bitcoinAddress
-			};
-			const signedInnerDTO = CryptoService.signDTO(decryptedPrivateKey, innerDTO);
-
-			HttpService.payout(signedInnerDTO, true).then(() => {
-				this.isLoading = false;
-				this.currentTransfer = {};
-				this.loadData();
-				this.alerts.success.payout = true;
-			}, () => {
-				this.isLoading = false;
-				this.currentTransfer = {};
-				this.alerts.error.payout = true;
-			});
-		},
-		encodeBIP21: function (address) {
-			return BitcoinBIP21.encode(address);
-		},
-		convertSatoshiToBitcoin: UtilService.convertSatoshiToBitcoin
+		}
 	},
 	mounted: function () {
 		this.loadData();
