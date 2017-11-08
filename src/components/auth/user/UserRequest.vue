@@ -67,6 +67,11 @@
                     <i class="fa fa-rss"></i>
                     <span>NFC</span>
                   </b-button>
+                    <a v-if="androidOrIOSDevice" v-bind:href="whatsappLink" data-action="share/whatsapp/share">
+                      <i class="fa fa-whatsapp" aria-hidden="true"></i>
+                      Whatsapp
+                    </a>
+
 
                   <div class="nfc-screen" :class="{'shown': nfc.NFCShown}" @click="closeNFC">
                     <div class="close" @click="closeNFC">&times;</div>
@@ -148,6 +153,7 @@ export default {
 			isLoading: true,
 			loadingError: false,
       cameraShown: false,
+      androidOrIOSDevice: false,
       nfc: {
         NFCStatus: 'not sending..',
         NFCSending: false,
@@ -192,6 +198,9 @@ export default {
         amount: this.paymentInfo.amount
       })
     },
+    whatsappLink: function () {
+      return `whatsapp://send?text=https://bazopay2.surge.sh/#/auth/user/send/?payment=${this.encodedPaymentInformation}`
+    },
     validAmount: function () {
       if (this.paymentInfo.amount > 0) {
         return true;
@@ -203,6 +212,32 @@ export default {
 		loadInitialData: function () {
       this.isLoading = false
 		},
+    checkPlatform: function () {
+      if (this.onIOS() || this.onAndroid()) {
+        this.androidOrIOSDevice = true;
+      }
+    },
+    onIOS: function () {
+      var iDevices = [
+        'iPad Simulator',
+        'iPhone Simulator',
+        'iPod Simulator',
+        'iPad',
+        'iPhone',
+        'iPod'
+      ];
+      if (navigator.platform) {
+        while (iDevices.length) {
+          if (navigator.platform === iDevices.pop()) {
+            return true;
+          }
+        }
+      }
+      return false;
+    },
+    onAndroid: function () {
+      return /(android)/i.test(navigator.userAgent);
+    },
     checkBTSupport: function () {
       if ('bluetooth' in navigator) {
         this.bluetooth.BTSupported = true;
@@ -295,6 +330,7 @@ export default {
 		hideQr: function () {
 			this.cameraShown = false;
 		},
+
     formatBazoAccount: function (account) {
       if (account) {
         return `${account.bazoname} (${account.bazoaddress.slice(0, 10)}..)`
@@ -316,6 +352,7 @@ export default {
 		this.loadInitialData();
     this.checkNFCSupport();
     this.checkBTSupport();
+    this.checkPlatform();
 	}
 }
 </script>
