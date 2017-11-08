@@ -244,6 +244,7 @@ export default {
     closeNFC: function () {
       this.nfc.NFCShown = false;
       this.nfc.NFCSuccess = false;
+      this.nfc.NFCSending = false;
       try {
         navigator.nfc.cancelWatch();
       } catch (e) {
