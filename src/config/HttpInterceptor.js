@@ -1,12 +1,12 @@
 import Vue from 'vue';
-import Router from '@/config/Router';
+// import Router from '@/config/Router';
 import Translation from '@/config/Translation';
 import Store from '@/config/Store';
 
 const internalError = () => {
 	Vue.toasted.global.errorNoIcon('<i class="fa fa-times"></i>' + Translation.t('toasts.internalError'));
 	setTimeout(() => {
-		window.location.reload();
+		// window.location.reload();
 	}, 3000);
 };
 
@@ -38,10 +38,10 @@ export default {
 							// session expired, token not valid anymore
 							Store.dispatch('logout');
 							Vue.toasted.global.warnNoIcon('<i class="fa fa-sign-out">' + Translation.t('toasts.sessionExpired'));
-							Router.push({ path: '/login' });
+							// Router.push({ path: '/login' });
 						} else {
 							Vue.toasted.global.warn(Translation.t('toasts.unauthorized'), { duration: 6000 });
-							Router.push({ path: '/login' });
+							// Router.push({ path: '/login' });
 						}
 					}
 					if (response.status === 403) {
