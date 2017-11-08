@@ -23,6 +23,20 @@
 			"offlineError": "<i class='fa fa-wifi'></i>&nbsp;Your request was not successful, because you are currently offline.",
 			"offlineModeRedirect": "<i class='fa fa-wifi'></i>&nbsp;You cannot access this page, because you are currently&nbsp;<b>offline</b>."
 		},
+    "userAccounts": {
+      "fields": {
+        "bazoname": "Name",
+        "bazoaddress": "Address"
+      },
+      "title": "Accounts",
+      "total": "Total",
+      "description": "You currently store the following accounts:",
+      "bazoaddress": "Bazo address",
+      "bazoname": "Name this address",
+      "notConfigured": "You need to add an account first, before you can start using the Bazo Wallet.",
+      "save": "Add account",
+      "reload": "Reload"
+    },
     "userSend": {
 			"title": "Transfer Bazo coins",
 			"boxTitle": "Transfer to a Bazo address",
@@ -87,6 +101,20 @@
 			"en": "Englisch",
 			"de": "Deutsch"
 		},
+    "userAccounts": {
+      "fields": {
+        "bazoname": "Name",
+        "bazoaddress": "Adresse"
+      },
+      "title": "Konti",
+      "total": "Total",
+      "description": "Folgende Bazo Adressen sind gespeichert:",
+      "bazoaddress": "Bazo Adresse",
+      "bazoname": "Adressname (optional)",
+      "notConfigured": "Bitte fügen Sie zuerst einen Account hinzu um die Bazo Wallet benutzen zu können.",
+      "save": "Hinzufügen",
+      "reload": "Aktualisieren"
+    },
     "userSend": {
 			"title": "Bazo coins überweisen",
 			"boxTitle": "An eine Bazo Adresse überweisen",
