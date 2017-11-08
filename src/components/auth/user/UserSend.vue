@@ -404,8 +404,9 @@ export default {
           } else {
             this.address = paymentinfo;
           }
-
-          // this.closeNFC();
+          setTimeout(() => {
+            this.closeNFC();
+          }, 500);
         }).then(() => {
           this.nfc.NFCWatching = true;
           this.nfc.NFCStatus = 'Started watching NFC tags..'
