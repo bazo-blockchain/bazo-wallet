@@ -199,7 +199,7 @@ export default {
       })
     },
     whatsappLink: function () {
-      return `whatsapp://send?text=https://bazopay2.surge.sh/#/auth/user/send/?payment=${this.encodedPaymentInformation}`
+      return 'whatsapp://send?text=https://bazopay2.surge.sh/#/auth/user/send/?paymentinfo=' + this.encodedPaymentInformation
     },
     validAmount: function () {
       if (this.paymentInfo.amount > 0) {
