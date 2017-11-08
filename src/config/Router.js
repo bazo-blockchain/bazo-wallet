@@ -70,7 +70,9 @@ const requireAuth = (to, _from, next) => {
 			Vue.toasted.global.warn(Translation.t('toasts.accountrequired'), { duration: 6000 });
 			next({
 				path: '/login',
-				query: { redirect: to.fullPath }
+				query: {
+          redirect: to.fullPath
+        }
 			});
 		} else {
 			next();
@@ -132,7 +134,7 @@ const routes = [
 
 	{ path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: noAuth },
 
-	{ path: '/auth/user/send', name: 'user-send', component: UserSend, beforeEnter: requireBazoAccount },
+	{ path: '/auth/user/send', name: 'user-send', component: UserSend, props: true, beforeEnter: requireBazoAccount },
   { path: '/auth/user/request', name: 'user-request', component: UserRequest, beforeEnter: requireBazoAccount },
   { path: '/auth/user/funds', name: 'user-funds', component: UserFunds, beforeEnter: noAuth },
 

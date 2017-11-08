@@ -334,6 +334,20 @@ export default {
 			// 	this.isLoading = false;
 			// });
 		},
+    parseProps: function () {
+      const paymentinfo = this.$route.query.paymentinfo;
+      if (paymentinfo) {
+        try {
+          const decodedContent = URIScheme.decode(paymentinfo);
+          this.address = decodedContent.address;
+          if (decodedContent.options.amount) {
+            this.amount = decodedContent.options.amount;
+          }
+        } catch (e) {
+          this.address = paymentinfo;
+        }
+      }
+    },
     checkBTSupport: function () {
       if ('bluetooth' in navigator) {
         this.bluetooth.BTSupported = true;
@@ -681,6 +695,7 @@ export default {
 	},
 	mounted: function () {
 		this.isLoading = true;
+    this.parseProps();
 		this.loadInitialData();
     this.checkNFCSupport();
     this.checkBTSupport();
