@@ -1,6 +1,6 @@
 {
-  "name": "Coinblesk",
-  "short_name": "Coinblesk",
+  "name": "Bazo Wallet",
+  "short_name": "Bazo Wallet",
   "icons": [
     {
       "src": "/static/img/icons/android-chrome-192x192.png",
@@ -16,5 +16,5 @@
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#353535",
-  "theme_color": "#c6ff00"
+  "theme_color": "#FAA916"
 }
