@@ -58,9 +58,14 @@ const store = new Vuex.Store({
 		updateLanguage: function (state, language) {
 			state.language = language;
 		},
-    updateConfig: function (state, account) {
-      if (account.bazoaddress && account.bazoname) {
-        state.config.accounts.push(account);
+    updateConfig: function (state, config) {
+      if (config.bazoaddress && config.bazoname) {
+        let newAccount = {
+          bazoaddress: config.bazoaddress,
+          bazoname: config.bazoname,
+          isPrime: config.isPrime || false
+        };
+        state.config.accounts.push(newAccount);
         state.config.configured = true;
       } else {
         console.log('invalid config');

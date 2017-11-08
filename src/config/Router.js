@@ -6,7 +6,6 @@ import Activation from '@/components/Activation';
 import PasswordForgotten from '@/components/PasswordForgotten';
 import PasswordForgottenVerification from '@/components/PasswordForgottenVerification';
 import Registration from '@/components/Registration';
-import Login from '@/components/Login';
 import UserSend from '@/components/auth/user/UserSend';
 import UserRequest from '@/components/auth/user/UserRequest';
 import UserFunds from '@/components/auth/user/UserFunds';
@@ -87,18 +86,18 @@ const requireBazoAccount = (to, _from, next) => {
   }
 };
 
-const afterAuth = (_to, from, next) => {
-	if (isUnavailableBecauseOffline(_to)) {
-		redirectBecauseUnavailable(from, next);
-	} else {
-		if (Store.state.auth.authenticated) {
-			next(from.path);
-			hideProgressBar();
-		} else {
-			next();
-		}
-	}
-};
+// const afterAuth = (_to, from, next) => {
+// 	if (isUnavailableBecauseOffline(_to)) {
+// 		redirectBecauseUnavailable(from, next);
+// 	} else {
+// 		if (Store.state.auth.authenticated) {
+// 			next(from.path);
+// 			hideProgressBar();
+// 		} else {
+// 			next();
+// 		}
+// 	}
+// };
 
 const error404 = (to, _from, next) => {
 	Vue.toasted.global.error(Translation.t('toasts.pageNotFound'), { duration: 8000 });
@@ -129,7 +128,7 @@ const routes = [
 	{ path: '/password-forgotten', name: 'password-forgotten', component: PasswordForgotten, beforeEnter: noAuth },
 	{ path: '/password-forgotten-verification/:email?/:token?', name: 'password-forgotten-verification', component: PasswordForgottenVerification, props: true, beforeEnter: noAuth },
 	{ path: '/activation/:email?/:token?', name: 'activation', component: Activation, props: true, beforeEnter: noAuth },
-	{ path: '/login', name: 'login', component: Login, beforeEnter: afterAuth },
+	{ path: '/login', name: 'login', component: UserFunds, beforeEnter: noAuth },
 
 	{ path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: noAuth },
 

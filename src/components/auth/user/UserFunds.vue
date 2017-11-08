@@ -1,11 +1,12 @@
 <template>
 <div class="user-funds">
 	<div class="compact">
-		<h1 class="display-4">{{ $t('userFunds.title') }}
+		<h1 class="display-4">{{ this.$t('userAccounts.title') }}
 			<small v-if="!isLoading && !loadingError" class="pull-right">
-				<span class="total-funds-small">{{ $t('userFunds.totalFunds') }}</span>
+				<span class="total-funds-small">{{ this.$t('userAccounts.total') }}</span>
 				<i class="fa fa-bitcoin"></i>
-				{{ convertSatoshiToBitcoin(funds.totalBalance) }}
+				<!-- {{ convertSatoshiToBitcoin(funds.totalBalance) }} -->
+        1
 			</small>
 		</h1>
 		<hr>
@@ -13,153 +14,56 @@
 			<spinner :is-loading="isLoading"></spinner>
 
 			<div class="table-wrapper" v-if="!isLoading && !loadingError">
-				<div class="alert alert-success" v-if="alerts.success.moveFunds">{{ $t('userFunds.alerts.success.moveFunds') }}</div>
-				<div class="alert alert-success" v-if="alerts.success.createNewAddress">{{ $t('userFunds.alerts.success.createNewAddress') }}</div>
-				<div class="alert alert-success" v-if="alerts.success.payout">{{ $t('userFunds.alerts.success.payout') }}</div>
-				<div class="alert alert-warning" v-if="alerts.error.moveFunds">{{ $t('userFunds.alerts.error.moveFunds') }}</div>
-				<div class="alert alert-warning" v-if="alerts.error.createNewAddress">{{ $('userFunds.alerts.error.createNewAddress') }}</div>
-				<div class="alert alert-warning" v-if="alerts.error.payout">{{ $t('userFunds.alerts.error.moveFunds') }}</div>
+        <div v-if="configured"
+             class="table-responsive">
+             <label>{{$t('userAccounts.description')}}</label>
+             <b-table striped hover :items="this.tableRows" :fields="this.fields">
+               <template slot="table-caption">
+                This is a table caption.
+              </template>
+             </b-table>
+             <div class="reload-page">
+              <span class="btn btn-secondary" @click.prevent="">
+                <i class="fa fa-refresh"></i>
+                {{ this.$t('userAccounts.reload') }}
+              </span>
+            </div>
+             <hr>
+        </div>
+        <div class="" v-else>
+          <b-alert show variant="info">{{$t('userAccounts.notConfigured')}}</b-alert>
+        </div>
 
-				<b-table striped hover :items="tableItems" :fields="fields" :current-page="currentPage" :per-page="perPage">
-					<template slot="bitcoinAddress" scope="item">
-						<div class="no-wrap">
-							<div v-if="item.item.virtualBalance || item.item.channelTransactionAmount">
-								<div v-if="item.item.virtualBalance">
-									<i>{{ $t('userFunds.virtualBalance') }}</i>
-									<b-popover :content="$t('userFunds.virtualBalanceDescription')" triggers="hover" class="popover-element">
-										<i class="fa fa-info-circle increase-focus"></i>
-									</b-popover>
-								</div>
-								<div v-if="item.item.channelTransactionAmount">
-									<i>{{ $t('userFunds.channelTransactionAmount') }}</i>
-									<b-popover :content="$t('userFunds.channelTransactionAmountDescription')" triggers="hover" class="popover-element">
-										<i class="fa fa-info-circle increase-focus"></i>
-									</b-popover>
-								</div>
-							</div>
-							<span v-else>
-								<span class="mono">{{ item.value }}</span>&nbsp;
-								<a :href="item.item.adddressUrl" :title="item.item.adddressUrl" target="_blank" rel="noopener" class="increase-focus">
-									<i class="fa fa-external-link"></i>
-								</a>
-							</span>
-						</div>
-					</template>
-					<template slot="createdAt" scope="item">
-						<div v-if="item.item.virtualBalance || item.item.channelTransactionAmount">
-							<i class="fa fa-minus"></i>
-						</div>
-						<div v-else>
-							{{ item.value | moment(dateFormat) }}
-						</div>
-					</template>
-					<template slot="lockedUntil" scope="item">
-						<div v-if="item.item.virtualBalance || item.item.channelTransactionAmount">
-							<i class="fa fa-minus"></i>
-						</div>
-						<div v-else>
-							{{ item.value | moment(dateFormat) }}
-						</div>
-					</template>
-					<template slot="locked" scope="item">
-						<div v-if="item.item.virtualBalance || item.item.channelTransactionAmount">
-							<i class="fa fa-minus"></i>
-						</div>
-						<div v-else class="no-wrap">
-							<span v-if="item.value">
-								<i class="fa fa-times red"></i> {{ $t('userFunds.locked') }}
-							</span>
-							<span v-else>
-								<i class="fa fa-check green"></i> {{ $t('userFunds.unlocked') }}
-							</span>
-						</div>
-					</template>
-					<template slot="balance" scope="item">
-						<div class="nowrap" :class="{'red': item.item.channelTransactionAmount && item.value > 0}">
-							<i class="fa fa-bitcoin"></i>
-							<span v-if="item.item.channelTransactionAmount && item.value > 0">-</span>
-							{{ convertSatoshiToBitcoin(item.value) }}
-						</div>
-					</template>
-					<template slot="qr" scope="item">
-						<div v-if="item.item.virtualBalance || item.item.channelTransactionAmount">
-							<div v-if="item.item.virtualBalance">
-								<qr-code :content="user.email"></qr-code>
-							</div>
-							<div v-else>
-								<i class="fa fa-minus"></i>
-							</div>
-						</div>
-						<div v-else>
-							<qr-code :content="encodeBIP21(item.item.bitcoinAddress)"></qr-code>
-						</div>
-					</template>
-					<template slot="actions" scope="item">
-						<div v-if="item.item.virtualBalance || item.item.channelTransactionAmount">
-							<div v-if="item.item.virtualBalance && item.item.balance > 0 && lockedAddress.bitcoinAddress !== null">
-								<b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
-									{{ $t('userFunds.payoutButton') }}
-								</b-button>
-								<b-popover triggers="hover" :content="$t('userFunds.payoutDescription')" class="popover-element">
-									<i class="fa fa-info-circle increase-focus"></i>
-								</b-popover>
-							</div>
-							<div v-else>
-								<div class="no-action-possible nowrap">{{ $t('userFunds.noActionsPossible') }}</div>
-							</div>
-						</div>
-						<div v-else>
-							<div v-if="item.item.balance > 0 && !item.item.locked && lockedAddress.bitcoinAddress !== null">
-								<b-button variant="secondary" size="sm" @click.prevent="moveFundsPreparation(item.item.bitcoinAddress, item.item.redeemScript, item.item.balance)">
-									{{ $t('userFunds.moveFunds') }}
-								</b-button>
-								<b-popover triggers="hover" :content="$t('userFunds.moveFundsDescription')" class="popover-element">
-									<i class="fa fa-info-circle increase-focus"></i>
-								</b-popover>
-							</div>
-							<div v-else class="no-action-possible nowrap">{{ $t('userFunds.noActionsPossible') }}</div>
-						</div>
-					</template>
-				</b-table>
-
-				<div class="create-new-address-button" v-if="lockedAddress.bitcoinAddress === null">
-					<b-button @click.prevent="createNewAddressPreparation">{{ $t('userFunds.createNewAddress') }}</b-button>
-					<b-popover triggers="hover" :content="$t('userFunds.createNewAddressDescription')" class="popover-element">
-						<i class="fa fa-info-circle"></i>
-					</b-popover>
+        <form>
+          <b-form-fieldset :label="$t('userAccounts.bazoaddress')">
+            <b-form-input v-model="bazoaddress" type="text"></b-form-input>
+          </b-form-fieldset>
+          <b-form-fieldset :label="$t('userAccounts.bazoname')">
+            <b-form-input v-model="bazoname" ></b-form-input>
+          </b-form-fieldset>
+          <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('userAccounts.save') }}</b-button>
+        </form>
+				<div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
+					<b-pagination size="md" :total-rows="this.tableRows.length" :per-page="perPage" v-model="currentPage" />
 				</div>
 
-				<div class="justify-content-center row my-1" v-show="this.tableItems.length > perPage">
-					<b-pagination size="md" :total-rows="tableItems.length" :per-page="perPage" v-model="currentPage" />
-				</div>
-
-				<hr>
-
-				<div class="reload-page">
-					<span class="btn btn-secondary" @click.prevent="loadData">
-						<i class="fa fa-refresh"></i>
-						{{ $t('userFunds.reload') }}
-					</span>
-				</div>
 			</div>
 		</div>
 
-		<user-transfer @private-key-decrypted="moveFunds" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :amount="convertSatoshiToBitcoin(currentTransfer.amountSatoshi)"></user-transfer>
+		<!-- <user-transfer @private-key-decrypted="moveFunds" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :amount="convertSatoshiToBitcoin(currentTransfer.amountSatoshi)"></user-transfer>
 		<user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true"></user-transfer>
-		<user-transfer @private-key-decrypted="payout" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true" separate="payout"></user-transfer>
+		<user-transfer @private-key-decrypted="payout" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true" separate="payout"></user-transfer> -->
 	</div>
 </div>
 </template>
 
 <script>
 import Spinner from '@/components/Spinner';
-import HttpService from '@/services/HttpService';
-import UtilService from '@/services/UtilService';
+// import HttpService from '@/services/HttpService';
+// import UtilService from '@/services/UtilService';
 import QrCode from '@/components/QrCode';
 import UserTransfer from '@/components/auth/user/UserTransfer';
-import CryptoService from '@/services/CryptoService';
-import TransactionService from '@/services/TransactionService';
-import BitcoinBIP21 from 'bip21';
+// import TransactionService from '@/services/TransactionService';
 
 export default {
 	name: 'user-funds',
@@ -170,9 +74,8 @@ export default {
 			loadingError: false,
 			currentPage: 1,
 			perPage: 15,
-			funds: {},
-			lockedAddress: {},
-			currentTransfer: {},
+      bazoaddress: '',
+      bazoname: '',
 			alerts: {
 				success: {
 					moveFunds: false,
@@ -539,9 +442,9 @@ h1 small {
 		overflow-y: visible;
 		width: 100%;
 		max-width: 100%;
-		
+
 		@include light-scrollbar();
-		
+
 		/deep/ table {
 			min-width: 1050px;
 		}
@@ -552,7 +455,6 @@ h1 small {
 			top: 30px;
 			right: 40px;
 			transform: initial;
-			
 			&:after {
 				display: none;
 			}

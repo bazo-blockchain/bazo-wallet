@@ -33,25 +33,6 @@ export default {
 			}
 
 			let qr = null;
-			// size is depending on the input length
-			// an exception is thrown, if the size is not large enough
-			// try {
-			// 	qr = makeQR(1);
-			// } catch (e) {
-			// 	try {
-			// 		qr = makeQR(2);
-			// 	} catch (e) {
-			// 		try {
-			// 			qr = makeQR(3);
-			// 		} catch (e) {
-			// 			try {
-			// 				qr = makeQR(4);
-			// 			} catch (e) {
-			// 				qr = makeQR(5);
-			// 			}
-			// 		}
-			// 	}
-			// }
       try {
         qr = makeQR(5)
       } catch (e) {
