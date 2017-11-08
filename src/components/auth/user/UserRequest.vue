@@ -93,10 +93,10 @@
                     <div class="close" @click="closeBT">&times;</div>
                     <div class="bt-title" @click.stop>
                       <i class="fa fa-bluetooth-b"></i>
-                      {{ Translation.t('userSend.BTTitle') }}
+                      {{ Translation.t('userRequest.BTTitle') }}
                     </div>
 
-                    <div class="bt-notice">{{ Translation.t('userSend.BTNotice') }}
+                    <div class="bt-notice">{{ Translation.t('userRequest.BTNotice') }}
                       <div class="bt-status-wrapper">
 
                       </div>

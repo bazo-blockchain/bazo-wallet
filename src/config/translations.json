@@ -68,8 +68,12 @@
       "transfertype": "Send payment information",
       "BTNotSupported": "Your browser or device does not support Bluetooth.",
       "NFCNotSupported": "Your browser or device does not support NFC.",
+      "QRTitle": "Transfer via QR Code",
       "QRNotice": "Show this QR Code to the sending party of the payment.",
-      "QRTitle": "Transfer via QR Code"
+      "NFCTitle": "Transfer to NFC tag",
+      "NFCNotice": "Hold your device to an NFC Tag to transfer the payment information.",
+      "BTTitle": "Transfer to a Bluetooth device.",
+      "BTNotice": "If no devices are showing, then there might not be any or your browser or phone does not support Bluetooth."
     },
 		"general": {
 			"rowsPerPage": "Rows per page"
@@ -129,7 +133,11 @@
       "BTNotSupported": "Ihr Gerät oder Browser unterstützt kein Bluetooth.",
       "NFCNotSupported": "Ihr Gerät oder Browser unterstützt kein NFC.",
       "QRNotice": "Lassen Sie den erzeugten QR Code scannen.",
-      "QRTitle": "Zahlungsinformationen als QR Code"
+      "QRTitle": "Zahlungsinformationen als QR Code",
+      "NFCTitle": "Auf NFC Tag übertragen.",
+      "NFCNotice": "Halten sie Ihr Gerät an ein NFC Tag um die Zahlungsinformationen darauf zu übertragen.",
+      "BTTitle": "An Bluetooth Gerät senden",
+      "BTNotice": "Falls keine Geräte wählbar sind, kann es sein dass ihr Gerät oder Browser kein Bluetoot unterstützt."
     },
 		"toasts": {
 			"signedIn": "Sie haben sich erfolgreich eingeloggt.",
