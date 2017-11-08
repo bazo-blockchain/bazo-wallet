@@ -80,7 +80,7 @@
 
                       </div>
                       <div class="nfc-status-wrapper">
-                        <svg :class="{'nfc-watch-active': nfc.NFCWatching, 'nfc-watch-success': nfc.NFCSuccess}" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM18 6h-5c-1.1 0-2 .9-2 2v2.28c-.6.35-1 .98-1 1.72 0 1.1.9 2 2 2s2-.9 2-2c0-.74-.4-1.38-1-1.72V8h3v8H8V8h2V6H6v12h12V6z"/></svg>
+                        <svg :class="{'nfc-watch-active': nfc.NFCSending, 'nfc-watch-success': nfc.NFCSuccess}" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM18 6h-5c-1.1 0-2 .9-2 2v2.28c-.6.35-1 .98-1 1.72 0 1.1.9 2 2 2s2-.9 2-2c0-.74-.4-1.38-1-1.72V8h3v8H8V8h2V6H6v12h12V6z"/></svg>
 
                       </div>
                       <div class="nfc-status">
@@ -150,7 +150,7 @@ export default {
       cameraShown: false,
       nfc: {
         NFCStatus: 'not sending..',
-        NFCWatching: false,
+        NFCSending: false,
         NFCSuccess: false,
         NFCShown: false,
         NFCSupported: true
@@ -202,22 +202,6 @@ export default {
 	methods: {
 		loadInitialData: function () {
       this.isLoading = false
-			// return Promise.all([
-			// 	HttpService.getForexCurrent('BITSTAMP', 'USD'),
-			// 	HttpService.getForexCurrent('BITSTAMP', 'EUR'),
-			// 	HttpService.getForexCurrent('BITSTAMP', 'CHF'),
-			// 	HttpService.Auth.User.getLockedAddress()
-			// ]).then(responses => {
-			// 	this.forexRates.USD = responses[0].body;
-			// 	this.forexRates.EUR = responses[1].body;
-			// 	this.forexRates.CHF = responses[2].body;
-			// 	this.lockedAddress = responses[3].body;
-			// 	this.loadingError = false;
-			// 	this.isLoading = false;
-			// }, () => {
-			// 	this.loadingError = false;
-			// 	this.isLoading = false;
-			// });
 		},
     checkBTSupport: function () {
       if ('bluetooth' in navigator) {
@@ -259,6 +243,7 @@ export default {
     },
     closeNFC: function () {
       this.nfc.NFCShown = false;
+      this.nfc.NFCSuccess = false;
       try {
         navigator.nfc.cancelWatch();
       } catch (e) {
@@ -267,7 +252,7 @@ export default {
     },
     sendPaymentInfoNFC: function () {
       if (this.nfc.NFCSupported) {
-        this.nfc.NFCWatching = true;
+        this.nfc.NFCSending = true;
         this.nfc.NFCStatus = 'trying to send to nearby NFC devices..';
         navigator.nfc.push({
           records: [
@@ -280,7 +265,7 @@ export default {
             }
           ]
         }).then(() => {
-          this.nfc.NFCWatching = false;
+          this.nfc.NFCSending = false;
           this.nfc.NFCStatus = 'The payment info was transferred successfully!';
           this.nfc.NFCSuccess = true;
           let that = this;
@@ -288,7 +273,7 @@ export default {
             that.closeNFC()
           }, 3000)
         }).catch((error) => {
-          this.nfc.NFCWatching = false;
+          this.nfc.NFCSending = false;
           this.nfc.NFCSuccess = false;
           if (error.code === 9) {
             this.nfc.NFCSupported = false;

@@ -374,6 +374,8 @@ export default {
     },
     closeNFC: function () {
       this.nfc.NFCShown = false;
+      this.nfc.NFCWatching = false;
+      this.nfc.NFCSuccess = false;
       try {
         navigator.nfc.cancelWatch();
       } catch (e) {
@@ -440,7 +442,8 @@ export default {
 			});
 			window.Instascan.Camera.getCameras().then((cameras) => {
 				if (cameras.length > 0) {
-					this.qrScanner.start(cameras[0]);
+          let cameraUsed = cameras.length === 2 ? cameras[1] : cameras[0];
+					this.qrScanner.start(cameraUsed);
 					this.cameraShown = true;
 				} else {
 					this.$toasted.global.warn(Translation.t('userSend.cameraError'));
