@@ -10,12 +10,8 @@
 				<span class="text">{{ $t('sideBar.home') }}</span>
 			</router-link>
 
-			<div class="separator"></div>
-			<div class="subtitle">{{ $t('sideBar.subtitle.bazo').toUpperCase() }}</div>
-			<router-link class="entry" :to="{ name: 'forex' }" :class="dynamicLinkClasses('forex')" @click.native="closeMenu">
-				<i class="fa fa-line-chart"></i>
-				<span class="text">{{ $t('sideBar.forex') }}</span>
-			</router-link>
+			<div class="separator" v-if="configured"></div>
+			<div class="subtitle" v-if="configured">{{ $t('sideBar.subtitle.bazo').toUpperCase() }}</div>
 
 			<div v-if="configured">
 				<router-link class="entry" :to="{ name: 'user-send' }" :class="dynamicLinkClasses('user-send')" @click.native="closeMenu">
@@ -26,37 +22,17 @@
           <i class="fa fa-arrow-circle-left"></i>
           <span class="text">{{ $t('sideBar.userRequest') }}</span>
         </router-link>
-				<router-link class="entry" :to="{ name: 'user-funds' }" :class="dynamicLinkClasses('user-funds')" @click.native="closeMenu">
-					<i class="fa fa-bitcoin"></i>
-					<span class="text">{{ $t('sideBar.userFunds') }}</span>
-				</router-link>
 			</div>
 
 			<div class="separator"></div>
 			<div class="subtitle">{{ $t('sideBar.subtitle.accountManagement').toUpperCase() }}</div>
 			<div v-if="configured">
-				<router-link class="entry" :to="{ name: 'profile' }" :class="dynamicLinkClasses('profile')" @click.native="closeMenu">
-					<i class="fa fa-user"></i>
-					<span class="text">{{ $t('sideBar.profile') }}</span>
-				</router-link>
-				<a class="entry" @click="logout(); closeMenu();">
-					<i class="fa fa-sign-out"></i>
-					<span class="text">{{ $t('sideBar.logout') }}</span>
-				</a>
 			</div>
 			<div>
-				<router-link class="entry" :to="{ name: 'login' }" :class="dynamicLinkClasses('login')" @click.native="closeMenu">
-					<i class="fa fa-sign-in"></i>
-					<span class="text">{{ $t('sideBar.login') }}</span>
-				</router-link>
-				<router-link class="entry" :to="{ name: 'registration' }" :class="dynamicLinkClasses('registration')" @click.native="closeMenu">
-					<i class="fa fa-user-plus"></i>
-					<span class="text">{{ $t('sideBar.registration') }}</span>
-				</router-link>
-				<router-link class="entry" :to="{ name: 'password-forgotten' }" :class="dynamicLinkClasses('password-forgotten')" @click.native="closeMenu">
-					<i class="fa fa-question-circle"></i>
-					<span class="text">{{ $t('sideBar.passwordForgotten') }}</span>
-				</router-link>
+        <router-link class="entry" :to="{ name: 'accounts' }" :class="dynamicLinkClasses('accounts')" @click.native="closeMenu">
+          <i class="fa fa-bitcoin"></i>
+          <span class="text">{{ $t('sideBar.userAccounts') }}</span>
+        </router-link>
 			</div>
 		</div>
 		<div class="language-picker" :class="{ 'offline-mode': isOffline }">
@@ -317,22 +293,10 @@ $language-picker-height-offline: 8.9em;
 				"accountManagement":"Account Management"
 			},
 			"home": "Home",
-			"forex": "Market trend",
-			"login": "Login",
-			"registration": "Registration",
-			"forex": "Market trend",
 			"userSend": "Transfer Bazo coins",
       "userRequest": "Request Bazo coins",
-			"userFunds": "Funds",
-			"adminEvents": "Events",
-			"adminAccounts": "Accounts",
-			"adminUserAccounts": "User Accounts",
-			"adminServerBalance": "Server Balance",
-			"profile": "Profile",
-			"login": "Login",
-			"logout": "Logout",
-			"registration": "Registration",
-			"passwordForgotten": "Forgot your password?"
+			"userAccounts": "Accounts",
+			"login": "Login"
 		}
 	},
 	"de": {
@@ -343,20 +307,10 @@ $language-picker-height-offline: 8.9em;
 				"accountManagement": "Kontoverwaltung"
 			},
 			"home": "Start",
-			"forex": "Kursentwicklung",
-			"forex": "Kursentwicklung",
 			"userSend": "Bazo coins versenden",
       "userRequest": "Bazo coins erhalten",
-			"userFunds": "Guthaben",
-			"adminEvents": "Events",
-			"adminAccounts": "Konten",
-			"adminUserAccounts": "Benutzerkonten",
-			"adminServerBalance": "Server Balance",
-			"profile": "Profil anzeigen",
-			"login": "Anmelden",
-			"logout": "Abmelden",
-			"registration": "Registrierung",
-			"passwordForgotten": "Passwort vergessen?"
+			"userAccounts": "Konti",
+			"login": "Anmelden"
 		}
 	}
 }

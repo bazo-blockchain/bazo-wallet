@@ -2,14 +2,14 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '@/components/Home';
 import Forex from '@/components/Forex';
-import Activation from '@/components/Activation';
-import PasswordForgotten from '@/components/PasswordForgotten';
-import PasswordForgottenVerification from '@/components/PasswordForgottenVerification';
-import Registration from '@/components/Registration';
+// import Activation from '@/components/Activation';
+// import PasswordForgotten from '@/components/PasswordForgotten';
+// import PasswordForgottenVerification from '@/components/PasswordForgottenVerification';
+// import Registration from '@/components/Registration';
 import UserSend from '@/components/auth/user/UserSend';
 import UserRequest from '@/components/auth/user/UserRequest';
 import UserFunds from '@/components/auth/user/UserFunds';
-import Profile from '@/components/auth/Profile';
+// import Profile from '@/components/auth/Profile';
 import Translation from '@/config/Translation';
 import ProgressBar from '@/config/ProgressBar.js';
 import Store from '@/config/Store';
@@ -69,7 +69,7 @@ const requireAuth = (to, _from, next) => {
 		if (!Store.state.auth.authenticated) {
 			Vue.toasted.global.warn(Translation.t('toasts.accountrequired'), { duration: 6000 });
 			next({
-				path: '/login',
+				path: '/accounts',
 				query: {
           redirect: to.fullPath
         }
@@ -126,17 +126,16 @@ const routes = [
 	{ path: '/', name: 'home', component: Home, beforeEnter: noAuth },
 	{ path: '/forex', name: 'forex', component: Forex, beforeEnter: noAuth },
 
-	{ path: '/registration/:emailArg?/:tokenArg?', name: 'registration', component: Registration, beforeEnter: noAuth, props: true },
-	{ path: '/password-forgotten', name: 'password-forgotten', component: PasswordForgotten, beforeEnter: noAuth },
-	{ path: '/password-forgotten-verification/:email?/:token?', name: 'password-forgotten-verification', component: PasswordForgottenVerification, props: true, beforeEnter: noAuth },
-	{ path: '/activation/:email?/:token?', name: 'activation', component: Activation, props: true, beforeEnter: noAuth },
-	{ path: '/login', name: 'login', component: UserFunds, beforeEnter: noAuth },
+	// { path: '/registration/:emailArg?/:tokenArg?', name: 'registration', component: Registration, beforeEnter: noAuth, props: true },
+	// { path: '/password-forgotten', name: 'password-forgotten', component: PasswordForgotten, beforeEnter: noAuth },
+	// { path: '/password-forgotten-verification/:email?/:token?', name: 'password-forgotten-verification', component: PasswordForgottenVerification, props: true, beforeEnter: noAuth },
+	// { path: '/activation/:email?/:token?', name: 'activation', component: Activation, props: true, beforeEnter: noAuth },
+	{ path: '/accounts', name: 'accounts', component: UserFunds, beforeEnter: noAuth },
 
-	{ path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: noAuth },
+	// { path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: noAuth },
 
 	{ path: '/auth/user/send', name: 'user-send', component: UserSend, props: true, beforeEnter: requireBazoAccount },
   { path: '/auth/user/request', name: 'user-request', component: UserRequest, beforeEnter: requireBazoAccount },
-  { path: '/auth/user/funds', name: 'user-funds', component: UserFunds, beforeEnter: noAuth },
 
 	{ path: '*', name: 'everyOtherPage', component: Home, beforeEnter: error404 }
 ]
