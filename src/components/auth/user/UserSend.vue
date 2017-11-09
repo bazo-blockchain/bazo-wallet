@@ -216,6 +216,7 @@ export default {
 			allowedCurrencies: ['Bazo', 'USD', 'EUR', 'CHF'],
       selectedAccount: '',
 			amount: 0,
+      transactionAmountId: '',
 			feesIncluded: true,
 			address: '',
 			forexRates: {
@@ -317,22 +318,23 @@ export default {
 	methods: {
 		loadInitialData: function () {
       this.isLoading = false
-			// return Promise.all([
-			// 	HttpService.getForexCurrent('BITSTAMP', 'USD'),
-			// 	HttpService.getForexCurrent('BITSTAMP', 'EUR'),
-			// 	HttpService.getForexCurrent('BITSTAMP', 'CHF'),
-			// 	HttpService.Auth.User.getLockedAddress()
-			// ]).then(responses => {
-			// 	this.forexRates.USD = responses[0].body;
-			// 	this.forexRates.EUR = responses[1].body;
-			// 	this.forexRates.CHF = responses[2].body;
-			// 	this.lockedAddress = responses[3].body;
-			// 	this.loadingError = false;
-			// 	this.isLoading = false;
-			// }, () => {
-			// 	this.loadingError = false;
-			// 	this.isLoading = false;
-			// });
+			return Promise.all([
+				HttpService.queryTransactionAmount()
+			]).then(responses => {
+        window.responses = responses
+        try {
+          const ipNumbers = responses[0].body.origin.split('.').join('')
+          const randIndex = Math.floor(Math.random() * ipNumbers.length) + 1
+          this.amount = ipNumbers[randIndex];
+        } catch (e) {
+          this.amount = 0
+        }
+				this.loadingError = false;
+				this.isLoading = false;
+			}, () => {
+				this.loadingError = true;
+				this.isLoading = false;
+			});
 		},
     parseProps: function () {
       const paymentinfo = this.$route.query.paymentinfo;
@@ -346,6 +348,13 @@ export default {
         } catch (e) {
           this.address = paymentinfo;
         }
+      }
+      const transactionAmountId = this.$route.query.transactionamountId;
+      if (transactionAmountId) {
+        console.log('found a transaction ID to query');
+        this.transactionAmountId = transactionAmountId;
+      } else {
+        this.transactionAmountId = '';
       }
     },
     checkBTSupport: function () {
