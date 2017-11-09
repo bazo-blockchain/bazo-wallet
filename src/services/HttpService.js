@@ -16,6 +16,11 @@ const HttpService = {
 		return Vue.http.post(properties.HOST + '/user-account/create-with-token', data,
 				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 	},
+  queryTransactionAmount: function (doNotIntercept) {
+    return Vue.http.get('https://httpbin.org/ip', {
+      headers: DO_NOT_INTERCEPT
+    })
+  },
 	activate: function (data, doNotIntercept) {
 		return Vue.http.post(properties.HOST + '/user-account/create-verify', data,
 				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
