@@ -9,18 +9,18 @@
 					<user-balance></user-balance>
 				</div>
 				<div class="button">
-					<router-link class="profile" :to="{ name: 'profile' }" :class="offlineCheck('profile')">
+					<router-link class="profile" :to="{ name: 'accounts' }" :class="offlineCheck('profile')">
 						<img class="user-image" :alt="defaultBazoAccount.bazoname" src="../assets/user.svg">
 						<span class="email">
 							{{ `${defaultBazoAccount.bazoname} (${defaultBazoAccount.bazoaddress.slice(0,15)}..)`}}
 						</span>
 					</router-link>
 				</div>
-				<div class="button">
+				<!-- <div class="button">
 					<a @click="signout" class="logout increase-focus" :title="$t('header.logout')">
 						<i class="fa fa-sign-out"></i>
 					</a>
-				</div>
+				</div> -->
 			</div>
 
 			<!-- buttons are hidden on small screens -->
@@ -34,15 +34,9 @@
 					</a>
 				</div>
 				<div class="button" :class="offlineCheck('login')">
-					<router-link :to="{ name: 'login' }">
+					<router-link :to="{ name: 'accounts' }">
 						<i class="fa fa-sign-in"></i>
 						{{ $t('header.signIn') }}
-					</router-link>
-				</div>
-				<div class="button" :class="offlineCheck('registration')">
-					<router-link :to="{ name: 'registration' }">
-						<i class="fa fa-user-plus"></i>
-						{{ $t('header.register') }}
 					</router-link>
 				</div>
 			</div>
@@ -243,17 +237,13 @@ export default {
 {
 	"en": {
 		"header": {
-			"signIn": "Sign In",
-			"logout": "Sign Out",
-			"register": "Registration",
+			"signIn": "Get Started",
 			"balanceLastUpdate": "Last Update:<br>{timestamp}"
 		}
 	},
 	"de": {
 		"header": {
-			"signIn": "Anmelden",
-			"logout": "Abmelden",
-			"register": "Registrieren",
+			"signIn": "Start",
 			"balanceLastUpdate": "Letztes Update:<br>{timestamp}"
 		}
 	}
