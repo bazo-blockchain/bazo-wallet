@@ -37,7 +37,7 @@
              						<div class="nowrap">
              							<i class="fa fa-bitcoin"></i>
              							<span >-</span>
-             							{{ item.balance || Math.random.toFixed() }}
+             							{{ item.balance || Math.random().toString()[3] }}
              						</div>
              					</template>
                       <template slot="isPrime" scope="item">
@@ -92,7 +92,7 @@
           <b-form-fieldset :label="$t('userAccounts.bazoname')">
             <b-form-input v-model="bazoname" ></b-form-input>
           </b-form-fieldset>
-          <div class="fees-included">
+          <div >
             <label>
               <b-form-checkbox v-model="isPrime">{{ $t('userAccounts.makePrimary') }}
 
@@ -174,6 +174,10 @@ export default {
         qr: {
           label: this.$t('userAccounts.fields.qr'),
           sortable: false
+        },
+        balance: {
+          label: this.$t('userAccounts.fields.balance'),
+          sortable: true
         },
         actions: {
           label: this.$t('userAccounts.fields.actions'),
@@ -262,6 +266,7 @@ export default {
 				"bazoaddress": "Bazo Address",
         "prime": "Main account?",
 				"qr": "QR Code",
+        "balance": "Balance",
 				"actions": "Actions"
 			},
       "makePrimary": "Dieses Konto als Hauptkonto verwenden.",
@@ -294,6 +299,7 @@ export default {
 				"bazoaddress": "Bazo Adresse",
         "prime": "Hauptkonto?",
 				"qr": "QR Code",
+        "balance": "Guthaben",
 				"actions": "Aktionen"
 			},
       "makePrimary": "Use this account as a primary account",
