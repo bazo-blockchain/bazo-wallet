@@ -25,7 +25,8 @@
                         <b-dropdown :disabled="!multipleAccountsConfigured" id="account-selection" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default" block>
                           <b-dropdown-item v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
                           <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
-                          <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount"></i>
+                          <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
+                                                      (paymentInfo.selectedAccount === '' && bazoAccount === defaultBazoAccount)"></i>
                           </b-dropdown-item>
                         </b-dropdown>
                     </b-input-group-button slot="right">
@@ -187,7 +188,9 @@ export default {
       return this.$store.getters.bazoAccounts;
     },
     defaultBazoAccount: function () {
-      return this.$store.getters.bazoAccounts[0];
+      return this.bazoAccounts.find(function (bazoAccount) {
+        return bazoAccount.isPrime;
+      });
     },
     multipleAccountsConfigured: function () {
       return this.bazoAccounts.length > 1;
