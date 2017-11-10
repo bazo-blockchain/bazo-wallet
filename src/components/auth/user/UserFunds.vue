@@ -18,7 +18,7 @@
              class="table-responsive">
              <label>{{$t('userAccounts.description')}}</label>
 
-             <b-table striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
+             <b-table  small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
              					<template slot="bazoaddress" scope="item">
              						<div class="no-wrap">
 
@@ -45,7 +45,6 @@
                           <div class="" v-else>
                             <b-button variant="secondary" size="sm" @click.prevent="makePrimary(item.item)">
                               <i class="fa fa-chevron-right" aria-hidden="true"></i>
-
              								</b-button>
                           </div>
                         </div>
@@ -61,23 +60,12 @@
              					<template slot="actions" scope="item">
              						<div >
              								<b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
-             									{{ $t('userFunds.payoutButton') }}
+             									{{ $t('userAccounts.transferButton') }}
              								</b-button>
-             								<b-popover triggers="hover" :content="$t('userFunds.payoutDescription')" class="popover-element">
+             								<b-popover triggers="hover" :content="$t('userAccounts.transferDescription')" class="popover-element">
              									<i class="fa fa-info-circle increase-focus"></i>
              								</b-popover>
              						</div>
-             						<!-- <div v-else>
-             							<div v-if="item.item.balance > 0 && !item.item.locked && lockedAddress.bitcoinAddress !== null">
-             								<b-button variant="secondary" size="sm" @click.prevent="moveFundsPreparation(item.item.bitcoinAddress, item.item.redeemScript, item.item.balance)">
-             									{{ $t('userFunds.moveFunds') }}
-             								</b-button>
-             								<b-popover triggers="hover" :content="$t('userFunds.moveFundsDescription')" class="popover-element">
-             									<i class="fa fa-info-circle increase-focus"></i>
-             								</b-popover>
-             							</div>
-             							<div v-else class="no-action-possible nowrap">{{ $t('userFunds.noActionsPossible') }}</div>
-             						</div> -->
              					</template>
              				</b-table>
 
@@ -101,6 +89,13 @@
           <b-form-fieldset :label="$t('userAccounts.bazoname')">
             <b-form-input v-model="bazoname" ></b-form-input>
           </b-form-fieldset>
+          <div class="fees-included">
+            <label>
+              <b-form-checkbox v-model="isPrime">{{ $t('userAccounts.makePrimary') }}
+
+              </b-form-checkbox>
+            </label>
+          </div>
           <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('userAccounts.save') }}</b-button>
         </form>
 				<div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
@@ -138,6 +133,7 @@ export default {
 			perPage: 15,
       bazoaddress: '',
       bazoname: '',
+      isPrime: false,
 			alerts: {
 				success: {
 					moveFunds: false,
@@ -169,15 +165,15 @@ export default {
           sortable: false
         },
         isPrime: {
-          label: 'Prime?',
-          sortable: false
+          label: this.$t('userAccounts.fields.prime'),
+          sortable: true
         },
         qr: {
-          label: 'Qr',
+          label: this.$t('userAccounts.fields.qr'),
           sortable: false
         },
         actions: {
-          label: 'Actions',
+          label: this.$t('userAccounts.fields.actions'),
           sortable: false
         }
       }
@@ -204,11 +200,14 @@ export default {
 				this.loadingError = false;
 			})
 		},
-    encodeBazoAddress (bazoaddress) {
-      return URIScheme.encode(bazoaddress);
+    encodeBazoAddress (bazoAddress) {
+      return URIScheme.encode(bazoAddress);
     },
     makePrimary: function (account) {
       this.$store.dispatch('updatePrimaryAccount', account);
+    },
+    cutBazoAddress: function (bazoAddress) {
+      return bazoAddress.slice(0, 10)
     },
     saveAccount: function () {
       const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
@@ -222,7 +221,7 @@ export default {
           isPrime = true
         }
         this.$store.dispatch('updateConfig', {
-          isPrime: isPrime,
+          isPrime: this.isPrime || isPrime,
           bazoaddress: this.bazoaddress,
           bazoname: this.bazoname
         }).then(() => {
@@ -246,33 +245,23 @@ export default {
 <i18n>
 {
 	"en": {
-		"userFunds": {
+		"userAccounts": {
 			"title": "Funds",
 			"totalFunds": "Total",
-			"locked": "Locked",
-			"unlocked": "Unlocked",
 			"moveFunds": "Move Funds",
 			"moveFundsDescription": "You can easily transfer your funds from previous Bazo addresses to your current, for Coinblesk used Bazo address",
 			"noActionsPossible": "No action possible.",
-			"virtualBalance": "Virtual Balance",
-			"virtualBalanceDescription": "To provide a fast, reliable service, a certain amount of Bitcoins is kept at the server as a virtual balance for a direct Coinblesk user exchange.",
-			"channelTransactionAmount": "Open payment",
-			"channelTransactionAmountDescription": "To save transaction fees, there is the open payment. This means, that pending transaction are not directly sent out into the Bazo network, but kept back to summarize all the payments (up to a certain amount). The recepient immediately receives the payment in form of a virtual balance.",
-			"createNewAddress": "Create new address",
-			"createNewAddressDescription": "Create a new address!",
 			"paymentError": "An error occurred. Please try it again later on.",
-			"payoutButton": "Pay Out",
-			"payoutDescription": "The virtual balance can only be used for payment within Coinblesk. If you want to make payments to any Bazo address, you need to pay out the virtual balance to your locked address.",
+			"transferButton": "Transfer",
+			"transferDescription": "Transfer money from this account by issueing a new payment.",
 			"reload": "Reload",
 			"fields": {
-				"bitcoinAddress": "Bazo Address",
-				"createdAt": "Created At",
-				"lockedUntil": "Locked until",
-				"locked": "Locked?",
-				"balance": "Balance",
+				"bazoaddress": "Bazo Address",
+        "prime": "Main account?",
 				"qr": "QR Code",
 				"actions": "Actions"
 			},
+      "makePrimary": "Dieses Konto als Hauptkonto verwenden.",
 			"alerts": {
 				"success": {
 					"moveFunds": "The amount was successfully transferred to the locked account. This transaction may be pending for up to an hour.",
@@ -288,33 +277,23 @@ export default {
 		}
 	},
 	"de": {
-		"userFunds": {
+		"userAccounts": {
 			"title": "Guthaben",
 			"totalFunds": "Total",
-			"locked": "Gesperrt",
-			"unlocked": "Nicht gesperrt",
 			"moveFunds": "Betrag verschieben",
 			"moveFundsDescription": "Sie können die Beträge älterer Bitcoin-Adressen bequem auf Ihre aktuelle, in Coinblesk verwendete Bitcoin-Adresse übertragen.",
 			"noActionsPossible": "Keine Aktion möglich.",
-			"virtualBalance": "Virtuelles Saldo",
-			"virtualBalanceDescription": "Um einen möglichst reibungslosen und schnellen Dienst anbieten zu können, wird jeweils eine beschränkte Summe Bitcoins auf dem Server für einen direkten Austausch zwischen Coinblesk Benutzern zurückbehalten.",
-			"channelTransactionAmount": "Offene Zahlung",
-			"channelTransactionAmountDescription": "Um Transaktionskosten zu sparen, gibt es die offene Zahlung. Das bedeutet, alle Transaktionen bis zu einem Schwellenwert werden zurückgehalten. Der Empfänger erhält den Betrag jedoch sofort in Form eines virtuellen Saldos.",
-			"createNewAddress": "Neue Adresse anlegen",
-			"createNewAddressDescription": "Create a new address!",
 			"paymentError": "Ein Fehler ist aufgetreten. Versuchen Sie es später noch einmal.",
-			"payoutButton": "Auszahlen",
-			"payoutDescription": "Das virtuelle Saldo kann nur für Zahlungen innerhalb von Coinblesk verwendet werden. Möchten Sie Zahlungen nach ausserhalb machen, müssen Sie sich das virtuelle Saldo auf Ihre gesperrte Adresse auszahlen lassen.",
+			"transferButton": "Transferieren",
+			"transferDescription": "Transferieren Sie Coins von diesem Account in dem Sie eine neue Zahlung tätigen",
 			"reload": "Aktualisieren",
 			"fields": {
-				"bitcoinAddress": "Bazo Adresse",
-				"createdAt": "Erstellt am",
-				"lockedUntil": "Gesperrt bis",
-				"locked": "Gesperrt?",
-				"balance": "Betrag",
+				"bazoaddress": "Bazo Adresse",
+        "prime": "Hauptkonto?",
 				"qr": "QR Code",
 				"actions": "Aktionen"
 			},
+      "makePrimary": "Use this account as a primary account",
 			"alerts": {
 				"success": {
 					"moveFunds": "Der Betrag ist erfolgreich auf das gesperrte Konto überwiesen worden. Die Transaktion kann bis zu einer Stunde dauern.",
