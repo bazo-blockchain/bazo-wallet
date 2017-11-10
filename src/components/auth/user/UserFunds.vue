@@ -17,11 +17,70 @@
         <div v-if="configured"
              class="table-responsive">
              <label>{{$t('userAccounts.description')}}</label>
-             <b-table striped hover :items="this.tableRows" :fields="this.fields">
-               <template slot="table-caption">
-                This is a table caption.
-              </template>
-             </b-table>
+
+             <b-table striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
+             					<template slot="bazoaddress" scope="item">
+             						<div class="no-wrap">
+
+             								<span class="mono">{{ item.item.bazoaddress }}</span>&nbsp;
+                            <a v-bind:href="item.item.bazoaddress">Link</a>
+             								<!-- <a :href="item.item.adddressUrl" :title="item.item.adddressUrl" target="_blank" rel="noopener" class="increase-focus">
+             									<i class="fa fa-external-link"></i>
+             								</a> -->
+             						</div>
+             					</template>
+
+             					<template slot="balance" scope="item">
+             						<div class="nowrap">
+             							<i class="fa fa-bitcoin"></i>
+             							<span >-</span>
+             							{{ item.balance || Math.random.toFixed() }}
+             						</div>
+             					</template>
+                      <template slot="isPrime" scope="item">
+                        <div>
+                          <div class="" v-if="item.item.isPrime">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                          </div>
+                          <div class="" v-else>
+                            <b-button variant="secondary" size="sm" @click.prevent="makePrimary(item.item)">
+                              <i class="fa fa-chevron-right" aria-hidden="true"></i>
+
+             								</b-button>
+                          </div>
+                        </div>
+                      </template>
+             					<template slot="qr" scope="item">
+             						<div>
+                          <a href="#/auth/user/request">
+                            <i class="fa fa-qrcode" aria-hidden="true"></i>
+                          </a>
+             							<!-- <qr-code :content="encodeBazoAddress(item.item.bazoaddress)"></qr-code> -->
+             						</div>
+             					</template>
+             					<template slot="actions" scope="item">
+             						<div >
+             								<b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
+             									{{ $t('userFunds.payoutButton') }}
+             								</b-button>
+             								<b-popover triggers="hover" :content="$t('userFunds.payoutDescription')" class="popover-element">
+             									<i class="fa fa-info-circle increase-focus"></i>
+             								</b-popover>
+             						</div>
+             						<!-- <div v-else>
+             							<div v-if="item.item.balance > 0 && !item.item.locked && lockedAddress.bitcoinAddress !== null">
+             								<b-button variant="secondary" size="sm" @click.prevent="moveFundsPreparation(item.item.bitcoinAddress, item.item.redeemScript, item.item.balance)">
+             									{{ $t('userFunds.moveFunds') }}
+             								</b-button>
+             								<b-popover triggers="hover" :content="$t('userFunds.moveFundsDescription')" class="popover-element">
+             									<i class="fa fa-info-circle increase-focus"></i>
+             								</b-popover>
+             							</div>
+             							<div v-else class="no-action-possible nowrap">{{ $t('userFunds.noActionsPossible') }}</div>
+             						</div> -->
+             					</template>
+             				</b-table>
+
              <div class="reload-page">
               <span class="btn btn-secondary" @click.prevent="">
                 <i class="fa fa-refresh"></i>
@@ -29,6 +88,7 @@
               </span>
             </div>
              <hr>
+
         </div>
         <div class="" v-else>
           <b-alert show variant="info">{{$t('userAccounts.notConfigured')}}</b-alert>
@@ -63,6 +123,8 @@ import Spinner from '@/components/Spinner';
 // import UtilService from '@/services/UtilService';
 import QrCode from '@/components/QrCode';
 import UserTransfer from '@/components/auth/user/UserTransfer';
+import URIScheme from '@/services/URISCheme'
+
 // import TransactionService from '@/services/TransactionService';
 
 export default {
@@ -109,6 +171,14 @@ export default {
         isPrime: {
           label: 'Prime?',
           sortable: false
+        },
+        qr: {
+          label: 'Qr',
+          sortable: false
+        },
+        actions: {
+          label: 'Actions',
+          sortable: false
         }
       }
     },
@@ -134,12 +204,25 @@ export default {
 				this.loadingError = false;
 			})
 		},
+    encodeBazoAddress (bazoaddress) {
+      return URIScheme.encode(bazoaddress);
+    },
+    makePrimary: function (account) {
+      this.$store.dispatch('updatePrimaryAccount', account);
+    },
     saveAccount: function () {
       const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
 			if (!this.isLoading) {
 				this.isLoading = true;
+        // An account should always be a primary account if there are not multiple
+        let isPrime;
+        if (this.tableRows.length > 0) {
+          isPrime = false
+        } else {
+          isPrime = true
+        }
         this.$store.dispatch('updateConfig', {
-          isPrime: 'yes',
+          isPrime: isPrime,
           bazoaddress: this.bazoaddress,
           bazoname: this.bazoname
         }).then(() => {
