@@ -61,13 +61,23 @@
              						</div>
              					</template>
              					<template slot="actions" scope="item">
-             						<div >
-             								<b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
-             									{{ $t('userAccounts.transferButton') }}
-             								</b-button>
-             								<b-popover triggers="hover" :content="$t('userAccounts.transferDescription')" class="popover-element">
-             									<i class="fa fa-info-circle increase-focus"></i>
-             								</b-popover>
+             						<div>
+                          <div >
+                            <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
+                              {{ $t('userAccounts.transferButton') }}
+                            </b-button>
+                            <b-popover triggers="hover" :content="$t('userAccounts.transferDescription')" class="popover-element">
+                              <i class="fa fa-info-circle increase-focus"></i>
+                            </b-popover>
+                          </div>
+                          <div>
+                            <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
+                              {{ $t('userAccounts.tradeButton') }}
+                            </b-button>
+                            <b-popover triggers="hover" :content="$t('userAccounts.tradeDescription')" class="popover-element">
+                              <i class="fa fa-info-circle increase-focus"></i>
+                            </b-popover>
+                          </div>
              						</div>
              					</template>
              				</b-table>
@@ -261,6 +271,8 @@ export default {
 			"paymentError": "An error occurred. Please try it again later on.",
 			"transferButton": "Transfer",
 			"transferDescription": "Transfer money from this account by issueing a new payment.",
+      "tradeButton": "Exchange",
+      "tradeDescription": "Exchange your Bazo coins back to surprise points by issueing a request.",
 			"reload": "Reload",
 			"fields": {
 				"bazoaddress": "Bazo Address",
@@ -294,6 +306,8 @@ export default {
 			"paymentError": "Ein Fehler ist aufgetreten. Versuchen Sie es später noch einmal.",
 			"transferButton": "Transferieren",
 			"transferDescription": "Transferieren Sie Coins von diesem Account in dem Sie eine neue Zahlung tätigen",
+      "tradeButton": "Tauschen",
+      "tradeDescription": "Tauschen Sie Ihre Bazo Coins zurück zu Surprise Punkten indem Sie eine Anforderung erstellen.",
 			"reload": "Aktualisieren",
 			"fields": {
 				"bazoaddress": "Bazo Adresse",
