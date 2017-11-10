@@ -4,6 +4,7 @@ import Home from '@/components/Home';
 import UserSend from '@/components/auth/user/UserSend';
 import UserRequest from '@/components/auth/user/UserRequest';
 import Accounts from '@/components/Accounts';
+import Funds from '@/components/auth/user/Funds';
 import Translation from '@/config/Translation';
 import ProgressBar from '@/config/ProgressBar.js';
 import Store from '@/config/Store';
@@ -127,7 +128,7 @@ const routes = [
 	{ path: '/accounts', name: 'accounts', component: Accounts, beforeEnter: noAuth },
 
 	// { path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: noAuth },
-
+  { path: '/auth/user/funds', name: 'funds', component: Funds, beforeEnter: requireBazoAccount },
 	{ path: '/auth/user/send', name: 'user-send', component: UserSend, props: true, beforeEnter: requireBazoAccount },
   { path: '/auth/user/request', name: 'user-request', component: UserRequest, beforeEnter: requireBazoAccount },
 

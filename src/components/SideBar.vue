@@ -24,14 +24,19 @@
         </router-link>
 			</div>
 
+
+
 			<div class="separator"></div>
 			<div class="subtitle">{{ $t('sideBar.subtitle.accountManagement').toUpperCase() }}</div>
-			<div v-if="configured">
-			</div>
+
 			<div>
         <router-link class="entry" :to="{ name: 'accounts' }" :class="dynamicLinkClasses('accounts')" @click.native="closeMenu">
           <i class="fa fa-bitcoin"></i>
           <span class="text">{{ $t('sideBar.userAccounts') }}</span>
+        </router-link>
+        <router-link v-if="configured" class="entry" :to="{ name: 'funds' }" :class="dynamicLinkClasses('funds')" @click.native="closeMenu">
+          <i class="fa fa-credit-card"></i>
+          <span class="text">{{ $t('sideBar.funds') }}</span>
         </router-link>
 			</div>
 		</div>
@@ -296,6 +301,7 @@ $language-picker-height-offline: 8.9em;
 			"userSend": "Transfer Bazo coins",
       "userRequest": "Request Bazo coins",
 			"userAccounts": "Accounts",
+      "funds": "Funds",
 			"login": "Login"
 		}
 	},
@@ -310,6 +316,7 @@ $language-picker-height-offline: 8.9em;
 			"userSend": "Bazo coins versenden",
       "userRequest": "Bazo coins erhalten",
 			"userAccounts": "Konti",
+      "funds": "Guthaben",
 			"login": "Anmelden"
 		}
 	}
