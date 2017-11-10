@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import Home from '@/components/Home';
 import UserSend from '@/components/auth/user/UserSend';
 import UserRequest from '@/components/auth/user/UserRequest';
-import UserFunds from '@/components/auth/user/UserFunds';
+import Accounts from '@/components/Accounts';
 import Translation from '@/config/Translation';
 import ProgressBar from '@/config/ProgressBar.js';
 import Store from '@/config/Store';
@@ -124,7 +124,7 @@ const routes = [
 	// { path: '/password-forgotten', name: 'password-forgotten', component: PasswordForgotten, beforeEnter: noAuth },
 	// { path: '/password-forgotten-verification/:email?/:token?', name: 'password-forgotten-verification', component: PasswordForgottenVerification, props: true, beforeEnter: noAuth },
 	// { path: '/activation/:email?/:token?', name: 'activation', component: Activation, props: true, beforeEnter: noAuth },
-	{ path: '/accounts', name: 'accounts', component: UserFunds, beforeEnter: noAuth },
+	{ path: '/accounts', name: 'accounts', component: Accounts, beforeEnter: noAuth },
 
 	// { path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: noAuth },
 
