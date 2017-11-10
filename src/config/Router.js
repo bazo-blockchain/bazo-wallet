@@ -1,15 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '@/components/Home';
-// import Forex from '@/components/Forex';
-// import Activation from '@/components/Activation';
-// import PasswordForgotten from '@/components/PasswordForgotten';
-// import PasswordForgottenVerification from '@/components/PasswordForgottenVerification';
-// import Registration from '@/components/Registration';
 import UserSend from '@/components/auth/user/UserSend';
 import UserRequest from '@/components/auth/user/UserRequest';
 import UserFunds from '@/components/auth/user/UserFunds';
-// import Profile from '@/components/auth/Profile';
 import Translation from '@/config/Translation';
 import ProgressBar from '@/config/ProgressBar.js';
 import Store from '@/config/Store';

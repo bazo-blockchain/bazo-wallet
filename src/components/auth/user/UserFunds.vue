@@ -362,17 +362,7 @@ h1 small {
 		/deep/ table {
 			min-width: 1050px;
 		}
-		/deep/ .qr-image {
-			position: fixed;
-			bottom: auto;
-			left: auto;
-			top: 30px;
-			right: 40px;
-			transform: initial;
-			&:after {
-				display: none;
-			}
-		}
+
 	}
 }
 

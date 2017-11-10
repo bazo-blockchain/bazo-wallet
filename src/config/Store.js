@@ -58,12 +58,26 @@ const store = new Vuex.Store({
 		updateLanguage: function (state, language) {
 			state.language = language;
 		},
-    updateConfig: function (state, config) {
-      if (config.bazoaddress && config.bazoname) {
+    updatePrimaryAccount: function (state, account) {
+      state.config.accounts.forEach(function (existingAccount) {
+        if (existingAccount.bazoaddress === account.bazoaddress) {
+          existingAccount.isPrime = true;
+        } else {
+          existingAccount.isPrime = false;
+        }
+      });
+    },
+    updateConfig: function (state, account) {
+      if (account.bazoaddress && account.bazoname) {
+        if (account.isPrime) {
+          state.config.accounts.forEach(function (existingAccount) {
+            existingAccount.isPrime = false
+          })
+        }
         let newAccount = {
-          bazoaddress: config.bazoaddress,
-          bazoname: config.bazoname,
-          isPrime: config.isPrime || false
+          bazoaddress: account.bazoaddress,
+          bazoname: account.bazoname,
+          isPrime: account.isPrime || false
         };
         state.config.accounts.push(newAccount);
         state.config.configured = true;
@@ -165,6 +179,9 @@ const store = new Vuex.Store({
 		},
     updateConfig: function (context, config) {
       return context.commit('updateConfig', config);
+    },
+    updatePrimaryAccount: function (context, account) {
+      return context.commit('updatePrimaryAccount', account)
     },
 		setOffline: function (context, offline) {
 			context.commit('setOffline', !!offline);
