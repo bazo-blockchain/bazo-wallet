@@ -247,12 +247,10 @@ export default {
       "amount": "Amount",
 			"reload": "Reload",
 			"fields": {
-        "name": "Name",
 				"surpriseid": "Surprise Address",
         "balance": "Volume",
-				"actions": "Actions",
-        "target": "Target Account (Bazo)"
-
+        "target": "Target Account (Bazo)",
+        "ticketid": "Ticket ID"
 			},
       "save": "Add this Surprise account",
       "requestBazo": "Request Bazo",
