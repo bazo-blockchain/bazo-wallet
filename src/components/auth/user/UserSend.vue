@@ -216,7 +216,7 @@ export default {
 			allowedCurrencies: ['Bazo', 'USD', 'EUR', 'CHF'],
       selectedAccount: '',
 			amount: 0,
-      transactionAmountId: '',
+      posid: '',
 			feesIncluded: true,
 			address: '',
 			forexRates: {
@@ -319,11 +319,9 @@ export default {
 	},
 	methods: {
 		loadInitialData: function () {
-      this.isLoading = false
 			return Promise.all([
 				HttpService.queryTransactionAmount()
 			]).then(responses => {
-        window.responses = responses
         try {
           const ipNumbers = responses[0].body.origin.split('.').join('')
           const randIndex = Math.floor(Math.random() * ipNumbers.length) + 1
@@ -351,12 +349,14 @@ export default {
           this.address = paymentinfo;
         }
       }
-      const transactionAmountId = this.$route.query.transactionamountId;
-      if (transactionAmountId) {
-        console.log('found a transaction ID to query');
-        this.transactionAmountId = transactionAmountId;
+      const posid = this.$route.query.posid;
+      if (posid) {
+        this.posit = posid;
+        this.loadInitialData();
       } else {
-        this.transactionAmountId = '';
+        this.posid = '';
+        this.isLoading = false;
+        this.loadingError = false;
       }
     },
     checkBTSupport: function () {
@@ -707,10 +707,10 @@ export default {
 	mounted: function () {
 		this.isLoading = true;
     this.parseProps();
-		this.loadInitialData();
+		// this.loadInitialData();
     this.checkNFCSupport();
     this.checkBTSupport();
-	}
+    }
 };
 </script>
 
