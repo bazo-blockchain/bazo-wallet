@@ -350,7 +350,7 @@ export default {
         }
       }
       const posid = this.$route.query.posid;
-      if (posid) {
+      if (posid && !this.amount) {
         this.posit = posid;
         this.loadInitialData();
       } else {
