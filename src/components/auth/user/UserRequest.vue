@@ -22,7 +22,7 @@
                     </label>
                     <div class="pos-rel">
                       <b-input-group-button class="accountSelectionWrap" block>
-                        <b-dropdown :disabled="!multipleAccountsConfigured" id="account-selection" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default" block>
+                        <b-dropdown :disabled="!multipleAccountsConfigured" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default" block>
                           <b-dropdown-item v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
                           <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
                           <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
@@ -333,7 +333,6 @@ export default {
 		hideQr: function () {
 			this.cameraShown = false;
 		},
-
     formatBazoAccount: function (account) {
       if (account) {
         return `${account.bazoname} (${account.bazoaddress.slice(0, 10)}..)`

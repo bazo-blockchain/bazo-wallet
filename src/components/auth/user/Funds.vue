@@ -21,7 +21,6 @@
              <b-table  small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
              					<template slot="bazoaddress" scope="item">
              						<div class="no-wrap">
-
              								<span class="mono" v-bind:title="item.item.bazoaddress">{{ cutBazoAddress(item.item.bazoaddress) }}</span>&nbsp;
                             <!-- <a v-bind:href="item.item.bazoaddress">Link</a> -->
                             <b-popover triggers="hover" :content="item.item.bazoaddress" class="popover-element">
@@ -68,10 +67,21 @@
 
         <form>
           <b-form-fieldset :label="$t('funds.address')">
-            <b-form-input v-model="bazoaddress" type="text"></b-form-input>
+            <b-form-input v-model="paymentInfo.surpriseid" type="text"></b-form-input>
           </b-form-fieldset>
-          <b-form-fieldset :label="$t('funds.name')">
-            <b-form-input v-model="bazoname" ></b-form-input>
+          <b-form-fieldset :label="$t('funds.amount')">
+            <b-input-group>
+              <b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any"></b-form-input>
+              <b-input-group-button slot="right">
+                <b-dropdown :disabled="!multipleAccountsConfigured" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default" block>
+                  <b-dropdown-item class="right-dropdown" v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
+                  <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
+                  <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
+                                              (paymentInfo.selectedAccount === '' && bazoAccount === this.defaultBazoAccount)"></i>
+                  </b-dropdown-item>
+                </b-dropdown>
+              </b-input-group-button>
+            </b-input-group>
           </b-form-fieldset>
           <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>
         </form>
@@ -108,9 +118,11 @@ export default {
 			loadingError: false,
 			currentPage: 1,
 			perPage: 15,
-      bazoaddress: '',
-      bazoname: '',
-      isPrime: false,
+      paymentInfo: {
+        surpriseid: '',
+        amount: 0,
+        selectedAccount: ''
+      },
 			alerts: {
 				success: {
 					moveFunds: false,
@@ -133,29 +145,53 @@ export default {
 	computed: {
     fields () {
       return {
-        bazoname: {
-          label: this.$t('funds.fields.name'),
+        ticketid: {
+          label: this.$t('funds.fields.ticketid'),
           sortable: true
         },
-        bazoaddress: {
-          label: this.$t('funds.fields.address'),
+        surpriseid: {
+          label: this.$t('funds.fields.surpriseid'),
           sortable: false
         },
-        balance: {
+        amount: {
           label: this.$t('funds.fields.balance'),
           sortable: true
         },
-        actions: {
-          label: this.$t('funds.fields.actions'),
+        target: {
+          label: this.$t('funds.fields.target'),
           sortable: false
         }
       }
     },
-    allAccounts () {
+    allTickets () {
+      return [
+        {
+          ticketid: '13x8y1n3',
+          surpriseid: '23by0a973hm323m0as893b493',
+          amount: -100,
+          target: '24KBD9FJAS24ND9S8O3J93'
+        },
+        {
+          ticketid: '7824b9s4',
+          surpriseid: '89shzgs98dz4nm3brs7dh2ap',
+          amount: -150,
+          target: '893MDMJXUFWM43JN8A9SD79'
+        }
+      ];
+    },
+    bazoAccounts: function () {
       return this.$store.getters.bazoAccounts;
     },
+    defaultBazoAccount: function () {
+      return this.bazoAccounts.find(function (bazoAccount) {
+        return bazoAccount.isPrime;
+      });
+    },
+    multipleAccountsConfigured: function () {
+      return this.bazoAccounts.length > 1;
+    },
     tableRows () {
-      return JSON.parse(JSON.stringify(this.allAccounts));
+      return this.allTickets;
     },
     configured () {
       return this.$store.getters.accountConfigured;
@@ -182,31 +218,14 @@ export default {
     cutBazoAddress: function (bazoAddress) {
       return `${bazoAddress.slice(0, 10)}..`
     },
+    formatBazoAccount: function (account) {
+      if (account) {
+        return `${account.bazoname} (${account.bazoaddress.slice(0, 10)}..)`
+      }
+      return false;
+    },
     saveAccount: function () {
-      const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
-			if (!this.isLoading) {
-				this.isLoading = true;
-        // An account should always be a primary account if there are not multiple
-        let isPrime;
-        if (this.tableRows.length > 0) {
-          isPrime = false
-        } else {
-          isPrime = true
-        }
-        this.$store.dispatch('updateConfig', {
-          isPrime: this.isPrime || isPrime,
-          bazoaddress: this.bazoaddress,
-          bazoname: this.bazoname
-        }).then(() => {
-          if (this.$route.query.redirect) {
-            this.$router.push({ path: redirect });
-          } else {
-            this.bazoaddress = '';
-            this.bazoname = '';
-            this.isLoading = false;
-          }
-        });
-			}
+
 		}
 	},
 	mounted: function () {
@@ -225,12 +244,15 @@ export default {
 			"moveFunds": "Move Funds",
 			"moveFundsDescription": "You can easily transfer your funds from previous Bazo addresses to your current, for Coinblesk used Bazo address",
 			"transferButton": "Transfer",
+      "amount": "Amount",
 			"reload": "Reload",
 			"fields": {
         "name": "Name",
-				"address": "Surprise Address",
-        "balance": "Balance",
-				"actions": "Actions"
+				"surpriseid": "Surprise Address",
+        "balance": "Volume",
+				"actions": "Actions",
+        "target": "Target Account (Bazo)"
+
 			},
       "save": "Add this Surprise account",
       "requestBazo": "Request Bazo",
@@ -257,7 +279,7 @@ export default {
 			"totalFunds": "Total",
 			"moveFunds": "Betrag verschieben",
       "description": "Tauschen Sie Surprise Punkte gegen Bazo coins.",
-      "name": "Name für dieses Konto",
+      "amount": "Menge",
       "address": "Adresse des Surprise-Kontos",
       "requestBazo": "Bazo anfordern",
       "requestBazoDescription": "Tauschen Sie Ihre Surprise Punkte gegen Bazo coins.",
@@ -266,9 +288,10 @@ export default {
 			"transferDescription": "Transferieren Sie Coins von diesem Account in dem Sie eine neue Zahlung tätigen",
 			"reload": "Aktualisieren",
 			"fields": {
-				"surpriseaddress": "Surprise Adresse",
-				"actions": "Aktionen",
-        "balance": "Guthaben"
+				"surpriseid": "Surprise Adresse",
+				"ticketid": "Ticket Nummer",
+        "balance": "Transaktionsvolumen",
+        "target": "Zielkonto (Bazo)"
 			},
       "save": "Surprise Konto hinzufügen",
       "makePrimary": "Use this account as a primary account",
@@ -355,7 +378,22 @@ h1 small {
 	font-size: 60%;
 	text-transform: uppercase;
 }
+/deep/ {
+  .dropdown-item {
+    cursor: pointer;
+  }
+  .input-group-btn .btn {
+    background: white;
+    border: 1px solid rgba(0,0,0,0.15);
+    color: inherit;
+    font-size: 15px;
 
+    .fa {
+      font-size: 85%;
+      margin-top: -1px;
+    }
+  }
+}
 /* default is added to uninteresting rows */
 .table /deep/ .table-default td {
 	padding: 0.3rem 0.75rem;
