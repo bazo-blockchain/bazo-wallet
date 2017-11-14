@@ -440,6 +440,15 @@ export default {
         }).catch((error) => {
           this.nfc.NFCWatching = false;
           this.nfc.NFCSuccess = false;
+          if (error.code === 9) {
+            this.nfc.NFCStatus = 'Your device or browser does not support the operation..';
+            this.nfc.NFCSupported = false;
+            setTimeout(() => {
+              this.closeNFC();
+            }, 2000)
+          } else if (error.code === 1000) {
+            this.nfc.NFCStatus = 'The operation was not successfull.. Retry?'
+          }
           this.nfc.NFCStatus = 'Error encountered: ' + error.toString();
         });
       }
