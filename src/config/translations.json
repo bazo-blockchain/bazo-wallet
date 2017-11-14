@@ -24,19 +24,38 @@
 			"offlineModeRedirect": "<i class='fa fa-wifi'></i>&nbsp;You cannot access this page, because you are currently&nbsp;<b>offline</b>."
 		},
     "userAccounts": {
-      "fields": {
-        "bazoname": "Name",
-        "bazoaddress": "Address"
-      },
-      "title": "Accounts",
-      "total": "Total",
+			"title": "Accounts",
+			"total": "Total",
+			"noActionsPossible": "No action possible.",
+			"paymentError": "An error occurred. Please try it again later on.",
       "description": "You currently store the following accounts:",
-      "bazoaddress": "Bazo address",
-      "bazoname": "Name this address",
-      "notConfigured": "You need to add an account first, before you can start using the Bazo Wallet.",
-      "save": "Add account",
-      "reload": "Reload"
-    },
+			"transferButton": "Transfer",
+			"transferDescription": "Transfer money from this account by issueing a new payment.",
+      "tradeButton": "Exchange",
+      "tradeDescription": "Exchange your Bazo coins back to surprise points by issueing a request.",
+			"reload": "Reload",
+			"fields": {
+				"bazoaddress": "Bazo Address",
+        "bazoname": "Name",
+        "prime": "Main account?",
+				"qr": "QR Code",
+        "balance": "Balance",
+				"actions": "Actions"
+			},
+      "makePrimary": "Mark this account as your main account?",
+			"alerts": {
+				"success": {
+					"moveFunds": "The amount was successfully transferred to the locked account. This transaction may be pending for up to an hour.",
+					"createNewAddress": "Your new address was successfully created. Transfer your funds to this address to make payments in Coinblesk. You can directly move your funds from previous addresses to your new address on this page.",
+					"payout": "Your virtual balance was transferred successfully to your locked address. The transaction may be pending for up to an hour."
+				},
+				"error": {
+					"moveFunds": "An error occurred during the transaction of the funds. Please try it again later.",
+					"createNewAddress": "An error occurred during the creation of a new address. Please try it again later.",
+					"payout": "An error occurred during the pay out. Please try it again later."
+				}
+			}
+		},
     "userSend": {
 			"title": "Transfer Bazo coins",
 			"boxTitle": "Transfer to a Bazo address",
@@ -101,19 +120,37 @@
 			"de": "Deutsch"
 		},
     "userAccounts": {
-      "fields": {
-        "bazoname": "Name",
-        "bazoaddress": "Adresse"
-      },
-      "title": "Konti",
-      "total": "Total",
-      "description": "Folgende Bazo Adressen sind gespeichert:",
-      "bazoaddress": "Bazo Adresse",
-      "bazoname": "Adressname (optional)",
-      "notConfigured": "Bitte fügen Sie zuerst einen Account hinzu um die Bazo Wallet benutzen zu können.",
-      "save": "Hinzufügen",
-      "reload": "Aktualisieren"
-    },
+			"title": "Konti",
+			"totalFunds": "Total",
+      "description": "Sie haben folgende Bazo-Adressen hinterlegt:",
+			"noActionsPossible": "Keine Aktion möglich.",
+			"paymentError": "Ein Fehler ist aufgetreten. Versuchen Sie es später noch einmal.",
+			"transferButton": "Transferieren",
+			"transferDescription": "Transferieren Sie Coins von diesem Account in dem Sie eine neue Zahlung tätigen",
+      "tradeButton": "Tauschen",
+      "tradeDescription": "Tauschen Sie Ihre Bazo Coins zurück zu Surprise Punkten indem Sie eine Anforderung erstellen.",
+			"reload": "Aktualisieren",
+			"fields": {
+				"bazoaddress": "Bazo Adresse",
+        "prime": "Hauptkonto?",
+				"qr": "QR Code",
+        "balance": "Guthaben",
+				"actions": "Aktionen"
+			},
+      "makePrimary": "Dieses Konto als Hauptkonto hinterlegen",
+			"alerts": {
+				"success": {
+					"moveFunds": "Der Betrag ist erfolgreich auf das gesperrte Konto überwiesen worden. Die Transaktion kann bis zu einer Stunde dauern.",
+					"createNewAddress": "Ihre neue Adresse wurde erfolgreich erstellt. Überweisen Sie Guthaben auf diese Adresse, um Zahlungen zu tätigen. Sie können das Guthaben von vorherigen Adressen hier direkt auf Ihre neue Adresse überweisen.",
+					"payout": "Ihr virtuelles Saldo wurde erfolgreich auf Ihre gesperrte Adresse überwiesen. Die Transaktion kann bis zu einer Stunde dauern."
+				},
+				"error": {
+					"moveFunds": "Es ist ein Fehler beim Überweisen aufgetreten. Bitte versuchen Sie es später erneut.",
+					"createNewAddress": "Es ist ein Fehler beim Erstellen einer neuen Adresse aufgetreten. Bitte versuchen Sie es später erneut.",
+					"payout": "Es ist ein Fehler beim Auszahlen aufgetreten. Bitte versuchen Sie es später erneut."
+				}
+			}
+		},
     "userSend": {
 			"title": "Bazo coins überweisen",
 			"boxTitle": "An eine Bazo Adresse überweisen",

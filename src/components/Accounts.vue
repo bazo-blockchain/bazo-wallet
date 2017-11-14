@@ -12,11 +12,10 @@
 		<hr>
 		<div class="pos-rel user-funds-content">
 			<spinner :is-loading="isLoading"></spinner>
-
+      <label>{{Translation.t('userAccounts.description')}}</label>
 			<div class="table-wrapper" v-if="!isLoading && !loadingError">
         <div v-if="configured"
              class="table-responsive">
-             <label>{{$t('userAccounts.description')}}</label>
 
              <b-table  small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
              					<template slot="bazoaddress" scope="item">
@@ -338,7 +337,7 @@ h1 small {
 }
 
 .reload-page {
-	margin-top: 20px;
+	// margin-top: 20px;
 	text-align: center;
 }
 </style>
