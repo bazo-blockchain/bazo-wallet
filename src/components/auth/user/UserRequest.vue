@@ -176,11 +176,9 @@ export default {
         BTSuccess: false
       },
       paymentInfo: {
-        selectedCurrency: 'Bazo',
         selectedAccount: '',
         amount: 0
       },
-			allowedCurrencies: ['Bazo', 'USD', 'EUR', 'CHF'],
 			formIsTouched: false,
 			successfulTransaction: false,
       Translation: Translation
