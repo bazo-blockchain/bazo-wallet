@@ -60,32 +60,40 @@
             </div>
              <hr>
 
-        </div>
-        <div class="" v-else>
-          <b-alert show variant="info">{{$t('funds.notConfigured')}}</b-alert>
-        </div>
+           </div>
+           <div class="" v-else>
+             <b-alert show variant="info">{{$t('funds.notConfigured')}}</b-alert>
+           </div>
 
-        <form>
-          <b-form-fieldset :label="$t('funds.address')">
-            <b-form-input v-model="paymentInfo.surpriseid" type="text"></b-form-input>
-          </b-form-fieldset>
-          <b-form-fieldset :label="$t('funds.amount')">
-            <b-input-group>
-              <b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any"></b-form-input>
-              <b-input-group-button slot="right">
-                <b-dropdown :disabled="!multipleAccountsConfigured" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default" block>
-                  <b-dropdown-item class="right-dropdown" v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
-                  <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
-                  <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
-                                              (paymentInfo.selectedAccount === '' && bazoAccount === this.defaultBazoAccount)"></i>
-                  </b-dropdown-item>
-                </b-dropdown>
-              </b-input-group-button>
-            </b-input-group>
-          </b-form-fieldset>
-          <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>
-        </form>
-				<div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
+           <form>
+             <div class="row">
+               <div class="col-12">
+                 <b-form-fieldset :label="$t('funds.address')">
+                    <b-form-input v-model="paymentInfo.surpriseid" type="text"></b-form-input>
+                  </b-form-fieldset>
+               </div>
+
+             <div class="col-12">
+               <b-form-fieldset :label="$t('funds.amount')">
+                 <b-input-group>
+                   <b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any"></b-form-input>
+                   <b-input-group-button slot="right">
+                     <b-dropdown :disabled="!multipleAccountsConfigured" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default" right>
+                       <b-dropdown-item  v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
+                         <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
+                         <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
+                         (paymentInfo.selectedAccount === '' && bazoAccount === this.defaultBazoAccount)"></i>
+                       </b-dropdown-item>
+                     </b-dropdown>
+                   </b-input-group-button>
+                 </b-input-group>
+               </b-form-fieldset>
+             </div>
+             <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>
+           </div>
+
+           </form>
+           <div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
 					<b-pagination size="md" :total-rows="this.tableRows.length" :per-page="perPage" v-model="currentPage" />
 				</div>
 
@@ -313,8 +321,26 @@ export default {
 <style lang="scss" scoped>
 @import '../../../styles/variables';
 
+.user-funds {
+  .form-control.mono {
+		font-size: 15px;
+	}
 .user-funds-content {
 	min-height: 300px;
+}
+.box-wrapper {
+  max-width: 650px;
+  padding-top: 20px;
+  .box {
+    width: 100%;
+    background: #f8f8f8;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    .main-title {
+      text-align: center;
+    }
+  }
 }
 h1 small {
 	margin-top: 6px;
@@ -379,6 +405,13 @@ h1 small {
 /deep/ {
   .dropdown-item {
     cursor: pointer;
+    .currency + .fa-check {
+      font-size: 60%;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 5px;
+      margin-top: -1px;
+    }
   }
   .input-group-btn .btn {
     background: white;
@@ -390,6 +423,13 @@ h1 small {
       font-size: 85%;
       margin-top: -1px;
     }
+  }
+}
+
+}
+@media (max-width: $breakpoint-hide-header) {
+  .user-funds {
+    font-size: 24px;
   }
 }
 /* default is added to uninteresting rows */
