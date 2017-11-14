@@ -6,7 +6,7 @@
           <span class="total-funds-small">{{ this.$t('funds.total') }}</span>
           <i class="fa fa-credit-card"></i>
           <!-- {{ convertSatoshiToBitcoin(funds.totalBalance) }} -->
-          {{totalFunds}}
+          {{totalBalance}}
         </small>
       </h1>
       <hr>
@@ -117,7 +117,6 @@ export default {
   name: 'user-funds',
   data: function () {
     return {
-      blubb: false,
       isLoading: true,
       loadingError: false,
       currentPage: 1,
@@ -127,6 +126,7 @@ export default {
         amount: 0,
         selectedAccount: ''
       },
+      totalBalance: 0,
       alerts: {
         success: {
           moveFunds: false,
@@ -213,6 +213,16 @@ export default {
         this.loadingError = false;
       })
     },
+    computeAndUpdateTotalFunds: function () {
+      let result = 0
+      this.bazoAccounts.forEach((bazoAccount) => {
+        // requestBalance(bazoAccount.bazoaddress, (res) => {
+        //   result += res.body.balance;
+        // })
+        result += Number(Math.random().toString()[3]);
+      })
+      this.totalBalance = result;
+    },
     encodeBazoAddress (bazoAddress) {
       return URIScheme.encode(bazoAddress);
     },
@@ -234,6 +244,7 @@ export default {
   },
   mounted: function () {
     this.loadData();
+    this.computeAndUpdateTotalFunds();
   }
 };
 </script>
@@ -256,7 +267,7 @@ export default {
           "target": "Target Account (Bazo)",
           "ticketid": "Ticket ID"
         },
-        "save": "Add this Surprise account",
+        "save": "Request Bazo Coins",
         "requestBazo": "Request Bazo",
         "requestBazoDescription": "You can exchange your Surprise points with Bazo coins.",
         "address": "Surprise Address",
@@ -295,7 +306,7 @@ export default {
           "balance": "Transaktionsvolumen",
           "target": "Zielkonto (Bazo)"
         },
-        "save": "Surprise Konto hinzufügen",
+        "save": "Bazo Coins anfordern",
         "makePrimary": "Use this account as a primary account",
         "alerts": {
           "success": {
