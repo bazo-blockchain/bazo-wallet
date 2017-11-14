@@ -13,7 +13,7 @@
 						<hr>
 						<form>
 							<div class="row">
-                <div class="col-12">
+                <!-- <div class="col-12">
                   <b-form-fieldset>
                     <label class="col-form-label" for="selection">{{ Translation.t('userRequest.accountUsed') }}
                       <b-popover :triggers="['hover']" :content="Translation.t('userRequest.accountUsedDescription')" class="popover-element">
@@ -32,17 +32,24 @@
                     </b-input-group-button slot="right">
                     </div>
                   </b-form-fieldset>
+                </div> -->
+                <div class="col-md-12">
+                  <label class="col-form-label" for="selection">{{ Translation.t('userRequest.accountUsed') }}
+                    <b-popover :triggers="['hover']" :content="Translation.t('userRequest.paymentInfo')" class="popover-element">
+                      <i class="fa fa-info-circle increase-focus"></i>
+                    </b-popover>
+                  </label>
                 </div>
 								<div class="col-md-12">
-									<b-form-fieldset :label="Translation.t('userRequest.amount')">
+									<b-form-fieldset>
 										<b-input-group>
 											<b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
 											<b-input-group-button slot="right">
-												<b-dropdown :text="paymentInfo.selectedCurrency" variant="default" right>
-													<b-dropdown-item v-for="currency in allowedCurrencies" @click="paymentInfo.selectedCurrency = currency" :key="currency">
-													<span class="currency">{{ currency }}</span>
-													<i class="fa fa-check" v-if="currency === paymentInfo.selectedCurrency"></i>
-													</b-dropdown-item>
+												<b-dropdown :disabled="!multipleAccountsConfigured" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount)" variant="default" right>
+													<b-dropdown-item v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
+													<span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
+                          <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
+                                                      (paymentInfo.selectedAccount === '' && bazoAccount === defaultBazoAccount)"></i>													</b-dropdown-item>
 												</b-dropdown>
 											</b-input-group-button>
 										</b-input-group>
