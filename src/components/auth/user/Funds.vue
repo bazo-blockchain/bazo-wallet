@@ -6,7 +6,7 @@
           <span class="total-funds-small">{{ this.$t('funds.total') }}</span>
           <i class="fa fa-credit-card"></i>
           <!-- {{ convertSatoshiToBitcoin(funds.totalBalance) }} -->
-          1
+          {{totalFunds}}
         </small>
       </h1>
       <hr>
@@ -14,10 +14,8 @@
         <spinner :is-loading="isLoading"></spinner>
 
         <div class="table-wrapper" v-if="!isLoading && !loadingError">
-          <div v-if="configured"
-          class="table-responsive">
           <label>{{$t('funds.description')}}</label>
-
+          <div v-if="configured"class="table-responsive">
           <b-table  small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
             <template slot="bazoaddress" scope="item">
               <div class="no-wrap">
@@ -35,7 +33,7 @@
           <template slot="balance" scope="item">
             <div class="nowrap">
               <i class="fa fa-star-o"></i>
-              <span >-</span>
+              <span>-</span>
               {{ item.balance || Math.random().toString()[3] }}
             </div>
           </template>
@@ -51,19 +49,17 @@
             </div>
           </template>
         </b-table>
-
-        <div class="reload-page">
-          <span class="btn btn-secondary" @click.prevent="">
-            <i class="fa fa-refresh"></i>
-            {{ this.$t('funds.reload') }}
-          </span>
-        </div>
-        <hr>
-
       </div>
       <div class="" v-else>
         <b-alert show variant="info">{{$t('funds.notConfigured')}}</b-alert>
       </div>
+      <div class="reload-page">
+        <span class="btn btn-secondary" @click.prevent="">
+          <i class="fa fa-refresh"></i>
+          {{ this.$t('funds.reload') }}
+        </span>
+      </div>
+      <hr>
 
       <form>
         <div class="row">
