@@ -1,9 +1,9 @@
 <template>
 <div class="user-funds">
 	<div class="compact">
-		<h1 class="display-4">{{ this.$t('userAccounts.title') }}
+		<h1 class="display-4">{{ this.Translation.t('userAccounts.title') }}
 			<small v-if="!isLoading && !loadingError" class="pull-right">
-				<span class="total-funds-small">{{ this.$t('userAccounts.total') }}</span>
+				<span class="total-funds-small">{{ this.Translation.t('userAccounts.total') }}</span>
 				<i class="fa fa-bitcoin"></i>
 				<!-- {{ convertSatoshiToBitcoin(funds.totalBalance) }} -->
         1
@@ -64,52 +64,50 @@
              						<div>
                           <div >
                             <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
-                              {{ $t('userAccounts.transferButton') }}
+                              {{ Translation.t('userAccounts.transferButton') }}
                             </b-button>
-                            <b-popover triggers="hover" :content="$t('userAccounts.transferDescription')" class="popover-element">
+                            <b-popover triggers="hover" :content="Translation.t('userAccounts.transferDescription')" class="popover-element">
                               <i class="fa fa-info-circle increase-focus"></i>
                             </b-popover>
                           </div>
                           <div>
                             <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
-                              {{ $t('userAccounts.tradeButton') }}
+                              {{ Translation.t('userAccounts.tradeButton') }}
                             </b-button>
-                            <b-popover triggers="hover" :content="$t('userAccounts.tradeDescription')" class="popover-element">
+                            <b-popover triggers="hover" :content="Translation.t('userAccounts.tradeDescription')" class="popover-element">
                               <i class="fa fa-info-circle increase-focus"></i>
                             </b-popover>
                           </div>
              						</div>
              					</template>
              				</b-table>
-
-             <div class="reload-page">
-              <span class="btn btn-secondary" @click.prevent="">
-                <i class="fa fa-refresh"></i>
-                {{ this.$t('userAccounts.reload') }}
-              </span>
-            </div>
-             <hr>
-
         </div>
         <div class="" v-else>
-          <b-alert show variant="info">{{$t('userAccounts.notConfigured')}}</b-alert>
+          <b-alert show variant="info">{{Translation.t('userAccounts.notConfigured')}}</b-alert>
         </div>
+        <div class="reload-page">
+         <span class="btn btn-secondary" @click.prevent="">
+           <i class="fa fa-refresh"></i>
+           {{ this.Translation.t('userAccounts.reload') }}
+         </span>
+       </div>
+        <hr>
 
         <form>
-          <b-form-fieldset :label="$t('userAccounts.bazoaddress')">
+          <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoaddress')">
             <b-form-input v-model="bazoaddress" type="text"></b-form-input>
           </b-form-fieldset>
-          <b-form-fieldset :label="$t('userAccounts.bazoname')">
+          <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoname')">
             <b-form-input v-model="bazoname" ></b-form-input>
           </b-form-fieldset>
           <div >
             <label>
-              <b-form-checkbox v-model="isPrime">{{ $t('userAccounts.makePrimary') }}
+              <b-form-checkbox v-model="isPrime">{{ Translation.t('userAccounts.makePrimary') }}
 
               </b-form-checkbox>
             </label>
           </div>
-          <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('userAccounts.save') }}</b-button>
+          <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ Translation.t('userAccounts.save') }}</b-button>
         </form>
 				<div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
 					<b-pagination size="md" :total-rows="this.tableRows.length" :per-page="perPage" v-model="currentPage" />
@@ -131,7 +129,8 @@ import Spinner from '@/components/Spinner';
 // import UtilService from '@/services/UtilService';
 import QrCode from '@/components/QrCode';
 import UserTransfer from '@/components/auth/user/UserTransfer';
-import URIScheme from '@/services/URISCheme'
+import URIScheme from '@/services/URISCheme';
+import Translation from '@/config/Translation';
 
 // import TransactionService from '@/services/TransactionService';
 
@@ -158,7 +157,8 @@ export default {
 					createNewAddress: false,
 					payout: false
 				}
-			}
+			},
+      Translation: Translation
 		}
 	},
 	components: {
@@ -170,27 +170,27 @@ export default {
     fields () {
       return {
         bazoname: {
-          label: this.$t('userAccounts.fields.bazoname'),
+          label: this.Translation.t('userAccounts.fields.bazoname'),
           sortable: true
         },
         bazoaddress: {
-          label: this.$t('userAccounts.fields.bazoaddress'),
+          label: this.Translation.t('userAccounts.fields.bazoaddress'),
           sortable: false
         },
         isPrime: {
-          label: this.$t('userAccounts.fields.prime'),
+          label: this.Translation.t('userAccounts.fields.prime'),
           sortable: true
         },
         qr: {
-          label: this.$t('userAccounts.fields.qr'),
+          label: this.Translation.t('userAccounts.fields.qr'),
           sortable: false
         },
         balance: {
-          label: this.$t('userAccounts.fields.balance'),
+          label: this.Translation.t('userAccounts.fields.balance'),
           sortable: true
         },
         actions: {
-          label: this.$t('userAccounts.fields.actions'),
+          label: this.Translation.t('userAccounts.fields.actions'),
           sortable: false
         }
       }
@@ -258,81 +258,6 @@ export default {
 	}
 };
 </script>
-
-<i18n>
-{
-	"en": {
-		"userAccounts": {
-			"title": "Funds",
-			"totalFunds": "Total",
-			"moveFunds": "Move Funds",
-			"moveFundsDescription": "You can easily transfer your funds from previous Bazo addresses to your current, for Coinblesk used Bazo address",
-			"noActionsPossible": "No action possible.",
-			"paymentError": "An error occurred. Please try it again later on.",
-			"transferButton": "Transfer",
-			"transferDescription": "Transfer money from this account by issueing a new payment.",
-      "tradeButton": "Exchange",
-      "tradeDescription": "Exchange your Bazo coins back to surprise points by issueing a request.",
-			"reload": "Reload",
-			"fields": {
-				"bazoaddress": "Bazo Address",
-        "prime": "Main account?",
-				"qr": "QR Code",
-        "balance": "Balance",
-				"actions": "Actions"
-			},
-      "makePrimary": "Dieses Konto als Hauptkonto verwenden.",
-			"alerts": {
-				"success": {
-					"moveFunds": "The amount was successfully transferred to the locked account. This transaction may be pending for up to an hour.",
-					"createNewAddress": "Your new address was successfully created. Transfer your funds to this address to make payments in Coinblesk. You can directly move your funds from previous addresses to your new address on this page.",
-					"payout": "Your virtual balance was transferred successfully to your locked address. The transaction may be pending for up to an hour."
-				},
-				"error": {
-					"moveFunds": "An error occurred during the transaction of the funds. Please try it again later.",
-					"createNewAddress": "An error occurred during the creation of a new address. Please try it again later.",
-					"payout": "An error occurred during the pay out. Please try it again later."
-				}
-			}
-		}
-	},
-	"de": {
-		"userAccounts": {
-			"title": "Guthaben",
-			"totalFunds": "Total",
-			"moveFunds": "Betrag verschieben",
-			"moveFundsDescription": "Sie können die Beträge älterer Bitcoin-Adressen bequem auf Ihre aktuelle, in Coinblesk verwendete Bitcoin-Adresse übertragen.",
-			"noActionsPossible": "Keine Aktion möglich.",
-			"paymentError": "Ein Fehler ist aufgetreten. Versuchen Sie es später noch einmal.",
-			"transferButton": "Transferieren",
-			"transferDescription": "Transferieren Sie Coins von diesem Account in dem Sie eine neue Zahlung tätigen",
-      "tradeButton": "Tauschen",
-      "tradeDescription": "Tauschen Sie Ihre Bazo Coins zurück zu Surprise Punkten indem Sie eine Anforderung erstellen.",
-			"reload": "Aktualisieren",
-			"fields": {
-				"bazoaddress": "Bazo Adresse",
-        "prime": "Hauptkonto?",
-				"qr": "QR Code",
-        "balance": "Guthaben",
-				"actions": "Aktionen"
-			},
-      "makePrimary": "Use this account as a primary account",
-			"alerts": {
-				"success": {
-					"moveFunds": "Der Betrag ist erfolgreich auf das gesperrte Konto überwiesen worden. Die Transaktion kann bis zu einer Stunde dauern.",
-					"createNewAddress": "Ihre neue Adresse wurde erfolgreich erstellt. Überweisen Sie Guthaben auf diese Adresse, um Zahlungen zu tätigen. Sie können das Guthaben von vorherigen Adressen hier direkt auf Ihre neue Adresse überweisen.",
-					"payout": "Ihr virtuelles Saldo wurde erfolgreich auf Ihre gesperrte Adresse überwiesen. Die Transaktion kann bis zu einer Stunde dauern."
-				},
-				"error": {
-					"moveFunds": "Es ist ein Fehler beim Überweisen aufgetreten. Bitte versuchen Sie es später erneut.",
-					"createNewAddress": "Es ist ein Fehler beim Erstellen einer neuen Adresse aufgetreten. Bitte versuchen Sie es später erneut.",
-					"payout": "Es ist ein Fehler beim Auszahlen aufgetreten. Bitte versuchen Sie es später erneut."
-				}
-			}
-		}
-	}
-}
-</i18n>
 
 <style lang="scss" scoped>
 @import '../styles/variables';
