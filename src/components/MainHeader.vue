@@ -10,10 +10,18 @@
 				</div>
 				<div class="button">
 					<router-link class="profile" :to="{ name: 'accounts' }" :class="offlineCheck('profile')">
-						<img class="user-image" :alt="defaultBazoAccount.bazoname" src="../assets/user.svg">
-						<span class="email">
-							{{ `${defaultBazoAccount.bazoname} (${defaultBazoAccount.bazoaddress.slice(0,15)}..)`}}
-						</span>
+            <div v-if="mainBazoAccount">
+              <img class="user-image" :alt="mainBazoAccount.bazoname" src="../assets/user.svg">
+              <span class="email">
+                {{ `${mainBazoAccount.bazoname} (${mainBazoAccount.bazoaddress.slice(0,15)}..)`}}
+              </span>
+            </div>
+            <div v-else>
+              <img class="user-image" :alt="defaultBazoAccount.bazoname" src="../assets/user.svg">
+  						<span class="email">
+  							{{ `${defaultBazoAccount.bazoname} (${defaultBazoAccount.bazoaddress.slice(0,15)}..)`}}
+  						</span>
+            </div>
 					</router-link>
 				</div>
 				<!-- <div class="button">
@@ -93,6 +101,11 @@ export default {
     },
     defaultBazoAccount: function () {
       return this.$store.getters.bazoAccounts[0];
+    },
+    mainBazoAccount: function () {
+      return this.$store.getters.bazoAccounts.find((bazoAccount) => {
+        return bazoAccount.isPrime;
+      });
     },
 		userBalance: function () {
 			return this.$store.state.userBalance;
