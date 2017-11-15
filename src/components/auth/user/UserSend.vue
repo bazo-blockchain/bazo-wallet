@@ -350,9 +350,23 @@ export default {
         }
       }
       const posid = this.$route.query.posid;
-      if (posid && !this.amount) {
-        this.posit = posid;
-        this.loadInitialData();
+      if (posid) {
+        this.posid = posid;
+        HttpService.queryTransactionAmount().then((response) => {
+          try {
+            const ipNumbers = response.body.origin.split('.').join('')
+            const randIndex = Math.floor(Math.random() * ipNumbers.length) + 1
+            const res = ipNumbers[randIndex].toString() + this.posid;
+            this.amount = res;
+            this.isLoading = false;
+            this.loadingError = false;
+          } catch (e) {
+            this.amount = 0
+          }
+        }).catch(() => {
+          this.isLoading = false
+          this.loadingError = true
+        })
       } else {
         this.posid = '';
         this.isLoading = false;
