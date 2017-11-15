@@ -13,26 +13,6 @@
 						<hr>
 						<form>
 							<div class="row">
-                <!-- <div class="col-12">
-                  <b-form-fieldset>
-                    <label class="col-form-label" for="selection">{{ Translation.t('userRequest.accountUsed') }}
-                      <b-popover :triggers="['hover']" :content="Translation.t('userRequest.accountUsedDescription')" class="popover-element">
-                        <i class="fa fa-info-circle increase-focus"></i>
-                      </b-popover>
-                    </label>
-                    <div class="pos-rel">
-                      <b-input-group-button class="accountSelectionWrap" block>
-                        <b-dropdown :disabled="!multipleAccountsConfigured" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default" block>
-                          <b-dropdown-item v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
-                          <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
-                          <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
-                                                      (paymentInfo.selectedAccount === '' && bazoAccount === defaultBazoAccount)"></i>
-                          </b-dropdown-item>
-                        </b-dropdown>
-                    </b-input-group-button slot="right">
-                    </div>
-                  </b-form-fieldset>
-                </div> -->
                 <div class="col-md-12">
                   <label class="col-form-label" for="selection">{{ Translation.t('userRequest.accountUsed') }}
                     <b-popover :triggers="['hover']" :content="Translation.t('userRequest.paymentInfo')" class="popover-element">
