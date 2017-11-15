@@ -67,11 +67,11 @@
                     <i class="fa fa-qrcode"></i>
                     <span>QR Code</span>
                   </b-button>
-                  <b-button class="payment-variant-btn" variant="primary" @click.prevent="openBT">
+                  <b-button class="payment-variant-btn" :disabled="!bluetooth.BTSupported" variant="primary" @click.prevent="openBT">
                     <i class="fa fa-bluetooth-b"></i>
                     <span>Bluetooth</span>
                   </b-button>
-                  <b-button class="payment-variant-btn" variant="primary" @click.prevent="openNFC">
+                  <b-button class="payment-variant-btn" :disabled="!nfc.NFCSupported" variant="primary" @click.prevent="openNFC">
                     <i class="fa fa-rss"></i>
                     <span>NFC</span>
                   </b-button>
@@ -167,7 +167,7 @@ export default {
         NFCSending: false,
         NFCSuccess: false,
         NFCShown: false,
-        NFCSupported: true
+        NFCSupported: false
       },
       bluetooth: {
         BTStatus: 'not watching..',
@@ -249,6 +249,8 @@ export default {
     checkBTSupport: function () {
       if ('bluetooth' in navigator) {
         this.bluetooth.BTSupported = true;
+        // TODO check if bluetooth can actually be adressed
+        this.bluetooth.BTSupported = false;
       } else {
         this.bluetooth.BTSupported = false;
       }
