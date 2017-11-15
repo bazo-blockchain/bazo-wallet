@@ -36,9 +36,11 @@ export default {
       try {
         qr = makeQR(5)
       } catch (e) {
-
-      } finally {
-
+        try {
+          qr = makeQR(6)
+        } catch (e) {
+          qr = makeQR(7)
+        }
       }
 			this.$el.querySelector('.qr-image div').innerHTML = qr.createImgTag(5, 0);
 		}
