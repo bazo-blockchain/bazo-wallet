@@ -109,7 +109,7 @@ import Spinner from '@/components/Spinner';
 // import UtilService from '@/services/UtilService';
 import QrCode from '@/components/QrCode';
 import UserTransfer from '@/components/auth/user/UserTransfer';
-import URIScheme from '@/services/URISCheme'
+import URIScheme from '@/services/URIScheme'
 
 // import TransactionService from '@/services/TransactionService';
 
