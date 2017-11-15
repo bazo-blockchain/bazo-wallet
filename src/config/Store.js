@@ -21,6 +21,9 @@ const store = new Vuex.Store({
       configured: false,
       accounts: []
     },
+    settings: {
+      showAdvancedOptions: 'shown'
+    },
 		offline: !(typeof window.navigator.onLine === 'undefined' ||
 				window.navigator.onLine === null ||
 				window.navigator.onLine)
@@ -34,6 +37,9 @@ const store = new Vuex.Store({
         return true;
       }
       return false;
+    },
+    showAdvancedOptions: function (state) {
+      return state.settings.showAdvancedOptions;
     },
     configured: function (state) {
       return state.config.configured;
@@ -84,6 +90,9 @@ const store = new Vuex.Store({
       } else {
         console.log('invalid config');
       }
+    },
+    setAdvancedOptionsShown: function (state, shown) {
+      state.settings.showAdvancedOptions = shown;
     },
 		updateAuth: function (state, token) {
 			state.auth.authenticated = true;
@@ -180,6 +189,9 @@ const store = new Vuex.Store({
     updateConfig: function (context, config) {
       return context.commit('updateConfig', config);
     },
+    setAdvancedOptionsShown: function (context, shown) {
+      return context.commit('setAdvancedOptionsShown', shown);
+    },
     updatePrimaryAccount: function (context, account) {
       return context.commit('updatePrimaryAccount', account)
     },
@@ -196,7 +208,7 @@ const store = new Vuex.Store({
 		// persists vuex state to localstorage (only the given paths)
 		PersistedState({
 			key: 'coinblesk_vuex_store',
-			paths: [ 'auth', 'user', 'language', 'userBalance', 'config' ]
+			paths: [ 'auth', 'user', 'language', 'userBalance', 'config', 'settings' ]
 		})
 	]
 });
