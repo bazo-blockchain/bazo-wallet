@@ -38,6 +38,10 @@
           <i class="fa fa-credit-card"></i>
           <span class="text">{{ $t('sideBar.funds') }}</span>
         </router-link>
+        <router-link v-if="configured" class="entry" :to="{ name: 'settings' }" :class="dynamicLinkClasses('settings')" @click.native="closeMenu">
+          <i class="fa fa-cog"></i>
+          <span class="text">{{ $t('sideBar.settings') }}</span>
+        </router-link>
 			</div>
 		</div>
 		<div class="language-picker" :class="{ 'offline-mode': isOffline }">
@@ -302,6 +306,7 @@ $language-picker-height-offline: 8.9em;
       "userRequest": "Request Bazo coins",
 			"userAccounts": "Accounts",
       "funds": "Funds",
+      "settings": "Settings",
 			"login": "Login"
 		}
 	},
@@ -317,6 +322,7 @@ $language-picker-height-offline: 8.9em;
       "userRequest": "Bazo coins erhalten",
 			"userAccounts": "Konti",
       "funds": "Guthaben",
+      "settings": "Einstellungen",
 			"login": "Anmelden"
 		}
 	}
