@@ -147,12 +147,11 @@
 </template>
 
 <script>
-// import UtilService from '@/services/UtilService';
+import UtilService from '@/services/UtilService';
 // import HttpService from '@/services/HttpService';
 import Spinner from '@/components/Spinner';
 import Translation from '@/config/Translation';
 import QrCode from '@/components/QrCode';
-import URIScheme from '@/services/URISCheme'
 
 export default {
 	name: 'user-send',
@@ -202,9 +201,12 @@ export default {
     },
     encodedPaymentInformation: function () {
       let target = this.paymentInfo.selectedAccount || this.defaultBazoAccount;
-      return URIScheme.encode(target.bazoaddress, {
+      console.log(UtilService.encodeAsCompleteURI(target.bazoaddress, {
         amount: this.paymentInfo.amount
-      })
+      }));
+      return UtilService.encodeAsCompleteURI(target.bazoaddress, {
+        amount: this.paymentInfo.amount
+      }, 132)
     },
     whatsappLink: function () {
       return 'whatsapp://send?text=https://bazopay2.surge.sh/#/auth/user/send/?paymentinfo=' + this.encodedPaymentInformation
