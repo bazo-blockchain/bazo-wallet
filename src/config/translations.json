@@ -105,7 +105,9 @@
       "NFCTitle": "Transfer to NFC tag",
       "NFCNotice": "Hold your device to an NFC Tag to transfer the payment information.",
       "BTTitle": "Transfer to a Bluetooth device.",
-      "BTNotice": "If no devices are showing, then there might not be any or your browser or phone does not support Bluetooth."
+      "BTNotice": "If no devices are showing, then there might not be any or your browser or phone does not support Bluetooth.",
+      "posid": "Identify POS",
+      "posiddescription": "Supply an ID that corresponds to the POS System so that the amount of the transaction can be queried."
     },
 		"general": {
 			"rowsPerPage": "Rows per page"
@@ -200,7 +202,9 @@
       "NFCTitle": "Auf NFC Tag übertragen.",
       "NFCNotice": "Halten sie Ihr Gerät an ein NFC Tag um die Zahlungsinformationen darauf zu übertragen.",
       "BTTitle": "An Bluetooth Gerät senden",
-      "BTNotice": "Falls keine Geräte wählbar sind, kann es sein dass ihr Gerät oder Browser kein Bluetoot unterstützt."
+      "BTNotice": "Falls keine Geräte wählbar sind, kann es sein dass ihr Gerät oder Browser kein Bluetooth unterstützt.",
+      "posid": "POS Identifikation",
+      "posiddescription": "Geben Sie die Identifikation des POS Systems an um die Höhe der Transaktion automatisch abrufen zu lassen."
     },
 		"toasts": {
 			"signedIn": "Sie haben sich erfolgreich eingeloggt.",

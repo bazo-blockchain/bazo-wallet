@@ -20,6 +20,7 @@
                     </b-popover>
                   </label>
                 </div>
+
 								<div class="col-md-12">
 									<b-form-fieldset>
 										<b-input-group>
@@ -36,9 +37,16 @@
 									</b-form-fieldset>
 								</div>
 
+                <div class="col-md-12" v-if="this.advancedOptionsShown">
+                  <label class="col-form-label" for="selection">{{ Translation.t('userRequest.posid') }}
+                    <b-popover :triggers="['hover']" :content="Translation.t('userRequest.posiddescription')" class="popover-element">
+                      <i class="fa fa-info-circle increase-focus"></i>
+                    </b-popover>
+                  </label>
+                  <b-form-input v-model="paymentInfo.posid" class="mono amount-input"></b-form-input>
+                </div>
+
 								<div class="col-12">
-									<!-- warning threshold is 0.01 BTC fees per transaction, if above: crazy world -->
-									<!-- <b-button class="submit-button" :block="true" variant="primary" @click.prevent="submitPreparation" :disabled="formIsTouched && !validForm">{{ Translation.t('userRequest.button', { amount: amount }) }}</b-button> -->
                   <hr>
                   <div>
                     <label for="">{{ Translation.t('userRequest.transfertype') }}</label>
@@ -156,7 +164,8 @@ export default {
       },
       paymentInfo: {
         selectedAccount: '',
-        amount: 0
+        amount: 0,
+        posid: '-'
       },
 			formIsTouched: false,
 			successfulTransaction: false,
@@ -179,14 +188,20 @@ export default {
     multipleAccountsConfigured: function () {
       return this.bazoAccounts.length > 1;
     },
+    advancedOptionsShown: function () {
+      return this.$store.getters.showAdvancedOptions === 'shown'
+    },
+    validPOSId: function () {
+      if (this.paymentInfo.posid !== '-' && this.paymentInfo.posid) {
+        return true;
+      } return false;
+    },
     encodedPaymentInformation: function () {
       let target = this.paymentInfo.selectedAccount || this.defaultBazoAccount;
-      console.log(UtilService.encodeAsCompleteURI(target.bazoaddress, {
-        amount: this.paymentInfo.amount
-      }));
+      let posid = this.validPOSId ? this.paymentInfo.posid : '';
       return UtilService.encodeAsCompleteURI(target.bazoaddress, {
         amount: this.paymentInfo.amount
-      }, 132)
+      }, posid)
     },
     whatsappLink: function () {
       return 'whatsapp://send?text=https://bazopay2.surge.sh/#/auth/user/send/?paymentinfo=' + this.encodedPaymentInformation
