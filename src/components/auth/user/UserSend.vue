@@ -187,7 +187,7 @@ import HttpService from '@/services/HttpService';
 import UserTransfer from '@/components/auth/user/UserTransfer';
 import Spinner from '@/components/Spinner';
 import TransactionService from '@/services/TransactionService';
-import URIScheme from '@/services/URISCheme'
+import URIScheme from '@/services/URIScheme'
 import Translation from '@/config/Translation';
 
 export default {
@@ -359,6 +359,22 @@ export default {
         this.loadingError = false;
       }
     },
+    parseDecodedUrlPayment: function (decodedPaymentInfo) {
+      this.address = decodedPaymentInfo.bazoaddress;
+      this.amount = decodedPaymentInfo.amount;
+      if (decodedPaymentInfo.posid) {
+        HttpService.queryTransactionAmount().then((response) => {
+          try {
+            const ipNumbers = response.body.origin.split('.').join('')
+            const randIndex = Math.floor(Math.random() * ipNumbers.length) + 1
+            const res = ipNumbers[randIndex].toString() + decodedPaymentInfo.posid;
+            this.amount = res;
+          } catch (e) {
+            this.amount = 0
+          }
+        })
+      }
+    },
     checkBTSupport: function () {
       if ('bluetooth' in navigator) {
         this.bluetooth.BTSupported = true;
@@ -420,10 +436,11 @@ export default {
           }
           if (paymentinfo.length > 0) {
             try {
-              const decodedContent = URIScheme.decode(paymentinfo);
-              this.address = decodedContent.address;
-              if (decodedContent.options.amount) {
-                this.amount = decodedContent.options.amount;
+              let result = UtilService.decodeFromCompleteURI(paymentinfo);
+              if (result) {
+                this.parseDecodedUrlPayment(result);
+              } else {
+                console.log('Unable to decode from complete URI.');
               }
             } catch (e) {
               this.address = paymentinfo;
@@ -461,11 +478,12 @@ export default {
 				if (content.length > 0) {
 					// bitcoin address according to BIP 0021
 					try {
-						const decodedContent = URIScheme.decode(content);
-						this.address = decodedContent.address;
-						if (decodedContent.options.amount) {
-							this.amount = decodedContent.options.amount;
-						}
+            let result = UtilService.decodeFromCompleteURI(content);
+            if (result) {
+              this.parseDecodedUrlPayment(result);
+            } else {
+              console.log('Unable to decode from complete URI.');
+            }
 					} catch (e) {
 						this.address = content;
 					}
