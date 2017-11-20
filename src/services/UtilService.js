@@ -47,7 +47,10 @@ UtilService.encodeAsCompleteURI = function (address, options, posid) {
 UtilService.decodeFromCompleteURI = function (input) {
   let result = {};
   if (UtilService.validURL(input)) {
-    result.posid = input.match(/posid=(\S+)&/)[1]
+    let posidExists = input.match(/posid=(\S+)&/);
+    if (posidExists) {
+      result.posid = input.match(/posid=(\S+)&/)[1];
+    }
     let bazoEncodedPayment = input.match(/paymentinfo=(\S+)/)[1]
     try {
       let decodedContent = URIScheme.decode(bazoEncodedPayment);
