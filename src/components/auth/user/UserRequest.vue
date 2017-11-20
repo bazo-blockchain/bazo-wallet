@@ -300,11 +300,8 @@ export default {
         navigator.nfc.push({
           records: [
             {
-              recordType: 'json',
-              mediaType: 'application/json',
-              data: {
-                data: this.encodedPaymentInformation
-              }
+              recordType: 'url',
+              data: this.encodedPaymentInformation
             }
           ]
         }).then(() => {
