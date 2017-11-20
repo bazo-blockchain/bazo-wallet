@@ -67,6 +67,11 @@
                       <i class="fa fa-whatsapp" aria-hidden="true"></i>
                       Whatsapp
                     </a>
+                    <a v-if="androidOrIOSDevice || true" href="nfcbridge.peerpush://send/123123">
+                      <i class="fa fa-android" aria-hidden="true"></i>
+                      NFC Bridge
+                    </a>
+
 
 
                   <div class="nfc-screen" :class="{'shown': nfc.NFCShown}" @click="closeNFC">
