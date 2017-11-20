@@ -67,7 +67,7 @@
                       <i class="fa fa-whatsapp" aria-hidden="true"></i>
                       Whatsapp
                     </a>
-                    <a v-if="androidOrIOSDevice || true" href="nfcbridge.peerpush://send/123123">
+                    <a v-if="androidOrIOSDevice || true" v-bind:href="nfcbridgeLink" >
                       <i class="fa fa-android" aria-hidden="true"></i>
                       NFC Bridge
                     </a>
@@ -210,6 +210,9 @@ export default {
     },
     whatsappLink: function () {
       return 'whatsapp://send?text=https://bazopay2.surge.sh/#/auth/user/send/?paymentinfo=' + this.encodedPaymentInformation
+    },
+    nfcbridgeLink: function () {
+      return 'nfcbridge.peerpush://send/' + 'https://bazopay2.surge.sh/#/auth/user/send/?paymentinfo=' + this.encodedPaymentInformation;
     },
     validAmount: function () {
       if (this.paymentInfo.amount > 0) {
