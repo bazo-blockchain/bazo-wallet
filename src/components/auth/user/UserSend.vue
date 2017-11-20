@@ -442,12 +442,10 @@ export default {
         navigator.nfc.watch((message) => {
           this.nfc.NFCWatching = false;
           this.nfc.NFCSuccess = true;
+
           var paymentinfo = '';
-          try {
-            paymentinfo = message.records[0].data.data;
-          } catch (e) {
-            paymentinfo = message.records[0].data
-          }
+          paymentinfo = message.records[0].data;
+
           if (paymentinfo.length > 0) {
             try {
               let result = UtilService.decodeFromCompleteURI(paymentinfo);
@@ -455,6 +453,7 @@ export default {
                 this.parseDecodedUrlPayment(result);
               } else {
                 console.log('Unable to decode from complete URI.');
+                this.address = paymentinfo;
               }
             } catch (e) {
               this.address = paymentinfo;
@@ -490,7 +489,6 @@ export default {
 			});
 			this.qrScanner.addListener('scan', (content) => {
 				if (content.length > 0) {
-					// bitcoin address according to BIP 0021
 					try {
             let result = UtilService.decodeFromCompleteURI(content);
             if (result) {
