@@ -43,7 +43,7 @@
                       <i class="fa fa-info-circle increase-focus"></i>
                     </b-popover>
                   </label>
-                  <b-form-input v-model="paymentInfo.posid" class="mono amount-input"></b-form-input>
+                  <b-form-input v-model="paymentInfo.posid" class="mono posid-input"></b-form-input>
                 </div>
 
 								<div class="col-12">
@@ -516,9 +516,9 @@ export default {
 		margin-bottom: 10px;
 	}
 	.address-input,
-	.amount-input {
+	.posid-input {
 		position: relative;
-		z-index: 10;
+		z-index: 1;
 	}
 	.address-input {
 		padding-right: 70px;
