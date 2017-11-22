@@ -212,7 +212,9 @@ export default {
       return 'whatsapp://send?text=https://bazopay2.surge.sh/#/auth/user/send/?paymentinfo=' + this.encodedPaymentInformation
     },
     nfcbridgeLink: function () {
-      return 'nfcbridge.peerpush://send/' + 'https://bazopay2.surge.sh/#/auth/user/send/?paymentinfo=' + this.encodedPaymentInformation;
+      let target = this.paymentInfo.selectedAccount || this.defaultBazoAccount;
+      let posid = this.validPOSId ? this.paymentInfo.posid : '';
+      return `nfcbridge.peerpush://paymentInfo/${target.bazoaddress}/${this.paymentInfo.amount}/${posid}`;
     },
     validAmount: function () {
       if (this.paymentInfo.amount > 0) {
