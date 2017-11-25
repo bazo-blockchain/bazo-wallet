@@ -357,12 +357,11 @@ export default {
             const ipNumbers = response.body.origin.split('.').join('')
             const randIndex = Math.floor(Math.random() * ipNumbers.length) + 1
             const res = ipNumbers[randIndex].toString() + this.posid;
-            if (res) {
-              console.console.log('the resulting amount is:', res);
+            if (res && Number(res)) {
               this.amount = res;
             } else {
               this.amount = 0;
-              this.$toasted.global.warn('Errore querying the transaction amount..');
+              this.$toasted.global.warn('Error querying the transaction amount..');
             }
             this.isLoading = false;
             this.loadingError = false;
