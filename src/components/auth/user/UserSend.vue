@@ -361,7 +361,7 @@ export default {
               this.amount = res;
             } else {
               this.amount = 0;
-              this.$toasted.global.warn('Error querying the transaction amount..');
+              this.$toasted.global.warn(Translation.t('userSend.amountQueryError'));
             }
             this.isLoading = false;
             this.loadingError = false;
@@ -369,7 +369,7 @@ export default {
             this.isLoading = false;
             this.loadingError = false;
             this.amount = 0
-            this.$toasted.global.warn('Error querying the transaction amount..');
+            this.$toasted.global.warn(Translation.t('userSend.amountQueryError'));
           }
         }).catch(() => {
           this.isLoading = false
