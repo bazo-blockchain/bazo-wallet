@@ -55,7 +55,7 @@ UtilService.decodeFromCompleteURI = function (input) {
     try {
       let decodedContent = URIScheme.decode(bazoEncodedPayment);
       result.bazoaddress = decodedContent.address;
-      if (decodedContent.options.amount) {
+      if (decodedContent.options.amount || decodedContent.options.amount === 0) {
         result.amount = decodedContent.options.amount;
       }
     } catch (e) {
