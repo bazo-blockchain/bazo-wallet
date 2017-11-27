@@ -156,7 +156,7 @@ export default {
       isMobileDevice: false,
       isAndroidDevice: false,
       nfc: {
-        NFCStatus: 'not sending..',
+        NFCStatus: Translation.t('userRequest.nfcstatusinitial'),
         NFCSending: false,
         NFCSuccess: false,
         NFCShown: false,
@@ -306,7 +306,7 @@ export default {
     sendPaymentInfoNFC: function () {
       if (this.nfc.NFCSupported) {
         this.nfc.NFCSending = true;
-        this.nfc.NFCStatus = 'trying to send to nearby NFC devices..';
+        this.nfc.NFCStatus = Translation.t('userRequest.NFCSending');
         navigator.nfc.push({
           records: [
             {
@@ -316,7 +316,7 @@ export default {
           ]
         }).then(() => {
           this.nfc.NFCSending = false;
-          this.nfc.NFCStatus = 'The payment info was transferred successfully!';
+          this.nfc.NFCStatus = Translation.t('userRequest.NFCSendSuccess');
           this.nfc.NFCSuccess = true;
           let that = this;
           setTimeout(() => {
@@ -327,13 +327,13 @@ export default {
           this.nfc.NFCSuccess = false;
           if (error.code === 9) {
             this.nfc.NFCSupported = false;
-            this.nfc.NFCStatus = 'WebNFC can not be used on this device.'
+            this.nfc.NFCStatus = Translation.t('userRequest.NFCNotSupported')
             let that = this;
             setTimeout(() => {
               that.closeNFC()
             }, 3000)
           } else {
-            this.nfc.NFCStatus = 'Error trying to send to NFC devices:' + error.toString();
+            this.nfc.NFCStatus = Translation.t('userRequest.NFCSendError') + error.toString();
           }
         })
       }
