@@ -63,11 +63,11 @@
                     <i class="fa fa-rss"></i>
                     <span>NFC</span>
                   </b-button>
-                    <a v-if="androidOrIOSDevice" v-bind:href="whatsappLink" data-action="share/whatsapp/share">
+                    <a v-if="isMobileDevice" v-bind:href="whatsappLink" data-action="share/whatsapp/share">
                       <i class="fa fa-whatsapp" aria-hidden="true"></i>
                       Whatsapp
                     </a>
-                    <a v-if="androidOrIOSDevice || true" v-bind:href="nfcbridgeLink" >
+                    <a v-if="isAndroidDevice" v-bind:href="nfcbridgeLink" >
                       <i class="fa fa-android" aria-hidden="true"></i>
                       NFC Bridge
                     </a>
@@ -153,7 +153,8 @@ export default {
 			isLoading: true,
 			loadingError: false,
       cameraShown: false,
-      androidOrIOSDevice: false,
+      isMobileDevice: false,
+      isAndroidDevice: false,
       nfc: {
         NFCStatus: 'not sending..',
         NFCSending: false,
@@ -228,9 +229,8 @@ export default {
       this.isLoading = false
 		},
     checkPlatform: function () {
-      if (this.onIOS() || this.onAndroid()) {
-        this.androidOrIOSDevice = true;
-      }
+      this.isMobileDevice = (this.onIOS() || this.onAndroid());
+      this.isAndroidDevice = this.onAndroid();
     },
     onIOS: function () {
       var iDevices = [
