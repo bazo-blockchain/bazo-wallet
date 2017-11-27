@@ -332,8 +332,14 @@ export default {
             setTimeout(() => {
               that.closeNFC()
             }, 3000)
+          } else if (error.code === 19) {
+            this.nfc.NFCStatus = Translation.t('userRequest.NFCSendAborted')
+            let that = this;
+            setTimeout(() => {
+              that.sendPaymentInfoNFC()
+            }, 2000)
           } else {
-            this.nfc.NFCStatus = Translation.t('userRequest.NFCSendError') + error.toString();
+            this.nfc.NFCStatus = Translation.t('userRequest.NFCSendError') + error.toString() + error.code;
           }
         })
       }
