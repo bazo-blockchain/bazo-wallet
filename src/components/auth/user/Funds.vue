@@ -84,8 +84,8 @@
                 </b-input-group-button>
               </b-input-group>
             </b-form-fieldset>
+                     <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>                                                          
           </div>
-          <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>
         </div>
 
       </form>
