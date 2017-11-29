@@ -36,7 +36,7 @@
              						<div class="nowrap">
              							<i class="fa fa-bitcoin"></i>
              							<span >-</span>
-             							{{ item.balance || Math.random().toString()[3] }}
+             							{{ item.item.balance}}
              						</div>
              					</template>
                       <template slot="isPrime" scope="item">
@@ -145,6 +145,8 @@ export default {
       bazoaddress: '',
       bazoname: '',
       isPrime: false,
+      // totalBalance: 0,
+      accounts: [],
 			alerts: {
 				success: {
 					moveFunds: false,
@@ -195,10 +197,28 @@ export default {
       }
     },
     allAccounts () {
-      return this.$store.getters.bazoAccounts;
+      let accounts = this.$store.getters.bazoAccounts;
+      this.accounts = accounts;
+      this.updateBalances();
+      return accounts;
+    },
+    defaultBazoAccount: function () {
+      return this.allAccounts.find(function (bazoAccount) {
+        return bazoAccount.isPrime;
+      });
+    },
+    totalBalance: function () {
+      var sum = this.accounts.reduce(function (acc, val) {
+        if (val && val.balance && Number(val.balance)) {
+          return acc + val.balance;
+        } else {
+          return acc;
+        }
+      }, 0);
+      return sum;
     },
     tableRows () {
-      return JSON.parse(JSON.stringify(this.allAccounts));
+      return JSON.parse(JSON.stringify(this.accounts));
     },
     configured () {
       return this.$store.getters.accountConfigured;
@@ -206,16 +226,31 @@ export default {
 	},
 	methods: {
 		loadData: function () {
-			this.isLoading = true;
-			return Promise.all([
-			]).then(responses => {
-				this.loadingError = false;
-				this.isLoading = false;
-			}, () => {
-				this.isLoading = false;
-				this.loadingError = false;
-			})
+      if (this.configured) {
+        return Promise.all([
+          HttpService.queryAccountBalance(this.defaultBazoAccount.bazoaddress)
+        ]).then(responses => {
+          // this.totalBalance = responses[0].body.Balance;
+          this.loadingError = false;
+          this.isLoading = false;
+        }, () => {
+          this.isLoading = false;
+          this.loadingError = false;
+        })
+      } else {
+        this.isLoading = false;
+      }
 		},
+    updateBalances (address) {
+      let that = this;
+      this.accounts.forEach(function (account) {
+        HttpService.queryAccountBalance(account.bazoaddress).then((res) => {
+          let target =
+            that.accounts.find((candidate) => { return candidate.bazoaddress === account.bazoaddress })
+          target.balance = res.body.Balance
+        })
+      })
+    },
     encodeBazoAddress (bazoAddress) {
       return URIScheme.encode(bazoAddress);
     },
