@@ -18,7 +18,12 @@ const HttpService = {
 	},
   queryTransactionAmount: function (doNotIntercept) {
     return Vue.http.get('https://httpbin.org/ip', {
-      headers: DO_NOT_INTERCEPT
+    })
+  },
+  queryAccountBalance: function (accountAddress, doNotIntercept) {
+    return Vue.http.get('http://localhost:8001/account/' + accountAddress, {
+      method: 'GET',
+      headers: 'Accept: application/json'
     })
   },
 	activate: function (data, doNotIntercept) {
