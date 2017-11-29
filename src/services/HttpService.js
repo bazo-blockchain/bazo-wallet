@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import properties from '@/properties';
+import jQuery from 'jQuery';
 
 const DO_NOT_INTERCEPT = { 'DO_NOT_INTERCEPT': 'enabled' };
 
@@ -20,11 +21,15 @@ const HttpService = {
     return Vue.http.get('https://httpbin.org/ip', {
     })
   },
-  queryAccountBalance: function (accountAddress, doNotIntercept) {
+  queryAccountInfo: function (accountAddress, doNotIntercept) {
     return Vue.http.get('http://localhost:8001/account/' + accountAddress, {
       method: 'GET',
       headers: 'Accept: application/json'
     })
+  },
+  issueFundsTx: function (recipient, sender, amount, txCount, privKey, fee) {
+    // const header = 0;
+    return jQuery.get(`http://localhost:8001/fundsTx/${amount}/${fee}/${txCount}/${sender}/${recipient}/${privKey}`)
   },
 	activate: function (data, doNotIntercept) {
 		return Vue.http.post(properties.HOST + '/user-account/create-verify', data,
