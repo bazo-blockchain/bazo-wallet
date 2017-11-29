@@ -6,7 +6,7 @@
 				<span class="total-funds-small">{{ this.Translation.t('userAccounts.total') }}</span>
 				<i class="fa fa-bitcoin"></i>
 				<!-- {{ convertSatoshiToBitcoin(funds.totalBalance) }} -->
-        1
+        {{this.totalBalance}}
 			</small>
 		</h1>
 		<hr>
@@ -85,7 +85,7 @@
           <b-alert show variant="info">{{Translation.t('userAccounts.notConfigured')}}</b-alert>
         </div>
         <div class="reload-page">
-         <span class="btn btn-secondary" @click.prevent="">
+         <span class="btn btn-secondary" @click.prevent="loadData">
            <i class="fa fa-refresh"></i>
            {{ this.Translation.t('userAccounts.reload') }}
          </span>
@@ -124,20 +124,17 @@
 
 <script>
 import Spinner from '@/components/Spinner';
-// import HttpService from '@/services/HttpService';
+import HttpService from '@/services/HttpService';
 // import UtilService from '@/services/UtilService';
 import QrCode from '@/components/QrCode';
 import UserTransfer from '@/components/auth/user/UserTransfer';
 import URIScheme from '@/services/URIScheme';
 import Translation from '@/config/Translation';
 
-// import TransactionService from '@/services/TransactionService';
-
 export default {
 	name: 'user-funds',
 	data: function () {
 		return {
-			blubb: false,
 			isLoading: true,
 			loadingError: false,
 			currentPage: 1,
@@ -276,6 +273,7 @@ export default {
           bazoaddress: this.bazoaddress,
           bazoname: this.bazoname
         }).then(() => {
+          this.loadData();
           if (this.$route.query.redirect) {
             this.$router.push({ path: redirect });
           } else {
