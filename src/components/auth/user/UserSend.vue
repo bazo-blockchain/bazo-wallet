@@ -167,7 +167,7 @@
 									<!-- warning threshold is 0.01 BTC fees per transaction, if above: crazy world -->
 									<div class="description-fees alert alert-info" v-if="feesIncluded && btcAmount != 0 && btcAmount < 0.01">{{ Translation.t('userSend.lowAmountFeeDescription') }}</div>
 									<div class="description-fees alert alert-info" v-if="!feesIncluded && btcAmount != 0 && btcMaximumAmount - btcAmount - 0.01 < 0">{{ Translation.t('userSend.descriptionFees') }}</div>
-									<b-button class="submit-button" :block="true" variant="primary" @click.prevent="submitPreparation" :disabled="formIsTouched && !validForm">{{ Translation.t('userSend.button', { amount: btcAmount }) }}</b-button>
+									<b-button class="submit-button" :block="true" variant="primary" @click.prevent="submitPreparation" :disabled="formIsTouched && !validForm || false">{{ Translation.t('userSend.button', { amount: btcAmount }) }}</b-button>
 								</div>
 							</div>
 						</form>
@@ -543,29 +543,36 @@ export default {
     },
 		submitPreparation: function () {
 			this.formIsTouched = true;
-			if (this.validForm) {
+			if (!this.validForm) {
 				this.isLoading = true;
-
+        console.log(this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress);
 				Promise.all([
-					HttpService.Auth.User.getEncryptedPrivateKey(),
-					HttpService.Auth.User.getFees(),
-					HttpService.Auth.User.getUTXO(this.lockedAddress.bitcoinAddress),
-					HttpService.Auth.User.getChannelTransaction(),
-					HttpService.Auth.User.getServerPotAddress(),
-					HttpService.Auth.User.getMaximalAvailableChannelAmount()
+					HttpService.queryAccountInfo(this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress)
 				]).then((responses) => {
 					this.currentTransaction = {
-						encryptedPrivateKey: responses[0].body.encryptedClientPrivateKey,
-						feePerByte: responses[1].body.fee,
-						inputs: responses[2].body,
-						channelTransaction: responses[3].body,
-						serverPotAddress: responses[4].body.serverPotAddress,
-						maximalAvailableChannelAmount: responses[5].body.amount
+						txCnt: responses[0].body.TxCnt,
+            amount: this.amount,
+            privKey: 'b5ea7486f4fb146629479ff22b304883e6adae30896b9b89ea72f2429a682e8a',
+            recipient: this.address,
+            sender: this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress
 					};
+          HttpService.issueFundsTx(
+            this.currentTransaction.recipient,
+            this.currentTransaction.sender,
+            this.currentTransaction.amount,
+            this.currentTransaction.txCnt,
+            this.currentTransaction.privKey,
+            1
+          ).then((res) => {
+            console.log('success', res)
+          }).catch(() => {
+            console.log('error')
+          })
 					this.isLoading = false;
-					this.$nextTick(() => {
-						this.$root.$emit('show::modal', 'user-transfer');
-					});
+          console.log(this.currentTransaction);
+					// this.$nextTick(() => {
+					// 	this.$root.$emit('show::modal', 'user-transfer');
+					// });
 				}, () => {
 					this.isLoading = false;
 					this.$toasted.global.warn(Translation.t('userSend.paymentError'));

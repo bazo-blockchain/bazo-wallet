@@ -225,7 +225,7 @@ export default {
 		loadData: function () {
       if (this.configured) {
         return Promise.all([
-          HttpService.queryAccountBalance(this.defaultBazoAccount.bazoaddress)
+          HttpService.queryAccountInfo(this.defaultBazoAccount.bazoaddress)
         ]).then(responses => {
           // this.totalBalance = responses[0].body.Balance;
           this.loadingError = false;
@@ -241,7 +241,7 @@ export default {
     updateBalances (address) {
       let that = this;
       this.accounts.forEach(function (account) {
-        HttpService.queryAccountBalance(account.bazoaddress).then((res) => {
+        HttpService.queryAccountInfo(account.bazoaddress).then((res) => {
           let target =
             that.accounts.find((candidate) => { return candidate.bazoaddress === account.bazoaddress })
           target.balance = res.body.Balance
