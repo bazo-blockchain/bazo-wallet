@@ -116,7 +116,7 @@
       "NFCNotice": "Hold your device to an NFC Tag to transfer the payment information.",
       "BTTitle": "Transfer to a Bluetooth device.",
       "BTNotice": "If no devices are showing, then there might not be any or your browser or phone does not support Bluetooth.",
-      "posid": "Identify POS",
+      "posid": "POS Identification",
       "posiddescription": "Supply an ID that corresponds to the POS System so that the amount of the transaction can be queried."
     },
 		"general": {
