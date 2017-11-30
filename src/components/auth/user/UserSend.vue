@@ -189,6 +189,9 @@ import Spinner from '@/components/Spinner';
 import TransactionService from '@/services/TransactionService';
 import URIScheme from '@/services/URIScheme'
 import Translation from '@/config/Translation';
+import elliptic from 'elliptic';
+import ecdsa from 'ecdsa';
+import jQuery from 'jQuery';
 
 export default {
 	name: 'user-send',
@@ -564,7 +567,18 @@ export default {
             this.currentTransaction.privKey,
             1
           ).then((res) => {
+            // 034e83aab234ad87e38a4a4424793090f59f43ddcb1aa0c63e0f970548c89de1dc1708ceb0c970cf3eb88a37c5803c0958b28b2c67716e6045b9aba967699339
             console.log('success', res)
+            /* eslint-disable */
+            var ec = new elliptic.ec('secp256k1')
+            var key = ec.keyFromPrivate('b5ea7486f4fb146629479ff22b304883e6adae30896b9b89ea72f2429a682e8a')
+            var sig = key.sign(res);
+            var result = '';
+            window.sig = sig;
+            result = sig.r.toJSON() + sig.s.toJSON();
+            console.log(result);
+             jQuery.post('http://localhost:8001/sendFundsTx/' + res + '/' + result, )
+            console.log(sig.toDER());
           }).catch(() => {
             console.log('error')
           })

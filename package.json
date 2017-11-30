@@ -21,6 +21,8 @@
     "chartist": "^0.11.0",
     "coinblesk-frontend-bitcoinjs": "coinblesk/coinblesk-frontend-bitcoinjs",
     "coinblesk-frontend-instascan": "coinblesk/coinblesk-frontend-instascan",
+    "ecdsa": "^0.7.0",
+    "elliptic": "^6.4.0",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
     "idb-keyval": "^2.3.0",
