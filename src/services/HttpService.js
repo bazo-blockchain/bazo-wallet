@@ -29,7 +29,7 @@ const HttpService = {
   },
   issueFundsTx: function (recipient, sender, amount, txCount, privKey, fee) {
     // const header = 0;
-    return jQuery.get(`http://localhost:8001/fundsTx/${amount}/${fee}/${txCount}/${sender}/${recipient}/${privKey}`)
+    return jQuery.post(`http://localhost:8001/createFundsTx/${amount}/${fee}/${txCount}/${sender}/${recipient}`)
   },
 	activate: function (data, doNotIntercept) {
 		return Vue.http.post(properties.HOST + '/user-account/create-verify', data,
