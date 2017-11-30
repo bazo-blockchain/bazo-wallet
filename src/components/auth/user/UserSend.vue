@@ -550,7 +550,7 @@ export default {
 					HttpService.queryAccountInfo(this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress)
 				]).then((responses) => {
 					this.currentTransaction = {
-						txCnt: responses[0].body.TxCnt,
+						txCnt: responses[0].body.txCnt,
             amount: this.amount,
             privKey: 'b5ea7486f4fb146629479ff22b304883e6adae30896b9b89ea72f2429a682e8a',
             recipient: this.address,
