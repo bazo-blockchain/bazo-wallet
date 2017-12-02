@@ -190,7 +190,6 @@ import TransactionService from '@/services/TransactionService';
 import URIScheme from '@/services/URIScheme'
 import Translation from '@/config/Translation';
 import elliptic from 'elliptic';
-import ecdsa from 'ecdsa';
 import jQuery from 'jQuery';
 
 export default {
@@ -545,8 +544,6 @@ export default {
       return false;
     },
 		submitPreparation: function () {
-      window.elliptic = elliptic;
-      window.ecdsa = ecdsa;
 			this.formIsTouched = true;
 
 			if (!this.validForm) {
@@ -581,16 +578,12 @@ export default {
             console.log('error')
           })
 					this.isLoading = false;
-          console.log(this.currentTransaction);
 				}, () => {
 					this.isLoading = false;
 					this.$toasted.global.warn(Translation.t('userSend.paymentError'));
 				});
 			}
 		},
-    buf2hex: function(buffer) { // buffer is an ArrayBuffer
-      return Array.prototype.map.call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2)).join('');
-    },
 		submit: function (decryptedPrivateKeyWif) {
 			this.isLoading = true;
 			const errorOccurred = (e) => {
