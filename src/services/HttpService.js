@@ -27,7 +27,7 @@ const HttpService = {
       headers: 'Accept: application/json'
     })
   },
-  issueFundsTx: function (recipient, sender, amount, txCount, privKey, fee) {
+  createFundsTx: function (recipient, sender, amount, txCount, fee) {
     // const header = 0;
     return jQuery.post(`http://localhost:8001/createFundsTx/${amount}/${fee}/${txCount}/${sender}/${recipient}`)
   },
