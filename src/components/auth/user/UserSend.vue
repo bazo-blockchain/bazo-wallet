@@ -545,54 +545,52 @@ export default {
       return false;
     },
 		submitPreparation: function () {
+      window.elliptic = elliptic;
+      window.ecdsa = ecdsa;
 			this.formIsTouched = true;
+
 			if (!this.validForm) {
 				this.isLoading = true;
-        console.log(this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress);
+
 				Promise.all([
 					HttpService.queryAccountInfo(this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress)
 				]).then((responses) => {
 					this.currentTransaction = {
 						txCnt: responses[0].body.txCnt,
             amount: this.amount,
-            privKey: 'b5ea7486f4fb146629479ff22b304883e6adae30896b9b89ea72f2429a682e8a',
             recipient: this.address,
             sender: this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress
 					};
-          HttpService.issueFundsTx(
+          HttpService.createFundsTx(
             this.currentTransaction.recipient,
             this.currentTransaction.sender,
             this.currentTransaction.amount,
             this.currentTransaction.txCnt,
-            this.currentTransaction.privKey,
             1
           ).then((res) => {
-            // 034e83aab234ad87e38a4a4424793090f59f43ddcb1aa0c63e0f970548c89de1dc1708ceb0c970cf3eb88a37c5803c0958b28b2c67716e6045b9aba967699339
-            console.log('success', res)
             /* eslint-disable */
-            var ec = new elliptic.ec('secp256k1')
+            var ec = new elliptic.ec('p256')
             var key = ec.keyFromPrivate('b5ea7486f4fb146629479ff22b304883e6adae30896b9b89ea72f2429a682e8a')
             var sig = key.sign(res);
             var result = '';
             window.sig = sig;
             result = sig.r.toJSON() + sig.s.toJSON();
-            console.log(result);
-             jQuery.post('http://localhost:8001/sendFundsTx/' + res + '/' + result, )
-            console.log(sig.toDER());
+            console.log('signature: ', result);
+             jQuery.post('http://localhost:8001/sendFundsTx/' + res + '/' + result)
           }).catch(() => {
             console.log('error')
           })
 					this.isLoading = false;
           console.log(this.currentTransaction);
-					// this.$nextTick(() => {
-					// 	this.$root.$emit('show::modal', 'user-transfer');
-					// });
 				}, () => {
 					this.isLoading = false;
 					this.$toasted.global.warn(Translation.t('userSend.paymentError'));
 				});
 			}
 		},
+    buf2hex: function(buffer) { // buffer is an ArrayBuffer
+      return Array.prototype.map.call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2)).join('');
+    },
 		submit: function (decryptedPrivateKeyWif) {
 			this.isLoading = true;
 			const errorOccurred = (e) => {
