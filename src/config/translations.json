@@ -96,7 +96,9 @@
 			"cameraNotice": "If the camera does not show up here within 5s, you probably did not grant the camera the required permission.",
 			"errorRecipientAddress": "This address can currently not receive funds in the specified amount.",
 			"paymentErrorNotYetConfirmed": "Your funds have not been confirmed in enough blocks and can therefore not been spent yet.",
-      "amountQueryError": "Unable to query the transaction amount."
+      "amountQueryError": "Unable to query the transaction amount.",
+      "sendError": "The transaction could not be sent to the Bazo network.",
+      "sendSuccess": "The transaction was successfully sent to the Bazo network."
     },
     "userRequest": {
       "title": "Request Bazo Coins",
@@ -199,8 +201,9 @@
 			"cameraNotice": "Falls die Kamera nicht in 5s angezeigt wird, haben Sie vermutlich keine Berechtigung für die Kamera vergeben.",
 			"errorRecipientAddress": "An diese Adresse kann derzeit kein Guthaben in dieser Höhe überwiesen werden.",
 			"paymentErrorNotYetConfirmed": "Ihr Guthaben ist noch nicht in genügend Blöcken bestätigt und kann deshalb noch nicht ausgegeben werden.",
-      "amountQueryError": "Fehler beim Abfragen der Transaktionshöhe."
-
+      "amountQueryError": "Fehler beim Abfragen der Transaktionshöhe.",
+      "sendError": "Die Transaktion konnte nicht ins Bazo Netzwerk gesendet werden.",
+      "sendSuccess": "Die Transaktion wurde erfolgreich <b>versendet</b>."
     },
     "userRequest": {
       "title": "Bazo Coins anfordern",
