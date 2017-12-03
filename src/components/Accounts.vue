@@ -85,7 +85,9 @@
           <b-alert show variant="info">{{Translation.t('userAccounts.notConfigured')}}</b-alert>
         </div>
         <div class="reload-page">
-         <span class="btn btn-secondary" @click.prevent="loadData">
+          <div>{{this.lastBalanceUpdate}}</div>
+
+         <span class="btn btn-secondary" @click.prevent="updateBalances">
            <i class="fa fa-refresh"></i>
            {{ this.Translation.t('userAccounts.reload') }}
          </span>
@@ -214,6 +216,9 @@ export default {
       }, 0);
       return sum;
     },
+    lastBalanceUpdate: function () {
+      return this.$store.getters.lastBalanceUpdated;
+    },
     tableRows () {
       return JSON.parse(JSON.stringify(this.accounts));
     },
@@ -239,13 +244,14 @@ export default {
       }
 		},
     updateBalances () {
-      this.accounts.forEach(function (account) {
-        HttpService.queryAccountInfo(account.bazoaddress).then((res) => {
-          account.balance = res.body.balance;
-        }).catch(() => {
-          account.balance = '?';
-        })
-      })
+      // this.accounts.forEach(function (account) {
+      //   HttpService.queryAccountInfo(account.bazoaddress).then((res) => {
+      //     account.balance = res.body.balance;
+      //   }).catch(() => {
+      //     account.balance = '?';
+      //   })
+      // })
+      this.$store.dispatch('updateUserBalance');
     },
     encodeBazoAddress (bazoAddress) {
       return URIScheme.encode(bazoAddress);

@@ -549,11 +549,10 @@ export default {
 			if (!this.validForm) {
 				this.isLoading = true;
 
-				Promise.all([
-					HttpService.queryAccountInfo(this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress)
-				]).then((responses) => {
+				HttpService.queryAccountInfo(this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress)
+        .then((response) => {
 					this.currentTransaction = {
-						txCnt: responses[0].body.txCnt,
+						txCnt: response.body.txCnt,
             amount: this.amount,
             recipient: this.address,
             sender: this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress
