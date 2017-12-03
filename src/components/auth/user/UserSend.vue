@@ -190,7 +190,6 @@ import TransactionService from '@/services/TransactionService';
 import URIScheme from '@/services/URIScheme'
 import Translation from '@/config/Translation';
 import elliptic from 'elliptic';
-import jQuery from 'jQuery';
 
 export default {
 	name: 'user-send',
@@ -544,7 +543,8 @@ export default {
       return false;
     },
 		submitPreparation: function () {
-			this.formIsTouched = true;
+			// this.formIsTouched = true;
+      let that = this;
 
 			if (!this.validForm) {
 				this.isLoading = true;
@@ -570,10 +570,12 @@ export default {
             var key = ec.keyFromPrivate('b5ea7486f4fb146629479ff22b304883e6adae30896b9b89ea72f2429a682e8a')
             var sig = key.sign(res);
             var result = '';
-            window.sig = sig;
             result = sig.r.toJSON() + sig.s.toJSON();
-            console.log('signature: ', result);
-             jQuery.post('http://localhost:8001/sendFundsTx/' + res + '/' + result)
+            HttpService.sendSignedFundsTx(res, result).then(()=>{
+              that.$toasted.global.success(Translation.t('userSend.sendSuccess'));
+            }).catch(()=>{
+              that.$toasted.global.warn(Translation.t('userSend.sendError'));
+            });
           }).catch(() => {
             console.log('error')
           })
