@@ -19,7 +19,8 @@ const store = new Vuex.Store({
 		},
     config: {
       configured: false,
-      accounts: []
+      accounts: [],
+      updatedBalances: null
     },
     settings: {
       showAdvancedOptions: 'shown'
@@ -43,6 +44,11 @@ const store = new Vuex.Store({
     },
     configured: function (state) {
       return state.config.configured;
+    },
+    lastBalanceUpdated: function (state) {
+      if (state.config.updatedBalances) {
+        return state.config.updatedBalances.toUTCString();
+      } return null;
     }
   },
 	// should be private:
@@ -73,6 +79,7 @@ const store = new Vuex.Store({
         }
       });
     },
+
     updateConfig: function (state, account) {
       if (account.bazoaddress && account.bazoname) {
         if (account.isPrime) {
@@ -152,28 +159,15 @@ const store = new Vuex.Store({
 				return Promise.reject();
 			}
 		},
-
 		updateUserBalance: function (context) {
-			if (context.state.auth.authenticated && context.state.auth.role === 'ROLE_USER') {
-				return HttpService.Auth.User.getUserBalance(true, false)
-					.then((response) => {
-						context.commit('updateUserBalance', response.body);
-					}, response => {
-						if (response.status !== 0) {
-							context.dispatch('logout');
-							Vue.toasted.global.warnNoIcon('<i class="fa fa-sign-out"></i>' + Translation.t('toasts.sessionExpired'));
-							Router.push({ path: '/login' });
-
-							return Promise.reject();
-						} else {
-							// offline mode -> do not update
-							return Promise.reject();
-						}
-					});
-			} else {
-				context.commit('clearUserBalance');
-				return Promise.reject();
-			}
+      context.state.config.accounts.forEach(function (account) {
+        HttpService.queryAccountInfo(account.bazoaddress).then((res) => {
+          context.state.config.updatedBalances = new Date();
+          account.balance = res.body.balance;
+        }).catch(() => {
+          account.balance = '?';
+        })
+      })
 		},
 
 		updateLanguage: function (context, language) {
