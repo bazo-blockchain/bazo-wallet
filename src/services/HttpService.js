@@ -28,34 +28,11 @@ const HttpService = {
     })
   },
   createFundsTx: function (recipient, sender, amount, txCount, fee) {
-    // const header = 0;
-    return jQuery.post(`http://localhost:8001/createFundsTx/${amount}/${fee}/${txCount}/${sender}/${recipient}`)
+    return jQuery.post(`${properties.HOST}/createFundsTx/${amount}/${fee}/${txCount}/${sender}/${recipient}`);
   },
-	activate: function (data, doNotIntercept) {
-		return Vue.http.post(properties.HOST + '/user-account/create-verify', data,
-				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
-	},
-	forgotPassword: function (email, doNotIntercept) {
-		return Vue.http.post(properties.HOST + '/user-account/forgot', { email },
-				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
-	},
-	forgotPasswordVerification: function (data, doNotIntercept) {
-		return Vue.http.post(properties.HOST + '/user-account/forgot-verify', data,
-				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
-	},
-	getForexCurrent: function (vendor, currency, doNotIntercept) {
-		return Vue.http.get(properties.HOST + '/forex/exchange-rate/bitcoin', {
-				headers: doNotIntercept ? DO_NOT_INTERCEPT : undefined,
-				params: { currency: currency, vendor: vendor }
-		});
-	},
-	getForexHistory: function (vendor, currency, doNotIntercept) {
-		return Vue.http.get(properties.HOST + '/forex/exchange-rate/bitcoin/history', {
-				headers: doNotIntercept ? DO_NOT_INTERCEPT : undefined,
-				params: { currency: currency, vendor: vendor }
-		});
-	},
-
+  sendSignedFundsTx: function (fundsTxHash, signature) {
+    return jQuery.post(`${properties.HOST}/sendFundsTx/${fundsTxHash}/${signature}`);
+  },
 	Auth: {
 		getUser: function (doNotIntercept) {
 			return Vue.http.get(properties.HOST + '/auth/common/user-account',
