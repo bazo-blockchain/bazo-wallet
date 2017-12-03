@@ -238,13 +238,12 @@ export default {
         this.isLoading = false;
       }
 		},
-    updateBalances (address) {
-      let that = this;
+    updateBalances () {
       this.accounts.forEach(function (account) {
         HttpService.queryAccountInfo(account.bazoaddress).then((res) => {
-          let target =
-            that.accounts.find((candidate) => { return candidate.bazoaddress === account.bazoaddress })
-          target.balance = res.body.Balance
+          account.balance = res.body.balance;
+        }).catch(() => {
+          account.balance = '?';
         })
       })
     },
