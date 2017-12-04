@@ -57,6 +57,13 @@ const noAuth = (to, _from, next) => {
 		next();
 	}
 };
+// const offlineNoAuth = (to, _from, next) => {
+// 	if (isUnavailableBecauseOffline(to)) {
+// 		next();
+// 	} else {
+// 		next();
+// 	}
+// };
 
 const requireAuth = (to, _from, next) => {
 	if (isUnavailableBecauseOffline(to)) {
@@ -83,19 +90,6 @@ const requireBazoAccount = (to, _from, next) => {
     next();
   }
 };
-
-// const afterAuth = (_to, from, next) => {
-// 	if (isUnavailableBecauseOffline(_to)) {
-// 		redirectBecauseUnavailable(from, next);
-// 	} else {
-// 		if (Store.state.auth.authenticated) {
-// 			next(from.path);
-// 			hideProgressBar();
-// 		} else {
-// 			next();
-// 		}
-// 	}
-// };
 
 const error404 = (to, _from, next) => {
 	Vue.toasted.global.error(Translation.t('toasts.pageNotFound'), { duration: 8000 });
@@ -140,7 +134,7 @@ const routes = [
 // add a method $offlineRoutes to every Router object: the resulting array contains a list of routing names
 VueRouter.prototype.$offlineRoutes = function () {
 	const Router = this;
-	const offlineRoutes = [];
+	const offlineRoutes = ['settings', 'user-request'];
 	const warn = () => { console.warn('A problem occured while reading the Router options.'); };
 
 	if (Router && Router.options && Router.options.routes && Router.options.routes.length > 0) {
