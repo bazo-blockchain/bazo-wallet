@@ -18,10 +18,24 @@
               unchecked-value="hidden">
               {{ this.$t('settings.advancedoptionsLabel') }}
             </b-form-checkbox>
+            <div >
+              {{ this.$t('settings.advancedoptionsDescription') }}
+            </div>
           </div>
-          <div class="col-md-12">
-            {{ this.$t('settings.advancedoptionsDescription') }}
+          <div class="col-md-12" v-if="this.advancedOptionsShown">
+            <b-form-checkbox
+            v-model="useCustomHost"
+            value=true
+            unchecked-value=false>
+            {{ this.$t('settings.useCustomHost') }}
+          </b-form-checkbox>
+          <div >
+            <b-form-fieldset :disabled="!this.usingCustomHost" :label="'Fully qualified URL'">
+              <b-form-input v-model="customURL" :disabled="!this.usingCustomHost" type="text"></b-form-input>
+            </b-form-fieldset>
           </div>
+        </div>
+
         </div>
       </div>
     </div>
@@ -38,7 +52,9 @@ export default {
     return {
       isLoading: true,
       loadingError: false,
-      showAdvancedOptions: 'hidden'
+      showAdvancedOptions: 'hidden',
+      useCustomHost: 'false',
+      customURL: 'http://somehost.com:8001/'
     }
   },
   components: {
@@ -47,15 +63,20 @@ export default {
   computed: {
     configured: function () {
       return this.$store.getters.accountConfigured;
+    },
+    advancedOptionsShown: function () {
+      return this.$store.getters.showAdvancedOptions === 'shown';
+    },
+    usingCustomHost: function () {
+      return this.$store.getters.useCustomHost === 'true';
     }
-    // showAdvancedOptions: function () {
-    //   return this.$store.getters.showAdvancedOptions;
-    // }
   },
   methods: {
     loadData: function () {
       this.isLoading = true;
       this.showAdvancedOptions = this.$store.getters.showAdvancedOptions;
+      this.useCustomHost = this.$store.getters.useCustomHost;
+      this.customURL = this.$store.getters.customURL;
 
       return Promise.all([
       ]).then(responses => {
@@ -69,12 +90,19 @@ export default {
   },
   mounted: function () {
     this.loadData();
+    window.debug = this;
   },
   watch: {
     showAdvancedOptions: function (val) {
       if (val !== this.$store.getters.showAdvancedOptions && !this.isLoading) {
         this.$store.dispatch('setAdvancedOptionsShown', val);
       }
+    },
+    useCustomHost: function (val) {
+      this.$store.dispatch('setCustomHostUsed', val);
+    },
+    customURL: function (url) {
+      this.$store.dispatch('setCustomURL', url)
     }
   }
 };
@@ -86,14 +114,16 @@ export default {
       "settings": {
         "title": "Settings",
         "advancedoptionsLabel": "Show advanced options.",
-        "advancedoptionsDescription": "When activating this option, advanced features will be displayed, such as having the possibility to include the ID of a Point-of-Sale System. This ID is used to retrieve payment information from a service."
+        "advancedoptionsDescription": "When activating this option, advanced features will be displayed, such as having the possibility to include the ID of a Point-of-Sale System. This ID is used to retrieve payment information from a service.",
+        "useCustomHost": "Use a private server."
       }
     },
     "de": {
       "settings": {
         "title": "Einstellungen",
         "advancedoptionsLabel": "Erweiterte Optionen anzeigen.",
-        "advancedoptionsDescription": "Wenn Sie diese Option aktivieren werden Ihnen zusätzliche Funktionen angezeigt, wie die Möglichkeit eine ID, die ein POS System kennzeichnet in die Zahlungsinformationen zu integrieren. Diese ID kann genutzt werden um Zahlungsinformationen von einem Service abzurufen."
+        "advancedoptionsDescription": "Wenn Sie diese Option aktivieren werden Ihnen zusätzliche Funktionen angezeigt, wie die Möglichkeit eine ID, die ein POS System kennzeichnet in die Zahlungsinformationen zu integrieren. Diese ID kann genutzt werden um Zahlungsinformationen von einem Service abzurufen.",
+        "useCustomHost": "Eigenen Server verwenden"
       }
     }
   }

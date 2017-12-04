@@ -23,7 +23,9 @@ const store = new Vuex.Store({
       updatedBalances: null
     },
     settings: {
-      showAdvancedOptions: 'shown'
+      showAdvancedOptions: 'shown',
+      useCustomHost: 'false',
+      customURL: 'http://somehost:8001/'
     },
 		offline: !(typeof window.navigator.onLine === 'undefined' ||
 				window.navigator.onLine === null ||
@@ -41,6 +43,12 @@ const store = new Vuex.Store({
     },
     showAdvancedOptions: function (state) {
       return state.settings.showAdvancedOptions;
+    },
+    useCustomHost: function (state) {
+      return state.settings.useCustomHost;
+    },
+    customURL: function (state) {
+      return state.settings.customURL;
     },
     configured: function (state) {
       return state.config.configured;
@@ -100,6 +108,12 @@ const store = new Vuex.Store({
     },
     setAdvancedOptionsShown: function (state, shown) {
       state.settings.showAdvancedOptions = shown;
+    },
+    setCustomHostUsed: function (state, shown) {
+      state.settings.useCustomHost = shown;
+    },
+    setCustomURL: function (state, url) {
+      state.settings.customURL = url;
     },
 		updateAuth: function (state, token) {
 			state.auth.authenticated = true;
@@ -186,8 +200,14 @@ const store = new Vuex.Store({
     setAdvancedOptionsShown: function (context, shown) {
       return context.commit('setAdvancedOptionsShown', shown);
     },
+    setCustomHostUsed: function (context, used) {
+      return context.commit('setCustomHostUsed', used);
+    },
+    setCustomURL: function (context, url) {
+      return context.commit('setCustomURL', url);
+    },
     updatePrimaryAccount: function (context, account) {
-      return context.commit('updatePrimaryAccount', account)
+      return context.commit('updatePrimaryAccount', account);
     },
 		setOffline: function (context, offline) {
 			context.commit('setOffline', !!offline);
