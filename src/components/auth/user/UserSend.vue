@@ -281,35 +281,38 @@ export default {
 			}
       return account.balance;
 		},
-		btcMaximumAmount: function () {
-			return this.maximumAmount * UtilService.SATOSHI_PER_BITCOIN;
-		},
-		maximumAmountExceeded: function () {
-			return this.btcMaximumAmount < this.btcAmount;
-		},
-		addressIsEmail: function () {
-			if (this.address === '') {
-				return false;
-			}
-			return UtilService.EMAIL_REGEX.test(this.address);
-		},
-		addressIsBitcoin: function () {
-			if (this.address === '') {
-				return false;
-			}
-			let result = false;
-			try {
-				result = true;
-			} catch (e) {
-				result = false;
-			}
-			return result;
-		},
-		validAddress: function () {
-			return this.addressIsEmail || this.addressIsBitcoin;
-		},
-		validForm: function () {
-			return this.validAmount && this.validAddress || (true);
+    maximumAmountExceeded: function () {
+      return this.amount > this.maximumAmount;
+    },
+    addressIsEmail: function () {
+      if (this.address === '') {
+        return false;
+      }
+      return UtilService.EMAIL_REGEX.test(this.address);
+    },
+    addressIsBitcoin: function () {
+      if (this.address === '') {
+        return false;
+      }
+      let result = false;
+      try {
+        result = true;
+      } catch (e) {
+        result = false;
+      }
+      return result;
+    },
+    validAddress: function () {
+      const isHex = (hexString) => {
+        let pattern = /^[a-fA-F0-9]+$/
+        return pattern.test(hexString)
+      }
+
+      return isHex(this.address) && (this.address.length >= 127)
+    },
+    validForm: function () {
+      console.log(this.validAmount, this.validAddress);
+      return this.validAmount && this.validAddress;
 		}
 	},
 	methods: {
@@ -540,7 +543,7 @@ export default {
       return false;
     },
 		submitPreparation: function () {
-			// this.formIsTouched = true;
+			this.formIsTouched = true;
       let that = this;
 
 			if (this.validForm) {
