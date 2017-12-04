@@ -102,7 +102,7 @@ export default {
 			"submit": "Transfer",
 			"cancel": "Cancel",
 			"errorDescription": "This pass phrase is incorrect. Please try again.",
-			"description": "You are about to transfer <b>{amount} Bazo coins</b>. Please enter your private to sign the transaction and finish the transaction process. Your private key will <b>not</b> get sent over the network.",
+			"description": "You are about to transfer <b>{amount} Bazo coins</b>. Please enter your private key to sign the transaction and finish the transaction process. Your private key will <b>not</b> be sent over the network.",
       "sendError": "The transaction could not be sent to the Bazo network.",
       "sendSuccess": "The transaction was successfully sent to the Bazo network."
     }
