@@ -173,7 +173,7 @@
 						</form>
 					</div>
 
-					<user-transfer :amount="1"></user-transfer>
+					<user-transfer  :transactionHash="this.transaction.hash" :amount="Number(this.amount)"></user-transfer>
 				</div>
 			</div>
 		</div>
@@ -188,7 +188,6 @@ import UserTransfer from '@/components/auth/user/UserTransfer';
 import Spinner from '@/components/Spinner';
 import URIScheme from '@/services/URIScheme'
 import Translation from '@/config/Translation';
-import elliptic from 'elliptic';
 
 export default {
 	name: 'user-send',
@@ -211,6 +210,9 @@ export default {
         BTSupported: false,
         BTShown: false,
         BTSuccess: false
+      },
+      transaction: {
+        hash: null
       },
 			selectedCurrency: 'Bazo',
 			allowedCurrencies: ['Bazo', 'USD', 'EUR', 'CHF'],
@@ -307,7 +309,7 @@ export default {
 			return this.addressIsEmail || this.addressIsBitcoin;
 		},
 		validForm: function () {
-			return this.validAmount && this.validAddress;
+			return this.validAmount && this.validAddress || (true);
 		}
 	},
 	methods: {
@@ -389,6 +391,9 @@ export default {
           }
         })
       }
+    },
+    resetTransactionData () {
+      this.transaction.hash = null;
     },
     checkBTSupport: function () {
       if ('bluetooth' in navigator) {
@@ -538,7 +543,7 @@ export default {
 			// this.formIsTouched = true;
       let that = this;
 
-			if (!this.validForm) {
+			if (this.validForm) {
 				this.isLoading = true;
 
 				HttpService.queryAccountInfo(this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress)
@@ -556,24 +561,20 @@ export default {
             this.currentTransaction.txCnt,
             1
           ).then((res) => {
-            /* eslint-disable */
-            var ec = new elliptic.ec('p256')
-            var key = ec.keyFromPrivate('b5ea7486f4fb146629479ff22b304883e6adae30896b9b89ea72f2429a682e8a')
-            var sig = key.sign(res);
-            var result = '';
-            result = sig.r.toJSON() + sig.s.toJSON();
-            HttpService.sendSignedFundsTx(res, result).then(()=>{
-              that.$toasted.global.success(Translation.t('userSend.sendSuccess'));
-            }).catch(()=>{
-              that.$toasted.global.warn(Translation.t('userSend.sendError'));
+            that.transaction.hash = res
+            this.$nextTick(() => {
+              this.$root.$emit('show::modal', 'user-transfer');
             });
           }).catch(() => {
-            console.log('error')
+            this.$toasted.global.warn(Translation.t('userSend.preparationError'));
+
+            this.resetTransactionData();
           })
 					this.isLoading = false;
 				}, () => {
 					this.isLoading = false;
-					this.$toasted.global.warn(Translation.t('userSend.paymentError'));
+          this.resetTransactionData();
+          this.$toasted.global.warn(Translation.t('userSend.preparationError'));
 				});
 			}
 		}
