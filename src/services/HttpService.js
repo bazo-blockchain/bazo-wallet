@@ -21,8 +21,9 @@ const HttpService = {
     return Vue.http.get('https://httpbin.org/ip', {
     })
   },
-  queryAccountInfo: function (accountAddress, doNotIntercept) {
-    return Vue.http.get('http://localhost:8001/account/' + accountAddress, {
+  queryAccountInfo: function (accountAddress, host, doNotIntercept) {
+    let url = `${host || properties.HOST}/account/`
+    return Vue.http.get(url + accountAddress, {
       method: 'GET',
       headers: 'Accept: application/json'
     })

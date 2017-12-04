@@ -173,9 +173,9 @@ const store = new Vuex.Store({
 				return Promise.reject();
 			}
 		},
-		updateUserBalance: function (context) {
+		updateUserBalance: function (context, host) {
       context.state.config.accounts.forEach(function (account) {
-        HttpService.queryAccountInfo(account.bazoaddress).then((res) => {
+        HttpService.queryAccountInfo(account.bazoaddress, host).then((res) => {
           context.state.config.updatedBalances = new Date();
           account.balance = res.body.balance;
         }).catch(() => {
