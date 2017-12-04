@@ -30,7 +30,7 @@
             {{ this.$t('settings.useCustomHost') }}
           </b-form-checkbox>
           <div >
-            <b-form-fieldset :disabled="!this.usingCustomHost" :label="'Fully qualified URL'">
+            <b-form-fieldset :disabled="!this.usingCustomHost" :label="this.$t(settings.urlDescription)">
               <b-form-input v-model="customURL" :disabled="!this.usingCustomHost" type="text"></b-form-input>
             </b-form-fieldset>
           </div>
@@ -115,7 +115,8 @@ export default {
         "title": "Settings",
         "advancedoptionsLabel": "Show advanced options.",
         "advancedoptionsDescription": "When activating this option, advanced features will be displayed, such as having the possibility to include the ID of a Point-of-Sale System. This ID is used to retrieve payment information from a service.",
-        "useCustomHost": "Use a private server."
+        "useCustomHost": "Use a private server.",
+        "urlDescription": "Fully qualified URL of your server:"
       }
     },
     "de": {
@@ -123,7 +124,8 @@ export default {
         "title": "Einstellungen",
         "advancedoptionsLabel": "Erweiterte Optionen anzeigen.",
         "advancedoptionsDescription": "Wenn Sie diese Option aktivieren werden Ihnen zusätzliche Funktionen angezeigt, wie die Möglichkeit eine ID, die ein POS System kennzeichnet in die Zahlungsinformationen zu integrieren. Diese ID kann genutzt werden um Zahlungsinformationen von einem Service abzurufen.",
-        "useCustomHost": "Eigenen Server verwenden"
+        "useCustomHost": "Eigenen Server verwenden",
+        "urlDescription": "Vollständige URL Ihres Bazo Servers:"
       }
     }
   }
