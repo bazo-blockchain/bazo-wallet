@@ -224,6 +224,14 @@ export default {
     },
     configured () {
       return this.$store.getters.accountConfigured;
+    },
+    usingCustomHost: function () {
+      return this.$store.getters.useCustomHost === 'true';
+    },
+    customURLUsed: function () {
+      if (this.usingCustomHost) {
+        return this.$store.getters.customURL;
+      } return null;
     }
 	},
 	methods: {
@@ -244,14 +252,7 @@ export default {
       }
 		},
     updateBalances () {
-      // this.accounts.forEach(function (account) {
-      //   HttpService.queryAccountInfo(account.bazoaddress).then((res) => {
-      //     account.balance = res.body.balance;
-      //   }).catch(() => {
-      //     account.balance = '?';
-      //   })
-      // })
-      this.$store.dispatch('updateUserBalance');
+      this.$store.dispatch('updateUserBalance', this.customURLUsed);
     },
     encodeBazoAddress (bazoAddress) {
       return URIScheme.encode(bazoAddress);
