@@ -121,8 +121,8 @@
 											</b-popover>
 										</label>
 										<div class="form-control disabled mono" :class="{ 'form-error': formIsTouched && maximumAmountExceeded }">
-											<span v-if="addressIsBitcoin || addressIsEmail">
-												{{ convertSatoshiToBitcoin(maximumAmount) }} Bazo
+											<span v-if="accountsConfigured">
+												{{ maximumAmount }} Bazo
 											</span>
 											<span v-else>
 												<i class="fa fa-minus"></i>
@@ -173,7 +173,7 @@
 						</form>
 					</div>
 
-					<user-transfer @private-key-decrypted="submit" :encrypted-private-key="currentTransaction.encryptedPrivateKey" :amount="btcAmount"></user-transfer>
+					<user-transfer :amount="1"></user-transfer>
 				</div>
 			</div>
 		</div>
@@ -245,6 +245,9 @@ export default {
         return bazoaccount.isPrime;
       })
     },
+    accountsConfigured: function () {
+      return this.bazoAccounts.length > 0;
+    },
     multipleAccountsConfigured: function () {
       return this.bazoAccounts.length > 1;
     },
@@ -270,22 +273,12 @@ export default {
 			return true;
 		},
 		maximumAmount: function () {
-			if (!this.$store.state.userBalance ||
-					!this.$store.state.userBalance.timeLockedAddresses ||
-					typeof this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress.bitcoinAddress] === 'undefined') {
+      let account = this.selectedAccount ? this.selectedAccount : this.defaultBazoAccount;
+
+			if (!this.accountsConfigured) {
 				return 0;
 			}
-			if (this.addressIsEmail) {
-				// if the receiver is an e-mail address, either the virtual amount or the actual amount is transferable
-				const fundsOnLockedAddress = this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress.bitcoinAddress] - this.$store.state.userBalance.channelTransactionAmount;
-				const fundsOnVirtualAddress = this.$store.state.userBalance.virtualBalance;
-				return Math.max(fundsOnLockedAddress, fundsOnVirtualAddress);
-			} else if (this.addressIsBitcoin) {
-				// if the receiver is a bitcoin address, the amount transferable only includes funds from the locked address minus the channel transaction amount
-				return this.$store.state.userBalance.timeLockedAddresses[this.lockedAddress.bitcoinAddress] - this.$store.state.userBalance.channelTransactionAmount;
-			} else {
-				return 0;
-			}
+      return account.balance;
 		},
 		btcMaximumAmount: function () {
 			return this.maximumAmount * UtilService.SATOSHI_PER_BITCOIN;
