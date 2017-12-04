@@ -30,7 +30,7 @@
             {{ this.$t('settings.useCustomHost') }}
           </b-form-checkbox>
           <div >
-            <b-form-fieldset :disabled="!this.usingCustomHost" :label="this.$t(settings.urlDescription)">
+            <b-form-fieldset :disabled="!this.usingCustomHost" :label="this.$t('settings.urlDescription')">
               <b-form-input v-model="customURL" :disabled="!this.usingCustomHost" type="text"></b-form-input>
             </b-form-fieldset>
           </div>
