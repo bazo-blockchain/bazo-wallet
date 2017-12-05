@@ -238,7 +238,7 @@ export default {
 		loadData: function () {
       if (this.configured) {
         return Promise.all([
-          HttpService.queryAccountInfo(this.defaultBazoAccount.bazoaddress)
+          HttpService.queryAccountInfo(this.defaultBazoAccount.bazoaddress, this.customURLUsed)
         ]).then(responses => {
           // this.totalBalance = responses[0].body.Balance;
           this.loadingError = false;

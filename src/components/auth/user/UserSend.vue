@@ -575,7 +575,8 @@ export default {
             1,
             this.customURLUsed
           ).then((res) => {
-            that.transaction.hash = res
+            window.debug = res;
+            that.transaction.hash = res.content[0].detail
             this.$nextTick(() => {
               this.$root.$emit('show::modal', 'user-transfer');
             });
