@@ -252,6 +252,14 @@ export default {
     multipleAccountsConfigured: function () {
       return this.bazoAccounts.length > 1;
     },
+    usingCustomHost: function () {
+      return this.$store.getters.useCustomHost === 'true';
+    },
+    customURLUsed: function () {
+      if (this.usingCustomHost) {
+        return this.$store.getters.customURL;
+      } return null;
+    },
 		btcAmount: function () {
 			if (!this.amount) {
 				return 0;
@@ -311,7 +319,6 @@ export default {
       return isHex(this.address) && (this.address.length >= 127)
     },
     validForm: function () {
-      console.log(this.validAmount, this.validAddress);
       return this.validAmount && this.validAddress;
 		}
 	},
@@ -549,7 +556,10 @@ export default {
 			if (this.validForm) {
 				this.isLoading = true;
 
-				HttpService.queryAccountInfo(this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress)
+				HttpService.queryAccountInfo(
+          this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress,
+          this.customURLUsed
+        )
         .then((response) => {
 					this.currentTransaction = {
 						txCnt: response.body.txCnt,
@@ -562,7 +572,8 @@ export default {
             this.currentTransaction.sender,
             this.currentTransaction.amount,
             this.currentTransaction.txCnt,
-            1
+            1,
+            this.customURLUsed
           ).then((res) => {
             that.transaction.hash = res
             this.$nextTick(() => {

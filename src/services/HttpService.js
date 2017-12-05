@@ -28,11 +28,13 @@ const HttpService = {
       headers: 'Accept: application/json'
     })
   },
-  createFundsTx: function (recipient, sender, amount, txCount, fee) {
-    return jQuery.post(`${properties.HOST}/createFundsTx/${amount}/${fee}/${txCount}/${sender}/${recipient}`);
+  createFundsTx: function (recipient, sender, amount, txCount, fee, host) {
+    let url = `${host || properties.HOST}/createFundsTx/`
+    return jQuery.post(`${url}${amount}/${fee}/${txCount}/${sender}/${recipient}`);
   },
-  sendSignedFundsTx: function (fundsTxHash, signature) {
-    return jQuery.post(`${properties.HOST}/sendFundsTx/${fundsTxHash}/${signature}`);
+  sendSignedFundsTx: function (fundsTxHash, signature, host) {
+    let url = `${host || properties.HOST}/sendFundsTx/`
+    return jQuery.post(`${url}${fundsTxHash}/${signature}`);
   },
 	Auth: {
 		getUser: function (doNotIntercept) {

@@ -37,6 +37,16 @@ export default {
 		transactionHash: String,
 		amount: Number
 	},
+  computed: {
+    usingCustomHost: function () {
+      return this.$store.getters.useCustomHost === 'true';
+    },
+    customURLUsed: function () {
+      if (this.usingCustomHost) {
+        return this.$store.getters.customURL;
+      } return null;
+    }
+  },
 	methods: {
 		submit: function () {
       let that = this;
@@ -44,12 +54,17 @@ export default {
 			try {
 				this.validPassPhrase = true;
 				// this.$emit('private-key-decrypted', privateKeyWif);
-        let key = this.ec.keyFromPrivate(this.privateKey)
-        let sig = key.sign(this.transactionHash);
-        let result = '';
-        result = sig.r.toJSON() + sig.s.toJSON();
 
-        HttpService.sendSignedFundsTx(this.transactionHash, result).then(() => {
+        let key = this.ec.keyFromPrivate(this.privateKey)
+        let signature = key.sign(this.transactionHash);
+        let signatureHexString = '';
+        signatureHexString = signature.r.toJSON() + signature.s.toJSON();
+
+        HttpService.sendSignedFundsTx(
+          this.transactionHash,
+          signatureHexString,
+          that.customURLUsed
+        ).then(() => {
           that.$toasted.global.success(this.$t('userTransfer.sendSuccess'));
           that.hideModal();
         }).catch(() => {
@@ -57,7 +72,7 @@ export default {
           that.hideModal();
         });
 			} catch (e) {
-				this.validPassPhrase = false;
+        this.validPassPhrase = false;
 			}
 		},
 		hideModal: function () {
