@@ -30,7 +30,7 @@ const HttpService = {
   },
   createFundsTx: function (recipient, sender, amount, txCount, fee, host) {
     let url = `${host || properties.HOST}/createFundsTx/`
-    return jQuery.post(`${url}${amount}/${fee}/${txCount}/${sender}/${recipient}`);
+    return jQuery.post(`${url}0/${amount}/${fee}/${txCount}/${sender}/${recipient}`);
   },
   sendSignedFundsTx: function (fundsTxHash, signature, host) {
     let url = `${host || properties.HOST}/sendFundsTx/`

@@ -575,14 +575,12 @@ export default {
             1,
             this.customURLUsed
           ).then((res) => {
-            window.debug = res;
             that.transaction.hash = res.content[0].detail
             this.$nextTick(() => {
               this.$root.$emit('show::modal', 'user-transfer');
             });
           }).catch(() => {
-            this.$toasted.global.warn(Translation.t('userSend.preparationError'));
-
+            // this.$toasted.global.warn(Translation.t('userSend.preparationError'));
             this.resetTransactionData();
           })
 					this.isLoading = false;
