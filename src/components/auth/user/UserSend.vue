@@ -220,6 +220,7 @@ export default {
 			amount: 0,
       posid: '',
 			feesIncluded: true,
+      currentFee: 1,
 			address: '',
 			forexRates: {
 				USD: {},
@@ -567,12 +568,23 @@ export default {
             recipient: this.address,
             sender: this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress
 					};
+
+          let fee, amount;
+          if (this.feesIncluded) {
+            amount = Number(this.currentTransaction.amount) - this.currentFee;
+            fee = this.currentFee;
+          } else {
+            amount = this.currentTransaction.amount;
+            fee = this.currentFee;
+          }
+          console.log('fees are included? ', this.feesIncluded, ' therefore fee is:', fee, ' and amount is:', amount);
+
           HttpService.createFundsTx(
             this.currentTransaction.recipient,
             this.currentTransaction.sender,
-            this.currentTransaction.amount,
+            amount,
             this.currentTransaction.txCnt,
-            1,
+            fee,
             this.customURLUsed
           ).then((res) => {
             that.transaction.hash = res.content[0].detail
