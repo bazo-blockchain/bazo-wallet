@@ -25,7 +25,7 @@ const store = new Vuex.Store({
     settings: {
       showAdvancedOptions: 'shown',
       useCustomHost: 'false',
-      customURL: 'http://somehost:8001/'
+      customURL: 'http://192.41.136.199:8001'
     },
 		offline: !(typeof window.navigator.onLine === 'undefined' ||
 				window.navigator.onLine === null ||
