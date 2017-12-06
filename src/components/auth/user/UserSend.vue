@@ -577,7 +577,6 @@ export default {
             amount = this.currentTransaction.amount;
             fee = this.currentFee;
           }
-          console.log('fees are included? ', this.feesIncluded, ' therefore fee is:', fee, ' and amount is:', amount);
 
           HttpService.createFundsTx(
             this.currentTransaction.recipient,
