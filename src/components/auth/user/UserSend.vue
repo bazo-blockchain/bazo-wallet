@@ -550,6 +550,9 @@ export default {
       }
       return false;
     },
+    triggerBalanceUpdate () {
+      this.$store.dispatch('updateUserBalance', this.customURLUsed);
+    },
 		submitPreparation: function () {
 			this.formIsTouched = true;
       let that = this;
@@ -606,7 +609,7 @@ export default {
 	mounted: function () {
 		this.isLoading = true;
     this.parseProps();
-		// this.loadInitialData();
+    this.triggerBalanceUpdate();
     this.checkNFCSupport();
     this.checkBTSupport();
     }

@@ -87,7 +87,7 @@
       <div class="reload-page">
         <div>{{this.lastBalanceUpdate}}</div>
 
-        <span class="btn btn-secondary" @click.prevent="updateBalances">
+        <span class="btn btn-secondary" @click.prevent="triggerBalanceUpdate">
           <i class="fa fa-refresh"></i>
           {{ this.Translation.t('userAccounts.reload') }}
         </span>
@@ -199,7 +199,7 @@ export default {
     allAccounts () {
       let accounts = this.$store.getters.bazoAccounts;
       this.accounts = accounts;
-      this.updateBalances();
+      this.triggerBalanceUpdate();
       return accounts;
     },
     defaultBazoAccount: function () {
@@ -241,7 +241,7 @@ export default {
         return Promise.all([
           HttpService.queryAccountInfo(this.defaultBazoAccount.bazoaddress, this.customURLUsed)
         ]).then(responses => {
-          // this.totalBalance = responses[0].body.Balance;
+          this.triggerBalanceUpdate
           this.loadingError = false;
           this.isLoading = false;
         }, () => {
@@ -252,7 +252,7 @@ export default {
         this.isLoading = false;
       }
 		},
-    updateBalances () {
+    triggerBalanceUpdate () {
       this.$store.dispatch('updateUserBalance', this.customURLUsed);
     },
     encodeBazoAddress (bazoAddress) {
