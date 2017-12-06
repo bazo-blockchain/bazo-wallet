@@ -61,7 +61,7 @@
           </template>
           <template slot="actions" scope="item">
             <div>
-              <div >
+              <!-- <div >
                 <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
                   {{ Translation.t('userAccounts.transferButton') }}
                 </b-button>
@@ -72,6 +72,14 @@
               <div>
                 <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
                   {{ Translation.t('userAccounts.tradeButton') }}
+                </b-button>
+                <b-popover triggers="hover" :content="Translation.t('userAccounts.tradeDescription')" class="popover-element">
+                  <i class="fa fa-info-circle increase-focus"></i>
+                </b-popover>
+              </div> -->
+              <div>
+                <b-button variant="danger" size="sm" @click.prevent="deleteAccount(item.item)">
+                  {{ 'Delete' }}
                 </b-button>
                 <b-popover triggers="hover" :content="Translation.t('userAccounts.tradeDescription')" class="popover-element">
                   <i class="fa fa-info-circle increase-focus"></i>
@@ -260,6 +268,10 @@ export default {
     },
     makePrimary: function (account) {
       this.$store.dispatch('updatePrimaryAccount', account);
+    },
+    deleteAccount: function (account) {
+      console.log('deleting:', account);
+      this.$store.dispatch('deleteAccount', account);
     },
     cutBazoAddress: function (bazoAddress) {
       return `${bazoAddress.slice(0, 10)}..`

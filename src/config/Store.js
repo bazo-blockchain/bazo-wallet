@@ -87,7 +87,13 @@ const store = new Vuex.Store({
         }
       });
     },
-
+    deleteAccount: function (state, account) {
+      let accountToBeDeleted = state.config.accounts.find((candidate) => {
+        return candidate.bazoaddress === account.bazoaddress
+      });
+      let indexToBeDeleted = state.config.accounts.indexOf(accountToBeDeleted);
+      state.config.accounts.splice(indexToBeDeleted, 1);
+    },
     updateConfig: function (state, account) {
       if (account.bazoaddress && account.bazoname) {
         if (account.isPrime) {
@@ -208,6 +214,9 @@ const store = new Vuex.Store({
     },
     updatePrimaryAccount: function (context, account) {
       return context.commit('updatePrimaryAccount', account);
+    },
+    deleteAccount: function (context, account) {
+      return context.commit('deleteAccount', account);
     },
 		setOffline: function (context, offline) {
 			context.commit('setOffline', !!offline);
