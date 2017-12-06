@@ -22,18 +22,26 @@ const HttpService = {
     })
   },
   queryAccountInfo: function (accountAddress, host, doNotIntercept) {
-    let url = `${host || properties.HOST}/account/`
+    let hostbase = `${host || properties.HOST}`
+    let url = HttpService.formatHost(hostbase) + 'account/'
+    console.log(url);
     return Vue.http.get(url + accountAddress, {
       method: 'GET',
       headers: 'Accept: application/json'
     })
   },
   createFundsTx: function (recipient, sender, amount, txCount, fee, host) {
-    let url = `${host || properties.HOST}/createFundsTx/`
+    let hostbase = `${host || properties.HOST}`
+    let url = HttpService.formatHost(hostbase) + 'createFundsTx/'
+    console.log(url);
+
     return jQuery.post(`${url}0/${amount}/${fee}/${txCount}/${sender}/${recipient}`);
   },
   sendSignedFundsTx: function (fundsTxHash, signature, host) {
-    let url = `${host || properties.HOST}/sendFundsTx/`
+    let hostbase = `${host || properties.HOST}`
+    let url = HttpService.formatHost(hostbase) + 'sendFundsTx/'
+    console.log(url);
+
     return jQuery.post(`${url}${fundsTxHash}/${signature}`);
   },
 	Auth: {
@@ -145,7 +153,12 @@ const HttpService = {
 	payout: function (signedDTO, doNotIntercept) {
 		return Vue.http.post(properties.HOST + '/payment/payout', signedDTO,
 				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
-	}
+	},
+  formatHost: function (hostBase) {
+    if (hostBase.slice(-1) === '/') {
+      return hostBase
+    } return hostBase + '/'
+  }
 };
 
 export default HttpService;
