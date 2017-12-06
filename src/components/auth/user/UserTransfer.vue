@@ -1,20 +1,20 @@
 <template>
-<div>
-	<b-modal :id="'user-transfer'" :title="$t('userTransfer.title') + formatTransactionHash(this.transactionHash)"
-		size="md" :hide-footer="true" @hidden="modalWasClosed">
-		<div>
-			<div class="alert alert-info" v-html="$t('userTransfer.description', { amount })"></div>
-			<b-form-fieldset :label="$t('userTransfer.passPhrase')">
-				<b-form-input type="password" v-model="privateKey" @input="formIsTouched = false" @keyup.enter="submit" :class="{ 'form-error': !validPassPhrase && formIsTouched }"></b-form-input>
-			</b-form-fieldset>
-			<div class="error-description" v-if="formIsTouched && !validPassPhrase">
-				<i class="fa fa-warning"></i>
-				{{ $t('userTransfer.errorDescription') }}
-			</div>
-			<b-button variant="primary" class="pull-right" @click.prevent="submit">{{ $t('userTransfer.submit') }}</b-button>
-			<b-button variant="default" class="pull-right" @click.prevent="hideModal">{{ $t('userTransfer.cancel') }}</b-button>
-		</div>
-	</b-modal>
+  <div>
+    <b-modal :id="'user-transfer'" :title="$t('userTransfer.title') + formatTransactionHash(this.transactionHash)"
+    size="md" :hide-footer="true" @hidden="modalWasClosed">
+    <div>
+      <div class="alert alert-info" v-html="$t('userTransfer.description', { amount })"></div>
+      <b-form-fieldset :label="$t('userTransfer.passPhrase')">
+        <b-form-input type="password" v-model="privateKey" @input="formIsTouched = false" @keyup.enter="submit" :class="{ 'form-error': !validPassPhrase && formIsTouched }"></b-form-input>
+      </b-form-fieldset>
+      <div class="error-description" v-if="formIsTouched && !validPassPhrase">
+        <i class="fa fa-warning"></i>
+        {{ $t('userTransfer.errorDescription') }}
+      </div>
+      <b-button variant="primary" class="pull-right" @click.prevent="submit">{{ $t('userTransfer.submit') }}</b-button>
+      <b-button variant="default" class="pull-right" @click.prevent="hideModal">{{ $t('userTransfer.cancel') }}</b-button>
+    </div>
+  </b-modal>
 </div>
 </template>
 
