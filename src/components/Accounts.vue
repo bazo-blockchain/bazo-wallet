@@ -1,99 +1,99 @@
 <template>
-<div class="user-funds">
-	<div class="compact">
-		<h1 class="display-4">{{ this.Translation.t('userAccounts.title') }}
-			<small v-if="!isLoading && !loadingError && configured" class="pull-right">
-				<span class="total-funds-small">{{ this.Translation.t('userAccounts.total') }}</span>
-				<i class="fa fa-bitcoin"></i>
-				<!-- {{ convertSatoshiToBitcoin(funds.totalBalance) }} -->
-        {{this.totalBalance}}
-			</small>
-		</h1>
-		<hr>
-		<div class="pos-rel user-funds-content">
-			<spinner :is-loading="isLoading"></spinner>
-      <label>{{Translation.t('userAccounts.description')}}</label>
-			<div class="table-wrapper" v-if="!isLoading && !loadingError">
-        <div v-if="configured"
-             class="table-responsive">
+  <div class="user-funds">
+    <div class="compact">
+      <h1 class="display-4">{{ this.Translation.t('userAccounts.title') }}
+        <small v-if="!isLoading && !loadingError && configured" class="pull-right">
+          <span class="total-funds-small">{{ this.Translation.t('userAccounts.total') }}</span>
+          <i class="fa fa-bitcoin"></i>
+          <!-- {{ convertSatoshiToBitcoin(funds.totalBalance) }} -->
+          {{this.totalBalance}}
+        </small>
+      </h1>
+      <hr>
+      <div class="pos-rel user-funds-content">
+        <spinner :is-loading="isLoading"></spinner>
+        <label>{{Translation.t('userAccounts.description')}}</label>
+        <div class="table-wrapper" v-if="!isLoading && !loadingError">
+          <div v-if="configured"
+          class="table-responsive">
 
-             <b-table  small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
-             					<template slot="bazoaddress" scope="item">
-             						<div class="no-wrap">
+          <b-table  small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
+            <template slot="bazoaddress" scope="item">
+              <div class="no-wrap">
 
-             								<span class="mono" v-bind:title="item.item.bazoaddress">{{ cutBazoAddress(item.item.bazoaddress) }}</span>&nbsp;
-                            <!-- <a v-bind:href="item.item.bazoaddress">Link</a> -->
-                            <b-popover triggers="hover" :content="item.item.bazoaddress" class="popover-element">
-                              <i class="fa fa-info-circle increase-focus"></i>
-                            </b-popover>
-             								<!-- <a :href="item.item.adddressUrl" :title="item.item.adddressUrl" target="_blank" rel="noopener" class="increase-focus">
-             									<i class="fa fa-external-link"></i>
-             								</a> -->
-             						</div>
-             					</template>
+                <span class="mono" v-bind:title="item.item.bazoaddress">{{ cutBazoAddress(item.item.bazoaddress) }}</span>&nbsp;
+                <!-- <a v-bind:href="item.item.bazoaddress">Link</a> -->
+                <b-popover triggers="hover" :content="item.item.bazoaddress" class="popover-element">
+                  <i class="fa fa-info-circle increase-focus"></i>
+                </b-popover>
+                <!-- <a :href="item.item.adddressUrl" :title="item.item.adddressUrl" target="_blank" rel="noopener" class="increase-focus">
+                <i class="fa fa-external-link"></i>
+              </a> -->
+            </div>
+          </template>
 
-             					<template slot="balance" scope="item">
-             						<div class="nowrap">
-             							<i class="fa fa-bitcoin"></i>
-             							<span >-</span>
-             							{{ item.item.balance}}
-             						</div>
-             					</template>
-                      <template slot="isPrime" scope="item">
-                        <div>
-                          <div class="" v-if="item.item.isPrime">
-                            <i class="fa fa-check" aria-hidden="true"></i>
-                          </div>
-                          <div class="" v-else>
-                            <b-button variant="secondary" size="sm" @click.prevent="makePrimary(item.item)">
-                              <i class="fa fa-chevron-right" aria-hidden="true"></i>
-             								</b-button>
-                          </div>
-                        </div>
-                      </template>
-             					<template slot="qr" scope="item">
-             						<div>
-                          <a href="#/auth/user/request">
-                            <i class="fa fa-qrcode" aria-hidden="true"></i>
-                          </a>
-             							<!-- <qr-code :content="encodeBazoAddress(item.item.bazoaddress)"></qr-code> -->
-             						</div>
-             					</template>
-             					<template slot="actions" scope="item">
-             						<div>
-                          <div >
-                            <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
-                              {{ Translation.t('userAccounts.transferButton') }}
-                            </b-button>
-                            <b-popover triggers="hover" :content="Translation.t('userAccounts.transferDescription')" class="popover-element">
-                              <i class="fa fa-info-circle increase-focus"></i>
-                            </b-popover>
-                          </div>
-                          <div>
-                            <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
-                              {{ Translation.t('userAccounts.tradeButton') }}
-                            </b-button>
-                            <b-popover triggers="hover" :content="Translation.t('userAccounts.tradeDescription')" class="popover-element">
-                              <i class="fa fa-info-circle increase-focus"></i>
-                            </b-popover>
-                          </div>
-             						</div>
-             					</template>
-             				</b-table>
-        </div>
-        <div class="" v-else>
-          <b-alert show variant="info">{{Translation.t('userAccounts.notConfigured')}}</b-alert>
-        </div>
-        <div class="reload-page">
-          <div>{{this.lastBalanceUpdate}}</div>
+          <template slot="balance" scope="item">
+            <div class="nowrap">
+              <i class="fa fa-bitcoin"></i>
+              <span >-</span>
+              {{ item.item.balance}}
+            </div>
+          </template>
+          <template slot="isPrime" scope="item">
+            <div>
+              <div class="" v-if="item.item.isPrime">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="" v-else>
+                <b-button variant="secondary" size="sm" @click.prevent="makePrimary(item.item)">
+                  <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </b-button>
+              </div>
+            </div>
+          </template>
+          <template slot="qr" scope="item">
+            <div>
+              <a href="#/auth/user/request">
+                <i class="fa fa-qrcode" aria-hidden="true"></i>
+              </a>
+              <!-- <qr-code :content="encodeBazoAddress(item.item.bazoaddress)"></qr-code> -->
+            </div>
+          </template>
+          <template slot="actions" scope="item">
+            <div>
+              <div >
+                <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
+                  {{ Translation.t('userAccounts.transferButton') }}
+                </b-button>
+                <b-popover triggers="hover" :content="Translation.t('userAccounts.transferDescription')" class="popover-element">
+                  <i class="fa fa-info-circle increase-focus"></i>
+                </b-popover>
+              </div>
+              <div>
+                <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
+                  {{ Translation.t('userAccounts.tradeButton') }}
+                </b-button>
+                <b-popover triggers="hover" :content="Translation.t('userAccounts.tradeDescription')" class="popover-element">
+                  <i class="fa fa-info-circle increase-focus"></i>
+                </b-popover>
+              </div>
+            </div>
+          </template>
+        </b-table>
+      </div>
+      <div class="" v-else>
+        <b-alert show variant="info">{{Translation.t('userAccounts.notConfigured')}}</b-alert>
+      </div>
+      <div class="reload-page">
+        <div>{{this.lastBalanceUpdate}}</div>
 
-         <span class="btn btn-secondary" @click.prevent="updateBalances">
-           <i class="fa fa-refresh"></i>
-           {{ this.Translation.t('userAccounts.reload') }}
-         </span>
-       </div>
-        <hr>
-
+        <span class="btn btn-secondary" @click.prevent="updateBalances">
+          <i class="fa fa-refresh"></i>
+          {{ this.Translation.t('userAccounts.reload') }}
+        </span>
+      </div>
+      <hr>
+      <div class="col-12">
         <form>
           <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoaddress')">
             <b-form-input v-model="bazoaddress" type="text"></b-form-input>
@@ -110,17 +110,18 @@
           </div>
           <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ Translation.t('userAccounts.save') }}</b-button>
         </form>
-				<div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
-					<b-pagination size="md" :total-rows="this.tableRows.length" :per-page="perPage" v-model="currentPage" />
-				</div>
+        <div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
+          <b-pagination size="md" :total-rows="this.tableRows.length" :per-page="perPage" v-model="currentPage" />
+        </div>
+      </div>
 
-			</div>
-		</div>
+    </div>
+  </div>
 
-		<!-- <user-transfer @private-key-decrypted="moveFunds" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :amount="convertSatoshiToBitcoin(currentTransfer.amountSatoshi)"></user-transfer>
-		<user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true"></user-transfer>
-		<user-transfer @private-key-decrypted="payout" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true" separate="payout"></user-transfer> -->
-	</div>
+  <!-- <user-transfer @private-key-decrypted="moveFunds" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :amount="convertSatoshiToBitcoin(currentTransfer.amountSatoshi)"></user-transfer>
+  <user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true"></user-transfer>
+  <user-transfer @private-key-decrypted="payout" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true" separate="payout"></user-transfer> -->
+</div>
 </div>
 </template>
 

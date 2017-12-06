@@ -16,90 +16,91 @@
         <div class="table-wrapper" v-if="!isLoading && !loadingError">
           <label>{{$t('funds.description')}}</label>
           <div v-if="configured"class="table-responsive">
-          <b-table  small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
-            <template slot="bazoaddress" scope="item">
-              <div class="no-wrap">
-                <span class="mono" v-bind:title="item.item.bazoaddress">{{ cutBazoAddress(item.item.bazoaddress) }}</span>&nbsp;
-                <!-- <a v-bind:href="item.item.bazoaddress">Link</a> -->
-                <b-popover triggers="hover" :content="item.item.bazoaddress" class="popover-element">
+            <b-table  small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
+              <template slot="bazoaddress" scope="item">
+                <div class="no-wrap">
+                  <span class="mono" v-bind:title="item.item.bazoaddress">{{ cutBazoAddress(item.item.bazoaddress) }}</span>&nbsp;
+                  <!-- <a v-bind:href="item.item.bazoaddress">Link</a> -->
+                  <b-popover triggers="hover" :content="item.item.bazoaddress" class="popover-element">
+                    <i class="fa fa-info-circle increase-focus"></i>
+                  </b-popover>
+                  <!-- <a :href="item.item.adddressUrl" :title="item.item.adddressUrl" target="_blank" rel="noopener" class="increase-focus">
+                  <i class="fa fa-external-link"></i>
+                </a> -->
+              </div>
+            </template>
+
+            <template slot="balance" scope="item">
+              <div class="nowrap">
+                <i class="fa fa-star-o"></i>
+                <span>-</span>
+                {{ item.balance || Math.random().toString()[3] }}
+              </div>
+            </template>
+
+            <template slot="actions" scope="item">
+              <div >
+                <b-button variant="secondary" size="sm" @click.prevent="requestBazo">
+                  {{ $t('funds.requestBazo') }}
+                </b-button>
+                <b-popover triggers="hover" :content="$t('funds.requestBazoDescription')" class="popover-element">
                   <i class="fa fa-info-circle increase-focus"></i>
                 </b-popover>
-                <!-- <a :href="item.item.adddressUrl" :title="item.item.adddressUrl" target="_blank" rel="noopener" class="increase-focus">
-                <i class="fa fa-external-link"></i>
-              </a> -->
+              </div>
+            </template>
+          </b-table>
+        </div>
+        <div class="" v-else>
+          <b-alert show variant="info">{{$t('funds.notConfigured')}}</b-alert>
+        </div>
+        <div class="reload-page">
+          <span class="btn btn-secondary" @click.prevent="">
+            <i class="fa fa-refresh"></i>
+            {{ this.$t('funds.reload') }}
+          </span>
+        </div>
+        <hr>
+        <div class="col-12">
+          <form>
+            <div class="row">
+              <div class="col-12">
+                <b-form-fieldset :label="$t('funds.address')">
+                  <b-form-input v-model="paymentInfo.surpriseid" type="text"></b-form-input>
+                </b-form-fieldset>
+              </div>
+
+              <div class="col-12">
+                <b-form-fieldset :label="$t('funds.amount')">
+                  <b-input-group>
+                    <b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any"></b-form-input>
+                    <b-input-group-button slot="right">
+                      <b-dropdown :disabled="!multipleAccountsConfigured" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default" right>
+                        <b-dropdown-item  v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
+                          <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
+                          <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
+                          (paymentInfo.selectedAccount === '' && bazoAccount === this.defaultBazoAccount)"></i>
+                        </b-dropdown-item>
+                      </b-dropdown>
+                    </b-input-group-button>
+                  </b-input-group>
+                </b-form-fieldset>
+                <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>
+              </div>
             </div>
-          </template>
 
-          <template slot="balance" scope="item">
-            <div class="nowrap">
-              <i class="fa fa-star-o"></i>
-              <span>-</span>
-              {{ item.balance || Math.random().toString()[3] }}
-            </div>
-          </template>
-
-          <template slot="actions" scope="item">
-            <div >
-              <b-button variant="secondary" size="sm" @click.prevent="requestBazo">
-                {{ $t('funds.requestBazo') }}
-              </b-button>
-              <b-popover triggers="hover" :content="$t('funds.requestBazoDescription')" class="popover-element">
-                <i class="fa fa-info-circle increase-focus"></i>
-              </b-popover>
-            </div>
-          </template>
-        </b-table>
-      </div>
-      <div class="" v-else>
-        <b-alert show variant="info">{{$t('funds.notConfigured')}}</b-alert>
-      </div>
-      <div class="reload-page">
-        <span class="btn btn-secondary" @click.prevent="">
-          <i class="fa fa-refresh"></i>
-          {{ this.$t('funds.reload') }}
-        </span>
-      </div>
-      <hr>
-
-      <form>
-        <div class="row">
-          <div class="col-12">
-            <b-form-fieldset :label="$t('funds.address')">
-              <b-form-input v-model="paymentInfo.surpriseid" type="text"></b-form-input>
-            </b-form-fieldset>
-          </div>
-
-          <div class="col-12">
-            <b-form-fieldset :label="$t('funds.amount')">
-              <b-input-group>
-                <b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any"></b-form-input>
-                <b-input-group-button slot="right">
-                  <b-dropdown :disabled="!multipleAccountsConfigured" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default" right>
-                    <b-dropdown-item  v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
-                      <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
-                      <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
-                      (paymentInfo.selectedAccount === '' && bazoAccount === this.defaultBazoAccount)"></i>
-                    </b-dropdown-item>
-                  </b-dropdown>
-                </b-input-group-button>
-              </b-input-group>
-            </b-form-fieldset>
-                     <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>                                                          
-          </div>
+          </form>
+        </div>
+        <div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
+          <b-pagination size="md" :total-rows="this.tableRows.length" :per-page="perPage" v-model="currentPage" />
         </div>
 
-      </form>
-      <div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
-        <b-pagination size="md" :total-rows="this.tableRows.length" :per-page="perPage" v-model="currentPage" />
       </div>
-
     </div>
-  </div>
 
-  <!-- <user-transfer @private-key-decrypted="moveFunds" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :amount="convertSatoshiToBitcoin(currentTransfer.amountSatoshi)"></user-transfer>
-  <user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true"></user-transfer>
-  <user-transfer @private-key-decrypted="payout" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true" separate="payout"></user-transfer> -->
-</div>
+    <!-- <user-transfer @private-key-decrypted="moveFunds" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :amount="convertSatoshiToBitcoin(currentTransfer.amountSatoshi)"></user-transfer>
+    <user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true"></user-transfer>
+    <user-transfer @private-key-decrypted="payout" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true" separate="payout"></user-transfer> -->
+  </div>
 </div>
 </template>
 
