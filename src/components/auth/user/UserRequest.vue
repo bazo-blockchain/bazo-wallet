@@ -338,6 +338,10 @@ export default {
             setTimeout(() => {
               that.sendPaymentInfoNFC()
             }, 2000)
+          } else if (error.code === 20) {
+            // Handle error when a previous operation was canceled, but the device is still sending.
+            this.nfc.NFCSending = true;
+            this.nfc.NFCStatus = Translation.t('userRequest.NFCSending')
           } else {
             this.nfc.NFCStatus = Translation.t('userRequest.NFCSendError') + error.toString() + error.code;
           }
