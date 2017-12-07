@@ -173,7 +173,7 @@
         </form>
       </div>
 
-      <user-transfer  :transactionHash="this.transaction.hash" :amount="Number(this.amount)"></user-transfer>
+      <user-transfer @remove-transaction-data="resetAllTransactionData"  :transactionHash="this.transaction.hash" :amount="Number(this.amount)"></user-transfer>
     </div>
   </div>
 </div>
@@ -403,8 +403,19 @@ export default {
         })
       }
     },
-    resetTransactionData () {
+    resetTransactionData: function () {
       this.transaction.hash = null;
+      this.amount = 0;
+      this.posid = '';
+      this.address = '';
+    },
+    resetAllTransactionData: function () {
+      console.log('triggered');
+      this.amount = 0;
+      this.posid = '';
+      this.address = '';
+      this.formIsTouched = false;
+      this.resetTransactionData();
     },
     checkBTSupport: function () {
       if ('bluetooth' in navigator) {

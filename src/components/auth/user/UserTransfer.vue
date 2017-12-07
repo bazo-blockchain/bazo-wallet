@@ -71,6 +71,7 @@ export default {
         ).then(() => {
           that.$toasted.global.success(this.$t('userTransfer.sendSuccess'));
           that.hideModal();
+          that.deleteTransactionData();
         }).catch(() => {
           that.$toasted.global.warn(this.$t('userTransfer.sendError'));
           that.hideModal();
@@ -86,6 +87,9 @@ export default {
 			this.privateKey = '';
 			// this.validPassPhrase = false;
 		},
+    deleteTransactionData: function () {
+      this.$emit('remove-transaction-data', null);
+    },
     formatTransactionHash: function () {
       if (this.transactionHash) {
         let transactionHashSnippet = this.transactionHash.slice(0, 10);
