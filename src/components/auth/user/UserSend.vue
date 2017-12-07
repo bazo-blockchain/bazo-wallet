@@ -102,14 +102,14 @@
               <b-form-fieldset :label="Translation.t('userSend.amount')">
                 <b-input-group>
                   <b-form-input v-model="amount" class="mono amount-input" type="number" min="0" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
-                  <b-input-group-button slot="right">
+                  <!-- <b-input-group-button slot="right">
                     <b-dropdown :text="selectedCurrency" variant="default" right>
                       <b-dropdown-item v-for="currency in allowedCurrencies" @click="selectedCurrency = currency" :key="currency">
                         <span class="currency">{{ currency }}</span>
                         <i class="fa fa-check" v-if="currency === selectedCurrency"></i>
                       </b-dropdown-item>
                     </b-dropdown>
-                  </b-input-group-button>
+                  </b-input-group-button> -->
                 </b-input-group>
               </b-form-fieldset>
             </div>
