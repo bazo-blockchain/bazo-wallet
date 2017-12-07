@@ -171,7 +171,7 @@ export default {
       paymentInfo: {
         selectedAccount: '',
         amount: 0,
-        posid: '-'
+        posid: ''
       },
 			formIsTouched: false,
 			successfulTransaction: false,
