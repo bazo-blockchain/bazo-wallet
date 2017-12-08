@@ -380,6 +380,7 @@ export default {
         }).catch(() => {
           this.isLoading = false
           this.loadingError = true
+
         })
       } else {
         this.posid = '';
@@ -410,7 +411,6 @@ export default {
       this.address = '';
     },
     resetAllTransactionData: function () {
-      console.log('triggered');
       this.amount = 0;
       this.posid = '';
       this.address = '';

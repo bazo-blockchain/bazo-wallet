@@ -270,7 +270,6 @@ export default {
       this.$store.dispatch('updatePrimaryAccount', account);
     },
     deleteAccount: function (account) {
-      console.log('deleting:', account);
       this.$store.dispatch('deleteAccount', account);
     },
     cutBazoAddress: function (bazoAddress) {
