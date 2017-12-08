@@ -380,7 +380,6 @@ export default {
         }).catch(() => {
           this.isLoading = false
           this.loadingError = true
-
         })
       } else {
         this.posid = '';

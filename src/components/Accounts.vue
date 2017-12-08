@@ -107,7 +107,7 @@
             <b-form-input v-model="bazoaddress" type="text"></b-form-input>
           </b-form-fieldset>
           <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoname')">
-            <b-form-input v-model="bazoname" ></b-form-input>
+            <b-form-input id="bazoname" v-model="bazoname" ></b-form-input>
           </b-form-fieldset>
           <div >
             <label>
@@ -136,7 +136,7 @@
 <script>
 import Spinner from '@/components/Spinner';
 import HttpService from '@/services/HttpService';
-// import UtilService from '@/services/UtilService';
+import jQuery from 'jQuery';
 import QrCode from '@/components/QrCode';
 import UserTransfer from '@/components/auth/user/UserTransfer';
 import URIScheme from '@/services/URIScheme';
@@ -275,6 +275,17 @@ export default {
     cutBazoAddress: function (bazoAddress) {
       return `${bazoAddress.slice(0, 10)}..`
     },
+    parseProps: function () {
+      const address = this.$route.query.address;
+      if (address) {
+        this.bazoaddress = address;
+        this.$toasted.global.success(this.Translation.t('userAccounts.prefilledAddress'));
+
+        setTimeout(() => {
+          jQuery('#bazoname').focus();
+        }, 1000)
+      }
+    },
     saveAccount: function () {
       const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
 			if (!this.isLoading) {
@@ -305,6 +316,7 @@ export default {
 	},
 	mounted: function () {
 		this.loadData();
+    this.parseProps();
 	}
 };
 </script>

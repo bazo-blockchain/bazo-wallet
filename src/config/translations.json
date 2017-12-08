@@ -45,6 +45,7 @@
 				"actions": "Actions"
 			},
       "makePrimary": "Mark this account as your main account?",
+      "prefilledAddress": "Please name this account and save it.",
 			"alerts": {
 				"success": {
 					"moveFunds": "The amount was successfully transferred to the locked account. This transaction may be pending for up to an hour.",
@@ -153,6 +154,7 @@
 				"actions": "Aktionen"
 			},
       "makePrimary": "Dieses Konto als Hauptkonto hinterlegen",
+      "prefilledAddress": "Bitte geben Sie dem Konto einen Namen",
 			"alerts": {
 				"success": {
 					"moveFunds": "Der Betrag ist erfolgreich auf das gesperrte Konto überwiesen worden. Die Transaktion kann bis zu einer Stunde dauern.",

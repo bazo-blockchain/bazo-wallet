@@ -120,7 +120,7 @@ const routes = [
 	// { path: '/password-forgotten', name: 'password-forgotten', component: PasswordForgotten, beforeEnter: noAuth },
 	// { path: '/password-forgotten-verification/:email?/:token?', name: 'password-forgotten-verification', component: PasswordForgottenVerification, props: true, beforeEnter: noAuth },
 	// { path: '/activation/:email?/:token?', name: 'activation', component: Activation, props: true, beforeEnter: noAuth },
-	{ path: '/accounts', name: 'accounts', component: Accounts, beforeEnter: noAuth },
+	{ path: '/accounts', name: 'accounts', component: Accounts, props: true, beforeEnter: noAuth },
 
 	// { path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: noAuth },
   { path: '/auth/user/funds', name: 'funds', component: Funds, beforeEnter: requireBazoAccount },
