@@ -1,7 +1,7 @@
 {
-  "name": "coinblesk-frontend",
+  "name": "bazo-frontend",
   "version": "1.0.0",
-  "description": "The web front-end of Coinblesk",
+  "description": "The web front-end of Bazo",
   "author": "Coinblesk <bocek@ifi.uzh.ch>",
   "private": false,
   "scripts": {
