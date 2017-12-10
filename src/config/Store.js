@@ -55,7 +55,7 @@ const store = new Vuex.Store({
     },
     lastBalanceUpdated: function (state) {
       if (state.config.updatedBalances) {
-        return state.config.updatedBalances.toUTCString();
+        return new Date(state.config.updatedBalances).toUTCString();
       } return null;
     }
   },

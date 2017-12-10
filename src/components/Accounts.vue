@@ -135,7 +135,7 @@
 
 <script>
 import Spinner from '@/components/Spinner';
-import HttpService from '@/services/HttpService';
+// import HttpService from '@/services/HttpService';
 import jQuery from 'jQuery';
 import QrCode from '@/components/QrCode';
 import UserTransfer from '@/components/auth/user/UserTransfer';
@@ -153,8 +153,6 @@ export default {
       bazoaddress: '',
       bazoname: '',
       isPrime: false,
-      // totalBalance: 0,
-      accounts: [],
 			alerts: {
 				success: {
 					moveFunds: false,
@@ -216,7 +214,7 @@ export default {
       });
     },
     totalBalance: function () {
-      var sum = this.accounts.reduce(function (acc, val) {
+      var sum = this.allAccounts.reduce(function (acc, val) {
         if (val && val.balance && Number(val.balance)) {
           return acc + val.balance;
         } else {
@@ -229,7 +227,7 @@ export default {
       return this.$store.getters.lastBalanceUpdated;
     },
     tableRows () {
-      return JSON.parse(JSON.stringify(this.accounts));
+      return JSON.parse(JSON.stringify(this.allAccounts));
     },
     configured () {
       return this.$store.getters.accountConfigured;
@@ -243,23 +241,7 @@ export default {
       } return null;
     }
 	},
-	methods: {
-		loadData: function () {
-      if (this.configured) {
-        return Promise.all([
-          HttpService.queryAccountInfo(this.defaultBazoAccount.bazoaddress, this.customURLUsed)
-        ]).then(responses => {
-          this.triggerBalanceUpdate();
-          this.loadingError = false;
-          this.isLoading = false;
-        }, () => {
-          this.isLoading = false;
-          this.loadingError = false;
-        })
-      } else {
-        this.isLoading = false;
-      }
-		},
+  methods: {
     triggerBalanceUpdate () {
       this.$store.dispatch('updateUserBalance', this.customURLUsed);
     },
@@ -302,7 +284,7 @@ export default {
           bazoaddress: this.bazoaddress,
           bazoname: this.bazoname
         }).then(() => {
-          this.loadData();
+          this.triggerBalanceUpdate();
           if (this.$route.query.redirect) {
             this.$router.push({ path: redirect });
           } else {
@@ -315,7 +297,8 @@ export default {
 		}
 	},
 	mounted: function () {
-		this.loadData();
+    this.isLoading = false;
+    this.triggerBalanceUpdate();
     this.parseProps();
 	}
 };
