@@ -182,6 +182,10 @@ export default {
           label: this.Translation.t('userAccounts.fields.bazoname'),
           sortable: true
         },
+        balance: {
+          label: this.Translation.t('userAccounts.fields.balance'),
+          sortable: true
+        },
         bazoaddress: {
           label: this.Translation.t('userAccounts.fields.bazoaddress'),
           sortable: false
@@ -193,10 +197,6 @@ export default {
         qr: {
           label: this.Translation.t('userAccounts.fields.qr'),
           sortable: false
-        },
-        balance: {
-          label: this.Translation.t('userAccounts.fields.balance'),
-          sortable: true
         },
         actions: {
           label: this.Translation.t('userAccounts.fields.actions'),
