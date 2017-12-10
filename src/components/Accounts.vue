@@ -249,7 +249,7 @@ export default {
         return Promise.all([
           HttpService.queryAccountInfo(this.defaultBazoAccount.bazoaddress, this.customURLUsed)
         ]).then(responses => {
-          this.triggerBalanceUpdate
+          this.triggerBalanceUpdate();
           this.loadingError = false;
           this.isLoading = false;
         }, () => {

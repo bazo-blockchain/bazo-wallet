@@ -186,6 +186,7 @@ const store = new Vuex.Store({
           account.balance = res.body.balance;
         }).catch(() => {
           account.balance = '?';
+          Vue.toasted.global.warnNoIcon(Translation.t('toasts.offlineError'));
         })
       })
 		},

@@ -29,7 +29,7 @@ export default {
 					internalError();
 				} else if (/(^0$)/.test(response.status.toString())) {
 					// a request was made, even though the user is offline!
-					Vue.toasted.global.warnNoIcon(Translation.t('toasts.offlineError'));
+					// Vue.toasted.global.warnNoIcon(Translation.t('toasts.offlineError'));
 				} else if (/^(?!2|400$|401$|403$)/.test(response.status.toString()) && !doNotIntercept) {
 					internalError();
 				} else if (!doNotIntercept) {

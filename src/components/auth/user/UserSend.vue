@@ -622,7 +622,7 @@ export default {
     this.triggerBalanceUpdate();
     this.checkNFCSupport();
     this.checkBTSupport();
-    }
+  }
 };
 </script>
 
