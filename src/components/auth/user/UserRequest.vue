@@ -59,20 +59,18 @@
                     <i class="fa fa-bluetooth-b"></i>
                     <span>Bluetooth</span>
                   </b-button>
-                  <b-button class="payment-variant-btn" :disabled="!nfc.NFCSupported" variant="primary" @click.prevent="openNFC">
+                  <b-button v-if="isAndroidDevice" class="payment-variant-btn" :disabled="!nfc.NFCSupported" variant="primary" @click.prevent="openNFC">
                     <i class="fa fa-rss"></i>
                     <span>NFC</span>
                   </b-button>
-                    <a v-if="isMobileDevice" v-bind:href="whatsappLink" data-action="share/whatsapp/share">
-                      <i class="fa fa-whatsapp" aria-hidden="true"></i>
-                      Whatsapp
-                    </a>
-                    <a v-if="isAndroidDevice" v-bind:href="nfcbridgeLink" >
-                      <i class="fa fa-android" aria-hidden="true"></i>
-                      NFC Bridge
-                    </a>
-
-
+                  <a v-if="isMobileDevice" v-bind:href="whatsappLink" data-action="share/whatsapp/share">
+                    <i class="fa fa-whatsapp" aria-hidden="true"></i>
+                    <span>Whatsapp</span>
+                  </a>
+                  <a v-if="isAndroidDevice" v-bind:href="nfcbridgeLink" >
+                    <i class="fa fa-android" aria-hidden="true"></i>
+                    <span>NFC Bridge</span>
+                  </a>
 
                   <div class="nfc-screen" :class="{'shown': nfc.NFCShown}" @click="closeNFC">
                     <div class="close" @click="closeNFC">&times;</div>
