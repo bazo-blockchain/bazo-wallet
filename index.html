@@ -20,6 +20,10 @@
     <!-- Add to home screen for Windows -->
     <meta name="msapplication-TileImage" content="/static/img/icons/msapplication-icon-144x144.png">
     <meta name="msapplication-TileColor" content="#000000">
+
+    <!-- This build of the instascan v1.0.0 library is patched for iOS devices! -->
+    <script type="text/javascript" src="/static/instascan.min.js"></script>
+
     <% for (var chunk of webpack.chunks) {
         for (var file of chunk.files) {
           if (file.match(/\.(js|css)$/)) { %>
