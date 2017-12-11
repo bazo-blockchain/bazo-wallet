@@ -522,6 +522,7 @@ export default {
               this.parseDecodedUrlPayment(result);
             } else {
               console.log('Unable to decode from complete URI.');
+              this.address = content;
             }
 					} catch (e) {
 						this.address = content;
