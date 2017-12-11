@@ -133,7 +133,7 @@
             <div class="col-12">
               <b-form-fieldset>
                 <label class="col-form-label" for="selection">{{ Translation.t('userSend.accountUsed') }}
-                  <b-popover :triggers="['hover']" :content="Translation.t('userSend.accountUsedDesccription')" class="popover-element">
+                  <b-popover :triggers="['hover']" :content="Translation.t('userSend.accountUsedDescription')" class="popover-element">
                     <i class="fa fa-info-circle increase-focus"></i>
                   </b-popover>
                 </label>

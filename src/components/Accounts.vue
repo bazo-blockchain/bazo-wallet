@@ -81,7 +81,7 @@
                 <b-button variant="danger" size="sm" @click.prevent="deleteAccount(item.item)">
                   {{ 'Delete' }}
                 </b-button>
-                <b-popover triggers="hover" :content="Translation.t('userAccounts.tradeDescription')" class="popover-element">
+                <b-popover triggers="hover" :content="Translation.t('userAccounts.deleteDescription')" class="popover-element">
                   <i class="fa fa-info-circle increase-focus"></i>
                 </b-popover>
               </div>
