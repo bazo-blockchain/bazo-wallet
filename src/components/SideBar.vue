@@ -1,7 +1,7 @@
 <template>
 	<div class="side-bar">
 		<div class="logo-container">
-			<img class="logo" src="../assets/about_cb_2.png" alt="Coinblesk" :to="{ 'name': 'home' }">
+			<img class="logo" src="../assets/OySy.png" alt="Coinblesk" :to="{ 'name': 'home' }">
 		</div>
 		<div class="entries" :class="{ 'offline-mode': isOffline }">
 
@@ -149,12 +149,12 @@ $language-picker-height-offline: 8.9em;
 }
 .logo-container {
 	margin-top: 2em;
-	margin-bottom: 2.2em;
+	margin-bottom: 1.2em;
 	text-align: center;
 
 	.logo {
 		max-width: 90%;
-		height: 2.5em;
+		height: 3.5em;
 	}
 }
 .entries {

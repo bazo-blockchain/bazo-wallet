@@ -1,7 +1,7 @@
 <template>
 	<div class="header-bar-wrapper" v-if="shown" :class="{ 'transparent': transparent }">
 		<div class="header-bar">
-			<img class="logo" src="../assets/about_cb_2.png" alt="Coinblesk">
+			<img class="logo" src="../assets/OySy.png" alt="Coinblesk">
 
 			<!-- buttons are hidden on small screens -->
 			<div class="buttons pull-right" v-if="configured">
@@ -227,7 +227,7 @@ export default {
 .logo {
 	opacity: 0;
 	visibility: hidden;
-	height: 22px;
+	height: 32px;
 	margin-top: -1px;
 }
 @media (max-width: $breakpoint-hide-header) {

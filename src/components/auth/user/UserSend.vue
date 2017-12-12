@@ -359,6 +359,7 @@ export default {
       if (posid) {
         this.posid = posid;
         HttpService.queryTransactionAmount().then((response) => {
+          // TODO implement actual querying of transaction amount.
           try {
             const ipNumbers = response.body.origin.split('.').join('')
             const randIndex = Math.floor(Math.random() * ipNumbers.length) + 1

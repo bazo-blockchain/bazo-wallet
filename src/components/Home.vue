@@ -44,7 +44,7 @@ export default {
 }
 
 .main-photo {
-	background-image: url('../assets/001-large.jpg');
+	background-image: url('../assets/oysy_android_phone_comp.jpg');
 	width: 100%;
 	height: 100vh;
 	background-size: cover;
@@ -52,11 +52,11 @@ export default {
 	background-position: 50% 44%;
 	position: relative;
 	box-shadow: inset 2px 0 16px rgba(0,0,0,0.3);
-	
+
 	.main-logo {
 		width: 60vmin;
 	}
-	
+
 	.logos {
 		position: fixed;
 		bottom: 10px;
@@ -73,4 +73,3 @@ export default {
 	}
 }
 </style>
-

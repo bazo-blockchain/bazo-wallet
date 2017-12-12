@@ -71,7 +71,7 @@ body {
 }
 .alert {
 	font-weight: 300;
-	
+
 	b, strong {
 		font-weight: 400;
 	}
@@ -109,7 +109,7 @@ body {
 	height: 1em;
 	vertical-align: middle;
 	margin-top: -0.22em;
-	
+
 	&.flag-icon-en,
 	&.flag-icon-gb {
 		background-image: url('../assets/flag-gb.svg');
@@ -117,7 +117,7 @@ body {
 	&.flag-icon-de {
 		background-image: url('../assets/flag-de.svg');
 	}
-	
+
 	&.grey,
 	&.gray {
 		filter: grayscale(100%);
