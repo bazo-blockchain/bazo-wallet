@@ -251,6 +251,7 @@ export default {
     },
     deleteAccount: function (account) {
       this.$store.dispatch('deleteAccount', account);
+      this.triggerBalanceUpdate();
     },
     cutBazoAddress: function (bazoAddress) {
       return `${bazoAddress.slice(0, 10)}..`
