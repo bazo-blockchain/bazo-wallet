@@ -505,8 +505,9 @@ export default {
             }, 2000)
           } else if (error.code === 1000) {
             this.nfc.NFCStatus = 'The operation was not successfull.. Retry?'
+          } else {
+            this.nfc.NFCStatus = 'Error encountered: ' + error.toString() + error.code;
           }
-          this.nfc.NFCStatus = 'Error encountered: ' + error.toString() + error.code;
         });
       }
     },
