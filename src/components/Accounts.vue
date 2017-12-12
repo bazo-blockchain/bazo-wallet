@@ -62,80 +62,79 @@
           <template slot="actions" scope="item">
             <div>
               <!-- <div >
-                <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
-                  {{ Translation.t('userAccounts.transferButton') }}
-                </b-button>
-                <b-popover triggers="hover" :content="Translation.t('userAccounts.transferDescription')" class="popover-element">
-                  <i class="fa fa-info-circle increase-focus"></i>
-                </b-popover>
-              </div>
-              <div>
-                <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
-                  {{ Translation.t('userAccounts.tradeButton') }}
-                </b-button>
-                <b-popover triggers="hover" :content="Translation.t('userAccounts.tradeDescription')" class="popover-element">
-                  <i class="fa fa-info-circle increase-focus"></i>
-                </b-popover>
-              </div> -->
-              <div>
-                <b-button variant="danger" size="sm" @click.prevent="deleteAccount(item.item)">
-                  {{ 'Delete' }}
-                </b-button>
-                <b-popover triggers="hover" :content="Translation.t('userAccounts.deleteDescription')" class="popover-element">
-                  <i class="fa fa-info-circle increase-focus"></i>
-                </b-popover>
-              </div>
-            </div>
-          </template>
-        </b-table>
-      </div>
-      <div class="" v-else>
-        <b-alert show variant="info">{{Translation.t('userAccounts.notConfigured')}}</b-alert>
-      </div>
-      <div class="reload-page">
-        <div>{{this.lastBalanceUpdate}}</div>
-
-        <span class="btn btn-secondary" @click.prevent="triggerBalanceUpdate">
-          <i class="fa fa-refresh"></i>
-          {{ this.Translation.t('userAccounts.reload') }}
-        </span>
-      </div>
-      <hr>
-      <div class="col-12">
-        <form>
-          <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoaddress')">
-            <b-form-input v-model="bazoaddress" type="text"></b-form-input>
-          </b-form-fieldset>
-          <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoname')">
-            <b-form-input id="bazoname" v-model="bazoname" ></b-form-input>
-          </b-form-fieldset>
-          <div >
-            <label>
-              <b-form-checkbox v-model="isPrime">{{ Translation.t('userAccounts.makePrimary') }}
-
-              </b-form-checkbox>
-            </label>
-          </div>
-          <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ Translation.t('userAccounts.save') }}</b-button>
-        </form>
-        <div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
-          <b-pagination size="md" :total-rows="this.tableRows.length" :per-page="perPage" v-model="currentPage" />
+              <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
+              {{ Translation.t('userAccounts.transferButton') }}
+            </b-button>
+            <b-popover triggers="hover" :content="Translation.t('userAccounts.transferDescription')" class="popover-element">
+            <i class="fa fa-info-circle increase-focus"></i>
+          </b-popover>
         </div>
-      </div>
-
-    </div>
+        <div>
+        <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
+        {{ Translation.t('userAccounts.tradeButton') }}
+      </b-button>
+      <b-popover triggers="hover" :content="Translation.t('userAccounts.tradeDescription')" class="popover-element">
+      <i class="fa fa-info-circle increase-focus"></i>
+    </b-popover>
+  </div> -->
+  <div>
+    <b-button variant="danger" size="sm" @click.prevent="deleteAccount(item.item)">
+      {{ 'Delete' }}
+    </b-button>
+    <b-popover triggers="hover" :content="Translation.t('userAccounts.deleteDescription')" class="popover-element">
+      <i class="fa fa-info-circle increase-focus"></i>
+    </b-popover>
   </div>
+</div>
+</template>
+</b-table>
+</div>
+<div class="" v-else>
+  <b-alert show variant="info">{{Translation.t('userAccounts.notConfigured')}}</b-alert>
+</div>
+<div class="reload-page">
+  <div>{{this.lastBalanceUpdate}}</div>
 
-  <!-- <user-transfer @private-key-decrypted="moveFunds" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :amount="convertSatoshiToBitcoin(currentTransfer.amountSatoshi)"></user-transfer>
-  <user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true"></user-transfer>
-  <user-transfer @private-key-decrypted="payout" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true" separate="payout"></user-transfer> -->
+  <span class="btn btn-secondary" @click.prevent="triggerBalanceUpdate">
+    <i class="fa fa-refresh"></i>
+    {{ this.Translation.t('userAccounts.reload') }}
+  </span>
+</div>
+<hr>
+<div class="col-12">
+  <form>
+    <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoaddress')">
+      <b-form-input v-model="bazoaddress" type="text"></b-form-input>
+    </b-form-fieldset>
+    <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoname')">
+      <b-form-input id="bazoname" v-model="bazoname" ></b-form-input>
+    </b-form-fieldset>
+    <div >
+      <label>
+        <b-form-checkbox v-model="isPrime">{{ Translation.t('userAccounts.makePrimary') }}
+
+        </b-form-checkbox>
+      </label>
+    </div>
+    <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ Translation.t('userAccounts.save') }}</b-button>
+  </form>
+  <div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
+    <b-pagination size="md" :total-rows="this.tableRows.length" :per-page="perPage" v-model="currentPage" />
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- <user-transfer @private-key-decrypted="moveFunds" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :amount="convertSatoshiToBitcoin(currentTransfer.amountSatoshi)"></user-transfer>
+<user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true"></user-transfer>
+<user-transfer @private-key-decrypted="payout" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true" separate="payout"></user-transfer> -->
 </div>
 </div>
 </template>
 
 <script>
 import Spinner from '@/components/Spinner';
-// import HttpService from '@/services/HttpService';
 import jQuery from 'jQuery';
 import QrCode from '@/components/QrCode';
 import UserTransfer from '@/components/auth/user/UserTransfer';
@@ -205,7 +204,6 @@ export default {
     allAccounts () {
       let accounts = this.$store.getters.bazoAccounts;
       this.accounts = accounts;
-      this.triggerBalanceUpdate();
       return accounts;
     },
     defaultBazoAccount: function () {
