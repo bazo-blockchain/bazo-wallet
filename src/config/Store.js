@@ -121,6 +121,8 @@ const store = new Vuex.Store({
 		updateUserBalance: function (context, host) {
       let addresses = context.state.config.accounts.map(account => account.bazoaddress);
       HttpService.queryAccountInfo(addresses, host).then((responses) => {
+        let errorsFound = false;
+        let accountsFound = false;
         context.state.config.updatedBalances = new Date();
         responses.forEach((res) => {
           if (res.body.address) {
@@ -128,20 +130,21 @@ const store = new Vuex.Store({
               return candidate.bazoaddress === res.body.address
             });
             accountToUpdateBalance.balance = res.body.balance
+            accountsFound = true;
+          } else {
+            errorsFound = true;
           }
         })
+        if (errorsFound & accountsFound) {
+          Vue.toasted.global.warnNoIcon(Translation.t('userAccounts.alerts.incompleteQuery'));
+        } else if (errorsFound & !accountsFound) {
+          Vue.toasted.global.error(Translation.t('userAccounts.alerts.failedQuery'));
+        } else if (!errorsFound & accountsFound) {
+          Vue.toasted.global.success(Translation.t('userAccounts.alerts.completeQuery'));
+        }
       }).catch(() => {
-        Vue.toasted.global.warnNoIcon(Translation.t('toasts.offlineError'));
+         Vue.toasted.global.error(Translation.t('userAccounts.alerts.failedQuery'));
       });
-      // context.state.config.accounts.forEach(function (account) {
-      //   HttpService.queryAccountInfo(account.bazoaddress, host).then((res) => {
-      //     context.state.config.updatedBalances = new Date();
-      //     account.balance = res.body.balance;
-      //   }).catch(() => {
-      //     account.balance = '?';
-      //     // Vue.toasted.global.warnNoIcon(Translation.t('toasts.offlineError'));
-      //   })
-      // })
 		},
 		updateLanguage: function (context, language) {
 			return context.commit('updateLanguage', language);
