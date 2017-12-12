@@ -226,6 +226,10 @@ div.form-error {
 		cursor: default;
 	}
 }
+.btn-primary, .btn-primary.disabled {
+  background-color: $green-color;
+  border-color: $green-color;
+}
 
 .key,
 .short-key,
