@@ -21,13 +21,13 @@ const HttpService = {
     return Vue.http.get('https://httpbin.org/ip', {
     })
   },
-  queryAccountInfo: function (accountAddress, host, doNotIntercept) {
+  queryAccountInfo: function (accountAddresses, host, doNotIntercept) {
     let hostbase = `${host || properties.HOST}`
     let url = HttpService.formatHost(hostbase) + 'account/'
-    return Vue.http.get(url + accountAddress, {
+    return Promise.all(accountAddresses.map(accountAddress => Vue.http.get(url + accountAddress, {
       method: 'GET',
       headers: 'Accept: application/json'
-    })
+    })))
   },
   createFundsTx: function (recipient, sender, amount, txCount, fee, host) {
     let hostbase = `${host || properties.HOST}`
