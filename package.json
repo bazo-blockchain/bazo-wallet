@@ -11,7 +11,7 @@
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit/specs",
-    "demo-deploy": "npm run build; surge -d 'https://bazopay2.surge.sh' -p 'dist'",
+    "demo-deploy": "npm run build; surge -d 'https://oysy.surge.sh' -p 'dist'",
     "demo-deploy-http": "npm run build; surge -d 'http://bazowallet.surge.sh' -p 'dist'"
   },
   "dependencies": {
