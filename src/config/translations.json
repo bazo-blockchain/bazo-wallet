@@ -1,25 +1,15 @@
 {
 	"en": {
-		"message": {
-			"hello": "hello world"
-		},
 		"language": {
 			"en": "English",
 			"de": "German"
 		},
 		"toasts": {
-			"signedIn": "You have successfully been signed in.",
-			"signedOff": "You have successfully been signed off.",
-			"wrongPassword": "The combination of your e-mail/password is incorrect.",
-			"unauthorized": "You are trying to access a protected resource. Please authenticate yourself first.",
       "accountrequired": "You are trying to access a page without having a Bazo account. Please add an account first.",
-			"forbidden": "You do not have the permission to access this site.",
 			"internalError": "An internal error occured. The page will be reloaded.",
-			"sessionExpired": "Your session has expired. Please sign in again.",
 			"pageNotFound": "404 - The page could not be found. You've been redirected.",
 			"validationError": "Please fill out all fields correctly.",
 			"languageSwitched": "Your language setting has successfully been switched to {language}.",
-			"userIsDeletedError": "This user account was deleted or can only be used with a special token. Please contact the administrator.",
 			"offlineError": "<i class='fa fa-wifi'></i>&nbsp;Your request was not successful, because you are currently offline.",
 			"offlineModeRedirect": "<i class='fa fa-wifi'></i>&nbsp;You cannot access this page, because you are currently&nbsp;<b>offline</b>."
 		},
@@ -64,8 +54,6 @@
 			"boxTitle": "Transfer to a Bazo address",
 			"receiver": "Receiver (Bazo address)",
 			"receiverPlaceholder": "Enter a valid bazo address",
-			"receiverDescription": "This should be the fully qualified Bazo address whom you're trying to send Bazo coins.",
-			"lookup": "Lookup",
 			"amount": "Amount",
 			"feesIncluded": "Fees are included in the amount",
 			"feesIncludedDescription": "If the checkbox is checked the fees are subtracted from the transfer amount. The recepient receives an amount which is reduced by the extend of the fees. Alternatively, you are charged by the amount plus fees, the recepient, however, receives the exact amount.",
@@ -76,7 +64,6 @@
       "accountUsedDescription": "Please choose one of your Bazo accounts as a source for the transaction.",
       "descriptionForexRate": "The current forex rate Bazo/{currency} is <span class='mono'>{forex}</span>&nbsp;&nbsp;().",
 			"descriptionFees": "The fees of your Bazo transfer are not yet included in the amount and are added to the value. Please make sure, that you have enough funds to create this transaction. Otherwise we have to reject it.",
-			"lowAmountFeeDescription": "The amount you are trying to transfer is very small and needs to contain possible transaction fees. It is possible, that the transaction is rejected because the fees might be higher than the remaining transfer amount.",
 			"button": "Send {amount} Bazo coins",
 			"transactionSuccessful": "The transaction was successfully executed.",
 			"paymentError": "An error occurred during the payment process. Please verify the amount (Attention: fees) or try it again later on.",
@@ -126,9 +113,6 @@
 		}
 	},
 	"de": {
-		"message": {
-			"hello": "Hallo Welt"
-		},
 		"language": {
 			"en": "Englisch",
 			"de": "Deutsch"
@@ -173,8 +157,6 @@
 			"boxTitle": "An eine Bazo Adresse überweisen",
 			"receiver": "Empfänger (Bazo Adresse)",
 			"receiverPlaceholder": "Bazo Adresse eingeben",
-			"receiverDescription": "Falls Sie eine E-Mail Adresse eingeben wird der Empfänger eine Nachricht mit einem Schlüssel erhalten. Mit diesem Schlüssel hat er Zugriff auf die erhaltenen Beträge.",
-			"lookup": "Suchen",
 			"amount": "Betrag",
 			"feesIncluded": "Spesen in Betrag einschliessen",
 			"feesIncludedDescription": "Wenn die Auswahlbox ausgewählt ist, werden die Spesen vom Betrag abgezogen. Der Empfänger erhält einen um die Spesen verminderten Betrag. Andernfalls wird Ihnen der Betrag plus Spesen berechnet, der Empfänger erhält jedoch den genauen Betrag.",
@@ -185,7 +167,6 @@
       "accountUsedDescription": "Das Bazo Konto welches um den Betrag der Transaktion belastet werden soll.",
       "descriptionForexRate": "Der aktuelle Wechselkurs Bazo/{currency} beträgt <span class='mono'>{forex}</span>&nbsp;&nbsp;(Quelle: Bitstamp).",
 			"descriptionFees": "Bei Ihrer Zahlung entstehen voraussichtlich Spesen, welche auf den dargestellten Betrag aufaddiert werden. Vergewissern Sie sich, dass Sie über genügend Bazo coins verfügen, um die Zahlung auszuführen. Andernfalls müssen wir die Zahlung ablehnen.",
-			"lowAmountFeeDescription": "Der Betrag, den Sie überweisen möchten ist klein und beinhaltet bereits allfällige Spesen. Womöglich wird diese Transaktion abgelehnt, da die Spesen höher sein könnten als der verbleibende Überweisungsbetrag.",
 			"button": "{amount} Bazo versenden",
 			"transactionSuccessful": "Die Transaktion wurde erfolgreich durchgeführt.",
 			"paymentError": "Bei der Zahlung ist ein Fehler aufgetreten. Überprüfen Sie Ihren Betrag (Achtung: Spesen) oder probieren Sie es später erneut.",
@@ -229,18 +210,11 @@
       "posiddescription": "Geben Sie die Identifikation des POS Systems an um die Höhe der Transaktion automatisch abrufen zu lassen."
     },
 		"toasts": {
-			"signedIn": "Sie haben sich erfolgreich eingeloggt.",
-			"signedOff": "Sie wurden erfolgreich ausgeloggt.",
-			"wrongPassword": "Die Kombination aus Ihrer E-Mail Adresse und Ihrem Passwort ist inkorrekt.",
       "accountrequired": "Sie versuchen eine Seite aufzurufen ohne eine gültige Bazo Adresse hinterlegt zu haben.",
-			"unauthorized": "Sie versuchen eine geschützte Seite aufzurufen, bitte loggen Sie sich zunächst ein.",
-			"forbidden": "Sie verfügen nicht über die Berechtigung, diese Seite anzuzeigen.",
 			"internalError": "Ein interner Fehler ist aufgetreten. Die Seite wird automatisch neu geladen.",
-			"sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
 			"pageNotFound": "404 - Die Seite wurde nicht gefunden. Sie wurden weitergeleitet.",
 			"validationError": "Bitte füllen Sie alle Felder korrekt aus.",
 			"languageSwitched": "Ihre Spracheinstellung wurde erfolgreich auf {language} geändert.",
-			"userIsDeletedError": "Dieses Benutzerkonto wurde deaktiviert oder kann nur mit einem Spezialschlüssel benutzt werden. Bitte kontaktieren Sie den Administrator.",
 			"offlineError": "<i class='fa fa-wifi'></i>&nbsp;Ihre Anfrage war nicht erfolgreich, da Sie&nbsp;<b>offline</b>&nbsp;sind.",
 			"offlineModeRedirect": "<i class='fa fa-wifi'></i>&nbsp;Sie können diese Seite nicht aufrufen, da Sie derzeit&nbsp;<b>offline</b>&nbsp;sind."
 		},
