@@ -2,17 +2,16 @@
 <div class="user-balance">
 	<a href @click.prevent="openFundsPage">
 		<i class="fa fa-bitcoin"></i>
-		<span class="value">{{ totalBalanceBTC }}</span>
+		<span class="value">{{ userBalance }}</span>
 	</a>
-	<b-tooltip :content="balanceDateFormatted" :triggers="['click', 'hover']" :placement="tooltipPlacement" class="info " :offset="offset">
+	<!-- <b-tooltip :content="balanceDateFormatted" :triggers="['click', 'hover']" :placement="tooltipPlacement" class="info " :offset="offset">
 		<i class="fa fa-info-circle increase-focus" :class="{ 'red': isOffline || oldBalance }"></i>
-	</b-tooltip>
+	</b-tooltip> -->
 </div>
 </template>
 
 <script>
 import moment from 'moment';
-import UtilService from '@/services/UtilService';
 
 export default {
 	name: 'user-balance',
@@ -32,27 +31,10 @@ export default {
 		isOffline: function () {
 			return this.$store.state.offline;
 		},
-		oldBalance: function () {
-			if (!this.userBalance || !this.userBalance.lastUpdate) {
-				return true;
-			}
-			return moment(this.userBalance.lastUpdate).isBefore(this.now.subtract(5, 'minutes'));
-		},
 		userBalance: function () {
-			return this.$store.state.userBalance;
+			return this.$store.getters.totalBalance;
 		},
-		totalBalanceBTC: function () {
-			if (this.userBalance && this.userBalance.totalBalance) {
-				return UtilService.convertSatoshiToBitcoin(this.userBalance.totalBalance);
-			}
-			return 0;
-		},
-		balanceDateFormatted: function () {
-			if (this.userBalance && this.userBalance.lastUpdate) {
-				return this.$t('userBalance.lastUpdate', { timestamp: moment(this.userBalance.lastUpdate).format(UtilService.DATE_FORMAT) });
-			}
-			return '';
-		},
+
 		offset: function () {
 			if (this.tooltipPlacement === 'bottom') {
 				return '-10px 0';
@@ -62,16 +44,13 @@ export default {
 		}
 	},
 	methods: {
-		updateNow: function () {
-			this.now = moment();
-		},
 		openFundsPage: function () {
 			this.$emit('link-clicked');
-			this.$router.push({ name: 'user-funds' });
+			this.$router.push({ name: 'accounts' });
 		}
 	},
 	mounted: function () {
-		window.setInterval(this.updateNow, 1000)
+		// window.setInterval(this.updateNow, 1000)
 	},
 	clearInterval: function () {
 		window.clearInterval(this.updateNow);

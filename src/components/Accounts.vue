@@ -212,11 +212,11 @@ export default {
       });
     },
     totalBalance: function () {
-      var sum = this.allAccounts.reduce(function (acc, val) {
-        if (val && val.balance && Number(val.balance)) {
-          return acc + val.balance;
+      var sum = this.allAccounts.reduce(function (val, account) {
+        if (account && account.balance && Number(account.balance)) {
+          return val + account.balance;
         } else {
-          return acc;
+          return val;
         }
       }, 0);
       return sum;
