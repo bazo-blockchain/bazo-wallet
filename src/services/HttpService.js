@@ -96,51 +96,51 @@ const HttpService = {
 				return Vue.http.post(properties.HOST + '/auth/user/payment/external-payment', null,
 						doNotIntercept ? { headers: DO_NOT_INTERCEPT, params: { transaction } } : { params: { transaction } });
 			}
-		},
-
-		Admin: {
-			deleteUser: function (email) {
-				const encodedEmail = window.encodeURIComponent(email);
-				return Vue.http.delete(properties.HOST + '/auth/admin/user-accounts/' + encodedEmail + '/delete');
-			},
-			undeleteUser: function (email) {
-				const encodedEmail = window.encodeURIComponent(email);
-				return Vue.http.put(properties.HOST + '/auth/admin/user-accounts/' + encodedEmail + '/undelete')
-			},
-			switchUserRole: function (email) {
-				const encodedEmail = window.encodeURIComponent(email);
-				return Vue.http.post(properties.HOST + '/auth/admin/user-accounts/' + encodedEmail + '/switch-role');
-			},
-			getUserAccount: function (email, doNotIntercept) {
-				const encodedEmail = window.encodeURIComponent(email);
-				return Vue.http.get(properties.HOST + '/auth/admin/user-accounts/' + encodedEmail,
-						doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
-			},
-			getUserAccounts: function () {
-				return Vue.http.get(properties.HOST + '/auth/admin/user-accounts');
-			},
-			getAccount: function (publicKeyClient) {
-				return Vue.http.get(properties.HOST + '/auth/admin/accounts/' + publicKeyClient);
-			},
-			getAccounts: function () {
-				return Vue.http.get(properties.HOST + '/auth/admin/accounts');
-			},
-			getEvents: function (urgence) {
-				return Vue.http.get(properties.HOST + '/auth/admin/events', { params: { urgence } });
-			},
-			getServerBalance: function () {
-				return Vue.http.get(properties.HOST + '/auth/admin/server-balance');
-			},
-			postServerPotBaseline: function (amount) {
-				return Vue.http.post(properties.HOST + '/auth/admin/server-pot-baseline', null, { params: { amount } });
-			},
-			getAllServerPotBaselineAmounts: function () {
-				return Vue.http.get(properties.HOST + '/auth/admin/server-pot-baseline');
-			},
-			getTotalServerPotBaselineAmount: function () {
-				return Vue.http.get(properties.HOST + '/auth/admin/server-pot-baseline/total');
-			}
 		}
+
+		// Admin: {
+		// 	deleteUser: function (email) {
+		// 		const encodedEmail = window.encodeURIComponent(email);
+		// 		return Vue.http.delete(properties.HOST + '/auth/admin/user-accounts/' + encodedEmail + '/delete');
+		// 	},
+		// 	undeleteUser: function (email) {
+		// 		const encodedEmail = window.encodeURIComponent(email);
+		// 		return Vue.http.put(properties.HOST + '/auth/admin/user-accounts/' + encodedEmail + '/undelete')
+		// 	},
+		// 	switchUserRole: function (email) {
+		// 		const encodedEmail = window.encodeURIComponent(email);
+		// 		return Vue.http.post(properties.HOST + '/auth/admin/user-accounts/' + encodedEmail + '/switch-role');
+		// 	},
+		// 	getUserAccount: function (email, doNotIntercept) {
+		// 		const encodedEmail = window.encodeURIComponent(email);
+		// 		return Vue.http.get(properties.HOST + '/auth/admin/user-accounts/' + encodedEmail,
+		// 				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
+		// 	},
+		// 	getUserAccounts: function () {
+		// 		return Vue.http.get(properties.HOST + '/auth/admin/user-accounts');
+		// 	},
+		// 	getAccount: function (publicKeyClient) {
+		// 		return Vue.http.get(properties.HOST + '/auth/admin/accounts/' + publicKeyClient);
+		// 	},
+		// 	getAccounts: function () {
+		// 		return Vue.http.get(properties.HOST + '/auth/admin/accounts');
+		// 	},
+		// 	getEvents: function (urgence) {
+		// 		return Vue.http.get(properties.HOST + '/auth/admin/events', { params: { urgence } });
+		// 	},
+		// 	getServerBalance: function () {
+		// 		return Vue.http.get(properties.HOST + '/auth/admin/server-balance');
+		// 	},
+		// 	postServerPotBaseline: function (amount) {
+		// 		return Vue.http.post(properties.HOST + '/auth/admin/server-pot-baseline', null, { params: { amount } });
+		// 	},
+		// 	getAllServerPotBaselineAmounts: function () {
+		// 		return Vue.http.get(properties.HOST + '/auth/admin/server-pot-baseline');
+		// 	},
+		// 	getTotalServerPotBaselineAmount: function () {
+		// 		return Vue.http.get(properties.HOST + '/auth/admin/server-pot-baseline/total');
+		// 	}
+		// }
 	},
 
 	createTimeLockedAddress: function (signedDTO, doNotIntercept) {
