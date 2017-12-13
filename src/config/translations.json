@@ -17,7 +17,7 @@
 			"title": "Accounts",
 			"total": "Total",
 			"noActionsPossible": "No action possible.",
-      "notConfigured": "You need to add a Bazo Account first!",
+      "notConfigured": "Please add a Bazo Account first!",
       "save": "Save account",
 			"paymentError": "An error occurred. Please try it again later on.",
       "accountExists": "The account you are trying to add is already stored in the wallet!",
