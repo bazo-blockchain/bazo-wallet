@@ -92,7 +92,7 @@
 <div class="" v-else>
   <b-alert show variant="info">{{Translation.t('userAccounts.notConfigured')}}</b-alert>
 </div>
-<div class="reload-page">
+<div class="reload-page" v-if="configured">
   <div>{{this.lastBalanceUpdate}}</div>
 
   <span class="btn btn-secondary" @click.prevent="triggerBalanceUpdate">
