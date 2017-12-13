@@ -230,6 +230,11 @@ div.form-error {
   background-color: $green-color;
   border-color: $green-color;
 }
+.btn-primary.active, .btn-primary:active, .btn-primary:hover, .show>.btn-primary.dropdown-toggle {
+  background-color: #992f47;
+  border-color: #992f47;
+}
+
 
 .key,
 .short-key,
