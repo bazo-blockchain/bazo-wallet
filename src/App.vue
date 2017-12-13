@@ -85,7 +85,7 @@ export default {
 			}
 		},
 		updateUserBalance: function () {
-			if (!this.isOffline && this.auth.authenticated && this.auth.role === 'ROLE_USER') {
+			if (!this.isOffline) {
 				return this.$store.dispatch('updateUserBalance');
 			}
 		}
@@ -128,7 +128,7 @@ export default {
 		max-width: 100%;
 		width: 100%;
 		overflow: hidden;
-		
+
 		&:after {
 			content: "";
 			display: block;
@@ -153,7 +153,7 @@ export default {
 		z-index: 999;
 		flex-shrink: 0;
 		width: 0;
-		
+
 		/deep/ .side-bar {
 			position: fixed;
 			top: 0;
@@ -162,13 +162,13 @@ export default {
 			margin-left: -100%;
 			transition: 0.3s ease all;
 			background: $side-bar-black;
-			
+
 			.entries .entry.selected:after {
 				opacity: 0;
 				visibility: hidden;
 			}
 		}
-	
+
 		&.shown {
 			/deep/ .side-bar {
 				margin-left: 0;
@@ -181,7 +181,7 @@ export default {
 				transition: 0.3s ease left;
 			}
 		}
-		
+
 		.hamburger {
 			position: fixed;
 			top: 0;
@@ -193,9 +193,9 @@ export default {
 			height: 2em;
 			color: white;
 			margin-left: 0;
-			background: $side-bar-black;
+			background: none;
 			cursor: pointer;
-	
+
 			.fa {
 				display: block;
 				transform: translate(-50%, -50%);
@@ -213,7 +213,7 @@ export default {
 
 			/deep/ .side-bar {
 				width: 300px;
-				
+
 				.balance-wrapper {
 					display: none;
 				}
@@ -238,7 +238,7 @@ export default {
 			/deep/ .side-bar {
 				width: 300px;
 				margin-left: 0;
-				
+
 				.entries .entry.selected:after {
 					opacity: 1;
 					visibility: visible;
@@ -254,7 +254,7 @@ export default {
 	#app-container {
 		.side-bar-wrapper {
 			width: 350px;
-			
+
 			/deep/ .side-bar {
 				width: 350px;
 			}

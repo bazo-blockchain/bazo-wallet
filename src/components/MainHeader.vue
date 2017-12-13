@@ -5,7 +5,7 @@
 
 			<!-- buttons are hidden on small screens -->
 			<div class="buttons pull-right" v-if="configured">
-				<div class="button" v-if="auth.role === 'ROLE_USER' && userBalance">
+				<div class="button" v-if="configured">
 					<user-balance></user-balance>
 				</div>
 				<div class="button">
@@ -167,7 +167,7 @@ export default {
 			max-height: 40px;
 			transform: translate(-50%, -50%);
 			position: absolute;
-			top: 50%;
+			top: 40%;
 			left: 50%;
 		}
 
