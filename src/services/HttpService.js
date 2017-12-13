@@ -29,6 +29,14 @@ const HttpService = {
       headers: 'Accept: application/json'
     })))
   },
+  queryTxInfo: function (accountAddress, host, doNotIntercept) {
+    let hostbase = `${host || properties.HOST}`
+    let url = HttpService.formatHost(hostbase) + 'account/'
+    return Vue.http.get(url + accountAddress, {
+      method: 'GET',
+      headers: 'Accept: application/json'
+    })
+  },
   createFundsTx: function (recipient, sender, amount, txCount, fee, host) {
     let hostbase = `${host || properties.HOST}`
     let url = HttpService.formatHost(hostbase) + 'createFundsTx/'

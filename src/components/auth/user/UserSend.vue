@@ -573,7 +573,7 @@ export default {
 			if (this.validForm) {
 				this.isLoading = true;
 
-				HttpService.queryAccountInfo(
+				HttpService.queryTxInfo(
           this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress,
           this.customURLUsed
         )
@@ -584,7 +584,6 @@ export default {
             recipient: this.address,
             sender: this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress
 					};
-
           let fee, amount;
           if (this.feesIncluded) {
             amount = Number(this.currentTransaction.amount) - this.currentFee;
