@@ -96,7 +96,7 @@ export default {
 		}, () => {
 			this.initialLoadingComplete = true;
 		});
-		window.setInterval(this.updateUserBalance, 20000);
+		// window.setInterval(this.updateUserBalance, 20000);
 		window.addEventListener('resize', this.resizeHandler);
 	},
 	beforeDestory: function () {
