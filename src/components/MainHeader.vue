@@ -167,7 +167,7 @@ export default {
 			max-height: 40px;
 			transform: translate(-50%, -50%);
 			position: absolute;
-			top: 40%;
+			top: 50%;
 			left: 50%;
 		}
 
@@ -227,7 +227,7 @@ export default {
 .logo {
 	opacity: 0;
 	visibility: hidden;
-	height: 32px;
+	// height: 32px;
 	margin-top: -1px;
 }
 @media (max-width: $breakpoint-hide-header) {

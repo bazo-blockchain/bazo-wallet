@@ -193,7 +193,7 @@ export default {
 			height: 2em;
 			color: white;
 			margin-left: 0;
-			background: none;
+			background: rgba(0,0,0,0.4);
 			cursor: pointer;
 
 			.fa {
