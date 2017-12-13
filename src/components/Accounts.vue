@@ -53,10 +53,9 @@
           </template>
           <template slot="qr" scope="item">
             <div>
-              <a href="#/auth/user/request">
-                <i class="fa fa-qrcode" aria-hidden="true"></i>
+              <a href="#/auth/user/request" :href="'https://httpbin.org/get?par=' + item.item.hash">
+                <i class="fa fa-link" aria-hidden="true"></i>
               </a>
-              <!-- <qr-code :content="encodeBazoAddress(item.item.bazoaddress)"></qr-code> -->
             </div>
           </template>
           <template slot="actions" scope="item">
@@ -136,7 +135,6 @@
 <script>
 import Spinner from '@/components/Spinner';
 import jQuery from 'jQuery';
-import QrCode from '@/components/QrCode';
 import UserTransfer from '@/components/auth/user/UserTransfer';
 import URIScheme from '@/services/URIScheme';
 import Translation from '@/config/Translation';
@@ -169,7 +167,6 @@ export default {
 	},
 	components: {
 		Spinner,
-		QrCode,
 		UserTransfer
 	},
 	computed: {
@@ -192,7 +189,7 @@ export default {
           sortable: true
         },
         qr: {
-          label: this.Translation.t('userAccounts.fields.qr'),
+          label: this.Translation.t('userAccounts.fields.explorer'),
           sortable: false
         },
         actions: {

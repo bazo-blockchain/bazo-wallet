@@ -31,7 +31,7 @@
 				"bazoaddress": "Bazo Address",
         "bazoname": "Name",
         "prime": "Main account?",
-				"qr": "QR Code",
+				"explorer": "Details",
         "balance": "Balance",
 				"actions": "Actions"
 			},
@@ -128,7 +128,7 @@
 			"fields": {
 				"bazoaddress": "Bazo Adresse",
         "prime": "Hauptkonto?",
-				"qr": "QR Code",
+				"explorer": "Details",
         "balance": "Guthaben",
 				"actions": "Aktionen"
 			},

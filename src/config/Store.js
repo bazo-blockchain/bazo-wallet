@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import PersistedState from 'vuex-persistedstate'
 import HttpService from '@/services/HttpService';
 import Translation from '@/config/Translation';
+import Sha3 from 'js-sha3';
 
 Vue.use(Vuex);
 
@@ -114,10 +115,17 @@ const store = new Vuex.Store({
             existingAccount.isPrime = false
           })
         }
+        let addressHash = '';
+        try {
+          addressHash = Sha3.sha3_256(account.bazoaddress);
+        } catch (e) {
+          addressHash = '';
+        }
         let newAccount = {
           bazoaddress: account.bazoaddress,
           bazoname: account.bazoname,
-          isPrime: account.isPrime || false
+          isPrime: account.isPrime || false,
+          hash: addressHash
         };
         state.config.accounts.push(newAccount);
         state.config.configured = true;
