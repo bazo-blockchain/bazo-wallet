@@ -96,9 +96,8 @@ const store = new Vuex.Store({
           state.config.configured = false;
         }
       }
-      let accountToBeDeleted = state.config.accounts.find((candidate) => {
-        return candidate.bazoaddress === account.bazoaddress
-      });
+
+      let accountToBeDeleted = helpers.findAccountByAddress(state.config.accounts, account.bazoaddress);
       let needToUpdatePrimary = accountToBeDeleted.isPrime;
       let indexToBeDeleted = state.config.accounts.indexOf(accountToBeDeleted);
 
