@@ -61,7 +61,7 @@ export default {
 <style lang="scss" scoped>
 .user-balance {
 	text-decoration: none;
-	
+
 	a:hover,
 	a:active,
 	a:focus,

@@ -6,6 +6,14 @@ import Translation from '@/config/Translation';
 
 Vue.use(Vuex);
 
+const helpers = {
+  findAccountByAddress: function (accounts, address) {
+    return accounts.find((candidate) => {
+      return candidate.bazoaddress === address
+    });
+  }
+};
+
 const store = new Vuex.Store({
 	state: {
 		language: null,
@@ -39,6 +47,10 @@ const store = new Vuex.Store({
     useCustomHost: function (state) {
       return state.settings.useCustomHost;
     },
+    findAccountByAddress: function (state, address) {
+      console.log(state.config.acounts);
+      return helpers.findAccountByAddress(state.config.accounts, address)
+    },
     customURL: function (state) {
       return state.settings.customURL;
     },
@@ -49,6 +61,17 @@ const store = new Vuex.Store({
       if (state.config.updatedBalances) {
         return new Date(state.config.updatedBalances).toUTCString();
       } return null;
+    },
+    totalBalance: function (state) {
+      let visited = []
+      return state.config.accounts.reduce(function (acc, val) {
+        if (val && val.balance && Number(val.balance) && (visited.indexOf(val.bazoaddress) === -1)) {
+          visited.push(val.bazoaddress);
+          return acc + val.balance;
+        } else {
+          return acc;
+        }
+      }, 0);
     }
   },
 	// should be private:
@@ -139,9 +162,9 @@ const store = new Vuex.Store({
         context.state.config.updatedBalances = new Date();
         responses.forEach((res) => {
           if (res.body.address) {
-            let accountToUpdateBalance = context.state.config.accounts.find((candidate) => {
-              return candidate.bazoaddress === res.body.address
-            });
+            let accountToUpdateBalance = helpers.findAccountByAddress(
+              context.state.config.accounts, res.body.address
+            );
             accountToUpdateBalance.balance = res.body.balance
             accountsFound = true;
           } else {

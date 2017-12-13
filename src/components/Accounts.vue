@@ -267,10 +267,14 @@ export default {
         }, 1000)
       }
     },
+    findExistingAccountByAddress: function (address) {
+      return this.tableRows.find((account) => {
+        return account.bazoaddress === address;
+      })
+    },
     saveAccount: function () {
       const redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
-			if (!this.isLoading) {
-				this.isLoading = true;
+      if (!this.isLoading) {
         // An account should always be a primary account if there are not multiple
         let isPrime;
         if (this.tableRows.length > 0) {
@@ -278,23 +282,28 @@ export default {
         } else {
           isPrime = true
         }
-        this.$store.dispatch('updateConfig', {
-          isPrime: this.isPrime || isPrime,
-          bazoaddress: this.bazoaddress,
-          bazoname: this.bazoname
-        }).then(() => {
-          this.triggerBalanceUpdate();
-          if (this.$route.query.redirect) {
-            this.$router.push({ path: redirect });
-          } else {
-            this.bazoaddress = '';
-            this.bazoname = '';
-            this.isLoading = false;
-          }
-        });
-			}
-		}
-	},
+        if (this.findExistingAccountByAddress(this.bazoaddress)) {
+          this.$toasted.global.error(Translation.t('userAccounts.accountExists'));
+        } else {
+          this.isLoading = true;
+          this.$store.dispatch('updateConfig', {
+            isPrime: this.isPrime || isPrime,
+            bazoaddress: this.bazoaddress,
+            bazoname: this.bazoname
+          }).then(() => {
+            this.triggerBalanceUpdate();
+            if (this.$route.query.redirect) {
+              this.$router.push({ path: redirect });
+            } else {
+              this.bazoaddress = '';
+              this.bazoname = '';
+              this.isLoading = false;
+            }
+          });
+        }
+      }
+    }
+  },
 	mounted: function () {
     this.isLoading = false;
     this.triggerBalanceUpdate();
