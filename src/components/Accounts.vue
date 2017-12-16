@@ -53,7 +53,7 @@
           </template>
           <template slot="qr" scope="item">
             <div>
-              <a href="#/auth/user/request" :href="'https://shrouded-dawn-45355.herokuapp.com/account/' + item.item.hash">
+              <a href="#/auth/user/request" :href="'https://shrouded-dawn-45355.herokuapp.com/account/' + item.item.bazoaddress">
                 <i class="fa fa-link" aria-hidden="true"></i>
               </a>
             </div>
