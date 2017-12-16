@@ -208,7 +208,7 @@ export default {
       }, posid)
     },
     whatsappLink: function () {
-      return 'whatsapp://send?text=https://bazopay2.surge.sh/#/auth/user/send/?paymentinfo=' + this.encodedPaymentInformation
+      return 'https://api.whatsapp.com/send?text=' + encodeURI(this.encodedPaymentInformation);
     },
     nfcbridgeLink: function () {
       let target = this.paymentInfo.selectedAccount || this.defaultBazoAccount;
