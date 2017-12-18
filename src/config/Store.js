@@ -8,10 +8,25 @@ import Sha3 from 'js-sha3';
 Vue.use(Vuex);
 
 const helpers = {
-  findAccountByAddress: function (accounts, address) {
+  findAccountByAddress: (accounts, address) => {
     return accounts.find((candidate) => {
       return candidate.bazoaddress === address
     });
+  },
+  formatDateAndTime: (date) => {
+    const monthNames = [
+      'January', 'February', 'March',
+      'April', 'May', 'June', 'July',
+      'August', 'September', 'October',
+      'November', 'December'
+    ];
+
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+    var time = date.toLocaleTimeString();
+
+    return `${day} ${monthNames[monthIndex]} ${year}, ${time}`;
   }
 };
 
@@ -60,7 +75,8 @@ const store = new Vuex.Store({
     },
     lastBalanceUpdated: function (state) {
       if (state.config.updatedBalances) {
-        return new Date(state.config.updatedBalances).toLocaleString();
+        let formattedDate = helpers.formatDateAndTime(new Date(state.config.updatedBalances))
+        return formattedDate;
       } return null;
     },
     totalBalance: function (state) {
