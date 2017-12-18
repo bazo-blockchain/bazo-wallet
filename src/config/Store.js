@@ -21,10 +21,10 @@ const helpers = {
       'November', 'December'
     ];
 
-    var day = date.getDate();
-    var monthIndex = date.getMonth();
-    var year = date.getFullYear();
-    var time = date.toLocaleTimeString();
+    let day = date.getDate();
+    let monthIndex = date.getMonth();
+    let year = date.getFullYear();
+    let time = date.toLocaleTimeString();
 
     return `${day} ${monthNames[monthIndex]} ${year}, ${time}`;
   }
