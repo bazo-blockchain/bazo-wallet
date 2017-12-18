@@ -60,7 +60,7 @@ const store = new Vuex.Store({
     },
     lastBalanceUpdated: function (state) {
       if (state.config.updatedBalances) {
-        return new Date(state.config.updatedBalances).toUTCString();
+        return new Date(state.config.updatedBalances).toLocaleString();
       } return null;
     },
     totalBalance: function (state) {
