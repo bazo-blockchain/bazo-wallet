@@ -24,7 +24,7 @@
                 <span class="mono" v-bind:title="item.item.bazoaddress">{{ cutBazoAddress(item.item.bazoaddress) }}</span>&nbsp;
                 <!-- <a v-bind:href="item.item.bazoaddress">Link</a> -->
                 <b-popover triggers="hover" :content="item.item.bazoaddress" class="popover-element">
-                  <i class="fa fa-info-circle increase-focus"></i>
+                  <i class="fa fa-eye increase-focus"></i>
                 </b-popover>
                 <!-- <a :href="item.item.adddressUrl" :title="item.item.adddressUrl" target="_blank" rel="noopener" class="increase-focus">
                 <i class="fa fa-external-link"></i>
