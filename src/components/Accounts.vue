@@ -210,7 +210,7 @@ export default {
     },
     totalBalance: function () {
       var sum = this.allAccounts.reduce(function (val, account) {
-        if (account && account.balance && Number(account.balance)) {
+        if (account && account.balance && !isNaN(account.balance)) {
           return val + account.balance;
         } else {
           return val;
