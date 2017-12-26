@@ -78,7 +78,7 @@
   </div> -->
   <div>
     <b-button variant="danger" size="sm" @click.prevent="deleteAccount(item.item)">
-      {{ 'Delete' }}
+      <i class="fa fa-trash" aria-hidden="true"></i>
     </b-button>
     <b-popover triggers="hover" :content="Translation.t('userAccounts.deleteDescription')" class="popover-element">
       <i class="fa fa-info-circle increase-focus"></i>
