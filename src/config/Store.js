@@ -202,7 +202,7 @@ const store = new Vuex.Store({
           context.state.config.updatedBalances = new Date();
         }
       }).catch(() => {
-         Vue.toasted.global.error(Translation.t('userAccounts.alerts.failedQuery'));
+         Vue.toasted.global.error(Translation.t('userAccounts.alerts.failedConnection'));
       });
 		},
 		updateLanguage: function (context, language) {

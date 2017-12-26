@@ -40,7 +40,8 @@
 			"alerts": {
         "incompleteQuery": "Some balances could not get updated.",
         "completeQuery": "All balances were updated.",
-        "failedQuery": "Balances could not get updated!"
+        "failedQuery": "Balances could not get updated!",
+        "failedConnection": "Unable to retrieve information from the server! Please check the URL."
 			}
 		},
     "userSend": {
@@ -134,7 +135,8 @@
       "alerts": {
         "incompleteQuery": "Nicht alle Kontostände konnten überprüft werden.",
         "completeQuery": "Alle Kontostände wurden überprüft.",
-        "failedQuery": "Fehler beim Abfragen der Kontostände"
+        "failedQuery": "Fehler beim Abfragen der Kontostände",
+        "failedConnection": "Keine Verbindung zum Server. Bitte prüfen Sie die URL."
 			}
 		},
     "userSend": {
