@@ -182,7 +182,6 @@ const store = new Vuex.Store({
       HttpService.queryAccountInfo(addresses, host).then((responses) => {
         let errorsFound = false;
         let accountsFound = false;
-        context.state.config.updatedBalances = new Date();
         responses.forEach((res) => {
           if (res.body.address) {
             let accountToUpdateBalance = helpers.findAccountByAddress(
@@ -200,6 +199,7 @@ const store = new Vuex.Store({
           Vue.toasted.global.error(Translation.t('userAccounts.alerts.failedQuery'));
         } else if (!errorsFound & accountsFound) {
           Vue.toasted.global.success(Translation.t('userAccounts.alerts.completeQuery'));
+          context.state.config.updatedBalances = new Date();
         }
       }).catch(() => {
          Vue.toasted.global.error(Translation.t('userAccounts.alerts.failedQuery'));
