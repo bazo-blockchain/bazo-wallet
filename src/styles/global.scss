@@ -227,8 +227,10 @@ div.form-error {
 	}
 }
 .btn-primary, .btn-primary.disabled {
-  background-color: $green-color;
+  background-color: transparent;
+  color: $green-color;
   border-color: $green-color;
+  border-radius: 1.25em;
 }
 .btn-primary.active, .btn-primary:active, .btn-primary:hover, .show>.btn-primary.dropdown-toggle {
   background-color: #992f47;
