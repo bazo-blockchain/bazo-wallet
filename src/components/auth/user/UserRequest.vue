@@ -65,11 +65,11 @@
                           <span>NFC</span>
                         </b-button>
                       </b-button-group>
-                      <a v-if="isMobileDevice && advancedOptionsShown" v-bind:href="whatsappLink" data-action="share/whatsapp/share">
+                      <a class="transfer-link" v-if="isMobileDevice && advancedOptionsShown" v-bind:href="whatsappLink" data-action="share/whatsapp/share">
                         <i class="fa fa-whatsapp" aria-hidden="true"></i>
                         <span>Whatsapp</span>
                       </a>
-                      <a v-if="isAndroidDevice && advancedOptionsShown" v-bind:href="nfcbridgeLink" >
+                      <a class="transfer-link" v-if="isAndroidDevice && advancedOptionsShown" v-bind:href="nfcbridgeLink" >
                         <i class="fa fa-android" aria-hidden="true"></i>
                         <span>NFC Bridge</span>
                       </a>
@@ -407,6 +407,9 @@ export default {
   // .payment-variant-btn {
   //   width: calc(100% / 3 - 3px);
   // }
+  .transfer-link{
+    color: $green-color;
+  }
 	.popover-element {
 		display: inline-block;
 		vertical-align: middle;
