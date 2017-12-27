@@ -1,140 +1,142 @@
 <template>
-<div class="user-send">
-	<div class="compact">
-		<h1 class="display-4">{{ Translation.t('userRequest.title') }}</h1>
-		<hr>
-		<div class="pos-rel user-send-content">
-			<spinner :is-loading="isLoading"></spinner>
+  <div class="user-send">
+    <div class="compact">
+      <h1 class="display-4">{{ Translation.t('userRequest.title') }}</h1>
+      <hr>
+      <div class="pos-rel user-send-content">
+        <spinner :is-loading="isLoading"></spinner>
 
-			<div>
-				<div class="box-wrapper" v-if="!isLoading && !loadingError">
-					<div class="box">
-						<div class="main-title display-7">{{ Translation.t('userRequest.boxTitle') }}</div>
-						<hr>
-						<form>
-							<div class="row">
-                <div class="col-md-12">
-                  <label class="col-form-label" for="selection">{{ Translation.t('userRequest.accountUsed') }}
-                    <b-popover :triggers="['hover']" :content="Translation.t('userRequest.paymentInfo')" class="popover-element">
-                      <i class="fa fa-info-circle increase-focus"></i>
-                    </b-popover>
-                  </label>
+        <div>
+          <div class="box-wrapper" v-if="!isLoading && !loadingError">
+            <div class="box">
+              <div class="main-title display-7">{{ Translation.t('userRequest.boxTitle') }}</div>
+              <hr>
+              <form>
+                <div class="row">
+                  <div class="col-md-12">
+                    <label class="col-form-label" for="selection">{{ Translation.t('userRequest.accountUsed') }}
+                      <b-popover :triggers="['hover']" :content="Translation.t('userRequest.paymentInfo')" class="popover-element">
+                        <i class="fa fa-info-circle increase-focus"></i>
+                      </b-popover>
+                    </label>
+                  </div>
+
+                  <div class="col-md-12">
+                    <b-form-fieldset>
+                      <b-input-group>
+                        <b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
+                        <b-input-group-button slot="right">
+                          <b-dropdown :disabled="!multipleAccountsConfigured" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount)" variant="default" right>
+                            <b-dropdown-item v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
+                              <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
+                              <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
+                              (paymentInfo.selectedAccount === '' && bazoAccount === defaultBazoAccount)"></i>													</b-dropdown-item>
+                            </b-dropdown>
+                          </b-input-group-button>
+                        </b-input-group>
+                      </b-form-fieldset>
+                    </div>
+
+                    <div class="col-md-12" v-if="this.advancedOptionsShown">
+                      <label class="col-form-label" for="selection">{{ Translation.t('userRequest.posid') }}
+                        <b-popover :triggers="['hover']" :content="Translation.t('userRequest.posiddescription')" class="popover-element">
+                          <i class="fa fa-info-circle increase-focus"></i>
+                        </b-popover>
+                      </label>
+                      <b-form-input v-model="paymentInfo.posid" class="mono posid-input"></b-form-input>
+                    </div>
+
+                    <div class="col-12">
+                      <hr>
+                      <div>
+                        <label for="">{{ Translation.t('userRequest.transfertype') }}</label>
+                      </div>
+                      <b-button-group>
+                        <b-button class="payment-variant-btn" variant="primary" @click.prevent="showQR">
+                          <i class="fa fa-qrcode"></i>
+                          <span>QR Code</span>
+                        </b-button>
+                        <b-button class="payment-variant-btn" :disabled="!bluetooth.BTSupported" variant="primary" @click.prevent="openBT">
+                          <i class="fa fa-bluetooth-b"></i>
+                          <span>Bluetooth</span>
+                        </b-button>
+                        <b-button v-if="isAndroidDevice" class="payment-variant-btn" :disabled="!nfc.NFCSupported" variant="primary" @click.prevent="openNFC">
+                          <i class="fa fa-rss"></i>
+                          <span>NFC</span>
+                        </b-button>
+                      </b-button-group>
+                      <a v-if="isMobileDevice" v-bind:href="whatsappLink" data-action="share/whatsapp/share">
+                        <i class="fa fa-whatsapp" aria-hidden="true"></i>
+                        <span>Whatsapp</span>
+                      </a>
+                      <a v-if="isAndroidDevice" v-bind:href="nfcbridgeLink" >
+                        <i class="fa fa-android" aria-hidden="true"></i>
+                        <span>NFC Bridge</span>
+                      </a>
+
+                      <div class="nfc-screen" :class="{'shown': nfc.NFCShown}" @click="closeNFC">
+                        <div class="close" @click="closeNFC">&times;</div>
+                        <div class="nfc-title" @click.stop>
+                          <i class="fa fa-rss"></i>
+                          {{ Translation.t('userRequest.NFCTitle') }}
+                        </div>
+
+                        <div class="nfc-display-wrapper" @click.stop>
+                          <div class="nfc-notice">{{ Translation.t('userRequest.NFCNotice') }}
+
+                          </div>
+                          <div class="nfc-status-wrapper">
+                            <svg :class="{'nfc-watch-active': nfc.NFCSending, 'nfc-watch-success': nfc.NFCSuccess}" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM18 6h-5c-1.1 0-2 .9-2 2v2.28c-.6.35-1 .98-1 1.72 0 1.1.9 2 2 2s2-.9 2-2c0-.74-.4-1.38-1-1.72V8h3v8H8V8h2V6H6v12h12V6z"/></svg>
+
+                          </div>
+                          <div class="nfc-status">
+                            {{ nfc.NFCStatus }}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="bt-screen" :class="{'shown': bluetooth.BTShown}"
+                      @click="closeBT">
+                      <div class="close" @click="closeBT">&times;</div>
+                      <div class="bt-title" @click.stop>
+                        <i class="fa fa-bluetooth-b"></i>
+                        {{ Translation.t('userRequest.BTTitle') }}
+                      </div>
+
+                      <div class="bt-notice">{{ Translation.t('userRequest.BTNotice') }}
+                        <div class="bt-status-wrapper">
+
+                        </div>
+                        <div class="bt-status">
+                          {{ bluetooth.BTStatus }}
+                        </div>
+                      </div>
+                      <div class="bt-display" @click.stop>
+                      </div>
+                    </div>
+
+                    <div class="camera-screen" :class="{'shown':cameraShown}" @click="hideQr">
+                      <div class="close" @click="hideQr">&times;</div>
+                      <div class="camera-title" @click.stop>
+                        <i class="fa fa-qrcode"></i>
+
+                        {{ Translation.t('userRequest.QRTitle') }}
+                      </div>
+                      <div class="qr-code-container">
+                        <div class="qr-code-wrapper">
+                          <div class="camera-notice">{{ Translation.t('userRequest.QRNotice') }}</div>
+                          <qr-code class="qr-display" :content="this.encodedPaymentInformation"></qr-code>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
-								<div class="col-md-12">
-									<b-form-fieldset>
-										<b-input-group>
-											<b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
-											<b-input-group-button slot="right">
-												<b-dropdown :disabled="!multipleAccountsConfigured" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount)" variant="default" right>
-													<b-dropdown-item v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
-													<span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
-                          <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
-                                                      (paymentInfo.selectedAccount === '' && bazoAccount === defaultBazoAccount)"></i>													</b-dropdown-item>
-												</b-dropdown>
-											</b-input-group-button>
-										</b-input-group>
-									</b-form-fieldset>
-								</div>
-
-                <div class="col-md-12" v-if="this.advancedOptionsShown">
-                  <label class="col-form-label" for="selection">{{ Translation.t('userRequest.posid') }}
-                    <b-popover :triggers="['hover']" :content="Translation.t('userRequest.posiddescription')" class="popover-element">
-                      <i class="fa fa-info-circle increase-focus"></i>
-                    </b-popover>
-                  </label>
-                  <b-form-input v-model="paymentInfo.posid" class="mono posid-input"></b-form-input>
-                </div>
-
-								<div class="col-12">
-                  <hr>
-                  <div>
-                    <label for="">{{ Translation.t('userRequest.transfertype') }}</label>
-                  </div>
-                  <b-button class="payment-variant-btn" variant="primary" @click.prevent="showQR">
-                    <i class="fa fa-qrcode"></i>
-                    <span>QR Code</span>
-                  </b-button>
-                  <b-button class="payment-variant-btn" :disabled="!bluetooth.BTSupported" variant="primary" @click.prevent="openBT">
-                    <i class="fa fa-bluetooth-b"></i>
-                    <span>Bluetooth</span>
-                  </b-button>
-                  <b-button v-if="isAndroidDevice" class="payment-variant-btn" :disabled="!nfc.NFCSupported" variant="primary" @click.prevent="openNFC">
-                    <i class="fa fa-rss"></i>
-                    <span>NFC</span>
-                  </b-button>
-                  <a v-if="isMobileDevice" v-bind:href="whatsappLink" data-action="share/whatsapp/share">
-                    <i class="fa fa-whatsapp" aria-hidden="true"></i>
-                    <span>Whatsapp</span>
-                  </a>
-                  <a v-if="isAndroidDevice" v-bind:href="nfcbridgeLink" >
-                    <i class="fa fa-android" aria-hidden="true"></i>
-                    <span>NFC Bridge</span>
-                  </a>
-
-                  <div class="nfc-screen" :class="{'shown': nfc.NFCShown}" @click="closeNFC">
-                    <div class="close" @click="closeNFC">&times;</div>
-                    <div class="nfc-title" @click.stop>
-                      <i class="fa fa-rss"></i>
-                      {{ Translation.t('userRequest.NFCTitle') }}
-                    </div>
-
-                    <div class="nfc-display-wrapper" @click.stop>
-                      <div class="nfc-notice">{{ Translation.t('userRequest.NFCNotice') }}
-
-                      </div>
-                      <div class="nfc-status-wrapper">
-                        <svg :class="{'nfc-watch-active': nfc.NFCSending, 'nfc-watch-success': nfc.NFCSuccess}" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM18 6h-5c-1.1 0-2 .9-2 2v2.28c-.6.35-1 .98-1 1.72 0 1.1.9 2 2 2s2-.9 2-2c0-.74-.4-1.38-1-1.72V8h3v8H8V8h2V6H6v12h12V6z"/></svg>
-
-                      </div>
-                      <div class="nfc-status">
-                        {{ nfc.NFCStatus }}
-                      </div>
-                    </div>
-                  </div>
-                  <div class="bt-screen" :class="{'shown': bluetooth.BTShown}"
-                    @click="closeBT">
-                    <div class="close" @click="closeBT">&times;</div>
-                    <div class="bt-title" @click.stop>
-                      <i class="fa fa-bluetooth-b"></i>
-                      {{ Translation.t('userRequest.BTTitle') }}
-                    </div>
-
-                    <div class="bt-notice">{{ Translation.t('userRequest.BTNotice') }}
-                      <div class="bt-status-wrapper">
-
-                      </div>
-                      <div class="bt-status">
-                        {{ bluetooth.BTStatus }}
-                      </div>
-                    </div>
-                    <div class="bt-display" @click.stop>
-                    </div>
-                  </div>
-
-                  <div class="camera-screen" :class="{'shown':cameraShown}" @click="hideQr">
-                    <div class="close" @click="hideQr">&times;</div>
-                    <div class="camera-title" @click.stop>
-                      <i class="fa fa-qrcode"></i>
-
-                      {{ Translation.t('userRequest.QRTitle') }}
-                    </div>
-                    <div class="qr-code-container">
-                      <div class="qr-code-wrapper">
-                        <div class="camera-notice">{{ Translation.t('userRequest.QRNotice') }}</div>
-                        <qr-code class="qr-display" :content="this.encodedPaymentInformation"></qr-code>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -402,9 +404,9 @@ export default {
 	.fa.fa-info-circle {
 		cursor: help;
 	}
-  .payment-variant-btn {
-    width: calc(100% / 3 - 3px);
-  }
+  // .payment-variant-btn {
+  //   width: calc(100% / 3 - 3px);
+  // }
 	.popover-element {
 		display: inline-block;
 		vertical-align: middle;
