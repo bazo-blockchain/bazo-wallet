@@ -220,6 +220,18 @@ export default {
         amount: this.paymentInfo.amount
       }, posid)
     },
+    humanReadablePaymentInformation: function () {
+      let target = this.paymentInfo.selectedAccount || this.defaultBazoAccount;
+      const formatBazoAddress = (address) => {
+        if (address.length > 10) {
+          return `${address.slice(0, 5)}..${address.slice(-5)}`
+        }
+      };
+      return {
+        title: 'New payment request',
+        description: `Sender with address ${formatBazoAddress(target.bazoaddress)} has requested ${this.paymentInfo.amount} coins from you. You can import, pre-view and complete the transaction by clicking on the supplied link.`
+      };
+    },
     whatsappLink: function () {
       return 'https://api.whatsapp.com/send?text=' + encodeURI(this.encodedPaymentInformation);
     },
