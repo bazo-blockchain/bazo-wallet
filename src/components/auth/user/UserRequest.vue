@@ -56,10 +56,18 @@
                           <i class="fa fa-qrcode"></i>
                           <span>QR Code</span>
                         </b-button>
-                        <b-button class="payment-variant-btn" :disabled="!bluetooth.BTSupported" variant="primary" @click.prevent="openBT">
+                        <!-- <b-button class="payment-variant-btn" :disabled="!bluetooth.BTSupported" variant="primary" @click.prevent="openBT">
                           <i class="fa fa-bluetooth-b"></i>
                           <span>Bluetooth</span>
+                        </b-button> -->
+                        <b-button v-if="isAndroidDevice" class="payment-variant-btn" :disabled="!webshare.webshareSupported" variant="primary" @click.prevent="shareWithwebShare">
+                          <i class="fa fa-share-alt"></i>
+                          <span>Share</span>
                         </b-button>
+                        <!-- <b-button v-if="" class="payment-variant-btn" :disabled="!webshare.webshareSupported" variant="primary" @click.prevent="shareWithwebShare">
+                          <i class="fa fa-share-alt"></i>
+                          <span>Share IOS!</span>
+                        </b-button> -->
                         <b-button v-if="isAndroidDevice" class="payment-variant-btn" :disabled="!nfc.NFCSupported" variant="primary" @click.prevent="openNFC">
                           <i class="fa fa-rss"></i>
                           <span>NFC</span>
@@ -167,6 +175,9 @@ export default {
         BTSupported: false,
         BTShown: false,
         BTSuccess: false
+      },
+      webshare: {
+        webshareSupported: false
       },
       paymentInfo: {
         selectedAccount: '',
