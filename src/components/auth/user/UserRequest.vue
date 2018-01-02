@@ -276,6 +276,24 @@ export default {
     onAndroid: function () {
       return /(android)/i.test(navigator.userAgent);
     },
+    checkwebShareSupport: function () {
+      if (navigator.share) {
+        this.webshare.webshareSupported = true;
+      };
+    },
+    shareWithwebShare: function () {
+      navigator.share({
+        title: this.humanReadablePaymentInformation.title,
+        text: this.humanReadablePaymentInformation.description,
+        url: this.encodedPaymentInformation
+      }).then((res) => {
+      }).catch((err) => {
+        if (err.code === 20) {
+          // this.webshare.webshareSupported = false;
+          this.$toasted.global.warn(Translation.t('userRequest.websharenotsupported'));
+        }
+      })
+    },
     checkBTSupport: function () {
       if ('bluetooth' in navigator) {
         this.bluetooth.BTSupported = true;
@@ -398,6 +416,7 @@ export default {
 		this.loadInitialData();
     this.checkNFCSupport();
     this.checkBTSupport();
+    this.checkwebShareSupport();
     this.checkPlatform();
 	}
 }
