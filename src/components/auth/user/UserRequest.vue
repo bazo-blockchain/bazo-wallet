@@ -64,10 +64,10 @@
                           <i class="fa fa-share-alt"></i>
                           <span>Share</span>
                         </b-button>
-                        <!-- <b-button v-if="" class="payment-variant-btn" :disabled="!webshare.webshareSupported" variant="primary" @click.prevent="shareWithwebShare">
+                        <b-button v-if="onIOS() && IOS10Safari()" class="payment-variant-btn js-copy-btn" variant="primary">
                           <i class="fa fa-share-alt"></i>
-                          <span>Share IOS!</span>
-                        </b-button> -->
+                          <span>Copy link</span>
+                        </b-button>
                         <b-button v-if="isAndroidDevice" class="payment-variant-btn" :disabled="!nfc.NFCSupported" variant="primary" @click.prevent="openNFC">
                           <i class="fa fa-rss"></i>
                           <span>NFC</span>
@@ -144,11 +144,14 @@
         </div>
       </div>
     </div>
+    <textarea class="text-to-copy" rows="8" cols="80" readonly>{{this.encodedPaymentInformation}}</textarea>
   </div>
+
 </template>
 
 <script>
 import UtilService from '@/services/UtilService';
+import ClipBoardService from '@/services/ClipBoardService';
 // import HttpService from '@/services/HttpService';
 import Spinner from '@/components/Spinner';
 import Translation from '@/config/Translation';
@@ -254,6 +257,20 @@ export default {
     checkPlatform: function () {
       this.isMobileDevice = (this.onIOS() || this.onAndroid());
       this.isAndroidDevice = this.onAndroid();
+    },
+    IOS10Safari: function () {
+      var oldSafari = false;
+      var navAgent = window.navigator.userAgent;
+      if (
+        (/^((?!chrome).)*safari/i).test(navAgent) &&
+        // ^ Fancy safari detection thanks to: https://stackoverflow.com/a/23522755
+        !(/^((?!chrome).)*[0-9][0-9](\.[0-9][0-9]?)?\ssafari/i)
+        .test(navAgent)
+        // ^ Even fancier Safari < 10 detection thanks to regex.  :^)
+      ) {
+        oldSafari = true;
+      }
+      return !oldSafari;
     },
     onIOS: function () {
       var iDevices = [
@@ -400,6 +417,11 @@ export default {
         return `${account.bazoname} (${account.bazoaddress.slice(0, 10)}..)`
       }
       return false;
+    },
+    setupChevalJSFork: function () {
+      if (this.onIOS() && this.IOS10Safari()) {
+        ClipBoardService(this, Translation);
+      }
     }
   },
   watch: {
@@ -418,6 +440,7 @@ export default {
     this.checkBTSupport();
     this.checkwebShareSupport();
     this.checkPlatform();
+    this.setupChevalJSFork(this);
 	}
 }
 </script>
@@ -426,6 +449,10 @@ export default {
 @import '../../../styles/variables';
 
 .user-send {
+  .text-to-copy {
+    opacity: 0;
+    position: absolute;
+  }
 	.user-send-content {
 		min-height: 300px;
 	}
