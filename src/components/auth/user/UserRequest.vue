@@ -440,7 +440,7 @@ export default {
     this.checkBTSupport();
     this.checkwebShareSupport();
     this.checkPlatform();
-    this.setupChevalJSFork(this);
+    this.setupChevalJSFork();
 	}
 }
 </script>
