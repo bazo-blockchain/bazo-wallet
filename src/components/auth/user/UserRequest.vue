@@ -144,7 +144,7 @@
         </div>
       </div>
     </div>
-    <textarea class="text-to-copy" rows="8" cols="80" readonly>{{this.encodedPaymentInformation}}</textarea>
+    <textarea class="text-to-copy" rows="0" cols="0" readonly>{{this.encodedPaymentInformation}}</textarea>
   </div>
 
 </template>
@@ -452,6 +452,8 @@ export default {
   .text-to-copy {
     opacity: 0;
     position: absolute;
+    width: 0;
+    height: 0;
   }
 	.user-send-content {
 		min-height: 300px;

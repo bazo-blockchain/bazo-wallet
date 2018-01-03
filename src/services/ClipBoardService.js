@@ -178,9 +178,11 @@ const ClipBoardService = function (app, Translation) {
                 }
               }
               setTimeout(() => {
-                app.$toasted.global.success(Translation.t('userRequest.clipboardsuccess'));
-                document.activeElement.blur()
-              }, 100);
+                document.activeElement.blur();
+                setTimeout(() => {
+                  app.$toasted.global.success(Translation.t('userRequest.clipboardsuccess'));
+                }, 100)
+              }, 10);
             } catch (ignore) {
               if (allowButtonTextToChange) {
                 setCopyBtnText(
@@ -189,7 +191,7 @@ const ClipBoardService = function (app, Translation) {
               }
               app.$toasted.global.error(Translation.t('userRequest.clipboarderror'));
             }
-            originalCopyItem.focus();
+            // originalCopyItem.focus();
             // Restore the user's original position to avoid
             // 'jumping' when they click a copy button.
             window.scrollTo(
