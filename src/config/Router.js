@@ -57,19 +57,12 @@ const noAuth = (to, _from, next) => {
 		next();
 	}
 };
-// const offlineNoAuth = (to, _from, next) => {
-// 	if (isUnavailableBecauseOffline(to)) {
-// 		next();
-// 	} else {
-// 		next();
-// 	}
-// };
 
 const requireAuth = (to, _from, next) => {
 	if (isUnavailableBecauseOffline(to)) {
 		redirectBecauseUnavailable(_from, next);
 	} else {
-		if (!Store.state.auth.authenticated) {
+		if (!Store.state.config.configured) {
 			Vue.toasted.global.warn(Translation.t('toasts.accountrequired'), { duration: 6000 });
 			next({
 				path: '/accounts',
@@ -114,15 +107,8 @@ const hideProgressBar = () => {
 // flag is not set.
 const routes = [
 	{ path: '/', name: 'home', component: Home, beforeEnter: noAuth },
-	// { path: '/forex', name: 'forex', component: Forex, beforeEnter: noAuth },
-
-	// { path: '/registration/:emailArg?/:tokenArg?', name: 'registration', component: Registration, beforeEnter: noAuth, props: true },
-	// { path: '/password-forgotten', name: 'password-forgotten', component: PasswordForgotten, beforeEnter: noAuth },
-	// { path: '/password-forgotten-verification/:email?/:token?', name: 'password-forgotten-verification', component: PasswordForgottenVerification, props: true, beforeEnter: noAuth },
-	// { path: '/activation/:email?/:token?', name: 'activation', component: Activation, props: true, beforeEnter: noAuth },
 	{ path: '/accounts', name: 'accounts', component: Accounts, props: true, beforeEnter: noAuth },
 
-	// { path: '/auth/profile', name: 'profile', component: Profile, beforeEnter: noAuth },
   { path: '/auth/user/funds', name: 'funds', component: Funds, beforeEnter: requireBazoAccount },
   { path: '/auth/user/settings', name: 'settings', component: Settings, beforeEnter: requireBazoAccount },
 	{ path: '/auth/user/send', name: 'user-send', component: UserSend, props: true, beforeEnter: requireBazoAccount },
