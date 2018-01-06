@@ -18,6 +18,10 @@ const HttpService = {
 				doNotIntercept ? { headers: DO_NOT_INTERCEPT } : undefined);
 	},
   queryTransactionAmount: function (doNotIntercept) {
+    /*
+    * This is just a placeholder method, replace with actual API calls, once the
+    * backend is prepared!
+    */
     return Vue.http.get('https://httpbin.org/ip', {
     })
   },
