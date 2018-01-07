@@ -69,6 +69,11 @@ export default {
     },
     usingCustomHost: function () {
       return this.$store.getters.useCustomHost === 'true';
+    },
+    customURLUsed: function () {
+      if (this.usingCustomHost) {
+        return this.$store.getters.customURL;
+      } return null;
     }
   },
   methods: {
@@ -90,7 +95,9 @@ export default {
   },
   mounted: function () {
     this.loadData();
-    window.debug = this;
+  },
+  destroyed: function () {
+    this.$store.dispatch('updateUserBalance', this.customURL);
   },
   watch: {
     showAdvancedOptions: function (val) {

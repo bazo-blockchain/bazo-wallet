@@ -64,7 +64,6 @@ const store = new Vuex.Store({
       return state.settings.useCustomHost;
     },
     findAccountByAddress: function (state, address) {
-      console.log(state.config.acounts);
       return helpers.findAccountByAddress(state.config.accounts, address)
     },
     customURL: function (state) {
@@ -165,17 +164,7 @@ const store = new Vuex.Store({
 	// should be public:
 	actions: {
 		initialize: function (context) {
-			// if (!context.state.offline) {
-			// 	if (context.state.auth.authenticated) {
-			// 		return context.dispatch('updateUser').then(() => {
-			// 			return context.dispatch('updateUserBalance');
-			// 		});
-			// 	} else {
-			// 		context.commit('clearUser');
-			// 		context.commit('clearUserBalance');
-			// 		return Promise.resolve();
-			// 	}
-			// }
+
 		},
 		updateUserBalance: function (context, host) {
       let addresses = context.state.config.accounts.map(account => account.bazoaddress);

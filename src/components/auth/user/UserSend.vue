@@ -622,7 +622,7 @@ export default {
       instascanlib.type = 'text/javascript';
       // This is a fork of the v1.0 of the instascan library, patched for iOS devices!
       instascanlib.src = '/static/instascan.min.js';
-      document.body.appendChild(js);
+      document.body.appendChild(instascanlib);
     }
 	},
 	mounted: function () {
