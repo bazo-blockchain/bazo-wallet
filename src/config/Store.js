@@ -166,7 +166,8 @@ const store = new Vuex.Store({
 		initialize: function (context) {
 
 		},
-		updateUserBalance: function (context, host) {
+		updateUserBalance: function (context, host, silent) {
+      console.log('host', host, 'silent', silent);
       let addresses = context.state.config.accounts.map(account => account.bazoaddress);
       HttpService.queryAccountInfo(addresses, host).then((responses) => {
         let errorsFound = false;
@@ -182,16 +183,18 @@ const store = new Vuex.Store({
             errorsFound = true;
           }
         })
-        if (errorsFound & accountsFound) {
+        if (errorsFound & accountsFound && !silent) {
           Vue.toasted.global.warnNoIcon(Translation.t('userAccounts.alerts.incompleteQuery'));
-        } else if (errorsFound & !accountsFound) {
+        } else if (errorsFound && !accountsFound && !silent) {
           Vue.toasted.global.error(Translation.t('userAccounts.alerts.failedQuery'));
-        } else if (!errorsFound & accountsFound) {
+        } else if (!errorsFound && accountsFound && !silent) {
           Vue.toasted.global.success(Translation.t('userAccounts.alerts.completeQuery'));
           context.state.config.updatedBalances = new Date();
         }
       }).catch(() => {
-         Vue.toasted.global.error(Translation.t('userAccounts.alerts.failedConnection'));
+        if (!silent) {
+          Vue.toasted.global.error(Translation.t('userAccounts.alerts.failedConnection'));
+        }
       });
 		},
 		updateLanguage: function (context, language) {
