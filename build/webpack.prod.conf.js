@@ -10,6 +10,8 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 var SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
+var PrerenderSpaPlugin = require('prerender-spa-plugin')
+
 
 var env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
@@ -118,7 +120,13 @@ var webpackConfig = merge(baseWebpackConfig, {
       staticFileGlobs: ['dist/**/*.{js,html,css,eot,woff2,woff,ttf,png,jpg,svg,gif,json}'],
       minify: true,
       stripPrefix: 'dist/'
-    })
+    }),
+    new PrerenderSpaPlugin(
+      // Absolute path to compiled SPA
+      path.join(__dirname, '../dist'),
+      // List of routes to prerender
+      [ '/']
+    )
   ]
 })
 
