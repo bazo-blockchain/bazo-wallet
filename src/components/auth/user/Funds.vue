@@ -255,22 +255,21 @@ export default {
     "en": {
       "funds": {
         "title": "Funds",
-        "description": "Transfer your Surprise points to Bazo coins.",
+        "description": "Transfer your Surprise points to OySy coins.",
         "total": "Total",
         "moveFunds": "Move Funds",
-        "moveFundsDescription": "You can easily transfer your funds from previous Bazo addresses to your current, for Coinblesk used Bazo address",
         "transferButton": "Transfer",
         "amount": "Amount",
         "reload": "Reload",
         "fields": {
           "surpriseid": "Surprise Address",
           "balance": "Volume",
-          "target": "Target Account (Bazo)",
+          "target": "Target Account (OySy)",
           "ticketid": "Ticket ID"
         },
-        "save": "Request Bazo Coins",
-        "requestBazo": "Request Bazo",
-        "requestBazoDescription": "You can exchange your Surprise points with Bazo coins.",
+        "save": "Request OySy Coins",
+        "requestBazo": "Request OySy",
+        "requestBazoDescription": "You can exchange your Surprise points with OySy coins.",
         "address": "Surprise Address",
         "name": "Name this account",
         "alerts": {
@@ -292,11 +291,11 @@ export default {
         "title": "Guthaben",
         "totalFunds": "Total",
         "moveFunds": "Betrag verschieben",
-        "description": "Tauschen Sie Surprise Punkte gegen Bazo coins.",
+        "description": "Tauschen Sie Surprise Punkte gegen OySy coins.",
         "amount": "Menge",
         "address": "Adresse des Surprise-Kontos",
-        "requestBazo": "Bazo anfordern",
-        "requestBazoDescription": "Tauschen Sie Ihre Surprise Punkte gegen Bazo coins.",
+        "requestBazo": "OySy anfordern",
+        "requestBazoDescription": "Tauschen Sie Ihre Surprise Punkte gegen OySy coins.",
         "paymentError": "Ein Fehler ist aufgetreten. Versuchen Sie es später noch einmal.",
         "transferButton": "Transferieren",
         "transferDescription": "Transferieren Sie Coins von diesem Account in dem Sie eine neue Zahlung tätigen",
@@ -305,9 +304,9 @@ export default {
           "surpriseid": "Surprise Adresse",
           "ticketid": "Ticket Nummer",
           "balance": "Transaktionsvolumen",
-          "target": "Zielkonto (Bazo)"
+          "target": "Zielkonto (OySy)"
         },
-        "save": "Bazo Coins anfordern",
+        "save": "OySy Coins anfordern",
         "makePrimary": "Use this account as a primary account",
         "alerts": {
           "success": {

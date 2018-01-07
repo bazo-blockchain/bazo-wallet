@@ -1,4 +1,4 @@
-# Bazo Wallet
+# OySy Wallet
 
 > The web-based wallet for Bazo
 
@@ -7,7 +7,7 @@
 
   1. Install Node.js & NPM
   2. Install Yarn
- 
+
          npm install -g yarn
 
   3. Install Project Dependencies
