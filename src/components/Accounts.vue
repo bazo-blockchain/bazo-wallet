@@ -251,7 +251,7 @@ export default {
       this.triggerBalanceUpdate();
     },
     cutBazoAddress: function (bazoAddress) {
-      return `${bazoAddress.slice(0, 10)}..`
+      return `${bazoAddress.slice(0, 5)}..${bazoAddress.slice(-5)}`
     },
     parseProps: function () {
       const address = this.$route.query.address;

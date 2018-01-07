@@ -559,7 +559,7 @@ export default {
 		},
     formatBazoAccount: function (account) {
       if (account) {
-        return `${account.bazoname} (${account.bazoaddress.slice(0, 10)}..)`
+        return `${account.bazoname} (${account.bazoaddress.slice(0, 5)}..${account.bazoaddress.slice(-5)})`
       }
       return false;
     },

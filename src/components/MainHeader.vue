@@ -13,13 +13,13 @@
             <div v-if="mainBazoAccount">
               <img class="user-image" :alt="mainBazoAccount.bazoname" src="../assets/user.svg">
               <span class="email">
-                {{ `${mainBazoAccount.bazoname} (${mainBazoAccount.bazoaddress.slice(0,15)}..)`}}
+                {{ `${mainBazoAccount.bazoname} (${mainBazoAccount.bazoaddress.slice(0, 10)}..${mainBazoAccount.bazoaddress.slice(-10)})`}}
               </span>
             </div>
             <div v-else>
               <img class="user-image" :alt="defaultBazoAccount.bazoname" src="../assets/user.svg">
   						<span class="email">
-  							{{ `${defaultBazoAccount.bazoname} (${defaultBazoAccount.bazoaddress.slice(0,15)}..)`}}
+  							{{ `${defaultBazoAccount.bazoname} (${defaultBazoAccount.bazoaddress.slice(0, 10)}..${defaultBazoAccount.bazoaddress.slice(-10)})`}}
   						</span>
             </div>
 					</router-link>
