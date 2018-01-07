@@ -297,13 +297,13 @@ $language-picker-height-offline: 8.9em;
 	"en": {
 		"sideBar": {
 			"subtitle": {
-				"bazo": "Bazo",
+				"bazo": "Payments",
 				"administration": "Administration",
 				"accountManagement":"Account Management"
 			},
 			"home": "Home",
-			"userSend": "Transfer Bazo coins",
-      "userRequest": "Request Bazo coins",
+			"userSend": "Transfer OySy coins",
+      "userRequest": "Request OySy coins",
 			"userAccounts": "Accounts",
       "funds": "Funds",
       "settings": "Settings",
@@ -313,13 +313,13 @@ $language-picker-height-offline: 8.9em;
 	"de": {
 		"sideBar": {
 			"subtitle": {
-				"bazo": "Bazo",
+				"bazo": "Zahlungen",
 				"administration": "Administration",
 				"accountManagement": "Kontoverwaltung"
 			},
 			"home": "Start",
-			"userSend": "Bazo coins versenden",
-      "userRequest": "Bazo coins erhalten",
+			"userSend": "OySy coins versenden",
+      "userRequest": "OySy coins erhalten",
 			"userAccounts": "Konti",
       "funds": "Guthaben",
       "settings": "Einstellungen",
