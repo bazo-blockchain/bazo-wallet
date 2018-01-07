@@ -60,22 +60,6 @@
           </template>
           <template slot="actions" scope="item">
             <div>
-              <!-- <div >
-              <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
-              {{ Translation.t('userAccounts.transferButton') }}
-            </b-button>
-            <b-popover triggers="hover" :content="Translation.t('userAccounts.transferDescription')" class="popover-element">
-            <i class="fa fa-info-circle increase-focus"></i>
-          </b-popover>
-        </div>
-        <div>
-        <b-button variant="secondary" size="sm" @click.prevent="payoutPreparation">
-        {{ Translation.t('userAccounts.tradeButton') }}
-      </b-button>
-      <b-popover triggers="hover" :content="Translation.t('userAccounts.tradeDescription')" class="popover-element">
-      <i class="fa fa-info-circle increase-focus"></i>
-    </b-popover>
-  </div> -->
   <div>
     <b-button variant="danger" size="sm" @click.prevent="deleteAccount(item.item)">
       <i class="fa fa-trash" aria-hidden="true"></i>
