@@ -616,7 +616,14 @@ export default {
           this.$toasted.global.warn(Translation.t('userSend.preparationError'));
 				});
 			}
-		}
+		},
+    setupInstaScanLib: function () {
+      var instascanlib = document.createElement('script');
+      instascanlib.type = 'text/javascript';
+      // This is a fork of the v1.0 of the instascan library, patched for iOS devices!
+      instascanlib.src = '/static/instascan.min.js';
+      document.body.appendChild(js);
+    }
 	},
 	mounted: function () {
 		this.isLoading = true;
@@ -624,6 +631,7 @@ export default {
     this.triggerBalanceUpdate();
     this.checkNFCSupport();
     this.checkBTSupport();
+    this.setupInstaScanLib();
   }
 };
 </script>

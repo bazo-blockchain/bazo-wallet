@@ -433,7 +433,6 @@ export default {
     }
   },
 	mounted: function () {
-    window.debug = this;
 		this.isLoading = true;
 		this.loadInitialData();
     this.checkNFCSupport();
