@@ -184,7 +184,6 @@ export default {
     },
     allAccounts () {
       let accounts = this.$store.getters.bazoAccounts;
-      this.accounts = accounts;
       return accounts;
     },
     defaultBazoAccount: function () {
@@ -206,7 +205,7 @@ export default {
       return this.$store.getters.lastBalanceUpdated;
     },
     tableRows () {
-      return JSON.parse(JSON.stringify(this.allAccounts));
+      return this.$store.getters.bazoAccounts;
     },
     configured () {
       return this.$store.getters.accountConfigured;
