@@ -2,7 +2,7 @@
 <div class="user-balance">
 	<a href @click.prevent="openFundsPage">
 		<i class="fa fa-bitcoin"></i>
-		<span class="value">{{ userBalance }}</span>
+		<span class="value">{{ totalBalance }}</span>
 	</a>
 	<!-- <b-tooltip :content="balanceDateFormatted" :triggers="['click', 'hover']" :placement="tooltipPlacement" class="info " :offset="offset">
 		<i class="fa fa-info-circle increase-focus" :class="{ 'red': isOffline || oldBalance }"></i>
@@ -31,10 +31,20 @@ export default {
 		isOffline: function () {
 			return this.$store.state.offline;
 		},
-		userBalance: function () {
-			return this.$store.getters.totalBalance;
-		},
-
+    allAccounts () {
+      let accounts = this.$store.getters.bazoAccounts;
+      return accounts;
+    },
+    totalBalance: function () {
+      var sum = this.allAccounts.reduce(function (val, account) {
+        if (account && account.balance && !isNaN(account.balance)) {
+          return val + account.balance;
+        } else {
+          return val;
+        }
+      }, 0);
+      return sum;
+    },
 		offset: function () {
 			if (this.tooltipPlacement === 'bottom') {
 				return '-10px 0';
