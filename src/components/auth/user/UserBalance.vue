@@ -2,7 +2,7 @@
 <div class="user-balance">
 	<a href @click.prevent="openFundsPage">
 		<i class="fa fa-bitcoin"></i>
-		<span class="value">{{ totalBalance }}</span>
+		<span class="value">{{ sumOfBalances }}</span>
 	</a>
 	<!-- <b-tooltip :content="balanceDateFormatted" :triggers="['click', 'hover']" :placement="tooltipPlacement" class="info " :offset="offset">
 		<i class="fa fa-info-circle increase-focus" :class="{ 'red': isOffline || oldBalance }"></i>
@@ -18,6 +18,7 @@ export default {
 	data: function () {
 		return {
 			userBalanceIsLoading: false,
+      sumOfBalances: 0,
 			now: moment()
 		}
 	},
@@ -31,19 +32,8 @@ export default {
 		isOffline: function () {
 			return this.$store.state.offline;
 		},
-    allAccounts () {
-      let accounts = this.$store.getters.bazoAccounts;
-      return accounts;
-    },
     totalBalance: function () {
-      var sum = this.allAccounts.reduce(function (val, account) {
-        if (account && account.balance && !isNaN(account.balance)) {
-          return val + account.balance;
-        } else {
-          return val;
-        }
-      }, 0);
-      return sum;
+      this.$store.getters.totalBalance;
     },
 		offset: function () {
 			if (this.tooltipPlacement === 'bottom') {
@@ -57,13 +47,26 @@ export default {
 		openFundsPage: function () {
 			this.$emit('link-clicked');
 			this.$router.push({ name: 'accounts' });
-		}
+		},
+    computeTotal () {
+      let that = this;
+      var sum = this.$store.getters.bazoAccounts.reduce(function (val, account) {
+        if (account && account.balance && !isNaN(account.balance)) {
+          return val + account.balance;
+        } else {
+          return val;
+        }
+      }, 0);
+      that.sumOfBalances = sum;
+      return sum;
+    }
 	},
 	mounted: function () {
-		// window.setInterval(this.updateNow, 1000)
-	},
-	clearInterval: function () {
-		window.clearInterval(this.updateNow);
+    let that = this;
+    this.computeTotal();
+		window.setInterval(() => {
+      that.computeTotal();
+    }, 3000);
 	}
 };
 </script>

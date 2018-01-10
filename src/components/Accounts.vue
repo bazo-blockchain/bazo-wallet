@@ -6,7 +6,7 @@
           <span class="total-funds-small">{{ this.Translation.t('userAccounts.total') }}</span>
           <i class="fa fa-bitcoin"></i>
           <!-- {{ convertSatoshiToBitcoin(funds.totalBalance) }} -->
-          {{this.totalBalance}}
+          {{this.sumOfBalances}}
         </small>
       </h1>
       <hr>
@@ -133,6 +133,7 @@ export default {
 			perPage: 15,
       bazoaddress: '',
       bazoname: '',
+      sumOfBalances: 0,
       isPrime: false,
 			alerts: {
 				success: {
@@ -192,7 +193,7 @@ export default {
       });
     },
     totalBalance: function () {
-      var sum = this.allAccounts.reduce(function (val, account) {
+      var sum = this.$store.getters.bazoAccounts.reduce(function (val, account) {
         if (account && account.balance && !isNaN(account.balance)) {
           return val + account.balance;
         } else {
@@ -222,6 +223,18 @@ export default {
   methods: {
     triggerBalanceUpdate () {
       this.$store.dispatch('updateUserBalance', this.customURLUsed);
+    },
+    computeTotal () {
+      let that = this;
+      var sum = this.$store.getters.bazoAccounts.reduce(function (val, account) {
+        if (account && account.balance && !isNaN(account.balance)) {
+          return val + account.balance;
+        } else {
+          return val;
+        }
+      }, 0);
+      that.sumOfBalances = sum;
+      return sum;
     },
     encodeBazoAddress (bazoAddress) {
       return URIScheme.encode(bazoAddress);
@@ -292,6 +305,12 @@ export default {
     this.isLoading = false;
     this.triggerBalanceUpdate();
     this.parseProps();
+    this.computeTotal();
+    let that = this;
+
+    setInterval(function () {
+      that.computeTotal();
+    }, 3000)
 	}
 };
 </script>
