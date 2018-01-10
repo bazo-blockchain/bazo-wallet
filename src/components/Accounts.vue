@@ -253,6 +253,15 @@ export default {
         }, 1000)
       }
     },
+    checkNotificationPermissions: function () {
+      try {
+        if (Notification.permission !== 'denied') {
+          Notification.requestPermission();
+        }
+      } catch (e) {
+
+      }
+    },
     findExistingAccountByAddress: function (address) {
       return this.tableRows.find((account) => {
         return account.bazoaddress === address;
@@ -299,11 +308,7 @@ export default {
     this.triggerBalanceUpdate(false);
     this.parseProps();
     this.computeTotal();
-    let that = this;
-
-    setInterval(function () {
-      that.computeTotal();
-    }, 3000)
+    this.checkNotificationPermissions();
 	}
 };
 </script>
