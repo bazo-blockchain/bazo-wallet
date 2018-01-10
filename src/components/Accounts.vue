@@ -266,9 +266,13 @@ export default {
           this.$toasted.global.error(Translation.t('userAccounts.accountExists'));
         } else {
           this.isLoading = true;
+
+          // Prefix the account with an 'o' in case it is ommited, that way all
+          // addresses are 128 characters in length.
+          let formattedAddress = this.bazoaddress.length === 127 ? '0' + this.bazoaddress : this.bazoaddress;
           this.$store.dispatch('updateConfig', {
             isPrime: this.isPrime || isPrime,
-            bazoaddress: this.bazoaddress,
+            bazoaddress: formattedAddress,
             bazoname: this.bazoname
           }).then(() => {
             this.triggerBalanceUpdate();
