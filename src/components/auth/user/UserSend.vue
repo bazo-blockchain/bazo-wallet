@@ -563,8 +563,11 @@ export default {
       }
       return false;
     },
-    triggerBalanceUpdate () {
-      this.$store.dispatch('updateUserBalance', this.customURLUsed);
+    triggerBalanceUpdate (silent) {
+      this.$store.dispatch('updateUserBalance',
+      { url: this.customURLUsed,
+        silent: silent
+      });
     },
 		submitPreparation: function () {
 			this.formIsTouched = true;
@@ -628,7 +631,7 @@ export default {
 	mounted: function () {
 		this.isLoading = true;
     this.parseProps();
-    this.triggerBalanceUpdate();
+    this.triggerBalanceUpdate(false);
     this.checkNFCSupport();
     this.checkBTSupport();
     this.setupInstaScanLib();

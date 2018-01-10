@@ -78,7 +78,7 @@
 <div class="reload-page" v-if="configured">
   <div>{{this.lastBalanceUpdate}}</div>
 
-  <span class="btn btn-secondary" @click.prevent="triggerBalanceUpdate">
+  <span class="btn btn-secondary" @click.prevent="triggerBalanceUpdate(false)">
     <i class="fa fa-refresh"></i>
     {{ this.Translation.t('userAccounts.reload') }}
   </span>
@@ -192,16 +192,6 @@ export default {
         return bazoAccount.isPrime;
       });
     },
-    totalBalance: function () {
-      var sum = this.$store.getters.bazoAccounts.reduce(function (val, account) {
-        if (account && account.balance && !isNaN(account.balance)) {
-          return val + account.balance;
-        } else {
-          return val;
-        }
-      }, 0);
-      return sum;
-    },
     lastBalanceUpdate: function () {
       return this.$store.getters.lastBalanceUpdated;
     },
@@ -221,8 +211,11 @@ export default {
     }
 	},
   methods: {
-    triggerBalanceUpdate () {
-      this.$store.dispatch('updateUserBalance', this.customURLUsed);
+    triggerBalanceUpdate (silent) {
+      this.$store.dispatch('updateUserBalance',
+      { url: this.customURLUsed,
+        silent: silent
+      });
     },
     computeTotal () {
       let that = this;
@@ -244,7 +237,7 @@ export default {
     },
     deleteAccount: function (account) {
       this.$store.dispatch('deleteAccount', account);
-      this.triggerBalanceUpdate();
+      this.triggerBalanceUpdate(false);
     },
     cutBazoAddress: function (bazoAddress) {
       return `${bazoAddress.slice(0, 5)}..${bazoAddress.slice(-5)}`
@@ -288,7 +281,7 @@ export default {
             bazoaddress: formattedAddress,
             bazoname: this.bazoname
           }).then(() => {
-            this.triggerBalanceUpdate();
+            this.triggerBalanceUpdate(false);
             if (this.$route.query.redirect) {
               this.$router.push({ path: redirect });
             } else {
@@ -303,7 +296,7 @@ export default {
   },
 	mounted: function () {
     this.isLoading = false;
-    this.triggerBalanceUpdate();
+    this.triggerBalanceUpdate(false);
     this.parseProps();
     this.computeTotal();
     let that = this;
