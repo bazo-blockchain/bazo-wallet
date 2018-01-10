@@ -30,7 +30,8 @@ const HttpService = {
     let url = HttpService.formatHost(hostbase) + 'account/'
     return Promise.all(accountAddresses.map(accountAddress => Vue.http.get(url + accountAddress, {
       method: 'GET',
-      headers: 'Accept: application/json'
+      headers: 'Accept: application/json',
+      showProgressBar: !doNotIntercept
     })))
   },
   queryTxInfo: function (accountAddress, host, doNotIntercept) {

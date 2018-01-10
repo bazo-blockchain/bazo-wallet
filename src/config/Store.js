@@ -168,7 +168,7 @@ const store = new Vuex.Store({
 		},
 		updateUserBalance: function (context, options) {
       let addresses = context.state.config.accounts.map(account => account.bazoaddress);
-      HttpService.queryAccountInfo(addresses, options.url).then((responses) => {
+      HttpService.queryAccountInfo(addresses, options.url, options.silent).then((responses) => {
         let errorsFound = false;
         let accountsFound = false;
         let accountMutationsFound = false;

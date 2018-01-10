@@ -106,7 +106,7 @@ const hideProgressBar = () => {
 // because noAuth checks the offline state of the application and denies access, if the components offline
 // flag is not set.
 const routes = [
-	{ path: '/', name: 'home', component: Home, beforeEnter: noAuth },
+	{ path: '/', name: 'home', component: Home, beforeEnter: noAuth, meta: { showProgressBar: false } },
 	{ path: '/accounts', name: 'accounts', component: Accounts, props: true, beforeEnter: noAuth },
 
   { path: '/auth/user/funds', name: 'funds', component: Funds, beforeEnter: requireBazoAccount },
