@@ -171,11 +171,15 @@ const store = new Vuex.Store({
       HttpService.queryAccountInfo(addresses, options.url).then((responses) => {
         let errorsFound = false;
         let accountsFound = false;
+        let accountMutationsFound = false;
         responses.forEach((res) => {
           if (res.body.address) {
             let accountToUpdateBalance = helpers.findAccountByAddress(
               context.state.config.accounts, res.body.address
             );
+            if (accountToUpdateBalance.balance !== res.body.balance) {
+              accountMutationsFound = true;
+            }
             accountToUpdateBalance.balance = res.body.balance
             accountsFound = true;
           } else {
@@ -190,8 +194,22 @@ const store = new Vuex.Store({
           Vue.toasted.global.success(Translation.t('userAccounts.alerts.completeQuery'));
           context.state.config.updatedBalances = new Date();
         }
-      }).catch(() => {
-        if (!silent) {
+        if (Notification && Notification.permission === 'granted' && document.visibilityState !== 'visible') {
+          try {
+            if (accountMutationsFound) {
+              var n = new Notification('OySy Wallet', {
+                  icon: '/static/img/icons/android-chrome-192x192.png'
+              })
+              n.body = 'The balance of your OySy account has changed!';
+            }
+          } catch (e) {
+          }
+        } else {
+          console.log('no mutations found or not supported');
+        }
+      }).catch((err) => {
+        console.log(err);
+        if (!options.silent) {
           Vue.toasted.global.error(Translation.t('userAccounts.alerts.failedConnection'));
         }
       });
