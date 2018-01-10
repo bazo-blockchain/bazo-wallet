@@ -3,7 +3,6 @@ import Vuex from 'vuex';
 import PersistedState from 'vuex-persistedstate'
 import HttpService from '@/services/HttpService';
 import Translation from '@/config/Translation';
-import Sha3 from 'js-sha3';
 
 Vue.use(Vuex);
 
