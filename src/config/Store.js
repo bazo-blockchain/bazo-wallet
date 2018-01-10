@@ -213,7 +213,7 @@ const store = new Vuex.Store({
           } catch (e) {
           }
         } else {
-          console.log('no mutations found or not supported', location.href);
+          // console.log('no mutations found or not supported', location.href);
         }
       }).catch((err) => {
         console.log(err);
