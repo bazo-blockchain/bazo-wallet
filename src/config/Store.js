@@ -130,17 +130,11 @@ const store = new Vuex.Store({
             existingAccount.isPrime = false
           })
         }
-        let addressHash = '';
-        try {
-          addressHash = Sha3.sha3_256(account.bazoaddress);
-        } catch (e) {
-          addressHash = '';
-        }
+
         let newAccount = {
           bazoaddress: account.bazoaddress,
           bazoname: account.bazoname,
-          isPrime: account.isPrime || false,
-          hash: addressHash
+          isPrime: account.isPrime || false
         };
         state.config.accounts.push(newAccount);
         state.config.configured = true;
@@ -159,7 +153,16 @@ const store = new Vuex.Store({
     },
 		setOffline: function (state, offline) {
 			state.offline = offline;
-		}
+		},
+    setAccountBalance: function (state, accountData) {
+      let accountToUpdateBalance = helpers.findAccountByAddress(
+        state.config.accounts, accountData.address
+      );
+      accountToUpdateBalance.balance = accountData.balance;
+    },
+    updateTimeStamp: function (state) {
+      state.config.updatedBalances = new Date();
+    }
 	},
 	// should be public:
 	actions: {
@@ -181,6 +184,8 @@ const store = new Vuex.Store({
               accountMutationsFound = true;
             }
             accountToUpdateBalance.balance = res.body.balance
+            context.commit('setAccountBalance', {balance: res.body.balance, address: res.body.address})
+
             accountsFound = true;
           } else {
             errorsFound = true;
@@ -190,9 +195,11 @@ const store = new Vuex.Store({
           Vue.toasted.global.warnNoIcon(Translation.t('userAccounts.alerts.incompleteQuery'));
         } else if (errorsFound && !accountsFound && !options.silent) {
           Vue.toasted.global.error(Translation.t('userAccounts.alerts.failedQuery'));
-        } else if (!errorsFound && accountsFound && !options.silent) {
-          Vue.toasted.global.success(Translation.t('userAccounts.alerts.completeQuery'));
-          context.state.config.updatedBalances = new Date();
+        } else if (!errorsFound && accountsFound) {
+          context.commit('updateTimeStamp');
+          if (!options.silent) {
+            Vue.toasted.global.success(Translation.t('userAccounts.alerts.completeQuery'));
+          }
         }
         if (Notification && Notification.permission === 'granted' && (document.visibilityState !== 'visible' || !location.href.match(/accounts/))) {
           try {

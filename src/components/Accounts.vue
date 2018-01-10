@@ -287,7 +287,7 @@ export default {
         } else {
           this.isLoading = true;
 
-          // Prefix the account with an 'o' in case it is ommited, that way all
+          // Prefix the account with a '0' in case it is ommited, that way all
           // addresses are 128 characters in length.
           let formattedAddress = this.bazoaddress.length === 127 ? '0' + this.bazoaddress : this.bazoaddress;
           this.$store.dispatch('updateConfig', {
