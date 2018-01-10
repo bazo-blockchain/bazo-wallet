@@ -166,10 +166,9 @@ const store = new Vuex.Store({
 		initialize: function (context) {
 
 		},
-		updateUserBalance: function (context, host, silent) {
-      console.log('host', host, 'silent', silent);
+		updateUserBalance: function (context, options) {
       let addresses = context.state.config.accounts.map(account => account.bazoaddress);
-      HttpService.queryAccountInfo(addresses, host).then((responses) => {
+      HttpService.queryAccountInfo(addresses, options.url).then((responses) => {
         let errorsFound = false;
         let accountsFound = false;
         responses.forEach((res) => {
@@ -183,11 +182,11 @@ const store = new Vuex.Store({
             errorsFound = true;
           }
         })
-        if (errorsFound & accountsFound && !silent) {
+        if (errorsFound & accountsFound && !options.silent) {
           Vue.toasted.global.warnNoIcon(Translation.t('userAccounts.alerts.incompleteQuery'));
-        } else if (errorsFound && !accountsFound && !silent) {
+        } else if (errorsFound && !accountsFound && !options.silent) {
           Vue.toasted.global.error(Translation.t('userAccounts.alerts.failedQuery'));
-        } else if (!errorsFound && accountsFound && !silent) {
+        } else if (!errorsFound && accountsFound && !options.silent) {
           Vue.toasted.global.success(Translation.t('userAccounts.alerts.completeQuery'));
           context.state.config.updatedBalances = new Date();
         }
