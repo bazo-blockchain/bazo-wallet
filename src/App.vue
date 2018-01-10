@@ -96,7 +96,13 @@ export default {
 		}, () => {
 			this.initialLoadingComplete = true;
 		});
-		// window.setInterval(this.updateUserBalance, 20000);
+    let that = this;
+    setInterval(function () {
+      that.$store.dispatch('updateUserBalance',
+      { url: that.$store.getters.customURL,
+        silent: true
+      });
+    }, 3000)
 		window.addEventListener('resize', this.resizeHandler);
 	},
 	beforeDestory: function () {
