@@ -194,18 +194,20 @@ const store = new Vuex.Store({
           Vue.toasted.global.success(Translation.t('userAccounts.alerts.completeQuery'));
           context.state.config.updatedBalances = new Date();
         }
-        if (Notification && Notification.permission === 'granted' && document.visibilityState !== 'visible') {
+        if (Notification && Notification.permission === 'granted' && (document.visibilityState !== 'visible' || !location.href.match(/accounts/))) {
           try {
             if (accountMutationsFound) {
-              var n = new Notification('OySy Wallet', {
-                  icon: '/static/img/icons/android-chrome-192x192.png'
+              console.log('should trigger');
+              // eslint-disable-next-line
+              let notification = new Notification('OySy Wallet', {
+                  icon: '/static/img/icons/android-chrome-192x192.png',
+                  body: 'The balance of your OySy account has changed!'
               })
-              n.body = 'The balance of your OySy account has changed!';
             }
           } catch (e) {
           }
         } else {
-          console.log('no mutations found or not supported');
+          console.log('no mutations found or not supported', location.href);
         }
       }).catch((err) => {
         console.log(err);
