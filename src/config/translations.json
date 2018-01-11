@@ -39,6 +39,7 @@
       "prefilledAddress": "Please name this account and save it.",
 			"alerts": {
         "incompleteQuery": "Some balances could not get updated.",
+        "accountMutationDetected": "The state of one of your OySy accounts has changed!",
         "completeQuery": "All balances were updated.",
         "failedQuery": "Balances could not get updated!",
         "failedConnection": "Unable to retrieve information from the server! Please check the URL."
@@ -49,6 +50,7 @@
 			"boxTitle": "Transfer to an OySy address",
 			"receiver": "Receiver (OySy address)",
 			"receiverPlaceholder": "Enter a valid OySy address",
+      "receiverDescription": "To target an OySy account, enter the public key associated with the account.",
 			"amount": "Amount",
 			"feesIncluded": "Fees are included in the amount",
 			"feesIncludedDescription": "If the checkbox is checked the fees are subtracted from the transfer amount. The recepient receives an amount which is reduced by the extend of the fees. Alternatively, you are charged by the amount plus fees, the recepient, however, receives the exact amount.",
@@ -137,6 +139,7 @@
       "prefilledAddress": "Bitte geben Sie dem Konto einen Namen",
       "alerts": {
         "incompleteQuery": "Nicht alle Kontostände konnten überprüft werden.",
+        "accountMutationDetected": "Der Kontostand eines Kontos hat sich geändert!",
         "completeQuery": "Alle Kontostände wurden überprüft.",
         "failedQuery": "Fehler beim Abfragen der Kontostände",
         "failedConnection": "Keine Verbindung zum Server. Bitte prüfen Sie die URL."
@@ -147,6 +150,7 @@
 			"boxTitle": "An eine OySy Adresse überweisen",
 			"receiver": "Empfänger (OySy Adresse)",
 			"receiverPlaceholder": "OySy Adresse eingeben",
+      "receiverDescription": "Geben Sie den Public Key eines OySy Konto's ein, um das Konto als Empfänger zu wählen.",
 			"amount": "Betrag",
 			"feesIncluded": "Spesen in Betrag einschliessen",
 			"feesIncludedDescription": "Wenn die Auswahlbox ausgewählt ist, werden die Spesen vom Betrag abgezogen. Der Empfänger erhält einen um die Spesen verminderten Betrag. Andernfalls wird Ihnen der Betrag plus Spesen berechnet, der Empfänger erhält jedoch den genauen Betrag.",

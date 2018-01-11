@@ -203,11 +203,10 @@ const store = new Vuex.Store({
         if (Notification && Notification.permission === 'granted' && (document.visibilityState !== 'visible' || !location.href.match(/accounts/))) {
           try {
             if (accountMutationsFound) {
-              console.log('should trigger');
               // eslint-disable-next-line
               let notification = new Notification('OySy Wallet', {
                   icon: '/static/img/icons/android-chrome-192x192.png',
-                  body: 'The balance of your OySy account has changed!'
+                  body: Translation.t('userAccounts.alerts.accountMutationDetected')
               })
             }
           } catch (e) {
