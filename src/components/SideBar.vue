@@ -1,35 +1,33 @@
 <template>
-	<div class="side-bar">
-		<div class="logo-container">
-			<img class="logo" src="../assets/OySy.png" alt="Coinblesk" :to="{ 'name': 'home' }">
-		</div>
-		<div class="entries" :class="{ 'offline-mode': isOffline }">
+  <div class="side-bar">
+    <div class="logo-container">
+      <img class="logo" src="../assets/OySy.png" alt="Coinblesk" :to="{ 'name': 'home' }">
+    </div>
+    <div class="entries" :class="{ 'offline-mode': isOffline }">
 
-			<router-link class="entry" :to="{ name: 'home' }" :class="dynamicLinkClasses('home')" @click.native="closeMenu">
-				<i class="fa fa-home"></i>
-				<span class="text">{{ $t('sideBar.home') }}</span>
-			</router-link>
+      <router-link class="entry" :to="{ name: 'home' }" :class="dynamicLinkClasses('home')" @click.native="closeMenu">
+        <i class="fa fa-home"></i>
+        <span class="text">{{ $t('sideBar.home') }}</span>
+      </router-link>
 
-			<div class="separator" v-if="configured"></div>
-			<div class="subtitle" v-if="configured">{{ $t('sideBar.subtitle.bazo').toUpperCase() }}</div>
+      <div class="separator" v-if="configured"></div>
+      <div class="subtitle" v-if="configured">{{ $t('sideBar.subtitle.bazo').toUpperCase() }}</div>
 
-			<div v-if="configured">
-				<router-link class="entry" :to="{ name: 'user-send' }" :class="dynamicLinkClasses('user-send')" @click.native="closeMenu">
-					<i class="fa fa-arrow-circle-right"></i>
-					<span class="text">{{ $t('sideBar.userSend') }}</span>
-				</router-link>
+      <div v-if="configured">
+        <router-link class="entry" :to="{ name: 'user-send' }" :class="dynamicLinkClasses('user-send')" @click.native="closeMenu">
+          <i class="fa fa-arrow-circle-right"></i>
+          <span class="text">{{ $t('sideBar.userSend') }}</span>
+        </router-link>
         <router-link class="entry" :to="{ name: 'user-request' }" :class="dynamicLinkClasses('user-request')" @click.native="closeMenu">
           <i class="fa fa-arrow-circle-left"></i>
           <span class="text">{{ $t('sideBar.userRequest') }}</span>
         </router-link>
-			</div>
+      </div>
 
+      <div class="separator"></div>
+      <div class="subtitle">{{ $t('sideBar.subtitle.accountManagement').toUpperCase() }}</div>
 
-
-			<div class="separator"></div>
-			<div class="subtitle">{{ $t('sideBar.subtitle.accountManagement').toUpperCase() }}</div>
-
-			<div>
+      <div>
         <router-link class="entry" :to="{ name: 'accounts' }" :class="dynamicLinkClasses('accounts')" @click.native="closeMenu">
           <i class="fa fa-bitcoin"></i>
           <span class="text">{{ $t('sideBar.userAccounts') }}</span>
@@ -42,19 +40,19 @@
           <i class="fa fa-cog"></i>
           <span class="text">{{ $t('sideBar.settings') }}</span>
         </router-link>
-			</div>
-		</div>
-		<div class="language-picker" :class="{ 'offline-mode': isOffline }">
-			<div class="language" :class="{'selected': currentLanguage === language}"
-           v-for="language in ['en', 'de']"
-           @click="changeLanguage(language)">
-				<span class="text" :title="$t('language.' + language)">{{ language.toUpperCase() }}</span>
-			</div>
-			<div class="balance-wrapper" v-if="configured">
-				<user-balance tooltip-placement="top" @link-clicked="closeMenu"></user-balance>
-			</div>
-		</div>
-	</div>
+      </div>
+    </div>
+    <div class="language-picker" :class="{ 'offline-mode': isOffline }">
+      <div class="language" :class="{'selected': currentLanguage === language}"
+      v-for="language in ['en', 'de']"
+      @click="changeLanguage(language)">
+      <span class="text" :title="$t('language.' + language)">{{ language.toUpperCase() }}</span>
+    </div>
+    <div class="balance-wrapper" v-if="configured">
+      <user-balance tooltip-placement="top" @link-clicked="closeMenu"></user-balance>
+    </div>
+  </div>
+</div>
 </template>
 
 <script>
