@@ -11,8 +11,6 @@
         <div v-else>
           <div class="box-wrapper" v-if="!isLoading && !loadingError">
             <div class="box">
-              <div class="main-title display-7">{{ Translation.t('userSend.boxTitle') }}</div>
-              <hr>
               <form>
                 <b-form-fieldset>
                   <label class="col-form-label" for="send-receiver">

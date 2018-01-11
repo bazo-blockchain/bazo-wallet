@@ -9,8 +9,6 @@
         <div>
           <div class="box-wrapper" v-if="!isLoading && !loadingError">
             <div class="box">
-              <div class="main-title display-7">{{ Translation.t('userRequest.boxTitle') }}</div>
-              <hr>
               <form>
                 <div class="row">
                   <div class="col-md-12">
