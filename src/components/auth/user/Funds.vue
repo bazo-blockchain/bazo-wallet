@@ -84,6 +84,7 @@
                     </b-input-group-button>
                   </b-input-group>
                 </b-form-fieldset>
+                <b-button @click.prevent="createAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>
                 <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>
               </div>
             </div>
@@ -110,7 +111,8 @@ import Spinner from '@/components/Spinner';
 // import UtilService from '@/services/UtilService';
 import QrCode from '@/components/QrCode';
 import UserTransfer from '@/components/auth/user/UserTransfer';
-import URIScheme from '@/services/URIScheme'
+import URIScheme from '@/services/URIScheme';
+import elliptic from 'elliptic';
 
 // import TransactionService from '@/services/TransactionService';
 
@@ -240,7 +242,15 @@ export default {
       return false;
     },
     saveAccount: function () {
+    },
+    createAccount: function () {
+      // eslint-disable-next-line
+      let curve = new elliptic.ec('p256');
+      let keypair = curve.genKeyPair();
+      let publicKey = `${keypair.getPublic().x.toJSON()}${keypair.getPublic().y.toJSON()}`
+      let privateKey = keypair.getPrivate().toJSON();
 
+      console.log(publicKey, privateKey);
     }
   },
   mounted: function () {
