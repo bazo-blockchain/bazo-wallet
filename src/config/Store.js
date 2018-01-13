@@ -35,6 +35,7 @@ const store = new Vuex.Store({
     config: {
       configured: false,
       accounts: [],
+      sumOfBalances: 0,
       updatedBalances: null
     },
     settings: {
@@ -77,16 +78,15 @@ const store = new Vuex.Store({
         return formattedDate;
       } return null;
     },
-    totalBalance: function (state) {
-      let visited = []
-      return state.config.accounts.reduce(function (acc, val) {
-        if (val && val.balance && Number(val.balance) && (visited.indexOf(val.bazoaddress) === -1)) {
-          visited.push(val.bazoaddress);
-          return acc + val.balance;
-        } else {
-          return acc;
+    sumOfBalances: function (state) {
+      let sum = 0
+      for (var i = 0; i < state.config.accounts.length; i++) {
+        let candidate = state.config.accounts[i].balance;
+        if (!isNaN(candidate)) {
+          sum += candidate
         }
-      }, 0);
+      }
+      return sum;
     }
   },
 	// should be private:
@@ -132,6 +132,7 @@ const store = new Vuex.Store({
 
         let newAccount = {
           bazoaddress: account.bazoaddress,
+          balance: 0,
           bazoname: account.bazoname,
           isPrime: account.isPrime || false
         };
@@ -154,10 +155,13 @@ const store = new Vuex.Store({
 			state.offline = offline;
 		},
     setAccountBalance: function (state, accountData) {
-      let accountToUpdateBalance = helpers.findAccountByAddress(
+      // eslint-disable-next-line
+      var accountToUpdateBalance = helpers.findAccountByAddress(
         state.config.accounts, accountData.address
       );
-      accountToUpdateBalance.balance = accountData.balance;
+      // Overwrite the existing completely in order to make sure that the
+      // reactivity system works as expected
+      accountToUpdateBalance = {...accountToUpdateBalance, balance: accountData.balance}
     },
     updateTimeStamp: function (state) {
       state.config.updatedBalances = new Date();
