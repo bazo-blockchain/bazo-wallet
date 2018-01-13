@@ -39,7 +39,7 @@
             </template>
 
             <template slot="actions" scope="item">
-              <div >
+              <div>
                 <b-button variant="secondary" size="sm" @click.prevent="requestBazo">
                   {{ $t('funds.requestBazo') }}
                 </b-button>
@@ -60,33 +60,54 @@
           </span>
         </div>
         <hr>
-        <div class="col-12">
-          <form>
+
             <div class="row">
               <div class="col-12">
                 <b-form-fieldset :label="$t('funds.address')">
                   <b-form-input v-model="paymentInfo.surpriseid" type="text"></b-form-input>
                 </b-form-fieldset>
               </div>
+            </div>
+<div class="row">
+  <div class="col-12">
+    <b-form-fieldset :label="$t('funds.amount')">
+      <b-input-group>
+        <b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any"></b-form-input>
+        <!-- <b-input-group-button slot="right">
+          <b-dropdown :disabled="!multipleAccountsConfigured" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default" right>
 
-              <div class="col-12">
-                <b-form-fieldset :label="$t('funds.amount')">
-                  <b-input-group>
-                    <b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any"></b-form-input>
-                    <b-input-group-button slot="right">
-                      <b-dropdown :disabled="!multipleAccountsConfigured" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default" right>
-                        <b-dropdown-item  v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
-                          <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
-                          <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
-                          (paymentInfo.selectedAccount === '' && bazoAccount === this.defaultBazoAccount)"></i>
-                        </b-dropdown-item>
-                      </b-dropdown>
-                    </b-input-group-button>
-                  </b-input-group>
-                </b-form-fieldset>
-                <b-button @click.prevent="createAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>
-                <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>
-              </div>
+          </b-dropdown>
+        </b-input-group-button> -->
+      </b-input-group>
+    </b-form-fieldset>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+      <b-button-group class="btn-group">
+        <b-dropdown left text="Top up existing account" :disabled="!multipleAccountsConfigured" >
+          <b-dropdown-item  v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
+            <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
+            <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
+            (paymentInfo.selectedAccount === '' && bazoAccount === this.defaultBazoAccount)"></i>
+          </b-dropdown-item>
+        </b-dropdown>
+        <b-button><i class="fa fa-plus" aria-hidden="true"></i> Generate new Account</b-button>
+      </b-button-group><br>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12 submit-btn">
+    <!-- <b-button @click.prevent="createAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button> -->
+    <b-button @click.prevent="createAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>
+    <b-modal ref="accountcreation">
+{{ this.keys}}
+</b-modal>
+  </div>
+</div>
+
+
+
             </div>
 
           </form>
@@ -107,14 +128,10 @@
 
 <script>
 import Spinner from '@/components/Spinner';
-// import HttpService from '@/services/HttpService';
-// import UtilService from '@/services/UtilService';
 import QrCode from '@/components/QrCode';
 import UserTransfer from '@/components/auth/user/UserTransfer';
 import URIScheme from '@/services/URIScheme';
 import elliptic from 'elliptic';
-
-// import TransactionService from '@/services/TransactionService';
 
 export default {
   name: 'user-funds',
@@ -129,6 +146,7 @@ export default {
         amount: 0,
         selectedAccount: ''
       },
+      keys: '',
       totalBalance: 0,
       alerts: {
         success: {
@@ -249,7 +267,8 @@ export default {
       let keypair = curve.genKeyPair();
       let publicKey = `${keypair.getPublic().x.toJSON()}${keypair.getPublic().y.toJSON()}`
       let privateKey = keypair.getPrivate().toJSON();
-
+      this.keys = publicKey + ' - ' + privateKey;
+      this.$refs.accountcreation.show();
       console.log(publicKey, privateKey);
     }
   },
@@ -345,6 +364,9 @@ export default {
   .user-funds-content {
     min-height: 300px;
   }
+  .submit-btn{
+    margin-top: 20px;
+  }
   .box-wrapper {
     max-width: 650px;
     padding-top: 20px;
@@ -426,7 +448,7 @@ export default {
         font-size: 60%;
         display: inline-block;
         vertical-align: middle;
-        margin-left: 5px;
+        margin-right: 5px;
         margin-top: -1px;
       }
     }

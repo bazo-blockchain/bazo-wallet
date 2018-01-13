@@ -105,10 +105,6 @@ export default {
     }, 3000)
 		window.addEventListener('resize', this.resizeHandler);
 	},
-	beforeDestory: function () {
-		window.clearInterval(this.updateUserBalance);
-		window.removeEventListener('resize', this.resizeHandler);
-	},
 	watch: {
 		sideBarIsShown: function () {
 			if (!this.sideBarIsShown) {
