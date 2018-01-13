@@ -18,7 +18,6 @@ export default {
 	data: function () {
 		return {
 			userBalanceIsLoading: false,
-      sumOfBalances: 0,
 			now: moment()
 		}
 	},
@@ -32,8 +31,8 @@ export default {
 		isOffline: function () {
 			return this.$store.state.offline;
 		},
-    totalBalance: function () {
-      this.$store.getters.totalBalance;
+    sumOfBalances: function () {
+      return this.$store.getters.sumOfBalances;
     },
 		offset: function () {
 			if (this.tooltipPlacement === 'bottom') {
@@ -47,26 +46,7 @@ export default {
 		openFundsPage: function () {
 			this.$emit('link-clicked');
 			this.$router.push({ name: 'accounts' });
-		},
-    computeTotal () {
-      let that = this;
-      var sum = this.$store.getters.bazoAccounts.reduce(function (val, account) {
-        if (account && account.balance && !isNaN(account.balance)) {
-          return val + account.balance;
-        } else {
-          return val;
-        }
-      }, 0);
-      that.sumOfBalances = sum;
-      return sum;
-    }
-	},
-	mounted: function () {
-    let that = this;
-    this.computeTotal();
-		window.setInterval(() => {
-      that.computeTotal();
-    }, 3000);
+		}
 	}
 };
 </script>
