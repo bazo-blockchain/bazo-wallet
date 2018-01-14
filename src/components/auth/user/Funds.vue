@@ -66,7 +66,7 @@
       <div class="row">
         <div class="col-12">
           <b-form-fieldset :label="$t('funds.address')">
-            <b-form-input v-model="paymentInfo.surpriseid" type="text"></b-form-input>
+            <b-form-input v-model="fundingRequest.surpriseToken" type="text"></b-form-input>
           </b-form-fieldset>
         </div>
       </div>
@@ -74,62 +74,66 @@
         <div class="col-12">
           <b-form-fieldset :label="$t('funds.amount')">
             <b-input-group>
-              <b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any"></b-form-input>
+              <b-form-input v-model="fundingRequest.amount" class="mono amount-input" type="number" min="0" step="any"></b-form-input>
             </b-input-group>
           </b-form-fieldset>
         </div>
       </div>
       <div class="row">
         <div class="col-12">
-          <b-button-group class="btn-group">
-            <b-dropdown left text="Top up existing account" :disabled="!multipleAccountsConfigured" >
+          <div class="">
+            <label class="col-form-label">{{ 'Set the target account' }}</label>
+          </div>
+          <b-button-group  class="btn-group" right>
+            <b-dropdown v-if="configured" left :text="formattedAccount" :disabled="!multipleAccountsConfigured" >
               <b-dropdown-item  v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
                 <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
                 <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
                 (paymentInfo.selectedAccount === '' && bazoAccount === this.defaultBazoAccount)"></i>
               </b-dropdown-item>
             </b-dropdown>
-            <b-button @click.prevent="createAccount"><i class="fa fa-plus" aria-hidden="true"></i> Generate new Account</b-button>
+            <b-button @click.prevent="createAccount"><i class="fa fa-plus" aria-hidden="true"></i></b-button>
           </b-button-group><br>
         </div>
       </div>
       <div class="row">
         <div class="col-12 submit-btn">
-          <!-- <b-button @click.prevent="createAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button> -->
-          <b-button @click.prevent="requestBazo" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>
-          <!-- <b-modal ref="accountcreation">
-            <p>{{this.keys}}</p>
-
-          </b-modal> -->
-
-
+          <b-button @click.prevent="requestBazo" :block="true" variant="primary" :disabled="validRequest" >{{ $t('funds.save') }}</b-button>
           <b-modal :title="'Your new OySy account'"
           size="md" :hide-footer="true" ref="accountcreation">
           <div>
             <div class="alert alert-success" v-html="'A new OySy account was generated. Submitting this form will add the account to the Wallet. <b>Make sure to store the private key in a secure place!</b> In order for the account to be valid, you need to request new Oysy coins.'"></div>
             <b-form-fieldset label="Please name this account">
-              <b-form-input type="text" label="City:" v-model="fundingRequest.name"></b-form-input>
+              <b-form-input type="text" label="City:" v-model="accountGeneration.name"></b-form-input>
               <hr>
-              <label class="col-form-label">{{ 'Store the following information' }}
-                <b-popover :triggers="['hover']" :content="'By submitting this form, the public key is stored in the bazo wallet. Make sure to store your private Key in a secure place!'" class="popover-element">
+              <div class="main-title display-7">{{ 'Store the following information' }}
+              </div>
+              <label class="col-form-label">{{ 'Public Key (Your OySy address)' }}
+                <b-popover :triggers="['hover']" :content="'This address identifies your account and can be sent to other users.'" class="popover-element">
                   <i class="fa fa-info-circle increase-focus"></i>
                 </b-popover>
               </label>
-              <b-form-input type="username" label="City:" v-model="fundingRequest.publicKey"></b-form-input>
+              <b-form-input type="username" label="City:" v-model="accountGeneration.publicKey" readonly></b-form-input>
+              <label class="col-form-label">{{ 'Private Key' }}
+                <b-popover :triggers="['hover']" :content="'This key needs to be supplied whenever a transaction is created. Do not communicate this key with to other people and store it securely'" class="popover-element">
+                  <i class="fa fa-info-circle increase-focus"></i>
+                </b-popover>
+              </label>
               <div class="pos-rel">
-                <b-form-input class="privateKeyInput" v-bind:type="fundingRequest.showPrivateKey ? 'text' : 'password'" v-model="fundingRequest.privateKey" readonly><i class="fa fa-eye" aria-hidden="true"></i>
+                <b-form-input class="privateKeyInput" v-bind:type="accountGeneration.showPrivateKey ? 'text' : 'password'" v-model="accountGeneration.privateKey" readonly><i class="fa fa-eye" aria-hidden="true"></i>
                 </b-form-input>
-                <span v-if="!fundingRequest.showPrivateKey" class="showHidePubKey" @click.prevent="showPrivateKey"><i class="fa fa-eye" aria-hidden="true"></i></span>
-                <span v-if="fundingRequest.showPrivateKey" class="showHidePubKey" @click.prevent="hidePrivateKey"><i class="fa fa-eye-slash" aria-hidden="true"></i></span>
+                <span v-if="!accountGeneration.showPrivateKey" class="showHidePubKey" @click.prevent="showPrivateKey"><i class="fa fa-eye" aria-hidden="true"></i></span>
+                <span v-if="accountGeneration.showPrivateKey" class="showHidePubKey" @click.prevent="hidePrivateKey"><i class="fa fa-eye-slash" aria-hidden="true"></i></span>
 
               </div>
             </b-form-fieldset>
-            <b-button variant="primary" class="pull-right" :disabled="!fundingRequest.name" @click.prevent="saveAccount">{{ 'Add to Wallet' }}</b-button>
-            <b-button variant="default" class="pull-right" @click.prevent="hideModal">{{ 'Cancel' }}</b-button>
-            <b-button variant="default" class="pull-left"><a download="keyfile.txt" v-bind:href="'data:application/octet-stream;charset=utf-16le;base64,' + base64KeyFile"><i class="fa fa-download" aria-hidden="true"></i>  Download Key file</a></b-button>
+            <b-button variant="block"><a download="keyfile.txt" v-bind:href="'data:application/octet-stream;charset=utf-16le;base64,' + base64KeyFile"><i class="fa fa-download" aria-hidden="true"></i>  Download Key file</a></b-button>
+            <div class="button-wrapper">
+              <b-button variant="primary" class="pull-right" :disabled="!accountGeneration.name" @click.prevent="saveAccount">{{ 'Add to Wallet' }}</b-button>
+              <b-button variant="default" class="pull-right" @click.prevent="hideModal">{{ 'Cancel' }}</b-button>
+            </div>
           </div>
         </b-modal>
-
         </div>
       </div>
     </form>
@@ -161,21 +165,20 @@ export default {
       currentPage: 1,
       perPage: 15,
       paymentInfo: {
-        surpriseid: '',
-        amount: 0,
         selectedAccount: ''
       },
       fundingRequest: {
         useExisting: false,
         targetBazoAddress: '',
         surpriseToken: '',
-        amount: '',
+        amount: ''
+      },
+      accountGeneration: {
         privateKey: '',
         publicKey: '',
         name: '',
         showPrivateKey: false
       },
-      keys: '',
       totalBalance: 0,
       alerts: {
         success: {
@@ -233,7 +236,7 @@ export default {
       ];
     },
     base64KeyFile: function () {
-      return btoa(`${this.fundingRequest.publicKey}\n${this.fundingRequest.privateKey}`)
+      return btoa(`${this.accountGeneration.publicKey}\n${this.accountGeneration.privateKey}`)
     },
     bazoAccounts: function () {
       return this.$store.getters.bazoAccounts;
@@ -242,6 +245,19 @@ export default {
       return this.bazoAccounts.find(function (bazoAccount) {
         return bazoAccount.isPrime;
       });
+    },
+    formattedAccount: function () {
+      if (this.paymentInfo.selectedAccount) {
+        return this.formatBazoAccount(this.paymentInfo.selectedAccount)
+      } else {
+        return this.formatBazoAccount(this.defaultBazoAccount)
+      }
+    },
+    validRequest: function () {
+      return this.isLoading ||
+            !this.fundingRequest.amount ||
+            !this.fundingRequest.surpriseToken ||
+            !(this.paymentInfo.selectedAccount || this.defaultBazoAccount)
     },
     multipleAccountsConfigured: function () {
       return this.bazoAccounts.length > 1;
@@ -275,13 +291,13 @@ export default {
       })
       this.totalBalance = result;
     },
-    resetFundingRequest: function () {
-      this.fundingRequest = {
-        useExisting: false,
-        targetBazoAddress: '',
-        surpriseToken: '',
-        amount: ''
-      };
+    resetAccountGeneration: function () {
+      this.accountGeneration = {
+        privateKey: '',
+        publicKey: '',
+        name: '',
+        showPrivateKey: false
+      }
     },
     encodeBazoAddress (bazoAddress) {
       return URIScheme.encode(bazoAddress);
@@ -293,16 +309,17 @@ export default {
       return `${bazoAddress.slice(0, 10)}..`
     },
     formatBazoAccount: function (account) {
+      console.log('acc:', account);
       if (account) {
         return `${account.bazoname} (${account.bazoaddress.slice(0, 10)}..)`
       }
-      return false;
     },
     saveAccount: function () {
-      let formattedAddress = this.fundingRequest.publicKey.length === 127 ? '0' + this.fundingRequest.publicKey : this.fundingRequest.publicKey;
+      let formattedAddress = this.accountGeneration.publicKey.length === 127 ? '0' + this.accountGeneration.publicKey : this.accountGeneration.publicKey;
       this.$store.dispatch('updateConfig', {
         bazoaddress: formattedAddress,
-        bazoname: this.fundingRequest.name
+        bazoname: this.accountGeneration.name,
+        isPrime: this.bazoAccounts.length === 0
       }).then(() => {
         this.hideModal();
       });
@@ -313,24 +330,24 @@ export default {
       let keypair = curve.genKeyPair();
       let publicKey = `${keypair.getPublic().x.toJSON()}${keypair.getPublic().y.toJSON()}`
       let privateKey = keypair.getPrivate().toJSON();
-      this.fundingRequest.publicKey = publicKey;
-      this.fundingRequest.privateKey = privateKey;
+      this.accountGeneration.publicKey = publicKey;
+      this.accountGeneration.privateKey = privateKey;
       privateKey = null;
 
       this.$refs.accountcreation.show();
     },
     showPrivateKey: function () {
-      this.fundingRequest.showPrivateKey = true;
+      this.accountGeneration.showPrivateKey = true;
     },
     hidePrivateKey: function () {
-      this.fundingRequest.showPrivateKey = false;
+      this.accountGeneration.showPrivateKey = false;
     },
     hideModal: function () {
-      this.resetFundingRequest();
+      this.resetAccountGeneration();
       this.$refs.accountcreation.hide();
     },
     requestBazo: function () {
-
+      console.log('requesting');
     }
   },
   mounted: function () {
@@ -425,7 +442,7 @@ export default {
   .user-funds-content {
     min-height: 300px;
   }
-  .submit-btn {
+  .submit-btn, .button-wrapper {
     margin-top: 20px;
   }
   .privateKeyInput {
