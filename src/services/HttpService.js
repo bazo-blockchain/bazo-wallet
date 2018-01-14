@@ -26,6 +26,10 @@ const HttpService = {
     })
   },
   surpriseFunding: function (options) {
+    /*
+    * This is just a placeholder method, replace with actual API calls, once the
+    * backend is prepared!
+    */
     let host = 'https://httpbin.org/post';
     if (options.target && options.target.bazoaddress) {
       return jQuery.post(host, {
