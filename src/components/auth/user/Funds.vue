@@ -61,69 +61,58 @@
         </div>
         <hr>
 
-            <div class="row">
-              <div class="col-12">
-                <b-form-fieldset :label="$t('funds.address')">
-                  <b-form-input v-model="paymentInfo.surpriseid" type="text"></b-form-input>
-                </b-form-fieldset>
-              </div>
-            </div>
-<div class="row">
-  <div class="col-12">
-    <b-form-fieldset :label="$t('funds.amount')">
-      <b-input-group>
-        <b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any"></b-form-input>
-        <!-- <b-input-group-button slot="right">
-          <b-dropdown :disabled="!multipleAccountsConfigured" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default" right>
-
-          </b-dropdown>
-        </b-input-group-button> -->
-      </b-input-group>
-    </b-form-fieldset>
-  </div>
-</div>
-<div class="row">
-  <div class="col-12">
-      <b-button-group class="btn-group">
-        <b-dropdown left text="Top up existing account" :disabled="!multipleAccountsConfigured" >
-          <b-dropdown-item  v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
-            <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
-            <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
-            (paymentInfo.selectedAccount === '' && bazoAccount === this.defaultBazoAccount)"></i>
-          </b-dropdown-item>
-        </b-dropdown>
-        <b-button><i class="fa fa-plus" aria-hidden="true"></i> Generate new Account</b-button>
-      </b-button-group><br>
-  </div>
-</div>
-<div class="row">
-  <div class="col-12 submit-btn">
-    <!-- <b-button @click.prevent="createAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button> -->
-    <b-button @click.prevent="createAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>
-    <b-modal ref="accountcreation">
-{{ this.keys}}
-</b-modal>
-  </div>
-</div>
-
-
-
-            </div>
-
-          </form>
+        <div class="row">
+          <div class="col-12">
+            <b-form-fieldset :label="$t('funds.address')">
+              <b-form-input v-model="paymentInfo.surpriseid" type="text"></b-form-input>
+            </b-form-fieldset>
+          </div>
         </div>
-        <div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
-          <b-pagination size="md" :total-rows="this.tableRows.length" :per-page="perPage" v-model="currentPage" />
+        <div class="row">
+          <div class="col-12">
+            <b-form-fieldset :label="$t('funds.amount')">
+              <b-input-group>
+                <b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any"></b-form-input>
+              </b-input-group>
+            </b-form-fieldset>
+          </div>
         </div>
-
+        <div class="row">
+          <div class="col-12">
+            <b-button-group class="btn-group">
+              <b-dropdown left text="Top up existing account" :disabled="!multipleAccountsConfigured" >
+                <b-dropdown-item  v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
+                  <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
+                  <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
+                  (paymentInfo.selectedAccount === '' && bazoAccount === this.defaultBazoAccount)"></i>
+                </b-dropdown-item>
+              </b-dropdown>
+              <b-button><i class="fa fa-plus" aria-hidden="true"></i> Generate new Account</b-button>
+            </b-button-group><br>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 submit-btn">
+            <!-- <b-button @click.prevent="createAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button> -->
+            <b-button @click.prevent="createAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>
+            <b-modal ref="accountcreation">
+              {{ this.keys}}
+            </b-modal>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <!-- <user-transfer @private-key-decrypted="moveFunds" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :amount="convertSatoshiToBitcoin(currentTransfer.amountSatoshi)"></user-transfer>
-    <user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true"></user-transfer>
-    <user-transfer @private-key-decrypted="payout" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true" separate="payout"></user-transfer> -->
+    </form>
   </div>
+  <div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
+    <b-pagination size="md" :total-rows="this.tableRows.length" :per-page="perPage" v-model="currentPage" />
+  </div>
+
 </div>
+</div>
+<!-- <user-transfer @private-key-decrypted="moveFunds" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :amount="convertSatoshiToBitcoin(currentTransfer.amountSatoshi)"></user-transfer>
+<user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true"></user-transfer>
+<user-transfer @private-key-decrypted="payout" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true" separate="payout"></user-transfer> -->
+
 </template>
 
 <script>
