@@ -136,7 +136,7 @@ const store = new Vuex.Store({
 
         let newAccount = {
           bazoaddress: account.bazoaddress,
-          balance: 0,
+          balance: 'unconfirmed',
           bazoname: account.bazoname,
           isPrime: account.isPrime || false
         };
