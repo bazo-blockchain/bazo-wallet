@@ -52,15 +52,13 @@
         <div class="" v-else>
           <b-alert v-html="$t('funds.notConfigured')" show variant="info"></b-alert>
         </div>
-        <div class="reload-page">
+        <div class="reload-page" v-if="configured">
           <span class="btn btn-secondary" @click.prevent="">
             <i class="fa fa-refresh"></i>
             {{ this.$t('funds.reload') }}
           </span>
         </div>
         <hr>
-
-
       </div>
       <div class="row">
         <div class="col-12">
@@ -81,7 +79,7 @@
       <div class="row">
         <div class="col-12">
           <div class="">
-            <label class="col-form-label">{{ 'Set the target account' }}</label>
+            <label class="col-form-label">{{ $t('funds.target') }}</label>
           </div>
           <b-button-group  class="btn-group" right>
             <b-dropdown v-if="configured" left :text="formattedAccount" :disabled="!multipleAccountsConfigured" >
@@ -98,23 +96,23 @@
       <div class="row">
         <div class="col-12 submit-btn">
           <b-button @click.prevent="requestBazo" :block="true" variant="primary" :disabled="validRequest" >{{ $t('funds.save') }}</b-button>
-          <b-modal :title="'Your new OySy account'"
+          <b-modal :title="$t('funds.modaltitle')"
           size="md" :hide-footer="true" ref="accountcreation">
           <div>
-            <div class="alert alert-success" v-html="'A new OySy account was generated. Submitting this form will add the account to the Wallet. <b>Make sure to store the private key in a secure place!</b> In order for the account to be valid, you need to request new Oysy coins.'"></div>
-            <b-form-fieldset label="Please name this account">
+            <div class="alert alert-success" v-html="$t('funds.modaldescription')"></div>
+            <b-form-fieldset :label="$t('funds.accountname')">
               <b-form-input type="text" label="City:" v-model="accountGeneration.name"></b-form-input>
               <hr>
-              <div class="main-title display-7">{{ 'Store the following information' }}
+              <div class="main-title display-7">{{ $t('funds.accounttitle') }}
               </div>
-              <label class="col-form-label">{{ 'Public Key (Your OySy address)' }}
-                <b-popover :triggers="['hover']" :content="'This address identifies your account and can be sent to other users.'" class="popover-element">
+              <label class="col-form-label">{{ $t('funds.pubkey') }}
+                <b-popover :triggers="['hover']" :content="$t('funds.pubkeyDescription')" class="popover-element">
                   <i class="fa fa-info-circle increase-focus"></i>
                 </b-popover>
               </label>
               <b-form-input type="username" label="City:" v-model="accountGeneration.publicKey" readonly></b-form-input>
-              <label class="col-form-label">{{ 'Private Key' }}
-                <b-popover :triggers="['hover']" :content="'This key needs to be supplied whenever a transaction is created. Do not communicate this key with to other people and store it securely'" class="popover-element">
+              <label class="col-form-label">{{ $t('funds.privKey') }}
+                <b-popover :triggers="['hover']" :content="$t('funds.privkeyDescription')" class="popover-element">
                   <i class="fa fa-info-circle increase-focus"></i>
                 </b-popover>
               </label>
@@ -126,10 +124,10 @@
 
               </div>
             </b-form-fieldset>
-            <b-button variant="block"><a download="keyfile.txt" v-bind:href="'data:application/octet-stream;charset=utf-16le;base64,' + base64KeyFile"><i class="fa fa-download" aria-hidden="true"></i>  Download Key file</a></b-button>
+            <b-button variant="block"><a download="keyfile.txt" v-bind:href="'data:application/octet-stream;charset=utf-16le;base64,' + base64KeyFile"><i class="fa fa-download" aria-hidden="true"></i>{{ $t('funds.keyfile') }}</a></b-button>
             <div class="button-wrapper">
-              <b-button variant="primary" class="pull-right" :disabled="!accountGeneration.name" @click.prevent="saveAccount">{{ 'Add to Wallet' }}</b-button>
-              <b-button variant="default" class="pull-right" @click.prevent="hideModal">{{ 'Cancel' }}</b-button>
+              <b-button variant="primary" class="pull-right" :disabled="!accountGeneration.name" @click.prevent="saveAccount">{{ $t('funds.add') }}</b-button>
+              <b-button variant="default" class="pull-right" @click.prevent="hideModal">{{ $t('funds.cancel') }}</b-button>
             </div>
           </div>
         </b-modal>
@@ -373,11 +371,24 @@ export default {
           "target": "Target Account (OySy)",
           "ticketid": "Ticket ID"
         },
+        "target": "Target account",
+        "notConfigured": "You don't have an account stored in the OySy Wallet. You can generate and register a new account here, or add your existing Account on the <i>Accounts</i> page",
         "save": "Request OySy Coins",
         "requestBazo": "Request OySy",
         "requestBazoDescription": "You can exchange your Surprise points with OySy coins.",
         "address": "Surprise Token",
         "name": "Name this account",
+        "modaltitle": "Your new OySy account",
+        "modaldescription": "A new OySy account was generated. Submitting this form will add the account to the Wallet. <b>Make sure to store the private key in a secure place!</b> In order for the account to be valid, you need to request new Oysy coins.",
+        "accountname": "Name this account",
+        "accounttitle": "Store the following information securely",
+        "pubkey": "Public Key (Address)",
+        "pubkeyDescription": "The address of an account uniquely identifies the account and can be sent to other users for payments.",
+        "privKey": "Private Key",
+        "privkeyDescription": "This key needs to be entered whenever a new transaction from the account is issued. Store the key securely and do not share the key with other users.",
+        "keyfile": " Key file",
+        "cancel": "cancel",
+        "add": "Add to Wallet",
         "alerts": {
           "success": {
             "moveFunds": "The amount was successfully transferred to the locked account. This transaction may be pending for up to an hour.",
@@ -406,14 +417,27 @@ export default {
         "transferButton": "Transferieren",
         "transferDescription": "Transferieren Sie Coins von diesem Account in dem Sie eine neue Zahlung tätigen",
         "reload": "Aktualisieren",
+        "notConfigured": "Sie haben momentan kein OySy Konto im System hinterlegt. Sie können entweder hier ein neues Konto generieren und registrieren, oder ein bestehendes auf der <i>Konti</i> Seite hinterlegen.",
         "fields": {
           "surpriseid": "Surprise Token",
           "ticketid": "Ticket Nummer",
           "balance": "Transaktionsvolumen",
           "target": "Zielkonto (OySy)"
         },
+        "target": "Zielkonto",
         "save": "OySy Coins anfordern",
         "makePrimary": "Use this account as a primary account",
+        "modaltitle": "Ihr OySy Konto",
+        "modaldescription": "Ein neues OySy Konto wurde generiert. Mit dem Bestätigen dieser Form wird das Konto im System gespeichert. <b>Stellen Sie sicher dass der private Schlüssel sicher aufbewahrt wird!</b> Damit dieses Konto aktiviert wird, müssen Sie es mit OySy Coins aufladen.",
+        "accountname": "Geben Sie dem Konto einen Namen",
+        "accounttitle": "Bewahren Sie folgende Informationen auf",
+        "pubkey": "Öffentlicher Schlüssel (Adresse)",
+        "pubkeyDescription": "Der öffentliche Schlüssel identifiziert ein OySy Konto. Sie können diesen Schlüssel einer anderen Person mitteilen um eine neue Zahlung anzufordern.",
+        "privKey": "Privater Schlüssel",
+        "privkeyDescription": "Der private Schlüssel muss für alle ausgehenden Transaktionen verwendet werden. Bewahren Sie den Schlüssel sicher auf und teilen Sie ihn niemandem mit.",
+        "keyfile": " Sicherungsdatei",
+        "cancel": "abbrechen",
+        "add": "Konto speichern",
         "alerts": {
           "success": {
             "moveFunds": "Der Betrag ist erfolgreich auf das gesperrte Konto überwiesen worden. Die Transaktion kann bis zu einer Stunde dauern.",
