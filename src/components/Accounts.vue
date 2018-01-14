@@ -72,7 +72,7 @@
 </b-table>
 </div>
 <div class="" v-else>
-  <b-alert show variant="info">{{Translation.t('userAccounts.notConfigured')}}</b-alert>
+  <b-alert v-html="Translation.t('userAccounts.notConfigured')" show variant="info"></b-alert>
 </div>
 <div class="reload-page" v-if="configured">
   <div>{{this.lastBalanceUpdate}}</div>

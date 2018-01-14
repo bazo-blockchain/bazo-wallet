@@ -2,12 +2,11 @@
   <div class="user-funds">
     <div class="compact">
       <h1 class="display-4">{{ this.$t('funds.title') }}
-        <small v-if="!isLoading && !loadingError" class="pull-right">
+        <!-- <small v-if="!isLoading && !loadingError" class="pull-right">
           <span class="total-funds-small">{{ this.$t('funds.total') }}</span>
           <i class="fa fa-credit-card"></i>
-          <!-- {{ convertSatoshiToBitcoin(funds.totalBalance) }} -->
           {{totalBalance}}
-        </small>
+        </small> -->
       </h1>
       <hr>
       <div class="pos-rel user-funds-content">
@@ -51,7 +50,7 @@
           </b-table>
         </div>
         <div class="" v-else>
-          <b-alert show variant="info">{{$t('funds.notConfigured')}}</b-alert>
+          <b-alert v-html="$t('funds.notConfigured')" show variant="info"></b-alert>
         </div>
         <div class="reload-page">
           <span class="btn btn-secondary" @click.prevent="">
