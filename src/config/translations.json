@@ -13,6 +13,9 @@
 			"offlineError": "<i class='fa fa-wifi'></i>&nbsp;Your request was not successful, because you are currently offline.",
 			"offlineModeRedirect": "<i class='fa fa-wifi'></i>&nbsp;You cannot access this page, because you are currently&nbsp;<b>offline</b>."
 		},
+    "funds": {
+      "notConfigured": "You don't have an account stored in the OySy Walet. You can generate and register a new account here, or add your existing Account on the <i>Accounts</i> page"
+    },
     "userAccounts": {
 			"title": "Accounts",
 			"total": "Total",
@@ -202,6 +205,9 @@
       "websharenotsupported": "Sharing wird von ihrem Gerät nicht unterstützt!",
       "posid": "POS Identifikation",
       "posiddescription": "Geben Sie die Identifikation des POS Systems an um die Höhe der Transaktion automatisch abrufen zu lassen."
+    },
+    "funds": {
+      "notConfigured": "Sie haben momentan kein OySy Konto im System hinterlegt. Sie können entweder hier ein neues Konto generieren und registrieren, oder ein bestehendes auf der <i>Konti</i> Seite hinterlegen."
     },
 		"toasts": {
       "accountrequired": "Sie versuchen eine Seite aufzurufen ohne eine gültige OySy Adresse hinterlegt zu haben.",
