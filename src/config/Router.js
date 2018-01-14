@@ -108,8 +108,8 @@ const hideProgressBar = () => {
 const routes = [
 	{ path: '/', name: 'home', component: Home, beforeEnter: noAuth, meta: { showProgressBar: false } },
 	{ path: '/accounts', name: 'accounts', component: Accounts, props: true, beforeEnter: noAuth },
+  { path: '/auth/user/funds', name: 'funds', component: Funds, beforeEnter: noAuth },
 
-  { path: '/auth/user/funds', name: 'funds', component: Funds, beforeEnter: requireBazoAccount },
   { path: '/auth/user/settings', name: 'settings', component: Settings, beforeEnter: requireBazoAccount },
 	{ path: '/auth/user/send', name: 'user-send', component: UserSend, props: true, beforeEnter: requireBazoAccount },
   { path: '/auth/user/request', name: 'user-request', component: UserRequest, beforeEnter: requireBazoAccount },

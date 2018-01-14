@@ -32,7 +32,7 @@
           <i class="fa fa-bitcoin"></i>
           <span class="text">{{ $t('sideBar.userAccounts') }}</span>
         </router-link>
-        <router-link v-if="configured" class="entry" :to="{ name: 'funds' }" :class="dynamicLinkClasses('funds')" @click.native="closeMenu">
+        <router-link  class="entry" :to="{ name: 'funds' }" :class="dynamicLinkClasses('funds')" @click.native="closeMenu">
           <i class="fa fa-credit-card"></i>
           <span class="text">{{ $t('sideBar.funds') }}</span>
         </router-link>
