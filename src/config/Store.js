@@ -43,6 +43,7 @@ const store = new Vuex.Store({
       useCustomHost: 'false',
       customURL: 'http://192.41.136.199:8001'
     },
+    surpriseRequests: [],
 		offline: !(typeof window.navigator.onLine === 'undefined' ||
 				window.navigator.onLine === null ||
 				window.navigator.onLine)
@@ -56,6 +57,9 @@ const store = new Vuex.Store({
         return true;
       }
       return false;
+    },
+    surpriseRequests: function (state) {
+      return state.surpriseRequests;
     },
     showAdvancedOptions: function (state) {
       return state.settings.showAdvancedOptions;
@@ -165,6 +169,9 @@ const store = new Vuex.Store({
     },
     updateTimeStamp: function (state) {
       state.config.updatedBalances = new Date();
+    },
+    addAccountRequest: function (state, request) {
+      state.surpriseRequests.push(request);
     }
 	},
 	// should be public:
@@ -225,6 +232,9 @@ const store = new Vuex.Store({
         }
       });
 		},
+    addAccountRequest: function (context, request) {
+      return context.commit('addAccountRequest', request)
+    },
 		updateLanguage: function (context, language) {
 			return context.commit('updateLanguage', language);
 		},
@@ -254,7 +264,7 @@ const store = new Vuex.Store({
 		// persists vuex state to localstorage (only the given paths)
 		PersistedState({
 			key: 'coinblesk_vuex_store',
-			paths: [ 'auth', 'user', 'language', 'userBalance', 'config', 'settings' ]
+			paths: [ 'auth', 'user', 'language', 'userBalance', 'config', 'settings', 'surpriseRequests' ]
 		})
 	]
 });
