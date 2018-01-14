@@ -151,6 +151,7 @@
 import Spinner from '@/components/Spinner';
 import QrCode from '@/components/QrCode';
 import URIScheme from '@/services/URIScheme';
+import HttpService from '@/services/HttpService';
 import elliptic from 'elliptic';
 
 export default {
@@ -344,7 +345,14 @@ export default {
       this.$refs.accountcreation.hide();
     },
     requestBazo: function () {
-      console.log('requesting');
+      HttpService.surpriseFunding({
+        surpriseToken: this.fundingRequest.surpriseToken,
+        amount: this.fundingRequest.amount,
+        target: this.paymentInfo.selectedAccount || this.defaultBazoAccount
+      })
+      .then((res) => {
+        console.log(res);
+      })
     }
   },
   mounted: function () {
