@@ -61,44 +61,75 @@
         </div>
         <hr>
 
-        <div class="row">
-          <div class="col-12">
-            <b-form-fieldset :label="$t('funds.address')">
-              <b-form-input v-model="paymentInfo.surpriseid" type="text"></b-form-input>
+
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <b-form-fieldset :label="$t('funds.address')">
+            <b-form-input v-model="paymentInfo.surpriseid" type="text"></b-form-input>
+          </b-form-fieldset>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <b-form-fieldset :label="$t('funds.amount')">
+            <b-input-group>
+              <b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any"></b-form-input>
+            </b-input-group>
+          </b-form-fieldset>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <b-button-group class="btn-group">
+            <b-dropdown left text="Top up existing account" :disabled="!multipleAccountsConfigured" >
+              <b-dropdown-item  v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
+                <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
+                <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
+                (paymentInfo.selectedAccount === '' && bazoAccount === this.defaultBazoAccount)"></i>
+              </b-dropdown-item>
+            </b-dropdown>
+            <b-button @click.prevent="createAccount"><i class="fa fa-plus" aria-hidden="true"></i> Generate new Account</b-button>
+          </b-button-group><br>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 submit-btn">
+          <!-- <b-button @click.prevent="createAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button> -->
+          <b-button @click.prevent="requestBazo" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>
+          <!-- <b-modal ref="accountcreation">
+            <p>{{this.keys}}</p>
+
+          </b-modal> -->
+
+
+          <b-modal :title="'Your new OySy account'"
+          size="md" :hide-footer="true" ref="accountcreation">
+          <div>
+            <div class="alert alert-success" v-html="'A new OySy account was generated. Submitting this form will add the account to the Wallet. <b>Make sure to store the private key in a secure place!</b> In order for the account to be valid, you need to request new Oysy coins.'"></div>
+            <b-form-fieldset label="Please name this account">
+              <b-form-input type="text" label="City:" v-model="fundingRequest.name"></b-form-input>
+              <hr>
+              <label class="col-form-label">{{ 'Store the following information' }}
+                <b-popover :triggers="['hover']" :content="'By submitting this form, the public key is stored in the bazo wallet. Make sure to store your private Key in a secure place!'" class="popover-element">
+                  <i class="fa fa-info-circle increase-focus"></i>
+                </b-popover>
+              </label>
+              <b-form-input type="username" label="City:" v-model="fundingRequest.publicKey"></b-form-input>
+              <div class="pos-rel">
+                <b-form-input class="privateKeyInput" v-bind:type="fundingRequest.showPrivateKey ? 'text' : 'password'" v-model="fundingRequest.privateKey" readonly><i class="fa fa-eye" aria-hidden="true"></i>
+                </b-form-input>
+                <span v-if="!fundingRequest.showPrivateKey" class="showHidePubKey" @click.prevent="showPrivateKey"><i class="fa fa-eye" aria-hidden="true"></i></span>
+                <span v-if="fundingRequest.showPrivateKey" class="showHidePubKey" @click.prevent="hidePrivateKey"><i class="fa fa-eye-slash" aria-hidden="true"></i></span>
+
+              </div>
             </b-form-fieldset>
+            <b-button variant="primary" class="pull-right" :disabled="!fundingRequest.name" @click.prevent="saveAccount">{{ 'Add to Wallet' }}</b-button>
+            <b-button variant="default" class="pull-right" @click.prevent="hideModal">{{ 'Cancel' }}</b-button>
+            <b-button variant="default" class="pull-left"><a download="keyfile.txt" v-bind:href="'data:application/octet-stream;charset=utf-16le;base64,' + base64KeyFile"><i class="fa fa-download" aria-hidden="true"></i>  Download Key file</a></b-button>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <b-form-fieldset :label="$t('funds.amount')">
-              <b-input-group>
-                <b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any"></b-form-input>
-              </b-input-group>
-            </b-form-fieldset>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <b-button-group class="btn-group">
-              <b-dropdown left text="Top up existing account" :disabled="!multipleAccountsConfigured" >
-                <b-dropdown-item  v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
-                  <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
-                  <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
-                  (paymentInfo.selectedAccount === '' && bazoAccount === this.defaultBazoAccount)"></i>
-                </b-dropdown-item>
-              </b-dropdown>
-              <b-button><i class="fa fa-plus" aria-hidden="true"></i> Generate new Account</b-button>
-            </b-button-group><br>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 submit-btn">
-            <!-- <b-button @click.prevent="createAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button> -->
-            <b-button @click.prevent="createAccount" :block="true" variant="primary" :disabled="isLoading">{{ $t('funds.save') }}</b-button>
-            <b-modal ref="accountcreation">
-              {{ this.keys}}
-            </b-modal>
-          </div>
+        </b-modal>
+
         </div>
       </div>
     </form>
@@ -118,7 +149,6 @@
 <script>
 import Spinner from '@/components/Spinner';
 import QrCode from '@/components/QrCode';
-import UserTransfer from '@/components/auth/user/UserTransfer';
 import URIScheme from '@/services/URIScheme';
 import elliptic from 'elliptic';
 
@@ -134,6 +164,16 @@ export default {
         surpriseid: '',
         amount: 0,
         selectedAccount: ''
+      },
+      fundingRequest: {
+        useExisting: false,
+        targetBazoAddress: '',
+        surpriseToken: '',
+        amount: '',
+        privateKey: '',
+        publicKey: '',
+        name: '',
+        showPrivateKey: false
       },
       keys: '',
       totalBalance: 0,
@@ -153,8 +193,7 @@ export default {
   },
   components: {
     Spinner,
-    QrCode,
-    UserTransfer
+    QrCode
   },
   computed: {
     fields () {
@@ -192,6 +231,9 @@ export default {
           target: '893MDMJXUFWM43JN8A9SD79'
         }
       ];
+    },
+    base64KeyFile: function () {
+      return btoa(`${this.fundingRequest.publicKey}\n${this.fundingRequest.privateKey}`)
     },
     bazoAccounts: function () {
       return this.$store.getters.bazoAccounts;
@@ -233,6 +275,14 @@ export default {
       })
       this.totalBalance = result;
     },
+    resetFundingRequest: function () {
+      this.fundingRequest = {
+        useExisting: false,
+        targetBazoAddress: '',
+        surpriseToken: '',
+        amount: ''
+      };
+    },
     encodeBazoAddress (bazoAddress) {
       return URIScheme.encode(bazoAddress);
     },
@@ -249,6 +299,13 @@ export default {
       return false;
     },
     saveAccount: function () {
+      let formattedAddress = this.fundingRequest.publicKey.length === 127 ? '0' + this.fundingRequest.publicKey : this.fundingRequest.publicKey;
+      this.$store.dispatch('updateConfig', {
+        bazoaddress: formattedAddress,
+        bazoname: this.fundingRequest.name
+      }).then(() => {
+        this.hideModal();
+      });
     },
     createAccount: function () {
       // eslint-disable-next-line
@@ -256,9 +313,24 @@ export default {
       let keypair = curve.genKeyPair();
       let publicKey = `${keypair.getPublic().x.toJSON()}${keypair.getPublic().y.toJSON()}`
       let privateKey = keypair.getPrivate().toJSON();
-      this.keys = publicKey + ' - ' + privateKey;
+      this.fundingRequest.publicKey = publicKey;
+      this.fundingRequest.privateKey = privateKey;
+      privateKey = null;
+
       this.$refs.accountcreation.show();
-      console.log(publicKey, privateKey);
+    },
+    showPrivateKey: function () {
+      this.fundingRequest.showPrivateKey = true;
+    },
+    hidePrivateKey: function () {
+      this.fundingRequest.showPrivateKey = false;
+    },
+    hideModal: function () {
+      this.resetFundingRequest();
+      this.$refs.accountcreation.hide();
+    },
+    requestBazo: function () {
+
     }
   },
   mounted: function () {
@@ -280,7 +352,7 @@ export default {
         "amount": "Amount",
         "reload": "Reload",
         "fields": {
-          "surpriseid": "Surprise Address",
+          "surpriseid": "Surprise Token",
           "balance": "Volume",
           "target": "Target Account (OySy)",
           "ticketid": "Ticket ID"
@@ -288,7 +360,7 @@ export default {
         "save": "Request OySy Coins",
         "requestBazo": "Request OySy",
         "requestBazoDescription": "You can exchange your Surprise points with OySy coins.",
-        "address": "Surprise Address",
+        "address": "Surprise Token",
         "name": "Name this account",
         "alerts": {
           "success": {
@@ -311,7 +383,7 @@ export default {
         "moveFunds": "Betrag verschieben",
         "description": "Tauschen Sie Surprise Punkte gegen OySy coins.",
         "amount": "Menge",
-        "address": "Adresse des Surprise-Kontos",
+        "address": "Token des Surprise-Kontos",
         "requestBazo": "OySy anfordern",
         "requestBazoDescription": "Tauschen Sie Ihre Surprise Punkte gegen OySy coins.",
         "paymentError": "Ein Fehler ist aufgetreten. Versuchen Sie es später noch einmal.",
@@ -319,7 +391,7 @@ export default {
         "transferDescription": "Transferieren Sie Coins von diesem Account in dem Sie eine neue Zahlung tätigen",
         "reload": "Aktualisieren",
         "fields": {
-          "surpriseid": "Surprise Adresse",
+          "surpriseid": "Surprise Token",
           "ticketid": "Ticket Nummer",
           "balance": "Transaktionsvolumen",
           "target": "Zielkonto (OySy)"
@@ -353,8 +425,21 @@ export default {
   .user-funds-content {
     min-height: 300px;
   }
-  .submit-btn{
+  .submit-btn {
     margin-top: 20px;
+  }
+  .privateKeyInput {
+    padding-right: 40px;
+  }
+  .showHidePubKey {
+    font-size: 16px;
+		position: absolute;
+		right: 0;
+		z-index: 99;
+		top: 50%;
+		transform: translateY(-50%);
+		cursor: pointer;
+		padding: 7px 6px;
   }
   .box-wrapper {
     max-width: 650px;

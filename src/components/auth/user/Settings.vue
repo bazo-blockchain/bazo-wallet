@@ -9,8 +9,8 @@
 
         <div class="box-wrapper" v-if="!isLoading && !loadingError && this.configured">
           <div class="box">
-            <div class="main-title display-7">{{ this.$t('settings.title') }}</div>
-            <hr>
+            <!-- <div class="main-title display-7">{{ this.$t('settings.title') }}</div>
+            <hr> -->
             <div class="col-md-12">
               <b-form-checkbox
               v-model="showAdvancedOptions"
@@ -95,9 +95,6 @@ export default {
   },
   mounted: function () {
     this.loadData();
-  },
-  destroyed: function () {
-    this.$store.dispatch('updateUserBalance', this.customURL);
   },
   watch: {
     showAdvancedOptions: function (val) {
