@@ -16,37 +16,28 @@
           <label>{{$t('funds.description')}}</label>
           <div v-if="configured"class="table-responsive">
             <b-table  small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
-              <template slot="bazoaddress" scope="item">
-                <div class="no-wrap">
-                  <span class="mono" v-bind:title="item.item.bazoaddress">{{ cutBazoAddress(item.item.bazoaddress) }}</span>&nbsp;
-                  <!-- <a v-bind:href="item.item.bazoaddress">Link</a> -->
-                  <b-popover triggers="hover" :content="item.item.bazoaddress" class="popover-element">
-                    <i class="fa fa-info-circle increase-focus"></i>
-                  </b-popover>
-                  <!-- <a :href="item.item.adddressUrl" :title="item.item.adddressUrl" target="_blank" rel="noopener" class="increase-focus">
-                  <i class="fa fa-external-link"></i>
-                </a> -->
-              </div>
-            </template>
 
-            <template slot="balance" scope="item">
-              <div class="nowrap">
-                <i class="fa fa-star-o"></i>
-                <span>-</span>
-                {{ item.balance || Math.random().toString()[3] }}
-              </div>
-            </template>
+              <template slot="token" scope="item">
+                <div class="nowrap">
+                  {{ item.item.token }}
+                </div>
+              </template>
+              <template slot="amount" scope="item">
+                <div class="nowrap">
+                  {{ item.item.amount }}
+                </div>
+              </template>
+              <template slot="target" scope="item">
+                <div class="nowrap">
+                  {{ cutBazoAddress(item.item.target) }}
+                </div>
+              </template>
+              <template slot="target" scope="item">
+                <div class="nowrap">
+                  {{ cutBazoAddress(item.item.target) }}
+                </div>
+              </template>
 
-            <template slot="actions" scope="item">
-              <div>
-                <b-button variant="secondary" size="sm" @click.prevent="requestBazo">
-                  {{ $t('funds.requestBazo') }}
-                </b-button>
-                <b-popover triggers="hover" :content="$t('funds.requestBazoDescription')" class="popover-element">
-                  <i class="fa fa-info-circle increase-focus"></i>
-                </b-popover>
-              </div>
-            </template>
           </b-table>
         </div>
         <div class="" v-else>
@@ -199,11 +190,7 @@ export default {
   computed: {
     fields () {
       return {
-        ticketid: {
-          label: this.$t('funds.fields.ticketid'),
-          sortable: true
-        },
-        surpriseid: {
+        token: {
           label: this.$t('funds.fields.surpriseid'),
           sortable: false
         },
@@ -211,27 +198,19 @@ export default {
           label: this.$t('funds.fields.balance'),
           sortable: true
         },
+        state: {
+          label: this.$t('funds.fields.state'),
+          sortable: false
+        },
         target: {
           label: this.$t('funds.fields.target'),
           sortable: false
+        },
+        ticketid: {
+          label: this.$t('funds.fields.ticketid'),
+          sortable: true
         }
       }
-    },
-    allTickets () {
-      return [
-        {
-          ticketid: '13x8y1n3',
-          surpriseid: '23by0a973hm323m0as893b493',
-          amount: -100,
-          target: '24KBD9FJAS24ND9S8O3J93'
-        },
-        {
-          ticketid: '7824b9s4',
-          surpriseid: '89shzgs98dz4nm3brs7dh2ap',
-          amount: -150,
-          target: '893MDMJXUFWM43JN8A9SD79'
-        }
-      ];
     },
     base64KeyFile: function () {
       return btoa(`${this.accountGeneration.publicKey}\n${this.accountGeneration.privateKey}`)
@@ -261,7 +240,7 @@ export default {
       return this.bazoAccounts.length > 1;
     },
     tableRows () {
-      return this.allTickets;
+      return this.$store.getters.surpriseRequests;
     },
     configured () {
       return this.$store.getters.accountConfigured;
@@ -279,16 +258,6 @@ export default {
         this.loadingError = false;
       })
     },
-    computeAndUpdateTotalFunds: function () {
-      let result = 0
-      this.bazoAccounts.forEach((bazoAccount) => {
-        // requestBalance(bazoAccount.bazoaddress, (res) => {
-        //   result += res.body.balance;
-        // })
-        result += Number(Math.random().toString()[3]);
-      })
-      this.totalBalance = result;
-    },
     resetAccountGeneration: function () {
       this.accountGeneration = {
         privateKey: '',
@@ -304,12 +273,11 @@ export default {
       this.$store.dispatch('updatePrimaryAccount', account);
     },
     cutBazoAddress: function (bazoAddress) {
-      return `${bazoAddress.slice(0, 10)}..`
+      return `${bazoAddress.slice(0, 5)}..${bazoAddress.slice(-5)}`
     },
     formatBazoAccount: function (account) {
-      console.log('acc:', account);
       if (account) {
-        return `${account.bazoname} (${account.bazoaddress.slice(0, 10)}..)`
+        return `${account.bazoname} (${this.cutBazoAddress(account.bazoaddress)}..)`
       }
     },
     saveAccount: function () {
@@ -345,19 +313,25 @@ export default {
       this.$refs.accountcreation.hide();
     },
     requestBazo: function () {
+      let that = this;
       HttpService.surpriseFunding({
         surpriseToken: this.fundingRequest.surpriseToken,
         amount: this.fundingRequest.amount,
         target: this.paymentInfo.selectedAccount || this.defaultBazoAccount
       })
       .then((res) => {
-        console.log(res);
+        that.$store.dispatch('addAccountRequest', {
+          ticketid: 'ID-11111',
+          token: res.form.token,
+          target: res.form.target,
+          amount: res.form.amount,
+          state: 'unconfirmed'
+        })
       })
     }
   },
   mounted: function () {
     this.loadData();
-    this.computeAndUpdateTotalFunds();
   }
 };
 </script>
@@ -377,7 +351,8 @@ export default {
           "surpriseid": "Surprise Token",
           "balance": "Volume",
           "target": "Target Account (OySy)",
-          "ticketid": "Ticket ID"
+          "ticketid": "Ticket ID",
+          "state": "State"
         },
         "target": "Target account",
         "notConfigured": "You don't have an account stored in the OySy Wallet. You can generate and register a new account here, or add your existing Account on the <i>Accounts</i> page",
@@ -430,7 +405,8 @@ export default {
           "surpriseid": "Surprise Token",
           "ticketid": "Ticket Nummer",
           "balance": "Transaktionsvolumen",
-          "target": "Zielkonto (OySy)"
+          "target": "Zielkonto (OySy)",
+          "state": "Status"
         },
         "target": "Zielkonto",
         "save": "OySy Coins anfordern",
