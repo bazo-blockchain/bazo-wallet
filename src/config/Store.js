@@ -181,48 +181,50 @@ const store = new Vuex.Store({
 		},
 		updateUserBalance: function (context, options) {
       let addresses = context.state.config.accounts.map(account => account.bazoaddress);
-      HttpService.queryAccountInfo(addresses, options.url, options.silent).then((responses) => {
-        let accountMutationsFound = false;
-        responses.forEach((res) => {
-          if (res.body.address) {
-            let accountToUpdateBalance = helpers.findAccountByAddress(
-              context.state.config.accounts, res.body.address
-            );
-            if (accountToUpdateBalance.balance !== res.body.balance) {
-              accountMutationsFound = true;
+      if (addresses.length > 0) {
+        HttpService.queryAccountInfo(addresses, options.url, options.silent).then((responses) => {
+          let accountMutationsFound = false;
+          responses.forEach((res) => {
+            if (res.body.address) {
+              let accountToUpdateBalance = helpers.findAccountByAddress(
+                context.state.config.accounts, res.body.address
+              );
+              if (accountToUpdateBalance.balance !== res.body.balance) {
+                accountMutationsFound = true;
+              }
+              accountToUpdateBalance.balance = res.body.balance
+              context.commit('setAccountBalance', {balance: res.body.balance, address: res.body.address})
             }
-            accountToUpdateBalance.balance = res.body.balance
-            context.commit('setAccountBalance', {balance: res.body.balance, address: res.body.address})
-          }
-        })
-          context.commit('updateTimeStamp');
-          if (!options.silent) {
-            Vue.toasted.global.success(Translation.t('userAccounts.alerts.completeQuery'));
-          }
-          try {
-            if (Notification && Notification.permission === 'granted' && (document.visibilityState !== 'visible' || !location.href.match(/accounts/))) {
-                if (accountMutationsFound) {
-                  let notification = new Notification('OySy Wallet', {
-                      icon: '/static/img/icons/android-chrome-192x192.png',
-                      body: Translation.t('userAccounts.alerts.accountMutationDetected')
-                  })
-                  notification.onclick = function (event) {
-                    event.preventDefault();
-                    window.open(location.href.split('#')[0] + '#/accounts', '_blank')
+          })
+            context.commit('updateTimeStamp');
+            if (!options.silent) {
+              Vue.toasted.global.success(Translation.t('userAccounts.alerts.completeQuery'));
+            }
+            try {
+              if (Notification && Notification.permission === 'granted' && (document.visibilityState !== 'visible' || !location.href.match(/accounts/))) {
+                  if (accountMutationsFound) {
+                    let notification = new Notification('OySy Wallet', {
+                        icon: '/static/img/icons/android-chrome-192x192.png',
+                        body: Translation.t('userAccounts.alerts.accountMutationDetected')
+                    })
+                    notification.onclick = function (event) {
+                      event.preventDefault();
+                      window.open(location.href.split('#')[0] + '#/accounts', '_blank')
+                    }
                   }
-                }
+              }
+            } catch (e) {
+              if (!options.silent && accountMutationsFound) {
+                Vue.toasted.global.success(Translation.t('userAccounts.alerts.accountMutationDetected'));
+              }
             }
-          } catch (e) {
-            if (!options.silent && accountMutationsFound) {
-              Vue.toasted.global.success(Translation.t('userAccounts.alerts.accountMutationDetected'));
-            }
+        }).catch((err) => {
+          console.log(err);
+          if (!options.silent) {
+            Vue.toasted.global.error(Translation.t('userAccounts.alerts.failedConnection'));
           }
-      }).catch((err) => {
-        console.log(err);
-        if (!options.silent) {
-          Vue.toasted.global.error(Translation.t('userAccounts.alerts.failedConnection'));
-        }
-      });
+        });
+      }
 		},
     addAccountRequest: function (context, request) {
       return context.commit('addAccountRequest', request)
