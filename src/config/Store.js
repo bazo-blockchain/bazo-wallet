@@ -199,21 +199,21 @@ const store = new Vuex.Store({
           if (!options.silent) {
             Vue.toasted.global.success(Translation.t('userAccounts.alerts.completeQuery'));
           }
-        if (Notification && Notification.permission === 'granted' && (document.visibilityState !== 'visible' || !location.href.match(/accounts/))) {
           try {
-            if (accountMutationsFound) {
-              let notification = new Notification('OySy Wallet', {
-                  icon: '/static/img/icons/android-chrome-192x192.png',
-                  body: Translation.t('userAccounts.alerts.accountMutationDetected')
-              })
-              notification.onclick = function (event) {
-                event.preventDefault();
-                window.open(location.href.split('#')[0] + '#/accounts', '_blank')
-              }
+            if (Notification && Notification.permission === 'granted' && (document.visibilityState !== 'visible' || !location.href.match(/accounts/))) {
+                if (accountMutationsFound) {
+                  let notification = new Notification('OySy Wallet', {
+                      icon: '/static/img/icons/android-chrome-192x192.png',
+                      body: Translation.t('userAccounts.alerts.accountMutationDetected')
+                  })
+                  notification.onclick = function (event) {
+                    event.preventDefault();
+                    window.open(location.href.split('#')[0] + '#/accounts', '_blank')
+                  }
+                }
             }
           } catch (e) {
           }
-        }
       }).catch((err) => {
         console.log(err);
         if (!options.silent) {
