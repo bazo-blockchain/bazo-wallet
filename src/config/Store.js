@@ -213,7 +213,9 @@ const store = new Vuex.Store({
                 }
             }
           } catch (e) {
-            Vue.toasted.global.success(Translation.t('userAccounts.alerts.accountMutationDetected'));
+            if (!options.silent && accountMutationsFound) {
+              Vue.toasted.global.success(Translation.t('userAccounts.alerts.accountMutationDetected'));
+            }
           }
       }).catch((err) => {
         console.log(err);
