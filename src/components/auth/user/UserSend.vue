@@ -28,13 +28,6 @@
                     :title="Translation.t('userSend.openNFCTitle')">
                     <i class="fa fa-rss"></i>
                   </span>
-                  <span
-                  class="bt"
-                  :class="{ unsupported: !bluetooth.BTSupported}"
-                  @click="openBT"
-                  :title="Translation.t('userSend.openBTTitle')">
-                  <i class="fa fa-bluetooth-b"></i>
-                </span>
                 <span class="camera" @click="openCamera" :title="Translation.t('userSend.openCameraTitle')">
                   <i class="fa fa-camera"></i>
                 </span>
@@ -670,7 +663,7 @@ export default {
 			color: #999;
 		}
 	}
-	.camera, .nfc, .bt {
+	.camera, .nfc {
 		font-size: 16px;
 		position: absolute;
 		right: 0;
@@ -681,9 +674,6 @@ export default {
 		padding: 7px 6px;
 	}
   .nfc {
-    right: 50px;
-  }
-  .bt {
     right: 30px;
   }
   .nfc-status-wrapper {
