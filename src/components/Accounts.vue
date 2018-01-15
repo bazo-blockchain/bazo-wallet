@@ -32,11 +32,20 @@
           </template>
 
           <template slot="balance" scope="item">
-            <div class="nowrap">
-              <i class="fa fa-bitcoin"></i>
+
+            <div class="nowrap" v-if="item.item.balance != 'unconfirmed'">
+              <b-popover triggers="hover" :content="Translation.t('userAccounts.confirmed')" class="popover-element">
+                <i class="fa fa-unlock-alt increase-focus"></i>
+              </b-popover>
               <span >-</span>
               {{ item.item.balance}}
             </div>
+            <div class="nowrap" v-else>
+              <b-popover triggers="hover" :content="Translation.t('userAccounts.unconfirmed')" class="popover-element">
+                <i class="fa fa-lock increase-focus"></i>
+              </b-popover>
+            </div>
+
           </template>
           <template slot="isPrime" scope="item">
             <div>
