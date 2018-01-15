@@ -182,8 +182,6 @@ const store = new Vuex.Store({
 		updateUserBalance: function (context, options) {
       let addresses = context.state.config.accounts.map(account => account.bazoaddress);
       HttpService.queryAccountInfo(addresses, options.url, options.silent).then((responses) => {
-        let errorsFound = false;
-        let accountsFound = false;
         let accountMutationsFound = false;
         responses.forEach((res) => {
           if (res.body.address) {
@@ -195,22 +193,12 @@ const store = new Vuex.Store({
             }
             accountToUpdateBalance.balance = res.body.balance
             context.commit('setAccountBalance', {balance: res.body.balance, address: res.body.address})
-
-            accountsFound = true;
-          } else {
-            errorsFound = true;
           }
         })
-        if (errorsFound & accountsFound && !options.silent) {
-          Vue.toasted.global.warnNoIcon(Translation.t('userAccounts.alerts.incompleteQuery'));
-        } else if (errorsFound && !accountsFound && !options.silent) {
-          Vue.toasted.global.error(Translation.t('userAccounts.alerts.failedQuery'));
-        } else if (!errorsFound && accountsFound) {
           context.commit('updateTimeStamp');
           if (!options.silent) {
             Vue.toasted.global.success(Translation.t('userAccounts.alerts.completeQuery'));
           }
-        }
         if (Notification && Notification.permission === 'granted' && (document.visibilityState !== 'visible' || !location.href.match(/accounts/))) {
           try {
             if (accountMutationsFound) {
@@ -222,8 +210,6 @@ const store = new Vuex.Store({
             }
           } catch (e) {
           }
-        } else {
-          // console.log('no mutations found or not supported', location.href);
         }
       }).catch((err) => {
         console.log(err);
