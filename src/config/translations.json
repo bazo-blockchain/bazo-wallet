@@ -28,7 +28,8 @@
       "deleteDescription": "Deleting this account will remove it from the Wallet, the account will remain in the OySy network",
 			"reload": "Reload",
       "confirmed": "This account is confirmed in the Bazo network. This means that it can be used for inbound and outbound transactions.",
-      "unconfirmed": "This account is <b>not</b> yet Bazo network. You can register the account by requesting new OySy coins on the <i>Funds</i> page.",
+      "unconfirmed": "This account is <b>not</b> yet registered in the Bazo network. You can register the account by requesting new OySy coins on the <i>Funds</i> page.",
+      "explorer": "If you wish to inspect all transactions for this account, you can follow this link to the OySy Explorer.",
 			"fields": {
 				"bazoaddress": "OySy Address",
         "bazoname": "Name",
@@ -131,6 +132,7 @@
       "deleteDescription": "Wenn Sie ein OySy Konto hier löschen wird es aus Ihrer Wallet entfernt. Das Konto existiert weiterhin im OySy Netzwerk.",
       "confirmed": "Dies ist ein bestätigtes OySy Konto. Das bedeutet, dass eingehende und ausgehende Zahlungen mit dem Konto möglich sind.",
       "unconfirmed": "Dieses Konto ist noch <b>nicht</b> bestätigt. Um dieses Konto für Zahlungen zu verwenden, müssen zuerst neue OySy Coins auf der <i>Guthaben</i> Seite angefordert werden.",
+      "explorer": "Falls Sie alle Transaktionen dieses Kontos einsehen möchten, können Sie dies über diesen Link auf den OySy Explorer machen.",
       "reload": "Aktualisieren",
 			"fields": {
 				"bazoaddress": "OySy Adresse",

@@ -19,15 +19,10 @@
           <b-table responsive small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
             <template slot="bazoaddress" scope="item">
               <div class="no-wrap">
-
                 <span class="mono" v-bind:title="item.item.bazoaddress">{{ cutBazoAddress(item.item.bazoaddress) }}</span>&nbsp;
-                <!-- <a v-bind:href="item.item.bazoaddress">Link</a> -->
                 <b-popover triggers="hover" :content="item.item.bazoaddress" class="popover-element">
                   <i class="fa fa-eye increase-focus"></i>
                 </b-popover>
-                <!-- <a :href="item.item.adddressUrl" :title="item.item.adddressUrl" target="_blank" rel="noopener" class="increase-focus">
-                <i class="fa fa-external-link"></i>
-              </a> -->
             </div>
           </template>
 
@@ -61,9 +56,11 @@
           </template>
           <template slot="qr" scope="item">
             <div>
-              <a href="#/auth/user/request" :href="'https://shrouded-dawn-45355.herokuapp.com/account/' + item.item.bazoaddress">
-                <i class="fa fa-link" aria-hidden="true"></i>
-              </a>
+              <b-popover triggers="hover" :content="Translation.t('userAccounts.explorer')" class="popover-element">
+                <a href="#/auth/user/request" :href="'https://shrouded-dawn-45355.herokuapp.com/account/' + item.item.bazoaddress">
+                  <i class="fa fa-link" aria-hidden="true"></i>
+                </a>
+              </b-popover>
             </div>
           </template>
           <template slot="actions" scope="item">
