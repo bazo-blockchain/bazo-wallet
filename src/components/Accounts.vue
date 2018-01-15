@@ -16,7 +16,7 @@
           <div v-if="configured"
           class="table-responsive">
 
-          <b-table  small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
+          <b-table responsive small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
             <template slot="bazoaddress" scope="item">
               <div class="no-wrap">
 

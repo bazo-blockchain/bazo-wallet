@@ -15,7 +15,7 @@
         <div class="table-wrapper" v-if="!isLoading && !loadingError">
           <label>{{$t('funds.description')}}</label>
           <div v-if="configured"class="table-responsive">
-            <b-table  small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
+            <b-table responsive small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
 
               <template slot="token" scope="item">
                 <div class="nowrap">
