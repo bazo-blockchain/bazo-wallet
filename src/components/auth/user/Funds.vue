@@ -362,7 +362,7 @@ export default {
         "address": "Surprise Token",
         "name": "Name this account",
         "modaltitle": "Your new OySy account",
-        "modaldescription": "A new OySy account was generated. Submitting this form will add the account to the Wallet. <b>Make sure to store the private key in a secure place!</b> In order for the account to be valid, you need to request new Oysy coins.",
+        "modaldescription": "A new OySy account was generated. Submitting this form will add the account to the Wallet. <b>Make sure to store the private key in a secure place!</b> In order for the account to be valid, you need to request new OySy coins.",
         "accountname": "Name this account",
         "accounttitle": "Store the following information securely",
         "pubkey": "Public Key (Address)",
