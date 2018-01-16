@@ -2,7 +2,6 @@
 <div class="home">
 	<div class="main-photo text-center">
 		<div class="logos">
-			<a href="https://github.com/coinblesk" target="_blank" rel="noopener" title="Open Source, Github"><img src="../assets/about_opensource.png" alt="Open Source"></a>
 			<a href="http://www.ifi.uzh.ch" target="_blank" rel="noopener" title="Institute of Informatics, University of Zurich"><img src="../assets/about_ifi.png" alt="IfI"></a>
 			<a href="http://www.uzh.ch" target="_blank" rel="noopener" title="University of Zurich"><img src="../assets/about_uzh.png" alt="UZH"></a>
 		</div>
