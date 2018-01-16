@@ -213,7 +213,9 @@ export default {
       }
     },
     base64KeyFile: function () {
-      return btoa(`${this.accountGeneration.publicKey}\n${this.accountGeneration.privateKey}`)
+      let importLink = location.origin + '/#/accounts?address=' + this.accountGeneration.publicKey
+      let importHint = 'You can import the public key of this keyfile by clicking on the link below:'
+      return btoa(`${this.accountGeneration.publicKey}\n${this.accountGeneration.privateKey}\n\n${importHint}\n${importLink}`)
     },
     bazoAccounts: function () {
       return this.$store.getters.bazoAccounts;
