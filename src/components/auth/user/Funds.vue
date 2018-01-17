@@ -213,9 +213,22 @@ export default {
       }
     },
     base64KeyFile: function () {
-      let importLink = location.origin + '/#/accounts?address=' + this.accountGeneration.publicKey
-      let importHint = 'You can import the public key of this keyfile by clicking on the link below:'
-      return btoa(`${this.accountGeneration.publicKey}\n${this.accountGeneration.privateKey}\n\n${importHint}\n${importLink}`)
+      let importLink = location.origin + '/#/accounts?address=' + this.accountGeneration.publicKey;
+      let importHint = 'You can import the public key of this keyfile by clicking on the link below:';
+      let padding = '-----';
+
+      let keyfile =
+`${padding}BEGIN PRIVATE KEY${padding}
+${this.accountGeneration.privateKey}
+${padding}END PRIVATE KEY${padding}
+\n
+${padding}BEGIN PUBLIC KEY${padding}
+${this.accountGeneration.publicKey}
+${padding}END PUBLIC KEY${padding}
+\n
+${importHint}
+${importLink}`
+      return btoa(keyfile)
     },
     bazoAccounts: function () {
       return this.$store.getters.bazoAccounts;
