@@ -4,7 +4,7 @@
       <h1 class="display-4">{{ this.Translation.t('userAccounts.title') }}
         <small v-if="!isLoading && !loadingError && configured" class="pull-right">
           <span class="total-funds-small">{{ this.Translation.t('userAccounts.total') }}</span>
-          <i class="fa fa-bitcoin"></i>
+          <i class="fa fa-usd"></i>
             {{ this.sumOfBalances }}
         </small>
       </h1>

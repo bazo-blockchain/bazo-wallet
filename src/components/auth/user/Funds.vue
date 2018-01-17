@@ -213,7 +213,7 @@ export default {
       }
     },
     base64KeyFile: function () {
-      let importLink = location.origin + '/#/accounts?address=' + this.accountGeneration.publicKey;
+      let importLink = `${location.origin}/#/accounts?address=${this.accountGeneration.publicKey}`;
       let importHint = 'You can import the public key of this keyfile by clicking on the link below:';
       let padding = '-----';
 

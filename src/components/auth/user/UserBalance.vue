@@ -1,7 +1,7 @@
 <template>
 <div class="user-balance">
 	<a href @click.prevent="openFundsPage">
-		<i class="fa fa-bitcoin"></i>
+		<i class="fa fa-usd"></i>
 		<span class="value">{{ sumOfBalances }}</span>
 	</a>
 	<!-- <b-tooltip :content="balanceDateFormatted" :triggers="['click', 'hover']" :placement="tooltipPlacement" class="info " :offset="offset">
