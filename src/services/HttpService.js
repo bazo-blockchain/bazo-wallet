@@ -85,7 +85,7 @@ const HttpService = {
 				});
 			},
 			getFunds: function () {
-				return Vue.http.get(properties.HOST + '/auth/user/funds');
+				return Vue.http.get(properties.HOST + '/funds');
 			},
 			getEncryptedPrivateKey: function () {
 				return Vue.http.get(properties.HOST + '/auth/user/payment/encrypted-private-key');

@@ -42,7 +42,7 @@
 					</a>
 				</div>
 				<div class="button" :class="offlineCheck('login')">
-					<router-link :to="{ name: 'accounts' }">
+					<router-link :to="{ name: 'funds' }">
 						<i class="fa fa-sign-in"></i>
 						{{ $t('header.signIn') }}
 					</router-link>
