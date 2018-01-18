@@ -29,7 +29,7 @@
 
       <div>
         <router-link class="entry" :to="{ name: 'accounts' }" :class="dynamicLinkClasses('accounts')" @click.native="closeMenu">
-          <i class="fa fa-bitcoin"></i>
+          <i class="fa fa-usd"></i>
           <span class="text">{{ $t('sideBar.userAccounts') }}</span>
         </router-link>
         <router-link  class="entry" :to="{ name: 'funds' }" :class="dynamicLinkClasses('funds')" @click.native="closeMenu">
