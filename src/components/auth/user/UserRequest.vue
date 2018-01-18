@@ -505,7 +505,7 @@ export default {
   .nfc-status-wrapper {
     text-align: center;
     svg {
-      fill: #FAA916;
+      fill: #cb3f5f;
       margin: 20px;
       height: 100px;
     }
