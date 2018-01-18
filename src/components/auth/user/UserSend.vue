@@ -164,7 +164,7 @@
         </form>
       </div>
 
-      <user-transfer @remove-transaction-data="resetAllTransactionData"  :transactionHash="this.transaction.hash" :amount="Number(this.amount)"></user-transfer>
+      <user-transfer @remove-transaction-data="resetAllTransactionData"  :transactionHash="this.transaction.hash" :amount="feesIncluded ? Number(this.amount) : Number(this.amount) + Number(this.currentFee)"></user-transfer>
     </div>
   </div>
 </div>
