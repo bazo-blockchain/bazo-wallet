@@ -11,7 +11,7 @@
       <hr>
       <div class="pos-rel user-funds-content">
         <spinner :is-loading="isLoading"></spinner>
-        <label>{{Translation.t('userAccounts.description')}}</label>
+        <label v-if="configured">{{Translation.t('userAccounts.description')}}</label>
         <div class="table-wrapper" v-if="!isLoading && !loadingError">
           <div v-if="configured"
           class="table-responsive">
@@ -88,7 +88,7 @@
     {{ this.Translation.t('userAccounts.reload') }}
   </span>
 </div>
-<hr>
+<hr v-if="configured">
 <div class="col-12">
   <form>
     <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoaddress')">

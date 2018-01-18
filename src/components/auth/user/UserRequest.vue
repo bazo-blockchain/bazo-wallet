@@ -305,7 +305,7 @@ export default {
       }).catch((err) => {
         if (err.code === 20) {
           // this.webshare.webshareSupported = false;
-          this.$toasted.global.warn(Translation.t('userRequest.websharenotsupported'));
+          // this.$toasted.global.warn(Translation.t('userRequest.websharenotsupported'));
         }
       })
     },

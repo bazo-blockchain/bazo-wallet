@@ -13,7 +13,7 @@
         <spinner :is-loading="isLoading"></spinner>
 
         <div class="table-wrapper" v-if="!isLoading && !loadingError">
-          <label>{{$t('funds.description')}}</label>
+          <label v-if="configured">{{$t('funds.description')}}</label>
           <div v-if="configured"class="table-responsive">
             <b-table responsive small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
 
@@ -49,7 +49,7 @@
             {{ this.$t('funds.reload') }}
           </span>
         </div>
-        <hr>
+        <hr v-if="configured">
       </div>
       <div class="row">
         <div class="col-12">
