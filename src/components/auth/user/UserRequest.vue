@@ -71,10 +71,10 @@
                           <span>NFC</span>
                         </b-button>
                       </b-button-group>
-                      <a class="transfer-link" v-if="isMobileDevice && advancedOptionsShown" v-bind:href="whatsappLink" data-action="share/whatsapp/share">
+                      <!-- <a class="transfer-link" v-if="isMobileDevice && advancedOptionsShown" v-bind:href="whatsappLink" data-action="share/whatsapp/share">
                         <i class="fa fa-whatsapp" aria-hidden="true"></i>
                         <span>Whatsapp</span>
-                      </a>
+                      </a> -->
                       <a class="transfer-link" v-if="isAndroidDevice && advancedOptionsShown" v-bind:href="nfcbridgeLink" >
                         <i class="fa fa-android" aria-hidden="true"></i>
                         <span>NFC Bridge</span>
