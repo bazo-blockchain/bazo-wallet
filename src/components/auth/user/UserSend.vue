@@ -107,7 +107,7 @@
             <div class="col-md-4">
               <b-form-fieldset>
                 <label class="col-form-label">{{ Translation.t('userSend.maxAmount') }}
-                  <b-popover :triggers="['hover']" :content="(addressIsBitcoin || addressIsEmail) ? Translation.t('userSend.maxAmountDescription') : '<b>'+Translation.t('userSend.maxAmountDescriptionIntro')+'</b><hr>' + Translation.t('userSend.maxAmountDescription')" class="popover-element">
+                  <b-popover :triggers="['hover']" :content="Translation.t('userSend.maxAmountDescription')" class="popover-element">
                     <i class="fa fa-info-circle increase-focus"></i>
                   </b-popover>
                 </label>
