@@ -39,7 +39,7 @@ const store = new Vuex.Store({
       updatedBalances: null
     },
     settings: {
-      showAdvancedOptions: 'shown',
+      showAdvancedOptions: 'hidden',
       useCustomHost: 'false',
       customURL: 'http://192.41.136.199:8001'
     },
