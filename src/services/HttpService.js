@@ -35,7 +35,7 @@ const HttpService = {
         amount: options.amount,
         target: options.target.bazoaddress,
         token: options.surpriseToken
-      })
+      }, { headers: DO_NOT_INTERCEPT })
     }
   },
   queryAccountInfo: function (accountAddresses, host, silent) {
@@ -59,13 +59,13 @@ const HttpService = {
     let hostbase = `${host || properties.HOST}`
     let url = HttpService.formatHost(hostbase) + 'createFundsTx/'
 
-    return Vue.http.post(`${url}0/${amount}/${fee}/${txCount}/${sender}/${recipient}`);
+    return Vue.http.post(`${url}0/${amount}/${fee}/${txCount}/${sender}/${recipient}`, {}, { headers: DO_NOT_INTERCEPT });
   },
   sendSignedFundsTx: function (fundsTxHash, signature, host) {
     let hostbase = `${host || properties.HOST}`
     let url = HttpService.formatHost(hostbase) + 'sendFundsTx/'
 
-    return Vue.http.post(`${url}${fundsTxHash}/${signature}`);
+    return Vue.http.post(`${url}${fundsTxHash}/${signature}`, {}, { headers: DO_NOT_INTERCEPT });
   },
 	Auth: {
 		getUser: function (doNotIntercept) {
