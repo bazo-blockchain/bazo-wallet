@@ -1,6 +1,6 @@
 # OySy Wallet
 
-> The web-based wallet for Bazo
+> The web-based wallet for the OySy
 
 
 ## Setup
