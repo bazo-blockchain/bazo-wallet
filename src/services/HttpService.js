@@ -2,8 +2,6 @@ import Vue from 'vue';
 import properties from '@/properties';
 import axios from 'axios';
 
-const DO_NOT_INTERCEPT = { 'DO_NOT_INTERCEPT': 'enabled' };
-
 const HttpService = {
   queryTransactionAmount: function (doNotIntercept) {
     /*
@@ -20,11 +18,11 @@ const HttpService = {
     */
     let host = 'https://httpbin.org/post';
     if (options.target && options.target.bazoaddress) {
-      return Vue.http.post(host, {
+      return axios.post(host, {
         amount: options.amount,
         target: options.target.bazoaddress,
         token: options.surpriseToken
-      }, { headers: DO_NOT_INTERCEPT })
+      })
     }
   },
   queryAccountInfo: function (accountAddresses, host, silent) {

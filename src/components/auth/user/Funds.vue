@@ -335,12 +335,13 @@ ${importLink}`
         target: this.paymentInfo.selectedAccount || this.defaultBazoAccount
       })
       .then((res) => {
+        console.log(res);
         that.$store.dispatch('addAccountRequest', {
           ticketid: 'ID-11111',
-          token: res.form.token,
-          target: res.form.target,
-          amount: res.form.amount,
-          state: 'unconfirmed'
+          token: res.data.json.token,
+          target: res.data.json.target,
+          amount: res.data.json.amount,
+          state: res.data.json.state || 'unconfirmed'
         })
       })
     }
