@@ -335,7 +335,6 @@ ${importLink}`
         target: this.paymentInfo.selectedAccount || this.defaultBazoAccount
       })
       .then((res) => {
-        console.log(res);
         that.$store.dispatch('addAccountRequest', {
           ticketid: 'ID-11111',
           token: res.data.json.token,
