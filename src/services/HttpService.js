@@ -55,6 +55,11 @@ const HttpService = {
     let url = HttpService.formatHost(hostbase) + 'sendFundsTx/'
 
     return axios.post(`${url}${fundsTxHash}/${signature}`);
+  },
+  formatHost: function (hostBase) {
+    if (hostBase.slice(-1) === '/') {
+      return hostBase
+    } return hostBase + '/'
   }
 };
 
