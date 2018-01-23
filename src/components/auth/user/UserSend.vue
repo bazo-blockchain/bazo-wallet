@@ -595,7 +595,8 @@ export default {
             fee,
             this.customURLUsed
           ).then((res) => {
-            that.transaction.hash = res.content[0].detail
+            that.transaction.hash = res.data.content[0].detail
+
             this.$nextTick(() => {
               this.$root.$emit('show::modal', 'user-transfer');
             });

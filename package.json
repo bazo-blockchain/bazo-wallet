@@ -21,6 +21,7 @@
     }
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "bip21": "^2.0.1",
     "bootstrap": "4.0.0-alpha.6",
     "bootstrap-vue": "^0.16.1",
