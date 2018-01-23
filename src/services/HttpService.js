@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import properties from '@/properties';
-import jQuery from 'jQuery';
 
 const DO_NOT_INTERCEPT = { 'DO_NOT_INTERCEPT': 'enabled' };
 
@@ -32,7 +31,7 @@ const HttpService = {
     */
     let host = 'https://httpbin.org/post';
     if (options.target && options.target.bazoaddress) {
-      return jQuery.post(host, {
+      return Vue.http.post(host, {
         amount: options.amount,
         target: options.target.bazoaddress,
         token: options.surpriseToken
@@ -60,13 +59,13 @@ const HttpService = {
     let hostbase = `${host || properties.HOST}`
     let url = HttpService.formatHost(hostbase) + 'createFundsTx/'
 
-    return jQuery.post(`${url}0/${amount}/${fee}/${txCount}/${sender}/${recipient}`);
+    return Vue.http.post(`${url}0/${amount}/${fee}/${txCount}/${sender}/${recipient}`);
   },
   sendSignedFundsTx: function (fundsTxHash, signature, host) {
     let hostbase = `${host || properties.HOST}`
     let url = HttpService.formatHost(hostbase) + 'sendFundsTx/'
 
-    return jQuery.post(`${url}${fundsTxHash}/${signature}`);
+    return Vue.http.post(`${url}${fundsTxHash}/${signature}`);
   },
 	Auth: {
 		getUser: function (doNotIntercept) {

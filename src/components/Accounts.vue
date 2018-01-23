@@ -123,7 +123,6 @@
 
 <script>
 import Spinner from '@/components/Spinner';
-import jQuery from 'jQuery';
 import UserTransfer from '@/components/auth/user/UserTransfer';
 import URIScheme from '@/services/URIScheme';
 import Translation from '@/config/Translation';
@@ -244,7 +243,7 @@ export default {
         this.$toasted.global.success(this.Translation.t('userAccounts.prefilledAddress'));
 
         setTimeout(() => {
-          jQuery('#bazoname').focus();
+          // jQuery('#bazoname').focus();
         }, 1000)
       }
     },
