@@ -28,145 +28,121 @@
                     :title="Translation.t('userSend.openNFCTitle')">
                     <i class="fa fa-rss"></i>
                   </span>
-                <span class="camera" @click="openCamera" :title="Translation.t('userSend.openCameraTitle')">
-                  <i class="fa fa-camera"></i>
-                </span>
+                  <span class="camera" @click="openCamera" :title="Translation.t('userSend.openCameraTitle')">
+                    <i class="fa fa-camera"></i>
+                  </span>
 
-                <div class="nfc-screen" :class="{'shown': nfc.NFCShown}" @click="closeNFC">
-                  <div class="close" @click="closeNFC">&times;</div>
-                  <div class="nfc-title" @click.stop>
-                    <i class="fa fa-rss"></i>
-                    {{ Translation.t('userSend.NFCTitle') }}
-                  </div>
-
-                  <div class="nfc-notice">{{ Translation.t('userSend.NFCNotice') }}
-                    <div class="nfc-status-wrapper">
-                      <svg :class="{'nfc-watch-active': nfc.NFCWatching, 'nfc-watch-success': nfc.NFCSuccess}" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM18 6h-5c-1.1 0-2 .9-2 2v2.28c-.6.35-1 .98-1 1.72 0 1.1.9 2 2 2s2-.9 2-2c0-.74-.4-1.38-1-1.72V8h3v8H8V8h2V6H6v12h12V6z"/></svg>
-
+                  <div class="nfc-screen" :class="{'shown': nfc.NFCShown}" @click="closeNFC">
+                    <div class="close" @click="closeNFC">&times;</div>
+                    <div class="nfc-title" @click.stop>
+                      <i class="fa fa-rss"></i>
+                      {{ Translation.t('userSend.NFCTitle') }}
                     </div>
-                    <div class="nfc-status">
-                      {{ nfc.NFCStatus }}
+
+                    <div class="nfc-notice">{{ Translation.t('userSend.NFCNotice') }}
+                      <div class="nfc-status-wrapper">
+                        <svg :class="{'nfc-watch-active': nfc.NFCWatching, 'nfc-watch-success': nfc.NFCSuccess}" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM18 6h-5c-1.1 0-2 .9-2 2v2.28c-.6.35-1 .98-1 1.72 0 1.1.9 2 2 2s2-.9 2-2c0-.74-.4-1.38-1-1.72V8h3v8H8V8h2V6H6v12h12V6z"/></svg>
+
+                      </div>
+                      <div class="nfc-status">
+                        {{ nfc.NFCStatus }}
+                      </div>
+                    </div>
+                    <div class="video-wrapper" @click.stop>
+                      <video></video>
                     </div>
                   </div>
-                  <div class="video-wrapper" @click.stop>
-                    <video></video>
+
+
+                  <div class="camera-screen" :class="{'shown':cameraShown}" @click="closeCamera">
+                    <div class="close" @click="closeCamera">&times;</div>
+                    <div class="camera-title" @click.stop>
+                      <i class="fa fa-qrcode"></i>
+                      {{ Translation.t('userSend.cameraTitle') }}
+                    </div>
+                    <div class="camera-notice">{{ Translation.t('userSend.cameraNotice') }}</div>
+                    <div class="video-wrapper" @click.stop>
+                      <video></video>
+                    </div>
                   </div>
                 </div>
+              </b-form-fieldset>
 
-                <div class="bt-screen" :class="{'shown': bluetooth.BTShown}"
-                @click="closeBT">
-                <div class="close" @click="closeBT">&times;</div>
-                <div class="bt-title" @click.stop>
-                  <i class="fa fa-bluetooth-b"></i>
-                  {{ Translation.t('userSend.BTTitle') }}
-                </div>
-
-                <div class="bt-notice">{{ Translation.t('userSend.BTNotice') }}
-                  <div class="bt-status-wrapper">
-
-                  </div>
-                  <div class="bt-status">
-                    {{ bluetooth.BTStatus }}
-                  </div>
-                </div>
-                <div class="video-wrapper" @click.stop>
-                  <video></video>
-                </div>
-              </div>
-
-              <div class="camera-screen" :class="{'shown':cameraShown}" @click="closeCamera">
-                <div class="close" @click="closeCamera">&times;</div>
-                <div class="camera-title" @click.stop>
-                  <i class="fa fa-qrcode"></i>
-                  {{ Translation.t('userSend.cameraTitle') }}
-                </div>
-                <div class="camera-notice">{{ Translation.t('userSend.cameraNotice') }}</div>
-                <div class="video-wrapper" @click.stop>
-                  <video></video>
-                </div>
-              </div>
-            </div>
-          </b-form-fieldset>
-
-          <div class="row">
-            <div class="col-md-8">
-              <b-form-fieldset :label="Translation.t('userSend.amount')">
-                <b-input-group>
-                  <b-form-input v-model="amount" class="mono amount-input" type="number" min="0" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
-                  <!-- <b-input-group-button slot="right">
-                    <b-dropdown :text="selectedCurrency" variant="default" right>
+              <div class="row">
+                <div class="col-md-8">
+                  <b-form-fieldset :label="Translation.t('userSend.amount')">
+                    <b-input-group>
+                      <b-form-input v-model="amount" class="mono amount-input" type="number" min="0" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
+                      <!-- <b-input-group-button slot="right">
+                      <b-dropdown :text="selectedCurrency" variant="default" right>
                       <b-dropdown-item v-for="currency in allowedCurrencies" @click="selectedCurrency = currency" :key="currency">
-                        <span class="currency">{{ currency }}</span>
-                        <i class="fa fa-check" v-if="currency === selectedCurrency"></i>
-                      </b-dropdown-item>
-                    </b-dropdown>
-                  </b-input-group-button> -->
-                </b-input-group>
-              </b-form-fieldset>
-            </div>
-            <div class="col-md-4">
-              <b-form-fieldset>
-                <label class="col-form-label">{{ Translation.t('userSend.maxAmount') }}
-                  <b-popover :triggers="['hover']" :content="Translation.t('userSend.maxAmountDescription')" class="popover-element">
-                    <i class="fa fa-info-circle increase-focus"></i>
-                  </b-popover>
-                </label>
-                <div class="form-control disabled mono" :class="{ 'form-error': formIsTouched && maximumAmountExceeded }">
-                  <span v-if="accountsConfigured">
-                    {{ maximumAmount }} Bazo
-                  </span>
-                  <span v-else>
-                    <i class="fa fa-minus"></i>
-                  </span>
-                </div>
-              </b-form-fieldset>
-            </div>
-            <div class="col-12">
-              <b-form-fieldset>
-                <label class="col-form-label" for="selection">{{ Translation.t('userSend.accountUsed') }}
-                  <b-popover :triggers="['hover']" :content="Translation.t('userSend.accountUsedDescription')" class="popover-element">
-                    <i class="fa fa-info-circle increase-focus"></i>
-                  </b-popover>
-                </label>
-                <div class="pos-rel">
-                  <b-input-group-button class="accountSelectionWrap">
-                    <b-dropdown :disabled="!multipleAccountsConfigured" id="account-selection" :text="formatBazoAccount(selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default">
-                      <b-dropdown-item v-for="bazoAccount in bazoAccounts" @click="selectedAccount = bazoAccount" :key="bazoAccount">
-                        <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
-                        <i class="fa fa-check" v-if="bazoAccount === selectedAccount || (selectedAccount === '' && bazoAccount === defaultBazoAccount )"></i>
-                      </b-dropdown-item>
-                    </b-dropdown>
-                  </b-input-group-button slot="right">
-                </div>
-
-              </b-form-fieldset>
-            </div>
-            <div class="col-12">
-              <div class="description-forex-rate" v-html="Translation.t('userSend.descriptionForexRate', { forex: forexRates[selectedCurrency].rate, currency: selectedCurrency })" v-if="selectedCurrency !== 'Bazo'"></div>
-              <hr>
-            </div>
-            <div class="fees-included">
-              <label>
-                <b-form-checkbox v-model="feesIncluded">{{ Translation.t('userSend.feesIncluded') }}
-                  <b-popover :triggers="['hover']" :content="Translation.t('userSend.feesIncludedDescription')" class="popover-element">
-                    <i class="fa fa-info-circle increase-focus"></i>
-                  </b-popover>
-                </b-form-checkbox>
-              </label>
-            </div>
-            <div class="col-12">
-              <!-- warning threshold is 0.01 BTC fees per transaction, if above: crazy world -->
-              <div class="description-fees alert alert-info" v-if="feesIncluded && btcAmount != 0 && btcAmount < 0.01">{{ Translation.t('userSend.lowAmountFeeDescription') }}</div>
-              <div class="description-fees alert alert-info" v-if="!feesIncluded && btcAmount != 0 && btcMaximumAmount - btcAmount - 0.01 < 0">{{ Translation.t('userSend.descriptionFees') }}</div>
-              <b-button class="submit-button" :block="true" variant="primary" @click.prevent="submitPreparation" :disabled="formIsTouched && !validForm || false">{{ Translation.t('userSend.button', { amount: btcAmount }) }}</b-button>
-            </div>
+                      <span class="currency">{{ currency }}</span>
+                      <i class="fa fa-check" v-if="currency === selectedCurrency"></i>
+                    </b-dropdown-item>
+                  </b-dropdown>
+                </b-input-group-button> -->
+              </b-input-group>
+            </b-form-fieldset>
           </div>
-        </form>
-      </div>
+          <div class="col-md-4">
+            <b-form-fieldset>
+              <label class="col-form-label">{{ Translation.t('userSend.maxAmount') }}
+                <b-popover :triggers="['hover']" :content="Translation.t('userSend.maxAmountDescription')" class="popover-element">
+                  <i class="fa fa-info-circle increase-focus"></i>
+                </b-popover>
+              </label>
+              <div class="form-control disabled mono" :class="{ 'form-error': formIsTouched && maximumAmountExceeded }">
+                <span v-if="accountsConfigured">
+                  {{ maximumAmount }} Bazo
+                </span>
+                <span v-else>
+                  <i class="fa fa-minus"></i>
+                </span>
+              </div>
+            </b-form-fieldset>
+          </div>
+          <div class="col-12">
+            <b-form-fieldset>
+              <label class="col-form-label" for="selection">{{ Translation.t('userSend.accountUsed') }}
+                <b-popover :triggers="['hover']" :content="Translation.t('userSend.accountUsedDescription')" class="popover-element">
+                  <i class="fa fa-info-circle increase-focus"></i>
+                </b-popover>
+              </label>
+              <div class="pos-rel">
+                <b-input-group-button class="accountSelectionWrap">
+                  <b-dropdown :disabled="!multipleAccountsConfigured" id="account-selection" :text="formatBazoAccount(selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default">
+                    <b-dropdown-item v-for="bazoAccount in bazoAccounts" @click="selectedAccount = bazoAccount" :key="bazoAccount">
+                      <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
+                      <i class="fa fa-check" v-if="bazoAccount === selectedAccount || (selectedAccount === '' && bazoAccount === defaultBazoAccount )"></i>
+                    </b-dropdown-item>
+                  </b-dropdown>
+                </b-input-group-button slot="right">
+              </div>
 
-      <user-transfer @remove-transaction-data="resetAllTransactionData"  :transactionHash="this.transaction.hash" :amount="feesIncluded ? Number(this.amount) : Number(this.amount) + Number(this.currentFee)"></user-transfer>
+            </b-form-fieldset>
+          </div>
+          <div class="col-12">
+            <div class="description-forex-rate" v-html="Translation.t('userSend.descriptionForexRate', { forex: forexRates[selectedCurrency].rate, currency: selectedCurrency })" v-if="selectedCurrency !== 'Bazo'"></div>
+            <hr>
+          </div>
+          <div class="fees-included">
+            <label>
+              <b-form-checkbox v-model="feesIncluded">{{ Translation.t('userSend.feesIncluded') }}
+                <b-popover :triggers="['hover']" :content="Translation.t('userSend.feesIncludedDescription')" class="popover-element">
+                  <i class="fa fa-info-circle increase-focus"></i>
+                </b-popover>
+              </b-form-checkbox>
+            </label>
+          </div>
+          <div class="col-12">
+            <b-button class="submit-button" :block="true" variant="primary" @click.prevent="submitPreparation" :disabled="formIsTouched && !validForm || false">{{ Translation.t('userSend.button', { amount: btcAmount }) }}</b-button>
+          </div>
+        </div>
+      </form>
     </div>
+    <user-transfer @remove-transaction-data="resetAllTransactionData"  :transactionHash="this.transaction.hash" :amount="feesIncluded ? Number(this.amount) : Number(this.amount) + Number(this.currentFee)"></user-transfer>
   </div>
+</div>
 </div>
 </div>
 </div>
@@ -193,14 +169,7 @@ export default {
         NFCWatching: false,
         NFCSuccess: false,
         NFCShown: false,
-        // TODO: detect NFC browser support and set this programmatically
-        NFCSupported: true
-      },
-      bluetooth: {
-        BTStatus: 'not watching..',
-        BTSupported: false,
-        BTShown: false,
-        BTSuccess: false
+        NFCSupported: false
       },
       transaction: {
         hash: null
@@ -213,14 +182,8 @@ export default {
 			feesIncluded: true,
       currentFee: 1,
 			address: '',
-			forexRates: {
-				USD: {},
-				EUR: {},
-				CHF: {}
-			},
 			formIsTouched: false,
 			successfulTransaction: false,
-			lockedAddress: {},
 			currentTransaction: {},
       Translation: Translation
 		}
@@ -407,28 +370,6 @@ export default {
       this.address = '';
       this.formIsTouched = false;
       this.resetTransactionData();
-    },
-    checkBTSupport: function () {
-      if ('bluetooth' in navigator) {
-        this.bluetooth.BTSupported = true;
-      } else {
-        this.bluetooth.BTSupported = false;
-      }
-    },
-    openBT: function () {
-      if (this.bluetooth.BTSupported) {
-        this.bluetooth.BTShown = true;
-        this.startWatchingBT();
-      } else {
-        this.bluetooth.BTShown = false;
-        this.$toasted.global.warn(Translation.t('userSend.BTNotSupported'));
-      }
-    },
-    closeBT: function () {
-      this.bluetooth.BTShown = false;
-    },
-    startWatchingBT: function () {
-
     },
     checkNFCSupport: function () {
       if ('nfc' in navigator) {
@@ -625,7 +566,6 @@ export default {
     this.parseProps();
     this.triggerBalanceUpdate(false);
     this.checkNFCSupport();
-    this.checkBTSupport();
     this.setupInstaScanLib();
   }
 };

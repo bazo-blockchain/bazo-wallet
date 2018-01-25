@@ -1,7 +1,7 @@
 <template>
   <div class="side-bar">
     <div class="logo-container">
-      <img class="logo" src="../assets/OySy.png" alt="Coinblesk" :to="{ 'name': 'home' }">
+      <img class="logo" src="../assets/OySy.png" alt="OySy" :to="{ 'name': 'home' }">
     </div>
     <div class="entries" :class="{ 'offline-mode': isOffline }">
 

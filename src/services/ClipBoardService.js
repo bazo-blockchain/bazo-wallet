@@ -2,6 +2,7 @@
  The following is a service based on the library provided by Ryan P.C. McQueen.
  The library was modified in order to have not have the button text changes when
  the commands are executed.
+ https://github.com/ryanpcmcquen/cheval
 */
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt GPL-v2-or-later
 /*! cheval v1.2.0 by ryanpcmcquen */

@@ -257,7 +257,7 @@ const store = new Vuex.Store({
 	plugins: [
 		// persists vuex state to localstorage (only the given paths)
 		PersistedState({
-			key: 'coinblesk_vuex_store',
+			key: 'oysy_vuex_store',
 			paths: [ 'auth', 'user', 'language', 'userBalance', 'config', 'settings', 'surpriseRequests' ]
 		})
 	]

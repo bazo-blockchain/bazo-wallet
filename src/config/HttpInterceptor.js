@@ -16,13 +16,6 @@ export default {
 	intercept: function () {
 		Vue.http.interceptors.push(function (request, next) {
 			const doNotIntercept = !!request.headers.get('DO_NOT_INTERCEPT');
-			// request.headers.set('Authorization', (() => {
-			// 	if (!Store.state.auth.authenticated) {
-			// 		return null;
-			// 	} else {
-			// 		return 'Bearer ' + Store.state.auth.token;
-			// 	}
-			// })());
 
 			next(function (response) {
 				if (/^5/.test(response.status.toString())) {

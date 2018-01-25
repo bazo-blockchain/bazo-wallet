@@ -57,7 +57,6 @@ export default {
 			this.formIsTouched = true;
 			try {
 				this.validPassPhrase = true;
-				// this.$emit('private-key-decrypted', privateKeyWif);
 
         let key = this.ec.keyFromPrivate(this.privateKey)
         let signature = key.sign(this.transactionHash);
@@ -85,7 +84,6 @@ export default {
 		},
 		modalWasClosed: function () {
 			this.privateKey = '';
-			// this.validPassPhrase = false;
 		},
     deleteTransactionData: function () {
       this.$emit('remove-transaction-data', null);

@@ -5,7 +5,7 @@
         <small v-if="!isLoading && !loadingError && configured" class="pull-right">
           <span class="total-funds-small">{{ this.Translation.t('userAccounts.total') }}</span>
           <i class="fa fa-usd"></i>
-            {{ this.sumOfBalances }}
+          {{ this.sumOfBalances }}
         </small>
       </h1>
       <hr>
@@ -23,101 +23,97 @@
                 <b-popover triggers="hover" :content="item.item.bazoaddress" class="popover-element">
                   <i class="fa fa-eye increase-focus"></i>
                 </b-popover>
-            </div>
-          </template>
-
-          <template slot="balance" scope="item">
-
-            <div class="nowrap" v-if="item.item.balance != 'unconfirmed'">
-              <b-popover triggers="hover" :content="Translation.t('userAccounts.confirmed')" class="popover-element">
-                <i class="fa fa-unlock-alt increase-focus"></i>
-              </b-popover>
-              <span >-</span>
-              {{ item.item.balance}}
-            </div>
-            <div class="nowrap" v-else>
-              <b-popover triggers="hover" :content="Translation.t('userAccounts.unconfirmed')" class="popover-element">
-                <i class="fa fa-lock increase-focus"></i>
-              </b-popover>
-            </div>
-
-          </template>
-          <template slot="isPrime" scope="item">
-            <div>
-              <div class="" v-if="item.item.isPrime">
-                <i class="fa fa-check" aria-hidden="true"></i>
               </div>
-              <div class="" v-else>
-                <b-button variant="secondary" size="sm" @click.prevent="makePrimary(item.item)">
-                  <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                </b-button>
+            </template>
+
+            <template slot="balance" scope="item">
+
+              <div class="nowrap" v-if="item.item.balance != 'unconfirmed'">
+                <b-popover triggers="hover" :content="Translation.t('userAccounts.confirmed')" class="popover-element">
+                  <i class="fa fa-unlock-alt increase-focus"></i>
+                </b-popover>
+                <span >-</span>
+                {{ item.item.balance}}
               </div>
-            </div>
-          </template>
-          <template slot="qr" scope="item">
-            <div>
-              <b-popover triggers="hover" :content="Translation.t('userAccounts.explorer')" class="popover-element">
-                <a href="#/auth/user/request" :href="'https://shrouded-dawn-45355.herokuapp.com/account/' + item.item.bazoaddress">
-                  <i class="fa fa-link" aria-hidden="true"></i>
-                </a>
-              </b-popover>
-            </div>
-          </template>
-          <template slot="actions" scope="item">
-            <div>
-  <div>
-    <b-button variant="danger" size="sm" @click.prevent="deleteAccount(item.item)">
-      <i class="fa fa-trash" aria-hidden="true"></i>
-    </b-button>
-    <b-popover triggers="hover" :content="Translation.t('userAccounts.deleteDescription')" class="popover-element">
-      <i class="fa fa-info-circle increase-focus"></i>
-    </b-popover>
-  </div>
-</div>
-</template>
-</b-table>
-</div>
-<div class="" v-else>
-  <b-alert v-html="Translation.t('userAccounts.notConfigured')" show variant="info"></b-alert>
-</div>
-<div class="reload-page" v-if="configured">
-  <div>{{this.lastBalanceUpdate}}</div>
+              <div class="nowrap" v-else>
+                <b-popover triggers="hover" :content="Translation.t('userAccounts.unconfirmed')" class="popover-element">
+                  <i class="fa fa-lock increase-focus"></i>
+                </b-popover>
+              </div>
 
-  <span class="btn btn-secondary" @click.prevent="triggerBalanceUpdate(false)">
-    <i class="fa fa-refresh"></i>
-    {{ this.Translation.t('userAccounts.reload') }}
-  </span>
-</div>
-<hr v-if="configured">
-<div class="col-12">
-  <form>
-    <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoaddress')">
-      <b-form-input v-model="bazoaddress" type="text"></b-form-input>
-    </b-form-fieldset>
-    <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoname')">
-      <b-form-input id="bazoname" v-model="bazoname" ></b-form-input>
-    </b-form-fieldset>
-    <div >
-      <label>
-        <b-form-checkbox v-model="isPrime">{{ Translation.t('userAccounts.makePrimary') }}
+            </template>
+            <template slot="isPrime" scope="item">
+              <div>
+                <div class="" v-if="item.item.isPrime">
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                </div>
+                <div class="" v-else>
+                  <b-button variant="secondary" size="sm" @click.prevent="makePrimary(item.item)">
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                  </b-button>
+                </div>
+              </div>
+            </template>
+            <template slot="qr" scope="item">
+              <div>
+                <b-popover triggers="hover" :content="Translation.t('userAccounts.explorer')" class="popover-element">
+                  <a href="#/auth/user/request" :href="'https://shrouded-dawn-45355.herokuapp.com/account/' + item.item.bazoaddress">
+                    <i class="fa fa-link" aria-hidden="true"></i>
+                  </a>
+                </b-popover>
+              </div>
+            </template>
+            <template slot="actions" scope="item">
+              <div>
+                <div>
+                  <b-button variant="danger" size="sm" @click.prevent="deleteAccount(item.item)">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                  </b-button>
+                  <b-popover triggers="hover" :content="Translation.t('userAccounts.deleteDescription')" class="popover-element">
+                    <i class="fa fa-info-circle increase-focus"></i>
+                  </b-popover>
+                </div>
+              </div>
+            </template>
+          </b-table>
+        </div>
+        <div class="" v-else>
+          <b-alert v-html="Translation.t('userAccounts.notConfigured')" show variant="info"></b-alert>
+        </div>
+        <div class="reload-page" v-if="configured">
+          <div>{{this.lastBalanceUpdate}}</div>
 
-        </b-form-checkbox>
-      </label>
+          <span class="btn btn-secondary" @click.prevent="triggerBalanceUpdate(false)">
+            <i class="fa fa-refresh"></i>
+            {{ this.Translation.t('userAccounts.reload') }}
+          </span>
+        </div>
+        <hr v-if="configured">
+        <div class="col-12">
+          <form>
+            <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoaddress')">
+              <b-form-input v-model="bazoaddress" type="text"></b-form-input>
+            </b-form-fieldset>
+            <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoname')">
+              <b-form-input id="bazoname" v-model="bazoname" ></b-form-input>
+            </b-form-fieldset>
+            <div >
+              <label>
+                <b-form-checkbox v-model="isPrime">{{ Translation.t('userAccounts.makePrimary') }}
+
+                </b-form-checkbox>
+              </label>
+            </div>
+            <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ Translation.t('userAccounts.save') }}</b-button>
+          </form>
+          <div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
+            <b-pagination size="md" :total-rows="this.tableRows.length" :per-page="perPage" v-model="currentPage" />
+          </div>
+        </div>
+
+      </div>
     </div>
-    <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ Translation.t('userAccounts.save') }}</b-button>
-  </form>
-  <div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
-    <b-pagination size="md" :total-rows="this.tableRows.length" :per-page="perPage" v-model="currentPage" />
   </div>
-</div>
-
-</div>
-</div>
-
-<!-- <user-transfer @private-key-decrypted="moveFunds" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :amount="convertSatoshiToBitcoin(currentTransfer.amountSatoshi)"></user-transfer>
-<user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true"></user-transfer>
-<user-transfer @private-key-decrypted="payout" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true" separate="payout"></user-transfer> -->
-</div>
 </div>
 </template>
 

@@ -1,5 +1,4 @@
 import qs from 'qs';
-// bazo:<address>[?amount=<amount>][?label=<label>][?message=<message>]
 
 const URIScheme = {
   decode: function decode (uri) {

@@ -4,9 +4,6 @@
 		<i class="fa fa-usd"></i>
 		<span class="value">{{ sumOfBalances }}</span>
 	</a>
-	<!-- <b-tooltip :content="balanceDateFormatted" :triggers="['click', 'hover']" :placement="tooltipPlacement" class="info " :offset="offset">
-		<i class="fa fa-info-circle increase-focus" :class="{ 'red': isOffline || oldBalance }"></i>
-	</b-tooltip> -->
 </div>
 </template>
 

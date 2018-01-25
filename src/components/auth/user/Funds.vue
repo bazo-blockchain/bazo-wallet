@@ -1,13 +1,7 @@
 <template>
   <div class="user-funds">
     <div class="compact">
-      <h1 class="display-4">{{ this.$t('funds.title') }}
-        <!-- <small v-if="!isLoading && !loadingError" class="pull-right">
-          <span class="total-funds-small">{{ this.$t('funds.total') }}</span>
-          <i class="fa fa-credit-card"></i>
-          {{totalBalance}}
-        </small> -->
-      </h1>
+      <h1 class="display-4">{{ this.$t('funds.title') }}</h1>
       <hr>
       <div class="pos-rel user-funds-content">
         <spinner :is-loading="isLoading"></spinner>
@@ -16,7 +10,6 @@
           <label v-if="configured">{{$t('funds.description')}}</label>
           <div v-if="configured"class="table-responsive">
             <b-table responsive small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
-
               <template slot="token" scope="item">
                 <div class="nowrap">
                   {{ item.item.token }}
@@ -37,7 +30,6 @@
                   {{ cutBazoAddress(item.item.target) }}
                 </div>
               </template>
-
           </b-table>
         </div>
         <div class="" v-else>
@@ -132,10 +124,6 @@
 
 </div>
 </div>
-<!-- <user-transfer @private-key-decrypted="moveFunds" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :amount="convertSatoshiToBitcoin(currentTransfer.amountSatoshi)"></user-transfer>
-<user-transfer @private-key-decrypted="createNewAddress" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true"></user-transfer>
-<user-transfer @private-key-decrypted="payout" :encrypted-private-key="currentTransfer.encryptedPrivateKey" :only-unlock="true" separate="payout"></user-transfer> -->
-
 </template>
 
 <script>
@@ -168,19 +156,7 @@ export default {
         name: '',
         showPrivateKey: false
       },
-      totalBalance: 0,
-      alerts: {
-        success: {
-          moveFunds: false,
-          createNewAddress: false,
-          payout: false
-        },
-        error: {
-          moveFunds: false,
-          createNewAddress: false,
-          payout: false
-        }
-      }
+      totalBalance: 0
     }
   },
   components: {

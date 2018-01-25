@@ -54,10 +54,6 @@
                           <i class="fa fa-qrcode"></i>
                           <span>QR Code</span>
                         </b-button>
-                        <!-- <b-button class="payment-variant-btn" :disabled="!bluetooth.BTSupported" variant="primary" @click.prevent="openBT">
-                          <i class="fa fa-bluetooth-b"></i>
-                          <span>Bluetooth</span>
-                        </b-button> -->
                         <b-button v-if="isAndroidDevice" class="payment-variant-btn" :disabled="!webshare.webshareSupported" variant="primary" @click.prevent="shareWithwebShare">
                           <i class="fa fa-share-alt"></i>
                           <span>Share</span>
@@ -71,10 +67,6 @@
                           <span>NFC</span>
                         </b-button>
                       </b-button-group>
-                      <!-- <a class="transfer-link" v-if="isMobileDevice && advancedOptionsShown" v-bind:href="whatsappLink" data-action="share/whatsapp/share">
-                        <i class="fa fa-whatsapp" aria-hidden="true"></i>
-                        <span>Whatsapp</span>
-                      </a> -->
                       <a class="transfer-link" v-if="isAndroidDevice && advancedOptionsShown" v-bind:href="nfcbridgeLink" >
                         <i class="fa fa-android" aria-hidden="true"></i>
                         <span>NFC Bridge</span>
@@ -86,39 +78,18 @@
                           <i class="fa fa-rss"></i>
                           {{ Translation.t('userRequest.NFCTitle') }}
                         </div>
-
                         <div class="nfc-display-wrapper" @click.stop>
                           <div class="nfc-notice">{{ Translation.t('userRequest.NFCNotice') }}
-
                           </div>
                           <div class="nfc-status-wrapper">
+                            <!-- This icon is part of the Google Material icons (google/material-design-icons) -->
                             <svg :class="{'nfc-watch-active': nfc.NFCSending, 'nfc-watch-success': nfc.NFCSuccess}" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM18 6h-5c-1.1 0-2 .9-2 2v2.28c-.6.35-1 .98-1 1.72 0 1.1.9 2 2 2s2-.9 2-2c0-.74-.4-1.38-1-1.72V8h3v8H8V8h2V6H6v12h12V6z"/></svg>
-
                           </div>
                           <div class="nfc-status">
                             {{ nfc.NFCStatus }}
                           </div>
                         </div>
                       </div>
-                      <div class="bt-screen" :class="{'shown': bluetooth.BTShown}"
-                      @click="closeBT">
-                      <div class="close" @click="closeBT">&times;</div>
-                      <div class="bt-title" @click.stop>
-                        <i class="fa fa-bluetooth-b"></i>
-                        {{ Translation.t('userRequest.BTTitle') }}
-                      </div>
-
-                      <div class="bt-notice">{{ Translation.t('userRequest.BTNotice') }}
-                        <div class="bt-status-wrapper">
-
-                        </div>
-                        <div class="bt-status">
-                          {{ bluetooth.BTStatus }}
-                        </div>
-                      </div>
-                      <div class="bt-display" @click.stop>
-                      </div>
-                    </div>
 
                     <div class="camera-screen" :class="{'shown':cameraShown}" @click="hideQr">
                       <div class="close" @click="hideQr">&times;</div>
@@ -150,7 +121,6 @@
 <script>
 import UtilService from '@/services/UtilService';
 import ClipBoardService from '@/services/ClipBoardService';
-// import HttpService from '@/services/HttpService';
 import Spinner from '@/components/Spinner';
 import Translation from '@/config/Translation';
 import QrCode from '@/components/QrCode';
@@ -170,12 +140,6 @@ export default {
         NFCSuccess: false,
         NFCShown: false,
         NFCSupported: false
-      },
-      bluetooth: {
-        BTStatus: 'not watching..',
-        BTSupported: false,
-        BTShown: false,
-        BTSuccess: false
       },
       webshare: {
         webshareSupported: false
@@ -207,7 +171,7 @@ export default {
       return this.bazoAccounts.length > 1;
     },
     advancedOptionsShown: function () {
-      return this.$store.getters.showAdvancedOptions === 'shown'
+      return this.$store.getters.showAdvancedOptions === 'shown';
     },
     validPOSId: function () {
       if (this.paymentInfo.posid !== '-' && this.paymentInfo.posid) {
@@ -225,7 +189,7 @@ export default {
       let target = this.paymentInfo.selectedAccount || this.defaultBazoAccount;
       const formatBazoAddress = (address) => {
         if (address.length > 10) {
-          return `${address.slice(0, 5)}..${address.slice(-5)}`
+          return `${address.slice(0, 5)}..${address.slice(-5)}`;
         }
       };
       return {
@@ -250,7 +214,9 @@ export default {
 	},
 	methods: {
 		loadInitialData: function () {
-      this.isLoading = false
+      // This method can be used to perform requests at the beginning of this page's lifecycle.
+      // Make sure to set isLoading to false, once you're done.
+      this.isLoading = false;
 		},
     checkPlatform: function () {
       this.isMobileDevice = (this.onIOS() || this.onAndroid());
@@ -261,10 +227,9 @@ export default {
       var navAgent = window.navigator.userAgent;
       if (
         (/^((?!chrome).)*safari/i).test(navAgent) &&
-        // ^ Fancy safari detection thanks to: https://stackoverflow.com/a/23522755
+        // Fancy safari detection thanks to: https://stackoverflow.com/a/23522755
         !(/^((?!chrome).)*[0-9][0-9](\.[0-9][0-9]?)?\ssafari/i)
         .test(navAgent)
-        // ^ Even fancier Safari < 10 detection thanks to regex.  :^)
       ) {
         oldSafari = true;
       }
@@ -301,37 +266,9 @@ export default {
         title: this.humanReadablePaymentInformation.title,
         text: this.humanReadablePaymentInformation.description,
         url: this.encodedPaymentInformation
-      }).then((res) => {
-      }).catch((err) => {
-        if (err.code === 20) {
-          // this.webshare.webshareSupported = false;
-          // this.$toasted.global.warn(Translation.t('userRequest.websharenotsupported'));
-        }
       })
-    },
-    checkBTSupport: function () {
-      if ('bluetooth' in navigator) {
-        this.bluetooth.BTSupported = true;
-        // TODO check if bluetooth can actually be adressed
-        this.bluetooth.BTSupported = false;
-      } else {
-        this.bluetooth.BTSupported = false;
-      }
-    },
-    openBT: function () {
-      if (this.bluetooth.BTSupported) {
-        this.bluetooth.BTShown = true;
-        this.startWatchingBT();
-      } else {
-        this.bluetooth.BTShown = false;
-        this.$toasted.global.warn(Translation.t('userRequest.BTNotSupported'));
-      }
-    },
-    closeBT: function () {
-      this.bluetooth.BTShown = false;
-    },
-    startWatchingBT: function () {
-
+      .catch(() => {
+      })
     },
     checkNFCSupport: function () {
       if ('nfc' in navigator) {
@@ -434,7 +371,6 @@ export default {
 		this.isLoading = true;
 		this.loadInitialData();
     this.checkNFCSupport();
-    this.checkBTSupport();
     this.checkwebShareSupport();
     this.checkPlatform();
     this.setupChevalJSFork();
@@ -472,9 +408,6 @@ export default {
 	.fa.fa-info-circle {
 		cursor: help;
 	}
-  // .payment-variant-btn {
-  //   width: calc(100% / 3 - 3px);
-  // }
   .transfer-link{
     color: $green-color;
   }

@@ -24,11 +24,6 @@
             </div>
 					</router-link>
 				</div>
-				<!-- <div class="button">
-					<a @click="signout" class="logout increase-focus" :title="$t('header.logout')">
-						<i class="fa fa-sign-out"></i>
-					</a>
-				</div> -->
 			</div>
 
 			<!-- buttons are hidden on small screens -->

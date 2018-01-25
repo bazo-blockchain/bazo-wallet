@@ -6,11 +6,8 @@
       <hr>
       <div class="pos-rel user-settings-content">
         <spinner :is-loading="isLoading"></spinner>
-
         <div class="box-wrapper" v-if="!isLoading && !loadingError && this.configured">
           <div class="box">
-            <!-- <div class="main-title display-7">{{ this.$t('settings.title') }}</div>
-            <hr> -->
             <div class="col-md-12">
               <b-form-checkbox
               v-model="showAdvancedOptions"
@@ -35,7 +32,6 @@
             </b-form-fieldset>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -54,7 +50,7 @@ export default {
       loadingError: false,
       showAdvancedOptions: 'hidden',
       useCustomHost: 'false',
-      customURL: 'http://somehost.com:8001/'
+      customURL: 'https://somehost.com:8001/'
     }
   },
   components: {

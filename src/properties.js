@@ -10,17 +10,14 @@ function getProperties (env) {
 		};
 	} else if (env === 'TEST') {
 		return {
-			ENVIRONMENT: env,
-			HOST: 'https://bitcoin2-test.csg.uzh.ch/coinblesk-server'
-		};
+			ENVIRONMENT: env
+    };
 	} else if (env === 'PROD') {
 		return {
-			ENVIRONMENT: env,
-			// TODO enter a correct host here:
-			HOST: 'TBD'
+			ENVIRONMENT: env
 		};
 	} else {
-		throw new Error('Coinblesk Error: An invalid environment is set. Set a correct one in coinblesk-frontend/src/properties.js');
+		throw new Error('OySy Error: An invalid environment is set. Set a correct one in bazo-wallet/src/properties.js');
 	}
 }
 
