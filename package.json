@@ -2,7 +2,7 @@
   "name": "bazo-frontend",
   "version": "1.0.0",
   "description": "The web front-end of Bazo",
-  "author": "Coinblesk <bocek@ifi.uzh.ch>",
+  "author": "OySy <bocek@ifi.uzh.ch>",
   "private": false,
   "scripts": {
     "dev": "node build/dev-server.js",
@@ -26,9 +26,6 @@
     "bootstrap": "4.0.0-alpha.6",
     "bootstrap-vue": "^0.16.1",
     "buffer": "^5.0.6",
-    "chartist": "^0.11.0",
-    "coinblesk-frontend-bitcoinjs": "coinblesk/coinblesk-frontend-bitcoinjs",
-    "coinblesk-frontend-instascan": "coinblesk/coinblesk-frontend-instascan",
     "ecdsa": "^0.7.0",
     "elliptic": "^6.4.0",
     "font-awesome": "^4.7.0",
