@@ -28,7 +28,7 @@ module.exports = {
   module: {
     // blocking the parsing is necessary, because there are unnecessary dependencies in Instascan.
     // these dependencies would be resolved by webpack and this leads to a non-functioning Instascan.
-    noParse: /coinblesk-frontend-instascan/,
+    noParse: /instascan.min.js/,
     rules: [
       {
         test: /\.(js|vue)$/,
