@@ -41,7 +41,7 @@ const store = new Vuex.Store({
     settings: {
       showAdvancedOptions: 'hidden',
       useCustomHost: 'false',
-      customURL: 'http://192.41.136.199:8001'
+      customURL: 'https://csg.uzh.ch/bazo/api'
     },
     surpriseRequests: [],
 		offline: !(typeof window.navigator.onLine === 'undefined' ||
