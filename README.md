@@ -14,6 +14,10 @@
 
          yarn install
 
+Some operating systems, like Ubuntu or Debian may require further packages to be installed through a package manager:
+```
+apt-get install -y bzip2
+```
 ## Development
 
 Serve with hot reload at localhost:8080
