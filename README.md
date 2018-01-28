@@ -5,7 +5,7 @@
 
 ## Setup
 
-  1. Install Node.js & NPM
+  1. Install Node.js & NPM. Node.js in version 7.10.1 and 6.11.4 worked fine for the build process.
   2. Install Yarn
 
          npm install -g yarn
