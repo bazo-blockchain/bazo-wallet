@@ -1,16 +1,12 @@
 {
-  "name": "bazo-frontend",
+  "name": "bazo-wallet",
   "version": "1.0.0",
   "description": "The web front-end of Bazo",
   "author": "OySy <bocek@ifi.uzh.ch>",
   "private": false,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "start": "node build/dev-server.js",
     "build": "node build/build.js",
-    "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
-    "test": "./node_modules/.bin/jest",
-    "lint": "eslint --ext .js,.vue src test/unit/specs",
     "demo-deploy": "npm run build; surge -d 'https://oysy.surge.sh' -p 'dist'",
     "demo-deploy-http": "npm run build; surge -d 'http://bazowallet.surge.sh' -p 'dist'"
   },
