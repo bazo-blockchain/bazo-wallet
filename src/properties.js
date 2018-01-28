@@ -20,13 +20,3 @@ function getProperties (env) {
 		throw new Error('OySy Error: An invalid environment is set. Set a correct one in bazo-wallet/src/properties.js');
 	}
 }
-
-function getCurrentHost () {
-	let protocol = window.location.protocol;
-	if (/[^:]$/.test(protocol)) {
-		protocol += ':';
-	}
-	let hostname = window.location.hostname;
-
-	return protocol + '//' + hostname;
-}
