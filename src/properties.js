@@ -6,7 +6,7 @@ function getProperties (env) {
 	if (env === 'DEV') {
 		return {
 			ENVIRONMENT: env,
-			HOST: getCurrentHost() + ':8001'
+			HOST: 'https://csg.uzh.ch/bazo/api'
 		};
 	} else if (env === 'TEST') {
 		return {
