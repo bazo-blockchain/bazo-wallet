@@ -311,13 +311,19 @@ ${importLink}`
         target: this.paymentInfo.selectedAccount || this.defaultBazoAccount
       })
       .then((res) => {
-        that.$store.dispatch('addAccountRequest', {
-          ticketid: 'ID-11111',
-          token: res.data.json.token,
-          target: res.data.json.target,
-          amount: res.data.json.amount,
-          state: res.data.json.state || 'unconfirmed'
-        })
+        if (res.data.response.status === 'OK') {
+          that.$store.dispatch('addAccountRequest', {
+            ticketid: res.data.response.id,
+            target: res.data.response.public_key,
+            amount: res.data.response.amount,
+            state: 'unconfirmed'
+          })
+        } else {
+          that.$toasted.global.error(that.$t('funds.error.moveFunds'));
+        }
+      })
+      .catch(() => {
+        that.$toasted.global.error(that.$t('funds.error.moveFunds'));
       })
     }
   },

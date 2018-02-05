@@ -6,15 +6,20 @@ function getProperties (env) {
 	if (env === 'DEV') {
 		return {
 			ENVIRONMENT: env,
-			HOST: 'https://csg.uzh.ch/bazo/api'
+			HOST: 'https://csg.uzh.ch/bazo/api',
+      CARMA_HOST: 'https://carma-poc.autoidlabs.ch/',
+      // TODO: Set this app ID in production environments.
+      CARM_APP_ID: '4f8da976-3eb8-4973-92a6-097c2c3ddb9e'
 		};
 	} else if (env === 'TEST') {
 		return {
-			ENVIRONMENT: env
+			ENVIRONMENT: env,
+      HOST: 'https://csg.uzh.ch/bazo/api'
     };
 	} else if (env === 'PROD') {
 		return {
-			ENVIRONMENT: env
+			ENVIRONMENT: env,
+      HOST: 'https://csg.uzh.ch/bazo/api'
 		};
 	} else {
 		throw new Error('OySy Error: An invalid environment is set. Set a correct one in bazo-wallet/src/properties.js');

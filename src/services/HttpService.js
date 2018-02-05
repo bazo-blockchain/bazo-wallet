@@ -12,15 +12,12 @@ const HttpService = {
     })
   },
   surpriseFunding: function (options) {
-    /*
-    * This is just a placeholder method, replace with actual API calls, once the
-    * backend is prepared!
-    */
-    let host = 'https://httpbin.org/post';
+    let host = properties.CARMA_HOST || 'https://httpbin.org/post';
     if (options.target && options.target.bazoaddress) {
-      return axios.post(host, {
+      return axios.put(`${host}bazo/request_funding`, {
+        app_id: properties.CARM_APP_ID,
         amount: options.amount,
-        target: options.target.bazoaddress,
+        public_key: options.target.bazoaddress,
         token: options.surpriseToken
       })
     }
