@@ -110,7 +110,7 @@
               </label>
               <div class="pos-rel">
                 <b-input-group-button class="accountSelectionWrap">
-                  <b-dropdown :disabled="!multipleAccountsConfigured" id="account-selection" :text="formatBazoAccount(selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default">
+                  <b-dropdown dropup :disabled="!multipleAccountsConfigured" id="account-selection" :text="formatBazoAccount(selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default">
                     <b-dropdown-item v-for="bazoAccount in bazoAccounts" @click="selectedAccount = bazoAccount" :key="bazoAccount">
                       <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
                       <i class="fa fa-check" v-if="bazoAccount === selectedAccount || (selectedAccount === '' && bazoAccount === defaultBazoAccount )"></i>

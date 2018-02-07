@@ -65,7 +65,7 @@
             <label class="col-form-label">{{ $t('funds.target') }}</label>
           </div>
           <b-button-group  class="btn-group" right>
-            <b-dropdown v-if="configured" left :text="formattedAccount" :disabled="!multipleAccountsConfigured" >
+            <b-dropdown dropup v-if="configured" left :text="formattedAccount" :disabled="!multipleAccountsConfigured" >
               <b-dropdown-item  v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
                 <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
                 <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
