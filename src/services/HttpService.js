@@ -11,6 +11,15 @@ const HttpService = {
     return Vue.http.get('https://httpbin.org/ip', {
     })
   },
+  queryFundingRequestStates: function (ids) {
+    let host = properties.CARMA_HOST || 'https://httpbin.org/post';
+    if (ids) {
+      return Promise.all(ids.map(ids => Vue.http.get(`${host}bazo/request_status?id=${ids}&app_id=${properties.CARM_APP_ID}`, {
+        method: 'GET',
+        headers: 'Accept: application/json'
+      })))
+    }
+  },
   surpriseFunding: function (options) {
     let host = properties.CARMA_HOST || 'https://httpbin.org/post';
     if (options.target && options.target.bazoaddress) {

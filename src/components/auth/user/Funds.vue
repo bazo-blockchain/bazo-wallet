@@ -245,6 +245,9 @@ ${importLink}`
         this.loadingError = false;
       })
     },
+    queryFundingStates: function () {
+      this.$store.dispatch('updateFundingStates', {silent: false})
+    },
     resetAccountGeneration: function () {
       this.accountGeneration = {
         privateKey: '',

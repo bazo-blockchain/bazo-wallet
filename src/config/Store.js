@@ -167,6 +167,13 @@ const store = new Vuex.Store({
       // reactivity system works as expected
       accountToUpdateBalance = {...accountToUpdateBalance, balance: accountData.balance}
     },
+    setFundingRequestState: function (state, opts) {
+      state.surpriseRequests.forEach((funding) => {
+        if (funding.ticketid === opts.ticketid) {
+          funding.state = opts.newstate
+        }
+      })
+    },
     updateTimeStamp: function (state) {
       state.config.updatedBalances = new Date();
     },
@@ -179,6 +186,40 @@ const store = new Vuex.Store({
 		initialize: function (context) {
 
 		},
+    updateFundingStates: function (context, options) {
+      let ids = context.state.surpriseRequests.map(ticket => ticket.ticketid);
+      if (ids.length > 0) {
+        HttpService.queryFundingRequestStates(ids, options.silent)
+        .then((responses) => {
+          window.dbg = responses
+          // TODO: Save the updated values
+          // for (var i = 0; i < context.state.surpriseRequests.length; i++) {
+          //   if (context.state.surpriseRequests[i].ticketid === responses[0]) {
+          //
+          //   }
+          // }
+        })
+        .catch(() => {
+          // TODO move this to the success handler and remove pseudoanswer!
+          let pseudoanswer = {
+            'status': 'OK',
+            'response': {
+              'id': 2,
+              'user_id': 11,
+              'public_key': context.state.config.accounts[0].bazoaddress,
+              'amount': '-304.39',
+              'status': 'processed',
+              'created_at': '2018-01-19T15:15:30.000+01:00',
+              'updated_at': '2018-01-19T15:15:30.000+01:00'
+            }
+          }
+          context.commit('setFundingRequestState', {
+            ticketid: ids[0],
+            newstate: pseudoanswer.response.status
+          })
+        })
+      }
+    },
 		updateUserBalance: function (context, options) {
       let addresses = context.state.config.accounts.map(account => account.bazoaddress);
       if (addresses.length > 0) {
