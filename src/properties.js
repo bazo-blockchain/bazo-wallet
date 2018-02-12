@@ -9,7 +9,7 @@ function getProperties (env) {
 			HOST: 'https://csg.uzh.ch/bazo/api',
       CARMA_HOST: 'https://carma-poc.autoidlabs.ch/',
       // TODO: Set this app ID in production environments.
-      CARM_APP_ID: '4f8da976-3eb8-4973-92a6-097c2c3ddb9e'
+      CARM_APP_ID: 'a63c1f72-8198-4a59-85be-67a96f87ab41'
 		};
 	} else if (env === 'TEST') {
 		return {
