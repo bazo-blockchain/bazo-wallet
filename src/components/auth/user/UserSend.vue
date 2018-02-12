@@ -118,7 +118,6 @@
                   </b-dropdown>
                 </b-input-group-button slot="right">
               </div>
-
             </b-form-fieldset>
           </div>
           <div class="col-12">

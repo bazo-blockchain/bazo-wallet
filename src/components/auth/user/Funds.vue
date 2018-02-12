@@ -311,12 +311,13 @@ ${importLink}`
         target: this.paymentInfo.selectedAccount || this.defaultBazoAccount
       })
       .then((res) => {
-        if (res.data.response.status === 'OK') {
+        if (res.data.status === 'OK') {
           that.$store.dispatch('addAccountRequest', {
-            ticketid: res.data.response.id,
+            // TODO remove the string representation of null once its implementated
+            ticketid: '' + res.data.response.id,
             target: res.data.response.public_key,
             amount: res.data.response.amount,
-            state: 'unconfirmed'
+            state: res.data.response.status || 'unconfirmed'
           })
         } else {
           that.$toasted.global.error(that.$t('funds.error.moveFunds'));
