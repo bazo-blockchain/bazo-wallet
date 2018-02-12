@@ -36,7 +36,7 @@
           <b-alert v-html="$t('funds.notConfigured')" show variant="info"></b-alert>
         </div>
         <div class="reload-page" v-if="configured">
-          <span class="btn btn-secondary" @click.prevent="">
+          <span class="btn btn-secondary" @click.prevent="queryFundingStates">
             <i class="fa fa-refresh"></i>
             {{ this.$t('funds.reload') }}
           </span>
@@ -166,10 +166,6 @@ export default {
   computed: {
     fields () {
       return {
-        token: {
-          label: this.$t('funds.fields.surpriseid'),
-          sortable: false
-        },
         amount: {
           label: this.$t('funds.fields.balance'),
           sortable: true
@@ -346,7 +342,6 @@ ${importLink}`
         "amount": "Amount",
         "reload": "Reload",
         "fields": {
-          "surpriseid": "Surprise Token",
           "balance": "Volume",
           "target": "Target Account (OySy)",
           "ticketid": "Ticket ID",
@@ -400,7 +395,6 @@ ${importLink}`
         "reload": "Aktualisieren",
         "notConfigured": "Sie haben momentan kein OySy Konto im System hinterlegt. Sie können entweder hier ein neues Konto generieren und registrieren, oder ein bestehendes auf der <i>Konti</i> Seite hinterlegen.",
         "fields": {
-          "surpriseid": "Surprise Token",
           "ticketid": "Ticket Nummer",
           "balance": "Transaktionsvolumen",
           "target": "Zielkonto (OySy)",
