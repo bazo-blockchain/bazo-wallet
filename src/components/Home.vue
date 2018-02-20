@@ -15,16 +15,22 @@
         DER OYSY MARKTPLATZ
         <hr >
       </div>
-      <b-button block class="link-btn">
-        <i class="oysyicon">a</i>
-        <span>Perlen versenden</span>
-      </b-button>
+      <router-link :to="{ name: 'user-send' }">
+        <b-button block class="link-btn">
+          <i class="oysyicon">a</i>
+          <span>Perlen versenden</span>
+        </b-button>
+      </router-link>
+    </div>
+    <router-link :to="{ name: 'user-request' }">
       <b-button block class="link-btn">
         <i class="oysyicon">a</i>
         <span>Perlen anfordern</span>
       </b-button>
-    </div>
+    </router-link>
+
   </div>
+</div>
 </template>
 
 <script>
