@@ -12,16 +12,16 @@
 
       <div class="subtitle" v-if="configured">{{ $t('sideBar.subtitle.bazo').toUpperCase() }}</div>
       <router-link class="entry" :to="{ name: 'home' }" :class="dynamicLinkClasses('home')" @click.native="closeMenu">
-        <i style="font-family: oysy;" class="oysyicon">c</i>
+        <i class="oysyicon">c</i>
         <span class="text">{{ $t('sideBar.home') }}</span>
       </router-link>
       <div v-if="configured">
         <router-link class="entry" :to="{ name: 'user-send' }" :class="dynamicLinkClasses('user-send')" @click.native="closeMenu">
-          <i style="font-family: oysy;" class="oysyicon">a</i>
+          <i class="oysyicon">a</i>
           <span class="text">{{ $t('sideBar.userSend') }}</span>
         </router-link>
         <router-link class="entry" :to="{ name: 'user-request' }" :class="dynamicLinkClasses('user-request')" @click.native="closeMenu">
-          <i style="font-family: oysy;" class="oysyicon">b</i>
+          <i class="oysyicon">b</i>
           <span class="text">{{ $t('sideBar.userRequest') }}</span>
         </router-link>
       </div>
@@ -31,7 +31,7 @@
 
       <div>
         <router-link class="entry" :to="{ name: 'accounts' }" :class="dynamicLinkClasses('accounts')" @click.native="closeMenu">
-          <i style="font-family: oysy;" class="oysyicon">f</i>
+          <i class="oysyicon">f</i>
           <span class="text">{{ $t('sideBar.userAccounts') }}</span>
         </router-link>
         <router-link  class="entry" :to="{ name: 'funds' }" :class="dynamicLinkClasses('funds')" @click.native="closeMenu">
@@ -158,6 +158,9 @@ $language-picker-height-offline: 8.9em;
 	// 	max-width: 90%;
 	// 	height: 3.5em;
 	// }
+}
+.oysyicon {
+  font-family: oysy;
 }
 .selected > .oysyicon {
   color: $purple-color;
