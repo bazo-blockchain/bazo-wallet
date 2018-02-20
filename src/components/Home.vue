@@ -10,7 +10,7 @@
       </div>
       <b-button block class="paynow-btn">Jetzt bezahlen</b-button>
     </div>
-    <div class="col-12">
+    <div class="col-12" style="margin-bottom:20px;">
       <div class="paynow-title">
         DER OYSY MARKTPLATZ
         <hr >
@@ -74,6 +74,7 @@ export default {
   height: 100%;
   background: #262626;
   width: 100%;
+  overflow: scroll;
 }
 
 .mainicon {
