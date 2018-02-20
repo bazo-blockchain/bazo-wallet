@@ -341,3 +341,96 @@
   src: local('Roboto Mono'), local('RobotoMono-Regular'), url('../assets/fonts/hMqPNLsu_dywMa4C_DEpY44P5ICox8Kq3LLUNMylGO4.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
 }
+
+
+@charset "UTF-8";
+
+@font-face {
+  font-family: "oysy";
+  src:url("../assets/fonts/oysy-iconset-font.eot");
+  src:url("../assets/fonts/oysy-iconset-font.eot?#iefix") format("embedded-opentype"),
+    url("../assets/fonts/oysy-iconset-font.woff") format("woff"),
+    url("../assets/fonts/oysy-iconset-font.ttf") format("truetype"),
+    url("../assets/fonts/oysy-iconset-font.svg#oysy") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "oysy" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "oysy" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-oysy-perlen-versenden:before {
+  content: "\61";
+}
+.icon-oysy-perlen-anfordern:before {
+  content: "\62";
+}
+.icon-oysy-pay:before {
+  content: "\63";
+}
+.icon-oysy-bewegungen:before {
+  content: "\64";
+}
+.icon-oysy-profil:before {
+  content: "\65";
+}
+.icon-oysy-icon-small:before {
+  content: "\66";
+}
+.icon-oysy-qr-code:before {
+  content: "\67";
+}
+.icon-oysy-bluetooth:before {
+  content: "\68";
+}
+.icon-oysy-haken:before {
+  content: "\69";
+}
+.icon-oysy-nfc:before {
+  content: "\6a";
+}
+.icon-oysy-plus:before {
+  content: "\6b";
+}
+.icon-oysy-close:before {
+  content: "\6c";
+}
+.icon-oysy-arrow-left:before {
+  content: "\6d";
+}
+.icon-oysy-arrow-right:before {
+  content: "\6e";
+}
+.icon-oysy-arrow-down:before {
+  content: "\6f";
+}
+.icon-oysy-arrow-up:before {
+  content: "\70";
+}
+.icon-oysy-qr-frame-big:before {
+  content: "\71";
+}
