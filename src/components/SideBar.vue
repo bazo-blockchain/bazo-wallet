@@ -325,7 +325,7 @@ $language-picker-height-offline: 8.9em;
 	"en": {
 		"sideBar": {
 			"subtitle": {
-				"bazo": "Payments",
+				"bazo": "The Oyster System",
 				"administration": "Administration",
 				"accountManagement":"Account Management"
 			},
@@ -341,7 +341,7 @@ $language-picker-height-offline: 8.9em;
 	"de": {
 		"sideBar": {
 			"subtitle": {
-				"bazo": "Zahlungen",
+				"bazo": "Das Oyster System",
 				"administration": "Administration",
 				"accountManagement": "Kontoverwaltung"
 			},
