@@ -8,7 +8,7 @@
 				<div class="button" v-if="configured">
 					<user-balance></user-balance>
 				</div>
-				<div class="button">
+				<!-- <div class="button">
 					<router-link class="profile" :to="{ name: 'accounts' }" :class="offlineCheck('profile')">
             <div v-if="mainBazoAccount">
               <img class="user-image" :alt="mainBazoAccount.bazoname" src="../assets/user.svg">
@@ -23,7 +23,7 @@
   						</span>
             </div>
 					</router-link>
-				</div>
+				</div> -->
 			</div>
 
 			<!-- buttons are hidden on small screens -->
