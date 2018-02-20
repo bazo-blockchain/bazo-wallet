@@ -87,7 +87,7 @@ const store = new Vuex.Store({
       for (var i = 0; i < state.config.accounts.length; i++) {
         let candidate = state.config.accounts[i].balance;
         if (!isNaN(candidate)) {
-          sum += candidate
+          sum += Number(candidate)
         }
       }
       return sum;
