@@ -1,25 +1,27 @@
 <template>
   <div class="side-bar">
     <div class="logo-container">
-      <img class="logo" src="../assets/OySy.png" alt="OySy" :to="{ 'name': 'home' }">
+      <!-- <img class="logo" src="../assets/OySy.png" alt="OySy"> -->
+      <div class="navigation-title">
+      NAVIGATION
+      </div>
     </div>
     <div class="entries" :class="{ 'offline-mode': isOffline }">
 
+
+
+      <div class="subtitle" v-if="configured">{{ $t('sideBar.subtitle.bazo').toUpperCase() }}</div>
       <router-link class="entry" :to="{ name: 'home' }" :class="dynamicLinkClasses('home')" @click.native="closeMenu">
-        <i class="fa fa-home"></i>
+        <i style="font-family: oysy;" class="oysyicon">c</i>
         <span class="text">{{ $t('sideBar.home') }}</span>
       </router-link>
-
-      <div class="separator" v-if="configured"></div>
-      <div class="subtitle" v-if="configured">{{ $t('sideBar.subtitle.bazo').toUpperCase() }}</div>
-
       <div v-if="configured">
         <router-link class="entry" :to="{ name: 'user-send' }" :class="dynamicLinkClasses('user-send')" @click.native="closeMenu">
-          <i class="fa fa-arrow-circle-right"></i>
+          <i style="font-family: oysy;" class="oysyicon">a</i>
           <span class="text">{{ $t('sideBar.userSend') }}</span>
         </router-link>
         <router-link class="entry" :to="{ name: 'user-request' }" :class="dynamicLinkClasses('user-request')" @click.native="closeMenu">
-          <i class="fa fa-arrow-circle-left"></i>
+          <i style="font-family: oysy;" class="oysyicon">b</i>
           <span class="text">{{ $t('sideBar.userRequest') }}</span>
         </router-link>
       </div>
@@ -29,7 +31,7 @@
 
       <div>
         <router-link class="entry" :to="{ name: 'accounts' }" :class="dynamicLinkClasses('accounts')" @click.native="closeMenu">
-          <i class="fa fa-usd"></i>
+          <i style="font-family: oysy;" class="oysyicon">f</i>
           <span class="text">{{ $t('sideBar.userAccounts') }}</span>
         </router-link>
         <router-link  class="entry" :to="{ name: 'funds' }" :class="dynamicLinkClasses('funds')" @click.native="closeMenu">
@@ -149,11 +151,16 @@ $language-picker-height-offline: 8.9em;
 	margin-top: 2em;
 	margin-bottom: 1.2em;
 	text-align: center;
+  height: 80px;
+  font-weight: bold;
 
-	.logo {
-		max-width: 90%;
-		height: 3.5em;
-	}
+	// .logo {
+	// 	max-width: 90%;
+	// 	height: 3.5em;
+	// }
+}
+.selected > .oysyicon {
+  color: $purple-color;
 }
 .entries {
 	overflow-y: auto;
@@ -180,14 +187,16 @@ $language-picker-height-offline: 8.9em;
 		position: relative;
 		cursor: pointer;
 		display: block;
-		color: #e5e5e5;
+		color: white;
 		font-weight: 500;
 		text-decoration: none;
 		transition: 0.2s ease background-color;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-color: black;
 		&:hover {
-			background-color: #454545;
+			// background-color: #454545;
 		}
-
 		&.selected {
 			background: $accent-color;
 			&:after {
@@ -196,16 +205,27 @@ $language-picker-height-offline: 8.9em;
 			.fa {
 				opacity: 1;
 			}
+
 			.text {
 				font-weight: 500;
 			}
 		}
 
+    i {
+      font-size: 30px;
+      font-style: normal;
+      position: absolute;
+      top: 0.1em;
+      left: 0.4em;
+    }
+
 		.fa {
+      font-style: normal;
 			position: absolute;
-			top: 0.8em;
-			left: 1.3em;
+      top: 0.4em;
+      left: 0.4em;
 			opacity: 0.6;
+
 
 			&.fa-line-chart {
 				/* line chart icon is larger then the others */
@@ -215,21 +235,28 @@ $language-picker-height-offline: 8.9em;
 		}
 		.text {
 			display: block;
-			font-weight: 300;
+			// font-weight: 300;
 			padding: 0.6em 0.65em 0.6em 3.2em;
 		}
 
 	}
 	.separator {
-		height: 0.7em;
-		border-top: 1px solid #515151;
+		height: 2em;
+		border-top: 1px solid transparent;
 		margin-top: 0.7em;
 	}
 	.subtitle {
 		margin-top: 1em;
-		margin-bottom: 0.7em;
+		// margin-bottom: 0.7em;
 		font-size: 0.8em;
-		margin-left: 0.8em;
+    font-weight: 600;
+    letter-spacing: 1px;
+		padding-left: 0.8em;
+    padding-bottom: 0.5em;
+    color: #000000;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-color: black;
 	}
 }
 .language-picker {
@@ -253,7 +280,7 @@ $language-picker-height-offline: 8.9em;
 
 		&.selected {
 			&, &:hover {
-				background: #626262;
+				background: black;
 			}
 		}
 		&:hover {
