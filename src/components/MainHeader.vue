@@ -1,7 +1,7 @@
 <template>
 	<div class="header-bar-wrapper" v-if="shown" :class="{ 'transparent': transparent }">
 		<div class="header-bar">
-			<img class="logo" src="../assets/OySy.png" alt="Coinblesk">
+			<!-- <img class="logo" src="../assets/OySy.png" alt="Coinblesk"> -->
 
 			<!-- buttons are hidden on small screens -->
 			<div class="buttons pull-right" v-if="configured">
