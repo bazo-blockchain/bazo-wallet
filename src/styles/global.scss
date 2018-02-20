@@ -7,7 +7,7 @@ body {
 	padding: 0;
 	height: 100%;
 	width: 100%;
-	font-family: 'Roboto', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+	font-family: 'Roboto', sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -246,7 +246,7 @@ div.form-error {
 	display: inline-block;
 	white-space: nowrap;
 	overflow: hidden;
-	font-family: 'Roboto Mono', monospace;
+	font-family: 'Roboto', sans-serif;
 }
 .short-key-extended {
 	width: 9em;
@@ -255,7 +255,7 @@ div.form-error {
 	width: auto;
 }
 .mono {
-	font-family: "Roboto Mono", Consolas, monospace;
+	font-family: "Roboto", sans-serif;
 }
 
 .compact {

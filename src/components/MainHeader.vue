@@ -130,7 +130,7 @@ export default {
 		height: 0;
 		.header-bar {
 			text-shadow: 0 0 5px rgba(0, 0, 0, 0.58);
-			height: 70px;
+			height: 50px;
 			font-weight: 500;
 			padding-right: 10px;
 			background-color: #1a1a1a;
