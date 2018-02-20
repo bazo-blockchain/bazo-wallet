@@ -193,7 +193,7 @@ export default {
 			font-size: 25px;
 			width: 2em;
 			height: 2em;
-			color: white;
+			color: $purple-color;
 			margin-left: 0;
 			background: rgba(0,0,0,0.4);
 			cursor: pointer;

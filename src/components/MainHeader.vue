@@ -205,7 +205,7 @@ export default {
 					position: relative;
 					top: 50%;
 					transform: translateY(-50%);
-					color: #555;
+					color: white;
 					cursor: pointer;
 					text-decoration: none;
 				}
