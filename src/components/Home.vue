@@ -1,74 +1,121 @@
 <template>
-<div class="home">
-	<div class="main-photo text-center">
-		<div class="logos">
-			<a href="http://www.ifi.uzh.ch" target="_blank" rel="noopener" title="Institute of Informatics, University of Zurich"><img src="../assets/about_ifi.png" alt="IfI"></a>
-			<a href="http://www.uzh.ch" target="_blank" rel="noopener" title="University of Zurich"><img src="../assets/about_uzh.png" alt="UZH"></a>
-		</div>
-	</div>
-</div>
+  <div class="paynow">
+    <div class="col-12">
+      <img src="../assets/Oysy_Logo.png" alt="OySy" class="mainicon">
+    </div>
+    <div class="col-12">
+      <div class="paynow-title">
+        DAS OYSTER System
+        <hr >
+      </div>
+      <b-button block class="paynow-btn">Jetzt bezahlen</b-button>
+    </div>
+    <div class="col-12">
+      <div class="paynow-title">
+        DER OYSY MARKTPLATZ
+        <hr >
+      </div>
+      <b-button block class="link-btn">
+        <i class="oysyicon">a</i>
+        <span>Perlen versenden</span>
+      </b-button>
+      <b-button block class="link-btn">
+        <i class="oysyicon">a</i>
+        <span>Perlen anfordern</span>
+      </b-button>
+    </div>
+  </div>
 </template>
 
 <script>
+
 export default {
-	// the home component must be offline available,
-	// otherwise the routing breaks (it's the fallback
-	// page of every other page, which is not available
-	// offline)
-	name: 'home',
-	offline: true,
+  name: 'home',
+  offline: true,
+  data: function () {
+    return {
+    }
+  },
+  components: {
 
-	data: function () {
-		return {};
-	},
-	mounted: function () {
-		// if redirected from 404, header might not be visible (if before page was login, registration etc.)
-		this.$emit('toggle-header', true);
-		this.$emit('set-body-background', 'white');
+  },
+  computed: {
 
-		this.$emit('toggle-header-transparent', true);
-		this.$emit('toggle-side-bar', true);
-	},
-	beforeDestroy: function () {
-		this.$emit('toggle-header-transparent', false);
-	}
+  },
+  methods: {
+
+  },
+  mounted: function () {
+    this.$emit('toggle-header', true);
+    this.$emit('set-body-background', 'white');
+
+    this.$emit('toggle-header-transparent', true);
+    this.$emit('toggle-side-bar', true);
+  },
+  beforeDestroy: function () {
+    this.$emit('toggle-header-transparent', false);
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 @import '../styles/variables';
 
-.home {
-	margin-top: 0;
+.oysyicon {
+  font-family: oysy;
+  font-variant: normal;
+  color: $purple-color;
+  font-style: normal;
+  font-size: 1em;
+  font-weight: bold;
+}
+.paynow {
+  position: absolute;
+  height: 100%;
+  background: #262626;
+  width: 100%;
 }
 
-.main-photo {
-	background-image: url('../assets/oysy_android_phone_comp.jpg');
-	width: 100%;
-	height: 100vh;
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: 50% 44%;
-	position: relative;
-	box-shadow: inset 2px 0 16px rgba(0,0,0,0.3);
-
-	.main-logo {
-		width: 60vmin;
-	}
-
-	.logos {
-		position: fixed;
-		bottom: 10px;
-		right: 10px;
-		img {
-			height: 70px;
-		}
-	}
+.mainicon {
+  display: flex;
+  height: 18em;
+  margin: auto;
+  padding: 4em;
+  padding-top: 6em;
 }
 
-@media (max-width: $breakpoint-hide-header) {
-	.main-photo .logos img {
-		height: 60px;
-	}
+.paynow-btn {
+  height: 4em;
+  border-radius: 0px;
+  font-size: 1.7em;
+  background-color: $purple-color;
+  border-color: $purple-color;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 30px;
 }
+.link-btn{
+  border-radius: 0px;
+  border-color: #1a1a1a;
+  background-color: #1a1a1a;
+  color: white;
+  font-weight: bold;
+  font-size: 1em;
+  font-size: 1.5em;
+
+  .btn-text {
+    font-size: 1.5em;
+  }
+}
+
+hr {
+  color: black;
+
+}
+.paynow-title {
+  color: #595959;
+  font-weight: bold;
+}
+
 </style>
