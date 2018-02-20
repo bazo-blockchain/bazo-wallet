@@ -41,7 +41,7 @@ const store = new Vuex.Store({
     settings: {
       showAdvancedOptions: 'hidden',
       useCustomHost: 'false',
-      customURL: 'https://csg.uzh.ch/bazo/api'
+      customURL: 'https://oysyone.westeurope.cloudapp.azure.com/'
     },
     surpriseRequests: [],
 		offline: !(typeof window.navigator.onLine === 'undefined' ||
