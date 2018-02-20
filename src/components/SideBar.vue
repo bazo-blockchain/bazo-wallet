@@ -141,7 +141,7 @@ $language-picker-height: 3.9em;
 $language-picker-height-offline: 8.9em;
 
 .side-bar {
-	background: $side-bar-black;
+	background: $purple-color;
 	color: #e5e5e5;
 	font-size: 18px;
 }
@@ -189,7 +189,7 @@ $language-picker-height-offline: 8.9em;
 		}
 
 		&.selected {
-			background: $green-color;
+			background: $accent-color;
 			&:after {
 				opacity: 1
 			}

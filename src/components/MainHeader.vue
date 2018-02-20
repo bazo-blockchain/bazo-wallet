@@ -133,7 +133,7 @@ export default {
 			height: 70px;
 			font-weight: 500;
 			padding-right: 10px;
-			background-color: transparent;
+			background-color: #1a1a1a;
 			border-bottom-color: transparent;
 
 			.buttons .button a {
@@ -148,7 +148,7 @@ export default {
 	}
 
 	.header-bar {
-		background: #f1f1f1;
+		background: #1a1a1a;
 		position: fixed;
 		height: 50px;
 		width: 100%;
@@ -231,7 +231,7 @@ export default {
 		visibility: visible;
 	}
 	.header-bar-wrapper .header-bar {
-		background: #353535;
+		background: #1a1a1a;
 		border-bottom-color: #464646;
 		.buttons {
 			opacity: 0;

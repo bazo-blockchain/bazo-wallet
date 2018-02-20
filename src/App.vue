@@ -163,7 +163,7 @@ export default {
 			width: 100%;
 			margin-left: -100%;
 			transition: 0.3s ease all;
-			background: $side-bar-black;
+			background: $side-bar-purple;
 
 			.entries .entry.selected:after {
 				opacity: 0;
