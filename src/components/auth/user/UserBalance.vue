@@ -1,9 +1,10 @@
 <template>
 <div class="user-balance">
 	<a href @click.prevent="openFundsPage">
-		<i class="fa fa-usd"></i>
 		<span class="value">{{ sumOfBalances }}</span>
 	</a>
+  <i class="oysyicon">f</i>
+
 </div>
 </template>
 
@@ -49,6 +50,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.oysyicon {
+  font-family: oysy;
+  font-style: normal;
+  font-size: 1.3em;
+  position: relative;
+  top: 5px;
+}
 .user-balance {
 	text-decoration: none;
 

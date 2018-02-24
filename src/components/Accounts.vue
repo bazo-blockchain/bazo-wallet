@@ -83,7 +83,7 @@
         <div class="reload-page" v-if="configured">
           <div>{{this.lastBalanceUpdate}}</div>
 
-          <span class="btn btn-secondary" @click.prevent="triggerBalanceUpdate(false)">
+          <span class="btn btn-secondary oysy-button" @click.prevent="triggerBalanceUpdate(false)">
             <i class="fa fa-refresh"></i>
             {{ this.Translation.t('userAccounts.reload') }}
           </span>
@@ -104,7 +104,7 @@
                 </b-form-checkbox>
               </label>
             </div>
-            <b-button @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ Translation.t('userAccounts.save') }}</b-button>
+            <b-button class="oysy-button" @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ Translation.t('userAccounts.save') }}</b-button>
           </form>
           <div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
             <b-pagination size="md" :total-rows="this.tableRows.length" :per-page="perPage" v-model="currentPage" />

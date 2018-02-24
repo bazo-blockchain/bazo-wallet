@@ -36,7 +36,7 @@
           <b-alert v-html="$t('funds.notConfigured')" show variant="info"></b-alert>
         </div>
         <div class="reload-page" v-if="configured">
-          <span class="btn btn-secondary" @click.prevent="queryFundingStates">
+          <span class="btn btn-secondary oysy-button" @click.prevent="queryFundingStates">
             <i class="fa fa-refresh"></i>
             {{ this.$t('funds.reload') }}
           </span>
@@ -78,7 +78,7 @@
       </div>
       <div class="row">
         <div class="col-12 submit-btn">
-          <b-button @click.prevent="requestBazo" :block="true" variant="primary" :disabled="validRequest" >{{ $t('funds.save') }}</b-button>
+          <b-button class="oysy-button" @click.prevent="requestBazo" :block="true" variant="primary" :disabled="validRequest" >{{ $t('funds.save') }}</b-button>
           <b-modal :title="$t('funds.modaltitle')"
           size="md" :hide-footer="true" ref="accountcreation">
           <div>

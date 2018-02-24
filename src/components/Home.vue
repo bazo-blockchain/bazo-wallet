@@ -5,7 +5,7 @@
     </div>
     <div class="col-12">
       <div class="paynow-title">
-        DAS OYSTER System
+        DAS OYSTER SYSTEM
         <hr >
       </div>
       <b-button block class="paynow-btn">Jetzt bezahlen</b-button>
@@ -16,14 +16,14 @@
         <hr >
       </div>
       <router-link :to="{ name: 'user-send' }">
-        <b-button block class="link-btn">
+        <b-button block class="oysy-button ">
           <i class="oysyicon">a</i>
           <span>Perlen versenden</span>
         </b-button>
       </router-link>
-      
+
       <router-link :to="{ name: 'user-request' }">
-        <b-button block class="link-btn">
+        <b-button block class="oysy-button ">
           <i class="oysyicon">a</i>
           <span>Perlen anfordern</span>
         </b-button>
@@ -102,19 +102,19 @@ export default {
   letter-spacing: 1px;
   margin-bottom: 30px;
 }
-.link-btn{
-  border-radius: 0px;
-  border-color: #1a1a1a;
-  background-color: #1a1a1a;
-  color: white;
-  font-weight: bold;
-  font-size: 1em;
-  font-size: 1.5em;
-
-  .btn-text {
-    font-size: 1.5em;
-  }
-}
+// .link-btn{
+//   border-radius: 0px;
+//   border-color: #1a1a1a;
+//   background-color: #1a1a1a;
+//   color: white;
+//   font-weight: bold;
+//   font-size: 1em;
+//   font-size: 1.5em;
+//
+//   .btn-text {
+//     font-size: 1.5em;
+//   }
+// }
 
 hr {
   color: black;

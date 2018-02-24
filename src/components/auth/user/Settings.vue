@@ -28,7 +28,7 @@
           </b-form-checkbox>
           <div >
             <b-form-fieldset :disabled="!this.usingCustomHost" :label="this.$t('settings.urlDescription')">
-              <b-form-input v-model="customURL" :disabled="!this.usingCustomHost" type="text"></b-form-input>
+              <b-form-input class="oysy-input" v-model="customURL" :disabled="!this.usingCustomHost" type="text"></b-form-input>
             </b-form-fieldset>
           </div>
         </div>
@@ -146,13 +146,14 @@ export default {
     padding-top: 20px;
     .box {
       width: 100%;
-      background: #f8f8f8;
-      border: 1px solid #ccc;
+      background: #292b2c;
+      // border: 1px solid #ccc;
       border-radius: 10px;
       padding: 20px;
       .main-title {
         text-align: center;
       }
+
     }
   }
   h1 small {
