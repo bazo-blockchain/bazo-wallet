@@ -10,6 +10,24 @@ body {
 	font-family: 'Roboto', sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+  background-color: #292b2c;
+  color: white;
+}
+.oysy-input {
+  background-color: rgb(26, 26, 26);
+  color: white;
+}
+.form-control:focus {
+  border-color: $purple-color;
+}
+.mainview {
+  background-color: #292b2c;
+}
+.box {
+  background-color: #292b2c;
+}
+.custom-control-input:checked ~ .custom-control-indicator {
+  background-color: $purple-color;
 }
 *::selection {
 	background-color: rgba(21, 172, 67, 0.9);
@@ -21,6 +39,34 @@ body {
 	&, & * {
 		cursor: not-allowed !important;
 	}
+}
+.oysy-button {
+  margin-bottom: 10px;
+
+    border-radius: 0px;
+    border-color: #1a1a1a;
+    background-color: #1a1a1a;
+    color: white;
+    font-weight: bold;
+    font-size: 1em;
+    font-size: 1.5em;
+}
+.oysy-button:active {
+  background-color: $purple-color;
+}
+.btn-primary:active, .btn-primary:hover {
+  background-color: $purple-color;
+}
+.btn:focus {
+
+}
+.btn-primary.disabled, .btn-primary:disabled {
+  background-color: rgb(109, 45, 132);
+}
+.btn-primary:focus, .btn-primary.focus, .btn:focus, .btn.focus {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  border-color: none;
 }
 
 #toasted-container {
@@ -228,14 +274,14 @@ div.form-error {
 	}
 }
 .btn-primary, .btn-primary.disabled {
-  background-color: transparent;
-  color: $green-color;
-  border-color: $green-color;
-  border-radius: 1.25em;
+  // background-color: transparent;
+  // color: $green-color;
+  // border-color: $green-color;
+  // border-radius: 1.25em;
 }
 .btn-primary.active, .btn-primary:active, .btn-primary:hover, .show>.btn-primary.dropdown-toggle {
-  background-color: #992f47;
-  border-color: #992f47;
+  // background-color: #992f47;
+  // border-color: #992f47;
 }
 
 
