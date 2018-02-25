@@ -21,7 +21,7 @@ body {
   border-color: $purple-color;
 }
 .mainview {
-  background-color: #292b2c;
+  background-color: #292b2c !important;
 }
 .box {
   background-color: #292b2c;
@@ -310,6 +310,8 @@ div.form-error {
 	margin-bottom: 50px;
 	margin-left: 47px;
 	margin-right: 40px;
+  background-color: #292b2c;
+
 }
 @media (max-width: $breakpoint-hide-header) {
 	.compact {
