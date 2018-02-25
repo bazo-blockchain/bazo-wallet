@@ -123,7 +123,7 @@ export default {
 
 .header-bar-wrapper {
 	position: relative;
-	height: 40px;
+	height: 50px;
 	width: 100%;
 
 	&.transparent {
@@ -152,7 +152,7 @@ export default {
 		position: fixed;
 		height: 50px;
 		width: 100%;
-		border-bottom: 1px solid #d4d4d4;
+		// border-bottom: 1px solid #d4d4d4;
 		z-index: 100;
 		left: 0;
 		top: 0;

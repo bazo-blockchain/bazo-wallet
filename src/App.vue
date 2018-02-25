@@ -130,6 +130,7 @@ export default {
 		max-width: 100%;
 		width: 100%;
 		overflow: hidden;
+    background-color: $background-color-black;
 
 		&:after {
 			content: "";

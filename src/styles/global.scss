@@ -19,10 +19,16 @@ body {
 }
 .form-control:focus {
   border-color: $purple-color;
+  background-color: rgb(26, 26, 26);
 }
 .mainview {
   background-color: #292b2c !important;
 }
+
+input:focus {
+  outline: none;
+}
+
 .box {
   background-color: #292b2c;
 }
@@ -53,12 +59,13 @@ body {
 }
 .oysy-button:active {
   background-color: $purple-color;
+  border-color: none;
 }
 .btn-primary:active, .btn-primary:hover {
   background-color: $purple-color;
 }
-.btn:focus {
-
+.oysy-button:focus {
+  border-color: none;
 }
 .btn-primary.disabled, .btn-primary:disabled {
   background-color: rgb(109, 45, 132);
