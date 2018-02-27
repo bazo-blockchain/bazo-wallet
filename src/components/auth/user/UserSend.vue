@@ -513,7 +513,7 @@ export default {
         )
         .then((response) => {
 					this.currentTransaction = {
-						txCnt: response.body.txCnt,
+						txCnt: response.body.content.txCnt,
             amount: this.amount,
             recipient: this.address,
             sender: this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress
