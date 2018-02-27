@@ -50,19 +50,19 @@
                         <label for="">{{ Translation.t('userRequest.transfertype') }}</label>
                       </div>
                       <b-button-group>
-                        <b-button class="payment-variant-btn" variant="primary" @click.prevent="showQR">
+                        <b-button class="payment-variant-btn oysy-button" variant="primary" @click.prevent="showQR">
                           <i class="fa fa-qrcode"></i>
                           <span>QR Code</span>
                         </b-button>
-                        <b-button v-if="isAndroidDevice" class="payment-variant-btn" :disabled="!webshare.webshareSupported" variant="primary" @click.prevent="shareWithwebShare">
+                        <b-button v-if="isAndroidDevice" class="payment-variant-btn oysy-button" :disabled="!webshare.webshareSupported" variant="primary" @click.prevent="shareWithwebShare">
                           <i class="fa fa-share-alt"></i>
                           <span>Share</span>
                         </b-button>
-                        <b-button v-if="onIOS() && IOS10Safari()" class="payment-variant-btn js-copy-btn" variant="primary">
+                        <b-button v-if="onIOS() && IOS10Safari()" class="payment-variant-btn js-copy-btn oysy-button" variant="primary">
                           <i class="fa fa-share-alt"></i>
                           <span>Copy link</span>
                         </b-button>
-                        <b-button v-if="isAndroidDevice" class="payment-variant-btn" :disabled="!nfc.NFCSupported" variant="primary" @click.prevent="openNFC">
+                        <b-button v-if="isAndroidDevice" class="payment-variant-btn oysy-button" :disabled="!nfc.NFCSupported" variant="primary" @click.prevent="openNFC">
                           <i class="fa fa-rss"></i>
                           <span>NFC</span>
                         </b-button>

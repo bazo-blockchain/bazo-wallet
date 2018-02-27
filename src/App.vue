@@ -120,6 +120,15 @@ export default {
 <style lang="scss" scoped>
 @import './styles/variables';
 
+#app {
+  height: auto;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  background-color: $background-color-black;
+}
 #app-container {
 	display: flex;
 	align-items: stretch;
