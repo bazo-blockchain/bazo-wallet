@@ -57,14 +57,16 @@ input:focus {
 }
 .oysy-button {
   margin-bottom: 10px;
-
-    border-radius: 0px;
-    border-color: #1a1a1a;
-    background-color: #1a1a1a;
-    color: white;
-    font-weight: bold;
-    font-size: 1em;
-    font-size: 1.5em;
+  border-radius: 0px;
+  border-color: #1a1a1a;
+  background-color: #1a1a1a;
+  color: white;
+  font-weight: bold;
+  font-size: 1em;
+  font-size: 1.5em;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .oysy-button:active {
   background-color: $purple-color;

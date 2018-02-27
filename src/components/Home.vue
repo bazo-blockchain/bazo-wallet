@@ -97,6 +97,9 @@ export default {
   font-size: 1.7em;
   background-color: $purple-color;
   border-color: $purple-color;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
   color: white;
   font-weight: bold;
   letter-spacing: 1px;
