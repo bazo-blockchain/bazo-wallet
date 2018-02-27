@@ -618,7 +618,7 @@ export default {
   }
   .nfc-status-wrapper {
     svg {
-      fill: #cb3f5f;
+      fill: $purple-color;
       margin: 20px;
       height: 100px;
     }
@@ -738,6 +738,12 @@ export default {
 		}
 	}
 	/deep/ {
+    .dropdown-item.active {
+      background-color: $purple-color;
+    }
+    .active:focus {
+      outline: none;
+    }
 		.dropdown-item {
 			cursor: pointer;
 
@@ -750,7 +756,7 @@ export default {
 			}
 		}
 		.input-group-btn .btn {
-			background: white;
+			// background: white;
 			border: 1px solid rgba(0,0,0,0.15);
 			color: inherit;
 			font-size: 15px;

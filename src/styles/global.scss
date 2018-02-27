@@ -19,10 +19,16 @@ body {
 }
 .form-control {
   background-color: rgb(26, 26, 26);
-
+  color: white;
+}
+.dropdown-toggle {
+  background-color: rgb(26, 26, 26);
+  color: white;
 }
 .form-control:focus {
   border-color: $purple-color;
+  background-color: rgb(26, 26, 26);
+  color: white;
 }
 .mainview {
   background-color: #292b2c !important;
@@ -221,9 +227,9 @@ div.form-error {
 	}
 }
 
-/* add some shadow to the bootstrap popover */
 .popover {
 	box-shadow: 0 0 1em rgba(0,0,0,0.2);
+  background-color: #1a1a1a;
 }
 
 /* some element may need more focus area, because they are too small */
@@ -330,8 +336,4 @@ div.form-error {
 		margin-top: 40px;
 		margin-bottom: 22px;
 	}
-}
-
-.form-control.disabled {
-	background-color: #eceeef;
 }

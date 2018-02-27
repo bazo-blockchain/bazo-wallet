@@ -569,6 +569,12 @@ export default {
 		}
 	}
 	/deep/ {
+    .active {
+      background-color: $purple-color;
+    }
+    .active:focus {
+      outline: none;
+    }
 		.dropdown-item {
 			cursor: pointer;
 
@@ -581,8 +587,8 @@ export default {
 			}
 		}
 		.input-group-btn .btn {
-			background: white;
-			border: 1px solid rgba(0,0,0,0.15);
+			// background: white;
+			border-left: 1px solid white;
 			color: inherit;
 			font-size: 15px;
 
