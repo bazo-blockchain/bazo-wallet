@@ -1,6 +1,7 @@
 <template>
 <div class="user-balance">
 	<a href @click.prevent="openFundsPage">
+    <span class="title">TOTAL</span>
 		<span class="value">{{ sumOfBalances }}</span>
 	</a>
   <i class="oysyicon">f</i>
@@ -56,6 +57,12 @@ export default {
   font-size: 1.3em;
   position: relative;
   top: 5px;
+}
+.title {
+  color: rgb(89, 89, 89);
+}
+.value {
+  font-size: 25px;
 }
 .user-balance {
 	text-decoration: none;

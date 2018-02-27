@@ -265,7 +265,7 @@ $language-picker-height-offline: 8.9em;
 .language-picker {
 	display: block;
 	text-align: center;
-	padding-top: 0.8em;
+	padding-top: 0.5em;
 	height: $language-picker-height;
 
 	&.offline-mode {
@@ -305,9 +305,9 @@ $language-picker-height-offline: 8.9em;
 	.balance-wrapper {
 		display: inline-block;
 		vertical-align: top;
-		height: 2.3em;
+		height: 2.1em;
 		position: relative;
-		padding-top: 0.35em;
+		padding-top: 0;
 		margin-left: 0.75em;
 		padding-left: 0.75em;
 		border-left: 1px solid #656565;
