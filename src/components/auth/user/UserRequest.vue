@@ -396,7 +396,7 @@ export default {
 		padding-top: 20px;
 		.box {
 			width: 100%;
-			background: #f8f8f8;
+      background: #292b2c;
 			border: 1px solid #ccc;
 			border-radius: 10px;
 			padding: 20px;
