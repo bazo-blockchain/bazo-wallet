@@ -226,7 +226,7 @@ const store = new Vuex.Store({
         HttpService.queryAccountInfo(addresses, options.url, options.silent).then((responses) => {
           let accountMutationsFound = false;
           responses.forEach((res) => {
-            if (res.body.content.address) {
+            if (res.body.content && res.body.content.address) {
               let accountToUpdateBalance = helpers.findAccountByAddress(
                 context.state.config.accounts, res.body.content.address
               );
