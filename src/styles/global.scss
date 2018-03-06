@@ -30,10 +30,18 @@ body {
   background-color: rgb(26, 26, 26);
   color: white;
 }
+.form-control:disabled, .form-control[readonly] {
+  background-color: rgb(26, 26, 26);
+}
+.spinner {
+  background: none;
+}
 .mainview {
   background-color: #292b2c !important;
 }
-
+.modal-content {
+  background-color: #292b2c;
+}
 input:focus {
   outline: none;
 }
