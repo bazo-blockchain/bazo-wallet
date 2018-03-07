@@ -191,13 +191,17 @@ const store = new Vuex.Store({
       if (ids.length > 0) {
         HttpService.queryFundingRequestStates(ids, options.silent)
         .then((responses) => {
-          window.dbg = responses
-          // TODO: Save the updated values
-          // for (var i = 0; i < context.state.surpriseRequests.length; i++) {
-          //   if (context.state.surpriseRequests[i].ticketid === responses[0]) {
-          //
-          //   }
-          // }
+          for (var j = 0; j < responses.length; j++) {
+            for (var i = 0; i < context.state.surpriseRequests.length; i++) {
+              if (context.state.surpriseRequests[i].ticketid === '' + responses[j].data.response.id) {
+                context.state.surpriseRequests[i].state = responses[j].data.response.status
+                context.commit('setFundingRequestState', {
+                  ticketid: context.state.surpriseRequests[i].ticketid,
+                  newstate: responses[j].data.response.status
+                })
+              }
+            }
+          }
         })
         .catch(() => {
           // TODO move this to the success handler and remove pseudoanswer!
