@@ -34,6 +34,11 @@
           <i class="oysyicon">f</i>
           <span class="text">{{ $t('sideBar.userAccounts') }}</span>
         </router-link>
+        <router-link class="entry" :to="{ name: 'transactions' }" :class="dynamicLinkClasses('transactions')" @click.native="closeMenu">
+          <i class="oysyicon">f</i>
+          <span class="text">{{ $t('sideBar.transactions') }}</span>
+        </router-link>
+
         <router-link  class="entry" :to="{ name: 'funds' }" :class="dynamicLinkClasses('funds')" @click.native="closeMenu">
           <i class="fa fa-credit-card"></i>
           <span class="text">{{ $t('sideBar.funds') }}</span>
