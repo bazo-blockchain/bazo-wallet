@@ -83,6 +83,16 @@
       "amountQueryError": "Unable to query the transaction amount.",
       "preparationError": "The transaction could not be prepared."
     },
+    "transactions": {
+      "title": "Inbound Transactions",
+      "description": "Inspect your most recent inbound transactions",
+      "fields": {
+        "address": "Address",
+        "amount": "Amount",
+        "verified": "Validation",
+        "sender": "Sender"
+      }
+    },
     "userRequest": {
       "title": "Request OySy Coins",
       "boxTitle": "Transfer Payment information",
@@ -181,6 +191,16 @@
 			"cameraNotice": "Falls die Kamera nicht in 5s angezeigt wird, haben Sie vermutlich keine Berechtigung für die Kamera vergeben.",
       "amountQueryError": "Fehler beim Abfragen der Transaktionshöhe.",
       "preparationError": "Fehler beim Vorbereiten der Transaktion."
+    },
+    "transactions": {
+      "title": "Eingehende Transaktionen",
+      "description": "Sehen Sie Ihre letzten eingegangenen Transaktionen ein.",
+      "fields": {
+        "address": "Addresse",
+        "amount": "Menge",
+        "verified": "Validierung",
+        "sender": "Sender"
+      }
     },
     "userRequest": {
       "title": "OySy Coins anfordern",

@@ -338,6 +338,7 @@ $language-picker-height-offline: 8.9em;
 			"userSend": "Transfer OySy coins",
       "userRequest": "Request OySy coins",
 			"userAccounts": "Accounts",
+      "transactions": "Transactions",
       "funds": "Funds",
       "settings": "Settings",
 			"login": "Login"
@@ -354,6 +355,7 @@ $language-picker-height-offline: 8.9em;
 			"userSend": "OySy coins versenden",
       "userRequest": "OySy coins erhalten",
 			"userAccounts": "Konti",
+      "transactions": "Transaktionen",
       "funds": "Guthaben",
       "settings": "Einstellungen",
 			"login": "Anmelden"
