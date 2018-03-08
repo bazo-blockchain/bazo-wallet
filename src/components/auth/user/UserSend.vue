@@ -583,8 +583,6 @@ export default {
 		.box {
 			width: 100%;
 			background: #292b2c;
-			border: 1px solid #ccc;
-			border-radius: 10px;
 			padding: 20px;
 			.main-title {
 				text-align: center;

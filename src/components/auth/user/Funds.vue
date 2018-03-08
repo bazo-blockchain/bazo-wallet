@@ -466,8 +466,6 @@ ${importLink}`
     .box {
       width: 100%;
       background: #f8f8f8;
-      border: 1px solid #ccc;
-      border-radius: 10px;
       padding: 20px;
       .main-title {
         text-align: center;

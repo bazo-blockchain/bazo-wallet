@@ -48,6 +48,7 @@ input:focus {
 
 .box {
   background-color: #292b2c;
+  border: none;
 }
 .custom-control-input:checked ~ .custom-control-indicator {
   background-color: $purple-color;
@@ -220,7 +221,7 @@ input:focus {
 }
 
 /* bootstrap form error's */
-$red-error-input-color: #ffa3a3;
+$red-error-input-color: #ff0000c9;
 input[type=text].form-error,
 input[type=password].form-error,
 input[type=email].form-error,
