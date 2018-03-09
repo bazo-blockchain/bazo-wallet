@@ -178,6 +178,33 @@ export default {
               sender: response.body.content[2].detail.from
             })
           }
+          if (response.body && response.body.content && response.body.content[3] && response.body.content[3].detail) {
+            console.log('found recentes', response.body.content[3].detail);
+            transactions.push({
+              verified: response.body.content[3].detail.status,
+              address: response.body.content[3].detail.to,
+              amount: response.body.content[3].detail.amount,
+              sender: response.body.content[3].detail.from
+            })
+          }
+          if (response.body && response.body.content && response.body.content[4] && response.body.content[4].detail) {
+            console.log('found recentes', response.body.content[4].detail);
+            transactions.push({
+              verified: response.body.content[4].detail.status,
+              address: response.body.content[4].detail.to,
+              amount: response.body.content[4].detail.amount,
+              sender: response.body.content[4].detail.from
+            })
+          }
+          if (response.body && response.body.content && response.body.content[2] && response.body.content[2].detail) {
+            console.log('found recentes', response.body.content[2].detail);
+            transactions.push({
+              verified: response.body.content[2].detail.status,
+              address: response.body.content[2].detail.to,
+              amount: response.body.content[2].detail.amount,
+              sender: response.body.content[2].detail.from
+            })
+          }
         })
         this.recentTransactions = transactions
       });

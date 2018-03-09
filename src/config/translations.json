@@ -196,7 +196,7 @@
       "title": "Eingehende Transaktionen",
       "description": "Sehen Sie Ihre letzten eingegangenen Transaktionen ein.",
       "fields": {
-        "address": "Addresse",
+        "address": "Adresse",
         "amount": "Menge",
         "verified": "Validierung",
         "sender": "Sender"
