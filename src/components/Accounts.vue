@@ -2,11 +2,11 @@
   <div class="user-funds">
     <div class="compact">
       <h1 class="display-4">{{ this.Translation.t('userAccounts.title') }}
-        <small v-if="!isLoading && !loadingError && configured" class="pull-right">
+        <!-- <small v-if="!isLoading && !loadingError && configured" class="pull-right">
           <span class="total-funds-small">{{ this.Translation.t('userAccounts.total') }}</span>
           <i class="fa fa-usd"></i>
           {{ this.sumOfBalances }}
-        </small>
+        </small> -->
       </h1>
       <hr>
       <div class="pos-rel user-funds-content">
