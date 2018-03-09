@@ -230,15 +230,17 @@ const store = new Vuex.Store({
         HttpService.queryAccountInfo(addresses, options.url, options.silent).then((responses) => {
           let accountMutationsFound = false;
           responses.forEach((res) => {
-            if (res.body.content && res.body.content.address) {
+            if (res.body.content && res.body.content && res.body.content[0] && res.body.content[0].detail) {
               let accountToUpdateBalance = helpers.findAccountByAddress(
-                context.state.config.accounts, res.body.content.address
+                context.state.config.accounts, res.body.content[0].detail.address
               );
-              if (accountToUpdateBalance.balance !== res.body.content.balance) {
+
+              if (accountToUpdateBalance.balance !== res.body.content[0].detail.balance) {
                 accountMutationsFound = true;
               }
-              accountToUpdateBalance.balance = res.body.content.balance
-              context.commit('setAccountBalance', {balance: res.body.content.balance, address: res.body.content.address})
+              accountToUpdateBalance.balance = res.body.content[0].detail.balance
+              context.commit('setAccountBalance', {balance: res.body.content[0].detail.balance, address: res.body.content[0].detail.address})
+            } else {
             }
           })
             context.commit('updateTimeStamp');
