@@ -76,9 +76,7 @@
           <b-alert v-html="Translation.t('userAccounts.notConfigured')" show variant="info"></b-alert>
         </div>
         <div class="reload-page" v-if="configured">
-          <div>{{this.lastBalanceUpdate}}</div>
-
-          <span class="btn btn-secondary oysy-button" @click.prevent="triggerBalanceUpdate(false)">
+          <span class="btn btn-secondary oysy-button" @click.prevent="getRecentTransactions(false)">
             <i class="fa fa-refresh"></i>
             {{ this.Translation.t('userAccounts.reload') }}
           </span>
@@ -94,6 +92,7 @@
 import Spinner from '@/components/Spinner';
 import URIScheme from '@/services/URIScheme';
 import Translation from '@/config/Translation';
+import HttpService from '@/services/HttpService';
 
 export default {
 	name: 'transactions',
@@ -103,7 +102,8 @@ export default {
 			loadingError: false,
 			currentPage: 1,
 			perPage: 15,
-      Translation: Translation
+      Translation: Translation,
+      recentTransactions: []
 		}
 	},
 	components: {
@@ -116,12 +116,12 @@ export default {
           label: this.Translation.t('transactions.fields.verified'),
           sortable: false
         },
-        address: {
-          label: this.Translation.t('transactions.fields.address'),
-          sortable: true
-        },
         amount: {
           label: this.Translation.t('transactions.fields.amount'),
+          sortable: true
+        },
+        address: {
+          label: this.Translation.t('transactions.fields.address'),
           sortable: true
         },
         sender: {
@@ -131,7 +131,11 @@ export default {
       }
     },
     tableRows () {
-      return this.$store.getters.transactions;
+      return this.recentTransactions;
+    },
+    allAccounts () {
+      let accounts = this.$store.getters.bazoAccounts;
+      return accounts;
     },
     configured () {
       return this.$store.getters.accountConfigured;
@@ -145,10 +149,43 @@ export default {
   methods: {
     encodeBazoAddress (bazoAddress) {
       return URIScheme.encode(bazoAddress);
+    },
+    getRecentTransactions (silent) {
+      let addresses = this.allAccounts.map(account => account.bazoaddress);
+      console.log(addresses);
+      let transactions = []
+      HttpService.queryAccountInfo(addresses, this.customURLUsed, silent).then((responses) => {
+        console.log('responses', responses);
+        responses.forEach(function (response) {
+          // if (true) {
+          //
+          // }
+          if (response.body && response.body.content && response.body.content[1] && response.body.content[1].detail) {
+            console.log('found recentes', response.body.content[1].detail);
+            transactions.push({
+              verified: response.body.content[1].detail.status,
+              address: response.body.content[1].detail.to,
+              amount: response.body.content[1].detail.amount,
+              sender: response.body.content[1].detail.from
+            })
+          }
+          if (response.body && response.body.content && response.body.content[2] && response.body.content[2].detail) {
+            console.log('found recentes', response.body.content[2].detail);
+            transactions.push({
+              verified: response.body.content[2].detail.status,
+              address: response.body.content[2].detail.to,
+              amount: response.body.content[2].detail.amount,
+              sender: response.body.content[2].detail.from
+            })
+          }
+        })
+        this.recentTransactions = transactions
+      });
     }
   },
 	mounted: function () {
     this.isLoading = false;
+    this.getRecentTransactions(false)
   }
 };
 </script>
