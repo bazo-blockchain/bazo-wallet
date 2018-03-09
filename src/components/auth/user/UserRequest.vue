@@ -49,24 +49,22 @@
                       <div>
                         <label for="">{{ Translation.t('userRequest.transfertype') }}</label>
                       </div>
-                      <b-button-group>
-                        <b-button class="payment-variant-btn oysy-button" variant="primary" @click.prevent="showQR">
-                          <i class="fa fa-qrcode"></i>
+                        <b-button class="payment-variant-btn oysy-button full-width" variant="primary" @click.prevent="showQR">
+                          <i class="oysyicon">g</i>
                           <span>QR Code</span>
                         </b-button>
-                        <b-button v-if="isAndroidDevice" class="payment-variant-btn oysy-button" :disabled="!webshare.webshareSupported" variant="primary" @click.prevent="shareWithwebShare">
+                        <b-button v-if="isAndroidDevice" class="payment-variant-btn oysy-button full-width" :disabled="!webshare.webshareSupported" variant="primary" @click.prevent="shareWithwebShare">
                           <i class="fa fa-share-alt"></i>
                           <span>Share</span>
                         </b-button>
-                        <b-button v-if="onIOS() && IOS10Safari()" class="payment-variant-btn js-copy-btn oysy-button" variant="primary">
+                        <b-button v-if="onIOS() && IOS10Safari()" class="payment-variant-btn js-copy-btn oysy-button full-width" variant="primary">
                           <i class="fa fa-share-alt"></i>
                           <span>Copy link</span>
                         </b-button>
-                        <b-button v-if="isAndroidDevice" class="payment-variant-btn oysy-button" :disabled="!nfc.NFCSupported" variant="primary" @click.prevent="openNFC">
-                          <i class="fa fa-rss"></i>
+                        <b-button v-if="isAndroidDevice" class="payment-variant-btn oysy-button full-width" :disabled="!nfc.NFCSupported" variant="primary" @click.prevent="openNFC">
+                          <i class="oysyicon">j</i>
                           <span>NFC</span>
                         </b-button>
-                      </b-button-group>
                       <a class="transfer-link" v-if="isAndroidDevice && advancedOptionsShown" v-bind:href="nfcbridgeLink" >
                         <i class="fa fa-android" aria-hidden="true"></i>
                         <span>NFC Bridge</span>
@@ -408,6 +406,14 @@ export default {
 	}
   .transfer-link{
     color: $green-color;
+  }
+  .full-width {
+    width: 100%;
+    max-width: none;
+  }
+  .oysyicon {
+    font-family: oysy;
+    font-style: normal;
   }
 	.popover-element {
 		display: inline-block;
