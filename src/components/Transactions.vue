@@ -11,31 +11,23 @@
           <div v-if="configured"
           class="table-responsive">
 
-          <b-table responsive small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
-            <template slot="bazoaddress" scope="item">
+          <b-table responsive=md small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
+            <template slot="address" scope="item">
               <div class="no-wrap">
-                <span class="mono" v-bind:title="item.item.bazoaddress">{{ cutBazoAddress(item.item.bazoaddress) }}</span>&nbsp;
-                <b-popover triggers="hover" :content="item.item.bazoaddress" class="popover-element">
+                <span class="mono" v-bind:title="item.value">{{ formatBazoAddress(item.value) }}</span>&nbsp;
+                <b-popover triggers="hover" :content="item.value" class="popover-element">
                   <i class="fa fa-eye increase-focus"></i>
                 </b-popover>
               </div>
             </template>
 
-            <template slot="balance" scope="item">
-
-              <div class="nowrap" v-if="item.item.balance != 'unconfirmed'">
-                <b-popover triggers="hover" :content="Translation.t('userAccounts.confirmed')" class="popover-element">
-                  <i class="fa fa-unlock-alt increase-focus"></i>
-                </b-popover>
-                <span >-</span>
-                {{ item.item.balance}}
-              </div>
-              <div class="nowrap" v-else>
-                <b-popover triggers="hover" :content="Translation.t('userAccounts.unconfirmed')" class="popover-element">
-                  <i class="fa fa-lock increase-focus"></i>
+            <template slot="sender" scope="item">
+              <div class="no-wrap">
+                <span class="mono" v-bind:title="item.value">{{ formatBazoAddress(item.value) }}</span>&nbsp;
+                <b-popover triggers="hover" :content="item.value" class="popover-element">
+                  <i class="fa fa-eye increase-focus"></i>
                 </b-popover>
               </div>
-
             </template>
             <template slot="isPrime" scope="item">
               <div>
@@ -150,6 +142,12 @@ export default {
     encodeBazoAddress (bazoAddress) {
       return URIScheme.encode(bazoAddress);
     },
+    formatBazoAddress (address) {
+      console.log('addr', address);
+      if (address && address.length > 10) {
+        return `${address.slice(0, 5)}..${address.slice(-5)}`;
+      } return ''
+    },
     getRecentTransactions (silent) {
       let addresses = this.allAccounts.map(account => account.bazoaddress);
       console.log(addresses);
@@ -160,49 +158,19 @@ export default {
           // if (true) {
           //
           // }
-          if (response.body && response.body.content && response.body.content[1] && response.body.content[1].detail) {
-            console.log('found recentes', response.body.content[1].detail);
-            transactions.push({
-              verified: response.body.content[1].detail.status,
-              address: response.body.content[1].detail.to,
-              amount: response.body.content[1].detail.amount,
-              sender: response.body.content[1].detail.from
-            })
-          }
-          if (response.body && response.body.content && response.body.content[2] && response.body.content[2].detail) {
-            console.log('found recentes', response.body.content[2].detail);
-            transactions.push({
-              verified: response.body.content[2].detail.status,
-              address: response.body.content[2].detail.to,
-              amount: response.body.content[2].detail.amount,
-              sender: response.body.content[2].detail.from
-            })
-          }
-          if (response.body && response.body.content && response.body.content[3] && response.body.content[3].detail) {
-            console.log('found recentes', response.body.content[3].detail);
-            transactions.push({
-              verified: response.body.content[3].detail.status,
-              address: response.body.content[3].detail.to,
-              amount: response.body.content[3].detail.amount,
-              sender: response.body.content[3].detail.from
-            })
-          }
-          if (response.body && response.body.content && response.body.content[4] && response.body.content[4].detail) {
-            console.log('found recentes', response.body.content[4].detail);
-            transactions.push({
-              verified: response.body.content[4].detail.status,
-              address: response.body.content[4].detail.to,
-              amount: response.body.content[4].detail.amount,
-              sender: response.body.content[4].detail.from
-            })
-          }
-          if (response.body && response.body.content && response.body.content[2] && response.body.content[2].detail) {
-            console.log('found recentes', response.body.content[2].detail);
-            transactions.push({
-              verified: response.body.content[2].detail.status,
-              address: response.body.content[2].detail.to,
-              amount: response.body.content[2].detail.amount,
-              sender: response.body.content[2].detail.from
+          if (response.body && response.body.content && response.body.content && response.body.content.length > 0) {
+            response.body.content.forEach(function (transaction) {
+              if (transaction.detail) {
+                console.log('found recentes', response.body.content[1].detail);
+                if (transaction.detail.to && transaction.detail.amount && transaction.detail.from) {
+                  transactions.push({
+                    verified: transaction.detail.status,
+                    address: transaction.detail.to,
+                    amount: transaction.detail.amount,
+                    sender: transaction.detail.from
+                  })
+                }
+              }
             })
           }
         })
