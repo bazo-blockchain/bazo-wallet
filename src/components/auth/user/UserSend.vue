@@ -445,7 +445,8 @@ export default {
     },
 		openCamera: function () {
 			this.qrScanner = new window.Instascan.Scanner({
-				video: this.$el.querySelector('.camera-screen video')
+				video: this.$el.querySelector('.camera-screen video'),
+        mirror: false
 			});
 			this.qrScanner.addListener('scan', (content) => {
 				if (content.length > 0) {
