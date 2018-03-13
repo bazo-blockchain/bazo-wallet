@@ -5,7 +5,7 @@
     <div>
       <div class="alert alert-info" v-html="$t('userTransfer.description', { amount })"></div>
       <b-form-fieldset :label="$t('userTransfer.passPhrase')">
-        <b-form-input type="password" v-model="privateKey" @input="formIsTouched = false" @keyup.enter="submit"
+        <b-form-input type="password" autocomplete="current-password" v-model="privateKey" @input="formIsTouched = false" @keyup.enter="submit"
                       :class="{ 'form-error': !validPassPhrase && formIsTouched }" ></b-form-input>
       </b-form-fieldset>
       <div class="error-description" v-if="formIsTouched && !validPassPhrase">
