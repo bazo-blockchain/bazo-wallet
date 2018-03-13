@@ -11,7 +11,7 @@
           <div v-if="configured"
           class="table-responsive">
 
-          <b-table responsive=md small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
+          <b-table responsive small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
             <template slot="address" scope="item">
               <div class="no-wrap">
                 <span class="mono" v-bind:title="item.value">{{ formatBazoAddress(item.value) }}</span>&nbsp;
