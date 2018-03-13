@@ -29,16 +29,17 @@
                 </b-popover>
               </div>
             </template>
-            <template slot="isPrime" scope="item">
+            <template slot="verified" scope="item">
               <div>
-                <div class="" v-if="item.item.isPrime">
-                  <i class="fa fa-check" aria-hidden="true"></i>
-                </div>
-                <div class="" v-else>
-                  <b-button variant="secondary" size="sm" @click.prevent="makePrimary(item.item)">
-                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                  </b-button>
-                </div>
+                <b-popover v-if="item.item.verified.clientVerification && item.item.verified.mined==='not verified'" triggers="hover" :content="Translation.t('transactions.multisig')" class="popover-element">
+                  <i class="fa fa-clock-o increase-focus"></i>
+                </b-popover>
+                <b-popover v-if="item.item.verified.mined === 'verified'" triggers="hover" :content="Translation.t('transactions.confirmed')" class="popover-element">
+                  <i class="fa fa-check increase-focus"></i>
+                </b-popover>
+                <b-popover v-if="!item.item.verified.clientVerification && item.item.verified.mined === 'not verified'" triggers="hover" :content="'Not confirmed'" class="popover-element">
+                  <i class="fa fa-times increase-focus"></i>
+                </b-popover>
               </div>
             </template>
             <template slot="qr" scope="item">
@@ -85,6 +86,7 @@ import Spinner from '@/components/Spinner';
 import URIScheme from '@/services/URIScheme';
 import Translation from '@/config/Translation';
 import HttpService from '@/services/HttpService';
+import elliptic from 'elliptic';
 
 export default {
 	name: 'transactions',
@@ -95,7 +97,9 @@ export default {
 			currentPage: 1,
 			perPage: 15,
       Translation: Translation,
-      recentTransactions: []
+      recentTransactions: [],
+      // eslint-disable-next-line
+      curve: new elliptic.ec('p256')
 		}
 	},
 	components: {
@@ -148,37 +152,43 @@ export default {
         return `${address.slice(0, 5)}..${address.slice(-5)}`;
       } return ''
     },
+    verifyTransaction (hash, signature) {
+      var key = this.curve.keyFromPublic({
+        x: 'b760750def30dd6a05bf4e5e66ca34732c01d7aa1e0d01482b17ede80b361392',
+        y: 'fb0f9134106ec68dc8bf5da43e590fd58b3fdb3e44a472d48cc5e5913d9cb4e4'
+      }, 'hex');
+      return key.verify(hash, {r: signature.slice(0, 64), s: signature.slice(64, 128)})
+    },
     getRecentTransactions (silent) {
+      let that = this;
       let addresses = this.allAccounts.map(account => account.bazoaddress);
-      console.log(addresses);
       let transactions = []
       HttpService.queryAccountInfo(addresses, this.customURLUsed, silent).then((responses) => {
-        console.log('responses', responses);
         responses.forEach(function (response) {
-          // if (true) {
-          //
-          // }
           if (response.body && response.body.content && response.body.content && response.body.content.length > 0) {
             response.body.content.forEach(function (transaction) {
-              if (transaction.detail) {
-                console.log('found recentes', response.body.content[1].detail);
-                if (transaction.detail.to && transaction.detail.amount && transaction.detail.from) {
+                if (transaction.detail && transaction.detail.to && transaction.detail.amount && transaction.detail.from) {
                   transactions.push({
-                    verified: transaction.detail.status,
+                    verified: {
+                      mined: transaction.detail.status,
+                      clientVerification: that.verifyTransaction(transaction.detail.hash, transaction.detail.sig2)
+                    },
                     address: transaction.detail.to,
                     amount: transaction.detail.amount,
                     sender: transaction.detail.from
                   })
+                  window.tr = transaction
                 }
-              }
             })
           }
         })
-        this.recentTransactions = transactions
+        this.recentTransactions = transactions.reverse();
       });
     }
   },
 	mounted: function () {
+    window.transactions = this;
+    window.elliptic = elliptic;
     this.isLoading = false;
     this.getRecentTransactions(false)
   }
@@ -209,9 +219,6 @@ h1 small {
 
 		@include light-scrollbar();
 
-		/deep/ table {
-			min-width: 1050px;
-		}
 
 	}
 }
