@@ -86,6 +86,8 @@
     "transactions": {
       "title": "Inbound Transactions",
       "description": "Inspect your most recent inbound transactions",
+      "confirmed": "This transaction is fully confirmed and has been included in a block",
+      "multisig": "This transaction has been validated by a MultiSig server and is likely to be accepted by the network in the next minutes.",
       "fields": {
         "address": "Address",
         "amount": "Amount",
@@ -195,6 +197,8 @@
     "transactions": {
       "title": "Eingehende Transaktionen",
       "description": "Sehen Sie Ihre letzten eingegangenen Transaktionen ein.",
+      "confirmed": "Diese Transaktion gilt als bestätigt im Netzwerk",
+      "multisig": "Diese Transaktion wurde von einem MultiSig-Server validiert und sollte in den nächsten Minuten vollständig validiert sein.",
       "fields": {
         "address": "Adresse",
         "amount": "Menge",
