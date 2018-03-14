@@ -1,14 +1,11 @@
 <template>
   <div class="side-bar">
     <div class="logo-container">
-      <!-- <img class="logo" src="../assets/OySy.png" alt="OySy"> -->
       <div class="navigation-title">
-      NAVIGATION
+      OySy
       </div>
     </div>
     <div class="entries" :class="{ 'offline-mode': isOffline }">
-
-
 
       <div class="subtitle" v-if="configured">{{ $t('sideBar.subtitle.bazo').toUpperCase() }}</div>
       <router-link class="entry" :to="{ name: 'home' }" :class="dynamicLinkClasses('home')" @click.native="closeMenu">
@@ -335,8 +332,8 @@ $language-picker-height-offline: 8.9em;
 				"accountManagement":"Account Management"
 			},
 			"home": "Home",
-			"userSend": "Transfer OySy coins",
-      "userRequest": "Request OySy coins",
+			"userSend": "Transfer OySy pearls",
+      "userRequest": "Request OySy pearls",
 			"userAccounts": "Accounts",
       "transactions": "Transactions",
       "funds": "Funds",
@@ -352,8 +349,8 @@ $language-picker-height-offline: 8.9em;
 				"accountManagement": "Kontoverwaltung"
 			},
 			"home": "Start",
-			"userSend": "OySy coins versenden",
-      "userRequest": "OySy coins erhalten",
+			"userSend": "OySy Perlen versenden",
+      "userRequest": "OySy Perlen erhalten",
 			"userAccounts": "Konti",
       "transactions": "Transaktionen",
       "funds": "Guthaben",

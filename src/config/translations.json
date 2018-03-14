@@ -13,6 +13,13 @@
 			"offlineError": "<i class='fa fa-wifi'></i>&nbsp;Your request was not successful, because you are currently offline.",
 			"offlineModeRedirect": "<i class='fa fa-wifi'></i>&nbsp;You cannot access this page, because you are currently&nbsp;<b>offline</b>."
 		},
+    "home": {
+      "title": "THE OYSTER SYSTEM",
+      "marketplace": "THE OYSY MARKET",
+      "send": "Send pearls",
+      "request": "Request pearls",
+      "paynow": "Pay now"
+    },
     "userAccounts": {
 			"title": "Accounts",
 			"total": "Total",
@@ -28,11 +35,11 @@
       "deleteDescription": "Deleting this account will remove it from the Wallet, the account will remain in the OySy network",
 			"reload": "Reload",
       "confirmed": "This account is confirmed in the Bazo network. This means that it can be used for inbound and outbound transactions.",
-      "unconfirmed": "This account is <b>not</b> yet registered in the Bazo network. You can register the account by requesting new OySy coins on the <i>Funds</i> page.",
+      "unconfirmed": "This account is <b>not</b> yet registered in the Bazo network. You can register the account by requesting new OySy pearls on the <i>Funds</i> page.",
       "explorer": "If you wish to inspect all transactions for this account, you can follow this link to the OySy Explorer.",
 			"fields": {
 				"bazoaddress": "OySy Address",
-        "bazoname": "Name",
+        "bazoname": "Nickname",
         "prime": "Main account?",
 				"explorer": "Details",
         "balance": "Balance",
@@ -49,7 +56,7 @@
 			}
 		},
     "userSend": {
-			"title": "Transfer OySy coins",
+			"title": "Transfer OySy pearls",
 			"boxTitle": "Transfer to an OySy address",
 			"receiver": "Receiver (OySy address)",
 			"receiverPlaceholder": "Enter a valid OySy address",
@@ -58,11 +65,11 @@
 			"feesIncluded": "Fees are included in the amount",
 			"feesIncludedDescription": "If the checkbox is checked the fees are subtracted from the transfer amount. The recepient receives an amount which is reduced by the extend of the fees. Alternatively, you are charged by the amount plus fees, the recepient, however, receives the exact amount.",
 			"maxAmount": "Maximal amount",
-			"maxAmountDescription": "The maximal amount relates to the currently maximal amount which can be transferred to another account from the account you have selected below. You can request new OySy Coins in exchange for your bonus points on the <i>Funds</i> page.",
+			"maxAmountDescription": "The maximal amount relates to the currently maximal amount which can be transferred to another account from the account you have selected below. You can request new OySy pearls in exchange for your bonus points on the <i>Funds</i> page.",
       "accountUsed": "OySy Account",
       "accountUsedDescription": "Please choose one of your OySy accounts as a source for the transaction.",
 			"descriptionFees": "The fees of your OySy transfer are not yet included in the amount and are added to the value. Please make sure, that you have enough funds to create this transaction. Otherwise we have to reject it.",
-			"button": "Send {amount} OySy coins",
+			"button": "Send {amount} OySy pearls",
 			"transactionSuccessful": "The transaction was successfully executed.",
 			"paymentError": "An error occurred during the payment process. Please verify the amount (Attention: fees) or try it again later on.",
       "openNFCTitle": "Watch for a OySy adress over NFC",
@@ -96,11 +103,11 @@
       }
     },
     "userRequest": {
-      "title": "Request OySy Coins",
+      "title": "Request OySy pearls",
       "boxTitle": "Transfer Payment information",
-      "accountUsed": "Payment information",
-      "paymentInfo": "Please select the account for which you wish to receive the stated amount of OySy Coins.",
-      "transfertype": "Send payment information",
+      "accountUsed": "Number of pearls",
+      "paymentInfo": "Please select the account for which you wish to receive the stated amount of OySy pearls.",
+      "transfertype": "Send information",
       "BTNotSupported": "Your browser or device does not support Bluetooth.",
       "NFCNotSupported": "Your browser or device does not support NFC.",
       "NFCSendError": "Error trying to send to NFC tags:",
@@ -128,6 +135,13 @@
 			"en": "Englisch",
 			"de": "Deutsch"
 		},
+    "home": {
+      "title": "DAS OYSTER SYSTEM",
+      "marketplace": "DER OYSY MARKTPLATZ",
+      "send": "Perlen versenden",
+      "request": "Perlen anfordern",
+      "paynow": "Jetzt bezahlen"
+    },
     "userAccounts": {
 			"title": "Konti",
 			"totalFunds": "Total",
@@ -138,11 +152,11 @@
 			"paymentError": "Ein Fehler ist aufgetreten. Versuchen Sie es später noch einmal.",
       "accountExists": "Das Konto ist bereits in Ihrer Wallet vorhanden!",
 			"transferButton": "Transferieren",
-			"transferDescription": "Transferieren Sie Coins von diesem Account in dem Sie eine neue Zahlung tätigen",
+			"transferDescription": "Transferieren Sie Perlen von diesem Account in dem Sie eine neue Zahlung tätigen",
       "tradeButton": "Tauschen",
       "deleteDescription": "Wenn Sie ein OySy Konto hier löschen wird es aus Ihrer Wallet entfernt. Das Konto existiert weiterhin im OySy Netzwerk.",
       "confirmed": "Dies ist ein bestätigtes OySy Konto. Das bedeutet, dass eingehende und ausgehende Zahlungen mit dem Konto möglich sind.",
-      "unconfirmed": "Dieses Konto ist noch <b>nicht</b> bestätigt. Um dieses Konto für Zahlungen zu verwenden, müssen zuerst neue OySy Coins auf der <i>Guthaben</i> Seite angefordert werden.",
+      "unconfirmed": "Dieses Konto ist noch <b>nicht</b> bestätigt. Um dieses Konto für Zahlungen zu verwenden, müssen zuerst neue OySy Perlen auf der <i>Guthaben</i> Seite angefordert werden.",
       "explorer": "Falls Sie alle Transaktionen dieses Kontos einsehen möchten, können Sie dies über diesen Link auf den OySy Explorer machen.",
       "reload": "Aktualisieren",
 			"fields": {
@@ -163,7 +177,7 @@
 			}
 		},
     "userSend": {
-			"title": "OySy coins überweisen",
+			"title": "OySy Perlen überweisen",
 			"boxTitle": "An eine OySy Adresse überweisen",
 			"receiver": "Empfänger (OySy Adresse)",
 			"receiverPlaceholder": "OySy Adresse eingeben",
@@ -172,10 +186,10 @@
 			"feesIncluded": "Spesen in Betrag einschliessen",
 			"feesIncludedDescription": "Wenn die Auswahlbox ausgewählt ist, werden die Spesen vom Betrag abgezogen. Der Empfänger erhält einen um die Spesen verminderten Betrag. Andernfalls wird Ihnen der Betrag plus Spesen berechnet, der Empfänger erhält jedoch den genauen Betrag.",
 			"maxAmount": "Maximalbetrag",
-			"maxAmountDescription": "Der Maximalbetrag stellt den aktuell höchst möglichen Zahlungsbetrag dar. Der Maximalbetrag bezieht sich dabei auf das unten ausgewählte Konto dem der Betrag belastet wird. Unter <i>Guthaben</i> können Sie neue OySy Coins anfordern.",
+			"maxAmountDescription": "Der Maximalbetrag stellt den aktuell höchst möglichen Zahlungsbetrag dar. Der Maximalbetrag bezieht sich dabei auf das unten ausgewählte Konto dem der Betrag belastet wird. Unter <i>Guthaben</i> können Sie neue OySy Perlen anfordern.",
       "accountUsed": "OySy Konto",
       "accountUsedDescription": "Das OySy Konto welches um den Betrag der Transaktion belastet werden soll.",
-			"descriptionFees": "Bei Ihrer Zahlung entstehen voraussichtlich Spesen, welche auf den dargestellten Betrag aufaddiert werden. Vergewissern Sie sich, dass Sie über genügend OySy coins verfügen, um die Zahlung auszuführen. Andernfalls müssen wir die Zahlung ablehnen.",
+			"descriptionFees": "Bei Ihrer Zahlung entstehen voraussichtlich Spesen, welche auf den dargestellten Betrag aufaddiert werden. Vergewissern Sie sich, dass Sie über genügend OySy Perlen verfügen, um die Zahlung auszuführen. Andernfalls müssen wir die Zahlung ablehnen.",
 			"button": "{amount} OySy versenden",
 			"transactionSuccessful": "Die Transaktion wurde erfolgreich durchgeführt.",
 			"paymentError": "Bei der Zahlung ist ein Fehler aufgetreten. Überprüfen Sie Ihren Betrag (Achtung: Spesen) oder probieren Sie es später erneut.",
@@ -207,12 +221,12 @@
       }
     },
     "userRequest": {
-      "title": "OySy Coins anfordern",
+      "title": "OySy Perlen anfordern",
       "boxTitle": "Zahlungsinformationen",
-      "accountUsed": "Zahlungsinformationen",
+      "accountUsed": "Anzahl Perlen",
       "paymentInfo": "Bitte wählen Sie Menge und Empfängeraccount, welche Sie der Zahlenden Partei nennen wollen.",
       "accountUsedDescription": "Wählen Sie den Account den Sie der Zahlenden Partei als Ziel nennen wollen.",
-      "transfertype": "Zahlungsinformationen übertragen:",
+      "transfertype": "Zahlungsinformationen übertragen",
       "BTNotSupported": "Ihr Gerät oder Browser unterstützt kein Bluetooth.",
       "NFCNotSupported": "Ihr Gerät oder Browser unterstützt kein NFC.",
       "NFCSendError": "Fehler beim Senden über NFC:",

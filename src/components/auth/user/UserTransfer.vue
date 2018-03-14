@@ -118,24 +118,24 @@ export default {
 {
 	"en": {
 		"userTransfer": {
-			"title": "Confirm your payment",
+			"title": "Confirm pearl transfer",
 			"passPhrase": "Private Key",
 			"submit": "Transfer",
 			"cancel": "Cancel",
 			"errorDescription": "This pass phrase is incorrect. Please try again.",
-			"description": "You are about to transfer <b>{amount} Bazo coins</b>. Please enter your private key to sign the transaction and finish the transaction process. We will <b>not</b> send your key over the network.",
+			"description": "You are about to transfer <b>{amount} Bazo pearls</b>. Please enter your private key to sign the transaction and finish the transaction process. We will <b>not</b> send your key over the network.",
       "sendError": "The transaction could not be sent to the Bazo network.",
       "sendSuccess": "The transaction was successfully sent to the Bazo network."
     }
 	},
 	"de": {
 		"userTransfer": {
-			"title": "Zahlung bestätigen",
+			"title": "Perlen Versand bestätigen",
 			"passPhrase": "Privater Schlüssel",
 			"submit": "Überweisen",
 			"cancel": "Abbrechen",
 			"errorDescription": "Diese Pass Phrase ist ungültig. Bitte versuchen Sie es erneut.",
-			"description": "Sie sind im Begriff <b>{amount} Bazo coins</b> zu überweisen. Geben Sie bitte Ihren privaten Schlüssel ein, um die Transaktion zu signieren und abzuschliessen. Wir versenden deinen Schlüssel nicht übers Netzwerk.",
+			"description": "Sie sind im Begriff <b>{amount} Bazo Perlen</b> zu überweisen. Geben Sie bitte Ihren privaten Schlüssel ein, um die Transaktion zu signieren und abzuschliessen. Wir versenden deinen Schlüssel nicht übers Netzwerk.",
       "sendError": "Die Transaktion konnte nicht ins Bazo Netzwerk gesendet werden.",
       "sendSuccess": "Die Transaktion wurde erfolgreich <b>versendet</b>."
 		}

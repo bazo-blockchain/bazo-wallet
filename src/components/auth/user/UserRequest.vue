@@ -192,7 +192,7 @@ export default {
       };
       return {
         title: 'New payment request',
-        description: `Sender with address ${formatBazoAddress(target.bazoaddress)} has requested ${this.paymentInfo.amount} coins from you. You can import, pre-view and complete the transaction by clicking on the supplied link.`
+        description: `Sender with address ${formatBazoAddress(target.bazoaddress)} has requested ${this.paymentInfo.amount} pearls from you. You can import, pre-view and complete the transaction by clicking on the supplied link.`
       };
     },
     whatsappLink: function () {

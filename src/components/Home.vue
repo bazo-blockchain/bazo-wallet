@@ -5,27 +5,27 @@
     </div>
     <div class="col-12">
       <div class="paynow-title">
-        DAS OYSTER SYSTEM
+        {{ this.Translation.t('home.title') }}
         <hr >
       </div>
-      <b-button block class="paynow-btn">Jetzt bezahlen</b-button>
+      <b-button block class="paynow-btn">{{ this.Translation.t('home.paynow') }}</b-button>
     </div>
     <div class="col-12" style="margin-bottom:20px;">
       <div class="paynow-title">
-        DER OYSY MARKTPLATZ
+        {{ this.Translation.t('home.marketplace') }}
         <hr >
       </div>
       <router-link :to="{ name: 'user-send' }">
         <b-button block class="oysy-button ">
           <i class="oysyicon">a</i>
-          <span>Perlen versenden</span>
+          <span>{{ this.Translation.t('home.send') }}</span>
         </b-button>
       </router-link>
 
       <router-link :to="{ name: 'user-request' }">
         <b-button block class="oysy-button ">
           <i class="oysyicon">a</i>
-          <span>Perlen anfordern</span>
+          <span>{{ this.Translation.t('home.request') }}</span>
         </b-button>
       </router-link>
     </div>
@@ -34,12 +34,14 @@
 </template>
 
 <script>
+import Translation from '@/config/Translation';
 
 export default {
   name: 'home',
   offline: true,
   data: function () {
     return {
+      Translation: Translation
     }
   },
   components: {
