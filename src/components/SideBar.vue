@@ -150,11 +150,12 @@ $language-picker-height-offline: 8.9em;
 	font-size: 18px;
 }
 .logo-container {
-	margin-top: 2em;
-	margin-bottom: 1.2em;
+	margin-top: 1em;
+	margin-bottom: 1em;
 	text-align: center;
   height: 80px;
   font-weight: bold;
+  font-size: 2em;
 
 	// .logo {
 	// 	max-width: 90%;
