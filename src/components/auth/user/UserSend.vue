@@ -69,36 +69,11 @@
               </b-form-fieldset>
 
               <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-12">
                   <b-form-fieldset :label="Translation.t('userSend.amount')">
                     <b-input-group>
                       <b-form-input v-model="amount" class="mono amount-input" type="number" min="0" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
-                      <!-- <b-input-group-button slot="right">
-                      <b-dropdown :text="selectedCurrency" variant="default" right>
-                      <b-dropdown-item v-for="currency in allowedCurrencies" @click="selectedCurrency = currency" :key="currency">
-                      <span class="currency">{{ currency }}</span>
-                      <i class="fa fa-check" v-if="currency === selectedCurrency"></i>
-                    </b-dropdown-item>
-                  </b-dropdown>
-                </b-input-group-button> -->
               </b-input-group>
-            </b-form-fieldset>
-          </div>
-          <div class="col-md-4">
-            <b-form-fieldset>
-              <label class="col-form-label">{{ Translation.t('userSend.maxAmount') }}
-                <b-popover :triggers="['hover']" :content="Translation.t('userSend.maxAmountDescription')" class="popover-element">
-                  <i class="fa fa-info-circle increase-focus"></i>
-                </b-popover>
-              </label>
-              <div class="form-control disabled mono" :class="{ 'form-error': formIsTouched && maximumAmountExceeded }">
-                <span v-if="accountsConfigured">
-                  {{ maximumAmount }} Bazo
-                </span>
-                <span v-else>
-                  <i class="fa fa-minus"></i>
-                </span>
-              </div>
             </b-form-fieldset>
           </div>
           <div class="col-12">
