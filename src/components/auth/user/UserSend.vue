@@ -283,6 +283,14 @@ export default {
           this.address = paymentinfo;
         }
       }
+      const startQr = this.$route.query.qr
+      if (startQr === 'true' || startQr === true) {
+        let that = this
+        this.isLoading = true
+        setTimeout(function () {
+          that.openCamera();
+        }, 1000)
+      }
       const posid = this.$route.query.posid;
       if (posid) {
         this.posid = posid;
@@ -445,6 +453,8 @@ export default {
 				if (cameras.length > 0) {
           let cameraUsed = cameras.length === 2 ? cameras[1] : cameras[0];
 					this.qrScanner.start(cameraUsed);
+          this.isLoading = false;
+
 					this.cameraShown = true;
 				} else {
 					this.$toasted.global.warn(Translation.t('userSend.cameraError'));

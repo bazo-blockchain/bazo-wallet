@@ -8,7 +8,9 @@
         {{ this.Translation.t('home.title') }}
         <hr >
       </div>
-      <b-button block class="paynow-btn">{{ this.Translation.t('home.paynow') }}</b-button>
+      <router-link :to="{ name: 'user-send', query: {qr: true} }">
+        <b-button block class="paynow-btn">{{ this.Translation.t('home.paynow') }}</b-button>
+      </router-link>
     </div>
     <div class="col-12" style="margin-bottom:20px;">
       <div class="paynow-title">
