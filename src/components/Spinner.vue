@@ -31,21 +31,20 @@ export default {
 	bottom: 0;
 	right: 0;
 	z-index: 50;
-	background: white;
 	opacity: 0;
 	visibility: hidden;
 	transition: 0.3s ease all;
 	min-height: 300px;
-	
+
 	&.shown {
 		opacity: 1;
 		visibility: visible;
 	}
-	
+
 	.spinner-element {
 		$border-color-bright: #f2f2f2;
 		$border-color-dark: black;
-		
+
 		&.md {
 			width: 120px;
 			height: 120px;
@@ -60,7 +59,7 @@ export default {
 			border-top: 6px solid $border-color-dark;
 			margin: -30px 0 0 -30px;
 		}
-		
+
 		position: absolute;
 		border-radius: 50%;
 		left: 50%;

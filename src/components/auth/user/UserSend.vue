@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div class="user-send">
     <div class="compact">
       <h1 class="display-4">{{ Translation.t('userSend.title') }}</h1>
