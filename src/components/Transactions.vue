@@ -154,8 +154,8 @@ export default {
     },
     verifyTransaction (hash, signature) {
       var key = this.curve.keyFromPublic({
-        x: 'b760750def30dd6a05bf4e5e66ca34732c01d7aa1e0d01482b17ede80b361392',
-        y: 'fb0f9134106ec68dc8bf5da43e590fd58b3fdb3e44a472d48cc5e5913d9cb4e4'
+        x: '8e487ed9332a0efe6470aec8f07bd031e49e9a392eb005eb4985abe99fc9beba',
+        y: 'c846e45eca6c9e34c01a72e6f1b0f393170ae7abe451d9c1af300e734993454f'
       }, 'hex');
       return key.verify(hash, {r: signature.slice(0, 64), s: signature.slice(64, 128)})
     },
