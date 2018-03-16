@@ -268,7 +268,6 @@ $language-picker-height-offline: 8.9em;
 .language-picker {
 	display: block;
 	text-align: center;
-	padding-top: 0.5em;
 	height: $language-picker-height;
 
 	&.offline-mode {

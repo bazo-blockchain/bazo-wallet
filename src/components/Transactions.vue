@@ -6,7 +6,7 @@
       <hr>
       <div class="pos-rel user-funds-content">
         <spinner :is-loading="isLoading"></spinner>
-        <label v-if="configured">{{Translation.t('transactions.description')}}</label>
+        <!-- <label v-if="configured">{{Translation.t('transactions.description')}}</label> -->
         <div class="table-wrapper" v-if="!isLoading && !loadingError">
           <div v-if="configured"
           class="table-responsive">
