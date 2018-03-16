@@ -42,10 +42,15 @@ body {
 .modal-content {
   background-color: #292b2c;
 }
+.btn-secondary.disabled, .btn-secondary:disabled {
+  background-color: rgb(26, 26, 26);
+}
 input:focus {
   outline: none;
 }
-
+.btn-primary:hover {
+    border-color: none;
+}
 .box {
   background-color: #292b2c;
   border: none;

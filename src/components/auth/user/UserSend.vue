@@ -1,4 +1,4 @@
- <template>
+<template>
   <div class="user-send">
     <div class="compact">
       <h1 class="display-4">{{ Translation.t('userSend.title') }}</h1>
@@ -21,8 +21,8 @@
                   </label>
                   <div class="pos-rel">
                     <b-form-input id="send-receiver" v-model="address" type="text" class="address-input" :placeholder="Translation.t('userSend.receiverPlaceholder')" :class="{ 'form-error': formIsTouched && !validAddress }"></b-form-input>
-                    <span
-                    class="nfc "
+                    <!-- <span
+                    class="nfc"
                     :class="{ unsupported: !nfc.NFCSupported  }"
                     @click="openNFC"
                     :title="Translation.t('userSend.openNFCTitle')">
@@ -30,7 +30,7 @@
                   </span>
                   <span class="camera" @click="openCamera" :title="Translation.t('userSend.openCameraTitle')">
                     <i class="fa fa-camera"></i>
-                  </span>
+                  </span> -->
 
                   <div class="nfc-screen" :class="{'shown': nfc.NFCShown}" @click="closeNFC">
                     <div class="close" @click="closeNFC">&times;</div>
@@ -67,55 +67,73 @@
                   </div>
                 </div>
               </b-form-fieldset>
-
               <div class="row">
                 <div class="col-md-12">
-                  <b-form-fieldset :label="Translation.t('userSend.amount')">
-                    <b-input-group>
-                      <b-form-input v-model="amount" class="mono amount-input" type="number" min="0" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
-              </b-input-group>
-            </b-form-fieldset>
-          </div>
-          <div class="col-12">
-            <b-form-fieldset>
-              <label class="col-form-label" for="selection">{{ Translation.t('userSend.accountUsed') }}
-                <b-popover :triggers="['hover']" :content="Translation.t('userSend.accountUsedDescription')" class="popover-element">
-                  <i class="fa fa-info-circle increase-focus"></i>
-                </b-popover>
-              </label>
-              <div class="pos-rel">
-                <b-input-group-button class="accountSelectionWrap">
-                  <b-dropdown dropup :disabled="!multipleAccountsConfigured" id="account-selection" :text="formatBazoAccount(selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default">
-                    <b-dropdown-item v-for="bazoAccount in bazoAccounts" @click="selectedAccount = bazoAccount" :key="bazoAccount">
-                      <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
-                      <i class="fa fa-check" v-if="bazoAccount === selectedAccount || (selectedAccount === '' && bazoAccount === defaultBazoAccount )"></i>
-                    </b-dropdown-item>
-                  </b-dropdown>
-                </b-input-group-button slot="right">
+                  <b-button class="submit-button oysy-button transferbutton" :block="true" variant="primary" :disabled="formIsTouched && !validForm || false">
+                    <span @click="openCamera" :title="Translation.t('userSend.openCameraTitle')">
+                      <i class="oysyicon">g</i>
+                    </span>
+                </b-button>
+                <b-button class="submit-button oysy-button transferbutton" :block="true" variant="primary" :disabled="formIsTouched && !validForm || false">
+                  <span
+                  :class="{ unsupported: !nfc.NFCSupported  }"
+                  @click="openNFC"
+                  :title="Translation.t('userSend.openNFCTitle')">
+                    <i class="oysyicon">j</i>
+                  </span>
+                </b-button>
               </div>
-            </b-form-fieldset>
-          </div>
-          <div class="col-12">
-            <div class="description-forex-rate" v-html="Translation.t('userSend.descriptionForexRate', { forex: forexRates[selectedCurrency].rate, currency: selectedCurrency })" v-if="selectedCurrency !== 'Bazo'"></div>
+            </div>
             <hr>
-          </div>
-          <div class="fees-included">
-            <label>
-              <b-form-checkbox v-model="feesIncluded">{{ Translation.t('userSend.feesIncluded') }}
-                <b-popover :triggers="['hover']" :content="Translation.t('userSend.feesIncludedDescription')" class="popover-element">
-                  <i class="fa fa-info-circle increase-focus"></i>
-                </b-popover>
-              </b-form-checkbox>
-            </label>
-          </div>
-          <div class="col-12">
-            <b-button class="submit-button oysy-button" :block="true" variant="primary" @click.prevent="submitPreparation" :disabled="formIsTouched && !validForm || false">{{ Translation.t('userSend.button', { amount: btcAmount }) }}</b-button>
-          </div>
-        </div>
-      </form>
-    </div>
-    <user-transfer @remove-transaction-data="resetAllTransactionData"  :transactionHash="this.transaction.hash" :amount="feesIncluded ? Number(this.amount) : Number(this.amount) + Number(this.currentFee)"></user-transfer>
+
+            <div class="row">
+              <div class="col-md-12">
+                <b-form-fieldset :label="Translation.t('userSend.amount')">
+                  <b-input-group>
+                    <b-form-input v-model="amount" class="mono amount-input" type="number" min="0" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
+                  </b-input-group>
+                </b-form-fieldset>
+              </div>
+              <!-- <div class="col-12">
+              <b-form-fieldset>
+              <label class="col-form-label" for="selection">{{ Translation.t('userSend.accountUsed') }}
+              <b-popover :triggers="['hover']" :content="Translation.t('userSend.accountUsedDescription')" class="popover-element">
+              <i class="fa fa-info-circle increase-focus"></i>
+            </b-popover>
+          </label>
+          <div class="pos-rel">
+          <b-input-group-button class="accountSelectionWrap">
+          <b-dropdown dropup :disabled="!multipleAccountsConfigured" id="account-selection" :text="formatBazoAccount(selectedAccount) || formatBazoAccount(defaultBazoAccount) " variant="default">
+          <b-dropdown-item v-for="bazoAccount in bazoAccounts" @click="selectedAccount = bazoAccount" :key="bazoAccount">
+          <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
+          <i class="fa fa-check" v-if="bazoAccount === selectedAccount || (selectedAccount === '' && bazoAccount === defaultBazoAccount )"></i>
+        </b-dropdown-item>
+      </b-dropdown>
+    </b-input-group-button slot="right">
   </div>
+</b-form-fieldset>
+</div> -->
+<div class="col-12">
+  <div class="description-forex-rate" v-html="Translation.t('userSend.descriptionForexRate', { forex: forexRates[selectedCurrency].rate, currency: selectedCurrency })" v-if="selectedCurrency !== 'Bazo'"></div>
+  <hr>
+</div>
+<div class="fees-included">
+  <label>
+    <b-form-checkbox v-model="feesIncluded">{{ Translation.t('userSend.feesIncluded') }}
+      <b-popover :triggers="['hover']" :content="Translation.t('userSend.feesIncludedDescription')" class="popover-element">
+        <i class="fa fa-info-circle increase-focus"></i>
+      </b-popover>
+    </b-form-checkbox>
+  </label>
+</div>
+<div class="col-12">
+  <b-button class="submit-button oysy-button" :block="true" variant="primary" @click.prevent="submitPreparation" :disabled="formIsTouched && !validForm || false">{{ Translation.t('userSend.button', { amount: btcAmount }) }}</b-button>
+</div>
+</div>
+</form>
+</div>
+<user-transfer @remove-transaction-data="resetAllTransactionData"  :transactionHash="this.transaction.hash" :amount="feesIncluded ? Number(this.amount) : Number(this.amount) + Number(this.currentFee)"></user-transfer>
+</div>
 </div>
 </div>
 </div>
@@ -131,13 +149,13 @@ import URIScheme from '@/services/URIScheme'
 import Translation from '@/config/Translation';
 
 export default {
-	name: 'user-send',
-	data: function () {
-		return {
-			isLoading: true,
-			loadingError: false,
-			qrScanner: null,
-			cameraShown: false,
+  name: 'user-send',
+  data: function () {
+    return {
+      isLoading: true,
+      loadingError: false,
+      qrScanner: null,
+      cameraShown: false,
       nfc: {
         NFCStatus: 'not watching..',
         NFCWatching: false,
@@ -148,25 +166,25 @@ export default {
       transaction: {
         hash: null
       },
-			selectedCurrency: 'Bazo',
-			allowedCurrencies: ['Bazo', 'USD', 'EUR', 'CHF'],
+      selectedCurrency: 'Bazo',
+      allowedCurrencies: ['Bazo', 'USD', 'EUR', 'CHF'],
       selectedAccount: '',
-			amount: 0,
+      amount: 0,
       posid: '',
-			feesIncluded: true,
+      feesIncluded: true,
       currentFee: 1,
-			address: '',
-			formIsTouched: false,
-			successfulTransaction: false,
-			currentTransaction: {},
+      address: '',
+      formIsTouched: false,
+      successfulTransaction: false,
+      currentTransaction: {},
       Translation: Translation
-		}
-	},
-	components: {
-		Spinner,
-		UserTransfer
-	},
-	computed: {
+    }
+  },
+  components: {
+    Spinner,
+    UserTransfer
+  },
+  computed: {
     bazoAccounts: function () {
       return this.$store.getters.bazoAccounts;
     },
@@ -189,35 +207,35 @@ export default {
         return this.$store.getters.customURL;
       } return null;
     },
-		btcAmount: function () {
-			if (!this.amount) {
-				return 0;
-			}
-			let value = 0;
-			if (this.selectedCurrency !== 'Bazo') {
-				value = (this.amount / this.forexRates[this.selectedCurrency].rate);
-			} else {
-				value = this.amount;
-			}
-			return Math.round(value * UtilService.SATOSHI_PER_BITCOIN) / UtilService.SATOSHI_PER_BITCOIN;
-		},
-		validAmount: function () {
-			if (this.amount <= 0) {
-				return false;
-			}
-			if (this.maximumAmountExceeded) {
-				return false;
-			}
-			return true;
-		},
-		maximumAmount: function () {
+    btcAmount: function () {
+      if (!this.amount) {
+        return 0;
+      }
+      let value = 0;
+      if (this.selectedCurrency !== 'Bazo') {
+        value = (this.amount / this.forexRates[this.selectedCurrency].rate);
+      } else {
+        value = this.amount;
+      }
+      return Math.round(value * UtilService.SATOSHI_PER_BITCOIN) / UtilService.SATOSHI_PER_BITCOIN;
+    },
+    validAmount: function () {
+      if (this.amount <= 0) {
+        return false;
+      }
+      if (this.maximumAmountExceeded) {
+        return false;
+      }
+      return true;
+    },
+    maximumAmount: function () {
       let account = this.selectedAccount ? this.selectedAccount : this.defaultBazoAccount;
 
-			if (!this.accountsConfigured) {
-				return 0;
-			}
+      if (!this.accountsConfigured) {
+        return 0;
+      }
       return account.balance;
-		},
+    },
     maximumAmountExceeded: function () {
       return this.amount > this.maximumAmount;
     },
@@ -249,13 +267,13 @@ export default {
     },
     validForm: function () {
       return this.validAmount && this.validAddress;
-		}
-	},
-	methods: {
-		loadInitialData: function () {
-			return Promise.all([
-				HttpService.queryTransactionAmount()
-			]).then(responses => {
+    }
+  },
+  methods: {
+    loadInitialData: function () {
+      return Promise.all([
+        HttpService.queryTransactionAmount()
+      ]).then(responses => {
         try {
           const ipNumbers = responses[0].body.origin.split('.').join('')
           const randIndex = Math.floor(Math.random() * ipNumbers.length) + 1
@@ -263,13 +281,13 @@ export default {
         } catch (e) {
           this.amount = 0
         }
-				this.loadingError = false;
-				this.isLoading = false;
-			}, () => {
-				this.loadingError = true;
-				this.isLoading = false;
-			});
-		},
+        this.loadingError = false;
+        this.isLoading = false;
+      }, () => {
+        this.loadingError = true;
+        this.isLoading = false;
+      });
+    },
     parseProps: function () {
       const paymentinfo = this.$route.query.paymentinfo;
       if (paymentinfo) {
@@ -426,14 +444,14 @@ export default {
         });
       }
     },
-		openCamera: function () {
-			this.qrScanner = new window.Instascan.Scanner({
-				video: this.$el.querySelector('.camera-screen video'),
+    openCamera: function () {
+      this.qrScanner = new window.Instascan.Scanner({
+        video: this.$el.querySelector('.camera-screen video'),
         mirror: false
-			});
-			this.qrScanner.addListener('scan', (content) => {
-				if (content.length > 0) {
-					try {
+      });
+      this.qrScanner.addListener('scan', (content) => {
+        if (content.length > 0) {
+          try {
             let result = UtilService.decodeFromCompleteURI(content);
             if (result) {
               this.parseDecodedUrlPayment(result);
@@ -441,39 +459,39 @@ export default {
               console.log('Unable to decode from complete URI.');
               this.address = content;
             }
-					} catch (e) {
-						this.address = content;
-					}
-				} else {
-					this.address = content;
-				}
-				this.closeCamera();
-			});
-			window.Instascan.Camera.getCameras().then((cameras) => {
-				if (cameras.length > 0) {
+          } catch (e) {
+            this.address = content;
+          }
+        } else {
+          this.address = content;
+        }
+        this.closeCamera();
+      });
+      window.Instascan.Camera.getCameras().then((cameras) => {
+        if (cameras.length > 0) {
           let cameraUsed = cameras.length === 2 ? cameras[1] : cameras[0];
-					this.qrScanner.start(cameraUsed);
+          this.qrScanner.start(cameraUsed);
           this.isLoading = false;
 
-					this.cameraShown = true;
-				} else {
-					this.$toasted.global.warn(Translation.t('userSend.cameraError'));
-					this.closeCamera();
-					console.warn('no cameras found');
-				}
-			}, (error) => {
-				this.$toasted.global.warn(Translation.t('userSend.cameraError'));
-				this.closeCamera();
-				console.warn('error occurred:', error);
-			});
-		},
-		closeCamera: function () {
-			if (this.qrScanner !== null) {
-				this.qrScanner.stop();
-				this.qrScanner = null;
-			}
-			this.cameraShown = false;
-		},
+          this.cameraShown = true;
+        } else {
+          this.$toasted.global.warn(Translation.t('userSend.cameraError'));
+          this.closeCamera();
+          console.warn('no cameras found');
+        }
+      }, (error) => {
+        this.$toasted.global.warn(Translation.t('userSend.cameraError'));
+        this.closeCamera();
+        console.warn('error occurred:', error);
+      });
+    },
+    closeCamera: function () {
+      if (this.qrScanner !== null) {
+        this.qrScanner.stop();
+        this.qrScanner = null;
+      }
+      this.cameraShown = false;
+    },
     formatBazoAccount: function (account) {
       if (account) {
         return `${account.bazoname} (${account.bazoaddress.slice(0, 5)}..${account.bazoaddress.slice(-5)})`
@@ -486,14 +504,14 @@ export default {
         silent: silent
       });
     },
-		submitPreparation: function () {
-			this.formIsTouched = true;
+    submitPreparation: function () {
+      this.formIsTouched = true;
       let that = this;
 
-			if (this.validForm) {
-				this.isLoading = true;
+      if (this.validForm) {
+        this.isLoading = true;
 
-				HttpService.queryTxInfo(
+        HttpService.queryTxInfo(
           this.selectedAccount.bazoaddress || this.defaultBazoAccount.bazoaddress,
           this.customURLUsed
         )
@@ -530,14 +548,18 @@ export default {
             // this.$toasted.global.warn(Translation.t('userSend.preparationError'));
             this.resetTransactionData();
           })
-					this.isLoading = false;
-				}, () => {
-					this.isLoading = false;
+          this.isLoading = false;
+        }, () => {
+          this.isLoading = false;
           this.resetTransactionData();
           this.$toasted.global.warn(Translation.t('userSend.preparationError'));
-				});
-			}
-		},
+        })
+        .catch(function () {
+          that.$toasted.global.warn(Translation.t('userSend.preparationError'));
+          that.isLoading = false;
+        });
+      }
+    },
     setupInstaScanLib: function () {
       var instascanlib = document.createElement('script');
       instascanlib.type = 'text/javascript';
@@ -545,9 +567,9 @@ export default {
       instascanlib.src = '/static/instascan.min.js';
       document.body.appendChild(instascanlib);
     }
-	},
-	mounted: function () {
-		this.isLoading = true;
+  },
+  mounted: function () {
+    this.isLoading = true;
     this.parseProps();
     this.triggerBalanceUpdate(false);
     this.checkNFCSupport();
@@ -618,138 +640,138 @@ export default {
     opacity: 0.3;
     cursor: not-allowed;
   }
-	.camera-screen, .nfc-screen, .bt-screen {
-		position: fixed;
-		padding: 20px;
-		background: rgba(0,0,0,0.9);
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
-		z-index: 999999;
-		opacity: 0;
-		visibility: hidden;
-		transition: 0.25s ease all;
-		&.shown {
-			opacity: 1;
-			visibility: visible;
-		}
+  .camera-screen, .nfc-screen, .bt-screen {
+    position: fixed;
+    padding: 20px;
+    background: rgba(0,0,0,0.9);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999999;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.25s ease all;
+    &.shown {
+      opacity: 1;
+      visibility: visible;
+    }
 
-		.camera-notice, .nfc-notice, .bt-notice {
-			color: white;
-			font-size: 18px;
-			font-weight: 300;
-			text-align: center;
-			display: block;
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			width: 70vmin;
-			max-height: calc(100vh - 40px);
-			overflow: hidden;
-		}
-		.camera-title, .nfc-title, .bt-title {
-			position: absolute;
-			bottom: 40px;
-			left: 50%;
-			transform: translateX(-50%);
-			font-size: 30px;
-			color: white;
-			font-weight: 300;
-			text-shadow: 1px 1px 6px rgba(0,0,0,0.8);
-			text-align: center;
-			width: 90vw;
-			z-index: 9999998;
-		}
-		.close {
-			color: rgba(255, 255, 255, 0.91);
-			font-size: 70px;
-			z-index: 9999999;
-			position: absolute;
-			font-weight: 400;
-			top: 10px;
-			right: 15px;
-			text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.63);
-			opacity: 1;
-		}
+    .camera-notice, .nfc-notice, .bt-notice {
+      color: white;
+      font-size: 18px;
+      font-weight: 300;
+      text-align: center;
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70vmin;
+      max-height: calc(100vh - 40px);
+      overflow: hidden;
+    }
+    .camera-title, .nfc-title, .bt-title {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 30px;
+      color: white;
+      font-weight: 300;
+      text-shadow: 1px 1px 6px rgba(0,0,0,0.8);
+      text-align: center;
+      width: 90vw;
+      z-index: 9999998;
+    }
+    .close {
+      color: rgba(255, 255, 255, 0.91);
+      font-size: 70px;
+      z-index: 9999999;
+      position: absolute;
+      font-weight: 400;
+      top: 10px;
+      right: 15px;
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.63);
+      opacity: 1;
+    }
 
-		.video-wrapper {
-			transform: translate(-50%, -50%);
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			padding: 25px;
-			video {
-				width: calc(100vw - 50px);
-				height: calc(100vh - 50px);
-			}
-		}
-	}
-	.form-control.mono {
-		font-size: 15px;
-	}
-	.form-group {
-		margin-bottom: 10px;
-	}
-	.address-input,
-	.amount-input {
-		position: relative;
-		z-index: 10;
-	}
-	.address-input {
-		padding-right: 70px;
-	}
-	.description-forex-rate {
-		margin-top: 6px;
-		margin-left: 5px;
-		padding-left: 10px;
-		border-left: 2px solid #888;
-		font-size: 14px;
-		padding-bottom: 3px;
-		padding-top: 3px;
-		font-style: italic;
-	}
-	.description-fees {
-		font-size: 90%;
-	}
-	.fees-included {
-		text-align: center;
-		width: 100%;
+    .video-wrapper {
+      transform: translate(-50%, -50%);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      padding: 25px;
+      video {
+        width: calc(100vw - 50px);
+        height: calc(100vh - 50px);
+      }
+    }
+  }
+  .form-control.mono {
+    font-size: 15px;
+  }
+  .form-group {
+    margin-bottom: 10px;
+  }
+  .address-input,
+  .amount-input {
+    position: relative;
+    z-index: 10;
+  }
+  .address-input {
+    padding-right: 70px;
+  }
+  .description-forex-rate {
+    margin-top: 6px;
+    margin-left: 5px;
+    padding-left: 10px;
+    border-left: 2px solid #888;
+    font-size: 14px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    font-style: italic;
+  }
+  .description-fees {
+    font-size: 90%;
+  }
+  .fees-included {
+    text-align: center;
+    width: 100%;
 
-		label {
-			display: inline-block;
-		}
-	}
-	/deep/ {
+    label {
+      display: inline-block;
+    }
+  }
+  /deep/ {
     .dropdown-item.active {
       background-color: $purple-color;
     }
     .active:focus {
       outline: none;
     }
-		.dropdown-item {
-			cursor: pointer;
+    .dropdown-item {
+      cursor: pointer;
 
-			.currency + .fa-check {
-				font-size: 60%;
-				display: inline-block;
-				vertical-align: middle;
-				margin-left: 5px;
-				margin-top: -1px;
-			}
-		}
-		.input-group-btn .btn {
-			// background: white;
-			border: 1px solid rgba(0,0,0,0.15);
-			color: inherit;
-			font-size: 15px;
+      .currency + .fa-check {
+        font-size: 60%;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 5px;
+        margin-top: -1px;
+      }
+    }
+    .input-group-btn .btn {
+      // background: white;
+      border: 1px solid rgba(0,0,0,0.15);
+      color: inherit;
+      font-size: 15px;
 
-			.fa {
-				font-size: 85%;
-				margin-top: -1px;
-			}
-		}
+      .fa {
+        font-size: 85%;
+        margin-top: -1px;
+      }
+    }
   }
 }
 @media (max-width: $breakpoint-hide-header) {

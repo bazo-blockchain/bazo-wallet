@@ -23,26 +23,26 @@
                     <b-form-fieldset>
                       <b-input-group>
                         <b-form-input v-model="paymentInfo.amount" class="mono amount-input" type="number" min="0" step="any" :class="{ 'form-error': formIsTouched && !validAmount }"></b-form-input>
-                        <b-input-group-button slot="right">
+                        <!-- <b-input-group-button slot="right">
                           <b-dropdown :disabled="!multipleAccountsConfigured" :text="formatBazoAccount(paymentInfo.selectedAccount) || formatBazoAccount(defaultBazoAccount)" variant="default" right>
                             <b-dropdown-item v-for="bazoAccount in bazoAccounts" @click="paymentInfo.selectedAccount = bazoAccount" :key="bazoAccount">
                               <span class="currency">{{ formatBazoAccount(bazoAccount) }}</span>
                               <i class="fa fa-check" v-if="bazoAccount === paymentInfo.selectedAccount ||
                               (paymentInfo.selectedAccount === '' && bazoAccount === defaultBazoAccount)"></i>													</b-dropdown-item>
                             </b-dropdown>
-                          </b-input-group-button>
+                          </b-input-group-button> -->
                         </b-input-group>
                       </b-form-fieldset>
                     </div>
 
-                    <div class="col-md-12" v-if="this.advancedOptionsShown">
+                    <!-- <div class="col-md-12" v-if="this.advancedOptionsShown">
                       <label class="col-form-label" for="selection">{{ Translation.t('userRequest.posid') }}
                         <b-popover :triggers="['hover']" :content="Translation.t('userRequest.posiddescription')" class="popover-element">
                           <i class="fa fa-info-circle increase-focus"></i>
                         </b-popover>
                       </label>
                       <b-form-input v-model="paymentInfo.posid" class="mono posid-input"></b-form-input>
-                    </div>
+                    </div> -->
 
                     <div class="col-12">
                       <hr>
