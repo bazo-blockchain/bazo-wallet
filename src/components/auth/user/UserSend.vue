@@ -582,43 +582,57 @@ export default {
 @import '../../../styles/variables';
 
 .user-send {
-	.user-send-content {
-		min-height: 300px;
-	}
-	.box-wrapper {
-		max-width: 650px;
-		padding-top: 20px;
-		.box {
-			width: 100%;
-			background: #292b2c;
-			padding: 20px;
-			.main-title {
-				text-align: center;
-			}
-		}
-	}
+  .transferbutton {
+    height: 80px;
+    width: 80px;
+    margin: 0px 10px 0px 0px;
+    float: left;
+  }
+  .submit-button {
+    max-width: none !important;
+  }
+  .oysyicon {
+    font-family: oysy;
+    font-style: normal;
+    font-size: 1.3em;
+  }
+  .user-send-content {
+    min-height: 300px;
+  }
+  .box-wrapper {
+    max-width: 650px;
+    padding-top: 20px;
+    .box {
+      width: 100%;
+      background: #292b2c;
+      padding: 20px;
+      .main-title {
+        text-align: center;
+      }
+    }
+  }
 
-	.fa.fa-info-circle {
-		cursor: help;
-	}
-	.popover-element {
-		display: inline-block;
-		vertical-align: middle;
-		margin-left: 5px;
-		.fa-info-circle {
-			color: #999;
-		}
-	}
-	.camera, .nfc {
-		font-size: 16px;
-		position: absolute;
-		right: 0;
-		z-index: 99;
-		top: 50%;
-		transform: translateY(-50%);
-		cursor: pointer;
-		padding: 7px 6px;
-	}
+  .fa.fa-info-circle {
+    cursor: help;
+  }
+  .popover-element {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+    .fa-info-circle {
+      color: #999;
+    }
+  }
+  .camera, .nfc {
+    font-size: 16px;
+    position: absolute;
+    right: 0;
+    z-index: 99;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    padding: 7px 6px;
+  }
   .nfc {
     right: 30px;
   }
