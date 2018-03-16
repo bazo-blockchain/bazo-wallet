@@ -284,7 +284,7 @@ ${importLink}`
       // eslint-disable-next-line
       let curve = new elliptic.ec('p256');
       let keypair = curve.genKeyPair();
-      let publicKey = `${keypair.getPublic().x.toJSON()}${keypair.getPublic().y.toJSON()}`
+      let publicKey = `${keypair.getPublic().getX().toJSON()}${keypair.getPublic().getY().toJSON()}`
       let privateKey = keypair.getPrivate().toJSON();
       this.accountGeneration.publicKey = publicKey;
       this.accountGeneration.privateKey = privateKey;
@@ -312,11 +312,10 @@ ${importLink}`
       .then((res) => {
         if (res.data.status === 'OK') {
           that.$store.dispatch('addAccountRequest', {
-            // TODO remove the string representation of null once its implementated
             ticketid: '' + res.data.response.id,
             target: res.data.response.public_key,
             amount: res.data.response.amount,
-            state: res.data.response.status || 'unconfirmed'
+            state: res.data.response.status
           })
         } else {
           that.$toasted.global.error(that.$t('funds.error.moveFunds'));

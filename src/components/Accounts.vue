@@ -32,7 +32,7 @@
                 <b-popover triggers="hover" :content="Translation.t('userAccounts.confirmed')" class="popover-element">
                   <i class="fa fa-unlock-alt increase-focus"></i>
                 </b-popover>
-                <span >-</span>
+                <span ></span>
                 {{ item.item.balance}}
               </div>
               <div class="nowrap" v-else>
