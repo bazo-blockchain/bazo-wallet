@@ -102,7 +102,7 @@ export default {
       { url: that.$store.getters.customURL,
         silent: true
       });
-    }, 10000)
+    }, 60000)
 		window.addEventListener('resize', this.resizeHandler);
 	},
 	watch: {
