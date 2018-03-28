@@ -8,103 +8,49 @@
           {{ this.sumOfBalances }}
         </small> -->
       </h1>
-      <hr>
       <div class="pos-rel user-funds-content">
         <spinner :is-loading="isLoading"></spinner>
-        <label v-if="configured">{{Translation.t('userAccounts.description')}}</label>
-        <div class="table-wrapper" v-if="!isLoading && !loadingError">
-          <div v-if="configured"
-          class="table-responsive">
+        <!-- <label v-if="configured">{{Translation.t('userAccounts.description')}}</label> -->
 
-          <b-table responsive small striped hover :items="this.tableRows" :fields="this.fields" :current-page="currentPage" :per-page="perPage">
-            <template slot="bazoaddress" scope="item">
-              <div class="no-wrap">
-                <span class="mono" v-bind:title="item.item.bazoaddress">{{ cutBazoAddress(item.item.bazoaddress) }}</span>&nbsp;
-                <b-popover triggers="hover" :content="item.item.bazoaddress" class="popover-element">
-                  <i class="fa fa-eye increase-focus"></i>
-                </b-popover>
-              </div>
-            </template>
-
-            <template slot="balance" scope="item">
-
-              <div class="nowrap" v-if="item.item.balance != 'unconfirmed'">
-                <b-popover triggers="hover" :content="Translation.t('userAccounts.confirmed')" class="popover-element">
-                  <i class="fa fa-unlock-alt increase-focus"></i>
-                </b-popover>
-                <span ></span>
-                {{ item.item.balance}}
-              </div>
-              <div class="nowrap" v-else>
-                <b-popover triggers="hover" :content="Translation.t('userAccounts.unconfirmed')" class="popover-element">
-                  <i class="fa fa-lock increase-focus"></i>
-                </b-popover>
-              </div>
-
-            </template>
-            <template slot="isPrime" scope="item">
-              <div>
-                <div class="" v-if="item.item.isPrime">
-                  <i class="fa fa-check" aria-hidden="true"></i>
-                </div>
-                <div class="" v-else>
-                  <b-button variant="secondary" size="sm" @click.prevent="makePrimary(item.item)">
-                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                  </b-button>
-                </div>
-              </div>
-            </template>
-            <template slot="qr" scope="item">
-              <div>
-                <b-popover triggers="hover" :content="Translation.t('userAccounts.explorer')" class="popover-element">
-                  <a :href="'http://explorer.oysy.io/account/' + item.item.bazoaddress">
-                    <i class="fa fa-link" aria-hidden="true"></i>
-                  </a>
-                </b-popover>
-              </div>
-            </template>
-            <template slot="actions" scope="item">
-              <div>
-                <div>
-                  <b-button variant="danger" size="sm" @click.prevent="deleteAccount(item.item)">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                  </b-button>
-                  <b-popover triggers="hover" :content="Translation.t('userAccounts.deleteDescription')" class="popover-element">
-                    <i class="fa fa-info-circle increase-focus"></i>
-                  </b-popover>
-                </div>
-              </div>
-            </template>
-          </b-table>
-        </div>
-        <div class="" v-else>
-          <b-alert v-html="Translation.t('userAccounts.notConfigured')" show variant="info"></b-alert>
-        </div>
-        <div class="reload-page" v-if="configured">
+        <!-- <div class="reload-page" v-if="configured">
           <div>{{this.lastBalanceUpdate}}</div>
 
           <span class="btn btn-secondary oysy-button" @click.prevent="triggerBalanceUpdate(false)">
             <i class="fa fa-refresh"></i>
             {{ this.Translation.t('userAccounts.reload') }}
           </span>
-        </div>
+        </div> -->
         <hr v-if="configured">
         <div class="col-12">
           <form>
-            <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoaddress')">
-              <b-form-input v-model="bazoaddress" type="text"></b-form-input>
-            </b-form-fieldset>
-            <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoname')">
+            <div class="wrapper" v-if="editing || !configured">
+              <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoaddress')">
+                <b-form-input class="icon-input" v-model="bazoaddress" type="text">
+                </b-form-input>
+
+                <i class="fa fa-times right-icon" aria-hidden="true" @click="disableEditing"></i>
+              </b-form-fieldset>
+            </div>
+            <div class="wrapper" v-else>
+              <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoaddress')">
+                <b-form-input class="icon-input" disabled v-model="defaultBazoAddress" type="text"></b-form-input>
+                <i class="fa fa-pencil right-icon" aria-hidden="true" @click="enableEditing"></i>
+
+              </b-form-fieldset>
+            </div>
+
+
+            <!-- <b-form-fieldset :label="Translation.t('userAccounts.fields.bazoname')">
               <b-form-input id="bazoname" v-model="bazoname" ></b-form-input>
-            </b-form-fieldset>
-            <div >
+            </b-form-fieldset> -->
+            <!-- <div >
               <label>
                 <b-form-checkbox v-model="isPrime">{{ Translation.t('userAccounts.makePrimary') }}
 
                 </b-form-checkbox>
               </label>
-            </div>
-            <b-button class="oysy-button" @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ Translation.t('userAccounts.save') }}</b-button>
+            </div> -->
+            <b-button v-if="editing || !configured" class="oysy-button" @click.prevent="saveAccount" :block="true" variant="primary" :disabled="isLoading">{{ Translation.t('userAccounts.save') }}</b-button>
           </form>
           <div class="justify-content-center row my-1" v-show="this.tableRows.length > perPage">
             <b-pagination size="md" :total-rows="this.tableRows.length" :per-page="perPage" v-model="currentPage" />
@@ -133,7 +79,9 @@ export default {
 			perPage: 15,
       bazoaddress: '',
       bazoname: '',
+      editing: false,
       isPrime: false,
+      newAddress: '123',
 			alerts: {
 				success: {
 					moveFunds: false,
@@ -187,9 +135,14 @@ export default {
       return accounts;
     },
     defaultBazoAccount: function () {
-      return this.allAccounts.find(function (bazoAccount) {
-        return bazoAccount.isPrime;
-      });
+      if (this.allAccounts && this.allAccounts.length > 0) {
+        return this.allAccounts[0]
+      }
+    },
+    defaultBazoAddress: function () {
+      if (this.allAccounts && this.allAccounts.length > 0) {
+        return this.allAccounts[0].bazoaddress
+      } return ''
     },
     sumOfBalances: function () {
       return this.$store.getters.sumOfBalances;
@@ -218,6 +171,13 @@ export default {
       { url: this.customURLUsed,
         silent: silent
       });
+    },
+    disableEditing () {
+      this.editing = false;
+    },
+    enableEditing () {
+      this.bazoaddress = this.defaultBazoAddress
+      this.editing = true;
     },
     encodeBazoAddress (bazoAddress) {
       return URIScheme.encode(bazoAddress);
@@ -287,6 +247,7 @@ export default {
               this.bazoaddress = '';
               this.bazoname = '';
               this.isLoading = false;
+              this.editing = false;
             }
           });
         }
@@ -307,6 +268,15 @@ export default {
 
 .user-funds-content {
 	min-height: 300px;
+}
+.right-icon {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.icon-input {
+  padding-right: 40px;
 }
 h1 small {
 	margin-top: 6px;
