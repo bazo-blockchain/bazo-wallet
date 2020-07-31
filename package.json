@@ -23,7 +23,7 @@
     "bootstrap-vue": "^0.16.1",
     "buffer": "^5.0.6",
     "ecdsa": "^0.7.0",
-    "elliptic": "^6.4.0",
+    "elliptic": "^6.5.3",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
     "idb-keyval": "^2.3.0",
